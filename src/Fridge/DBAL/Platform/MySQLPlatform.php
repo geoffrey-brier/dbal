@@ -250,15 +250,23 @@ class MySQLPlatform extends AbstractPlatform
     /**
      * {@inheritdoc}
      */
-    public function getDropConstraintSQLQuery($contraint, $table)
+    public function getDropConstraintSQLQuery(Schema\ConstraintInterface $contraint, $table)
     {
-        throw PlatformException::methodNotSupported(__METHOD__);
+        if ($contraint instanceof Schema\PrimaryKey) {
+            return $this->getDropPrimaryKeySQLQuery($contraint, $table);
+        }
+
+        if ($contraint instanceof Schema\ForeignKey) {
+            return $this->getDropForeignKeySQLQuery($contraint, $table);
+        }
+
+        return $this->getDropIndexSQLQuery($contraint, $table);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getDropPrimaryKeySQLQuery($primaryKey, $table)
+    public function getDropPrimaryKeySQLQuery(Schema\PrimaryKey $primaryKey, $table)
     {
         return 'ALTER TABLE '.$table.' DROP PRIMARY KEY';
     }
@@ -266,17 +274,17 @@ class MySQLPlatform extends AbstractPlatform
     /**
      * {@inheritdoc}
      */
-    public function getDropForeignKeySQLQuery($foreignKey, $table)
+    public function getDropForeignKeySQLQuery(Schema\ForeignKey $foreignKey, $table)
     {
-        return 'ALTER TABLE '.$table.' DROP FOREIGN KEY '.$foreignKey;
+        return 'ALTER TABLE '.$table.' DROP FOREIGN KEY '.$foreignKey->getName();
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getDropIndexSQLQuery($index, $table)
+    public function getDropIndexSQLQuery(Schema\Index $index, $table)
     {
-        return 'DROP INDEX '.$index.' ON '.$table;
+        return 'DROP INDEX '.$index->getName().' ON '.$table;
     }
 
     /**

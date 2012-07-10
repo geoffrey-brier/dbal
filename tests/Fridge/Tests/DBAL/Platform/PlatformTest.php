@@ -545,46 +545,73 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
 
     public function testDropSequenceSQLQuery()
     {
-        $this->assertEquals('DROP SEQUENCE foo', $this->platform->getDropSequenceSQLQuery('foo'));
+        $sequence = new Schema\Sequence('foo');
+
+        $this->assertEquals('DROP SEQUENCE foo', $this->platform->getDropSequenceSQLQuery($sequence));
     }
 
     public function testDropViewSQLQuery()
     {
-        $this->assertEquals('DROP VIEW foo', $this->platform->getDropViewSQLQuery('foo'));
+        $view = new Schema\View('foo');
+
+        $this->assertEquals('DROP VIEW foo', $this->platform->getDropViewSQLQuery($view));
     }
 
     public function testDropTableSQLQuery()
     {
-        $this->assertEquals('DROP TABLE foo', $this->platform->getDropTableSQLQuery('foo'));
+        $table = new Schema\Table('foo');
+
+        $this->assertEquals('DROP TABLE foo', $this->platform->getDropTableSQLQuery($table));
     }
 
     public function testDropConstraintSQLQuery()
     {
+        $constraint = new Schema\PrimaryKey('foo');
+
         $this->assertEquals(
-            'ALTER TABLE foo DROP CONSTRAINT bar',
-            $this->platform->getDropConstraintSQLQuery('bar', 'foo')
+            'ALTER TABLE bar DROP CONSTRAINT foo',
+            $this->platform->getDropConstraintSQLQuery($constraint, 'bar')
         );
     }
 
     public function testDropPrimaryKeySQLQuery()
     {
+        $primaryKey = new Schema\PrimaryKey('foo');
+
         $this->assertEquals(
-            'ALTER TABLE foo DROP CONSTRAINT bar',
-            $this->platform->getDropPrimaryKeySQLQuery('bar', 'foo')
+            'ALTER TABLE bar DROP CONSTRAINT foo',
+            $this->platform->getDropPrimaryKeySQLQuery($primaryKey, 'bar')
         );
     }
 
     public function testDropForeignKeySQLQuery()
     {
+        $foreignKey = new Schema\ForeignKey('foo', array(), 'bar', array());
+
         $this->assertEquals(
-            'ALTER TABLE foo DROP CONSTRAINT bar',
-            $this->platform->getDropForeignKeySQLQuery('bar', 'foo')
+            'ALTER TABLE bar DROP CONSTRAINT foo',
+            $this->platform->getDropForeignKeySQLQuery($foreignKey, 'bar')
         );
     }
 
-    public function testDropIndexSQLQuery()
+    public function testDropIndexSQLQueryWithUniqueIndex()
     {
-        $this->assertEquals('DROP INDEX foo', $this->platform->getDropIndexSQLQuery('foo', 'bar'));
+        $index = new Schema\Index('foo', array(), true);
+
+        $this->assertEquals(
+            'ALTER TABLE bar DROP CONSTRAINT foo',
+            $this->platform->getDropIndexSQLQuery($index, 'bar')
+        );
+    }
+
+    public function testDropIndexSQLQueryWithNonUniqueIndex()
+    {
+        $index = new Schema\Index('foo');
+
+        $this->assertEquals(
+            'DROP INDEX foo',
+            $this->platform->getDropIndexSQLQuery($index, 'bar')
+        );
     }
 
     /**
