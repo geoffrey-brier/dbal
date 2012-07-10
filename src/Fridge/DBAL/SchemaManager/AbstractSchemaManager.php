@@ -260,23 +260,7 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
     public function createSchema(Schema\Schema $schema)
     {
         $this->createDatabase($schema->getName());
-
-        foreach ($schema->getTables() as $table) {
-            $queries = $this->getConnection()->getPlatform()->getCreateTableSQLQueries(
-                $table,
-                array('foreign_key' => false)
-            );
-
-            foreach ($queries as $query) {
-                $this->getConnection()->executeUpdate($query);
-            }
-        }
-
-        foreach ($schema->getTables() as $table) {
-            foreach ($table->getForeignKeys() as $foreignKey) {
-                $this->createForeignKey($foreignKey, $table->getName());
-            }
-        }
+        $this->createTables($schema->getTables());
 
         foreach ($schema->getSequences() as $sequence) {
             $this->createSequence($sequence);
@@ -308,19 +292,40 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
     /**
      * {@inheritdoc}
      */
+    public function createTables(array $tables)
+    {
+        $sqlCollector = new SQLCollector\CreateTableSQLCollector($this->getConnection()->getPlatform());
+
+        foreach ($tables as $table) {
+            $sqlCollector->collect($table);
+        }
+
+        foreach ($sqlCollector->getQueries() as $query) {
+            $this->getConnection()->executeUpdate($query);
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function createTable(Schema\Table $table)
     {
-        $queries = $this->getConnection()->getPlatform()->getCreateTableSQLQueries(
-            $table,
-            array('foreign_key' => false)
-        );
+        $queries = $this->getConnection()->getPlatform()->getCreateTableSQLQueries($table);
 
         foreach ($queries as $query) {
             $this->getConnection()->executeUpdate($query);
         }
+    }
 
-        foreach ($table->getForeignKeys() as $foreignKey) {
-            $this->createForeignKey($foreignKey, $table->getName());
+    /**
+     * {@inheritdoc}
+     */
+    public function createColumn(Schema\Column $column, $table)
+    {
+        $queries = $this->getConnection()->getPlatform()->getCreateColumnSQLQueries($column, $table);
+
+        foreach ($queries as $query) {
+            $this->getConnection()->executeUpdate($query);
         }
     }
 
@@ -357,6 +362,57 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
     public function createIndex(Schema\Index $index, $table)
     {
         $query = $this->getConnection()->getPlatform()->getCreateIndexSQLQuery($index, $table);
+        $this->getConnection()->executeUpdate($query);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function alterSchema(Schema\Diff\SchemaDiff $schemaDiff)
+    {
+        $sqlCollector = new SQLCollector\AlterSchemaSQLCollector($this->getConnection()->getPlatform());
+        $sqlCollector->collect($schemaDiff);
+
+        foreach ($sqlCollector->getQueries() as $query) {
+            $this->getConnection()->executeUpdate($query);
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function alterTables(array $schemaDiffs)
+    {
+        $sqlCollector = new SQLCollector\AlterTableSQLCollector($this->getConnection()->getPlatform());
+
+        foreach ($schemaDiffs as $schemaDiff) {
+            $sqlCollector->collect($schemaDiff);
+        }
+
+        foreach ($sqlCollector->getQueries() as $query) {
+            $this->getConnection()->executeUpdate($query);
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function alterTable(Schema\Diff\TableDiff $tableDiff)
+    {
+        $sqlCollector = new SQLCollector\AlterTableSQLCollector($this->getConnection()->getPlatform());
+        $sqlCollector->collect($tableDiff);
+
+        foreach ($sqlCollector->getQueries() as $query) {
+            $this->getConnection()->executeUpdate($query);
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function alterColumn(Schema\Diff\ColumnDiff $columnDiff, $table)
+    {
+        $query = $this->getConnection()->getPlatform()->getRenameColumnSQLQuery($columnDiff, $table);
         $this->getConnection()->executeUpdate($query);
     }
 
@@ -404,9 +460,34 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
     /**
      * {@inheritdoc}
      */
+    public function dropTables(array $tables)
+    {
+        $sqlCollector = new SQLCollector\DropTableSQLCollector($this->getConnection()->getPlatform());
+
+        foreach ($tables as $table) {
+            $sqlCollector->collect($table);
+        }
+
+        foreach ($sqlCollector->getQueries() as $query) {
+            $this->getConnection()->executeUpdate($query);
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function dropTable(Schema\Table $table)
     {
         $query = $this->getConnection()->getPlatform()->getDropTableSQLQuery($table);
+        $this->getConnection()->executeUpdate($query);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function dropColumn(Schema\Column $column, $table)
+    {
+        $query = $this->getConnection()->getPlatform()->getDropColumnSQLQuery($column, $table);
         $this->getConnection()->executeUpdate($query);
     }
 
@@ -485,10 +566,28 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
     /**
      * {@inheritdoc}
      */
+    public function dropAndCreateTables(array $tables)
+    {
+        $this->tryMethod('dropTables', array($tables));
+        $this->createTables($tables);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function dropAndCreateTable(Schema\Table $table)
     {
         $this->tryMethod('dropTable', array($table));
         $this->createTable($table);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function dropAndCreateColumn(Schema\Column $column, $table)
+    {
+        $this->tryMethod('dropColumn', array($column, $table));
+        $this->createColumn($column, $table);
     }
 
     /**

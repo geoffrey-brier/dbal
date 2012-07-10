@@ -191,16 +191,28 @@ class MySQLPlatformTest extends \PHPUnit_Framework_TestCase
 
     public function testCreateTableSQLQueries()
     {
-        $table = new Schema\Table(
-            'foo',
-            array(
-                new Schema\Column('foo', Type::getType(Type::INTEGER)),
-            )
-        );
+        $table = new Schema\Table('foo', array(new Schema\Column('foo', Type::getType(Type::INTEGER))));
 
         $sqls = $this->platform->getCreateTableSQLQueries($table);
 
         $this->assertEquals('ENGINE = InnoDB', substr($sqls[0], -15));
+    }
+
+    public function testRenameDatabaseSQLQuery()
+    {
+        $schemaDiff = new Schema\Diff\SchemaDiff('foo', 'bar');
+
+        $this->assertEquals('RENAME DATABASE foo TO bar', $this->platform->getRenameDatabaseSQLQuery($schemaDiff));
+    }
+
+    public function testRenameColumnSQLQueries()
+    {
+        $columnDiff = new Schema\Diff\ColumnDiff('foo', 'bar', new Schema\Column('bar', Type::getType(Type::INTEGER)));
+
+        $this->assertEquals(
+            array('ALTER TABLE foo CHANGE COLUMN foo bar INT'),
+            $this->platform->getRenameColumnSQLQueries($columnDiff, 'foo')
+        );
     }
 
     /**
@@ -229,7 +241,7 @@ class MySQLPlatformTest extends \PHPUnit_Framework_TestCase
         $index = new Schema\Index('foo', array(), true);
 
         $this->assertEquals(
-            'DROP INDEX foo ON bar',
+            'ALTER TABLE bar DROP INDEX foo',
             $this->platform->getDropIndexSQLQuery($index, 'bar')
         );
     }

@@ -105,11 +105,18 @@ interface FixtureInterface
     function getTableNames();
 
     /**
+     * Gets the tables.
+     *
+     * @return array The tables.
+     */
+    function getTables();
+
+    /**
      * Gets a table.
      *
      * @param string $name The table name.
      *
-     * @return array The table.
+     * @return \Fridge\DBAL\Schema\Table The table.
      */
     function getTable($name);
 

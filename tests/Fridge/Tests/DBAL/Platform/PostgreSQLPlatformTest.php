@@ -137,4 +137,34 @@ class PostgreSQLPlatformTest extends \PHPUnit_Framework_TestCase
             $this->platform->getCreateTableSQLQueries($table, array('index' => false))
         );
     }
+
+    public function testCreateColumnSQLQueries()
+    {
+        $column = new Schema\Column('foo', Type::getType(Type::INTEGER), array('comment' => 'foo'));
+
+        $this->assertEquals(
+            array(
+                'ALTER TABLE foo ADD COLUMN foo INT',
+                'COMMENT ON COLUMN foo.foo IS \'foo\'',
+            ),
+            $this->platform->getCreateColumnSQLQueries($column, 'foo')
+        );
+    }
+
+    public function testRenameColumnSQLQueries()
+    {
+        $columnDiff = new Schema\Diff\ColumnDiff(
+            'foo',
+            'bar',
+            new Schema\Column('bar', Type::getType(Type::INTEGER), array('comment' => 'foo'))
+        );
+
+        $this->assertEquals(
+            array(
+                'ALTER TABLE foo ALTER COLUMN foo bar INT',
+                'COMMENT ON COLUMN foo.bar IS \'foo\''
+            ),
+            $this->platform->getRenameColumnSQLQueries($columnDiff, 'foo')
+        );
+    }
 }

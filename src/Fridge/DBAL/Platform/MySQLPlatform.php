@@ -253,6 +253,25 @@ class MySQLPlatform extends AbstractPlatform
     /**
      * {@inheritdoc}
      */
+    public function getRenameDatabaseSQLQuery(Schema\Diff\SchemaDiff $schemaDiff)
+    {
+        return 'RENAME DATABASE '.$schemaDiff->getOldName().' TO '.$schemaDiff->getNewName();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getRenameColumnSQLQueries(Schema\Diff\ColumnDiff $columnDiff, $table)
+    {
+        return array(
+            'ALTER TABLE '.$table.' CHANGE COLUMN '.$columnDiff->getOldName().' '.
+            $this->getColumnSQLDeclaration($columnDiff->getColumn())
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getDropPrimaryKeySQLQuery(Schema\PrimaryKey $primaryKey, $table)
     {
         return 'ALTER TABLE '.$table.' DROP PRIMARY KEY';
@@ -271,7 +290,7 @@ class MySQLPlatform extends AbstractPlatform
      */
     public function getDropIndexSQLQuery(Schema\Index $index, $table)
     {
-        return 'DROP INDEX '.$index->getName().' ON '.$table;
+        return 'ALTER TABLE '.$table.' DROP INDEX '.$index->getName();
     }
 
     /**

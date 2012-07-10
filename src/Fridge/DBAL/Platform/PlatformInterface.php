@@ -461,6 +461,16 @@ interface PlatformInterface
     function getCreateTableSQLQueries(Schema\Table $table, array $flags = array());
 
     /**
+     * Gets the create table column SQL queries.
+     *
+     * @param \Fridge\DBAL\Schema\Column $column The column.
+     * @param string                     $table  The table name.
+     *
+     * @return array The create table column SQL queries.
+     */
+    function getCreateColumnSQLQueries(Schema\Column $column, $table);
+
+    /**
      * Gets the create constraint SQL query.
      *
      * @param \Fridge\DBAL\Schema\ConstraintInterface $constraint The constraint.
@@ -501,24 +511,32 @@ interface PlatformInterface
     function getCreateIndexSQLQuery(Schema\Index $index, $table);
 
     /**
-     * Gets the create column comments SQL queries.
+     * Gets the rename database SQL query.
      *
-     * @param array  $columns The table columns.
-     * @param string $table   The table name.
+     * @param \Fridge\DBAL\Schema\Diff\SchemaDiff $schemaDiff The schema diff.
      *
-     * @return array The column comments SQL queries
+     * @return string The rename database SQL query.
      */
-    function getCreateColumnCommentsSQLQueries(array $columns, $table);
+    function getRenameDatabaseSQLQuery(Schema\Diff\SchemaDiff $schemaDiff);
 
     /**
-     * Gets the create column comment SQL query.
+     * Gets the rename table SQL query.
      *
-     * @param \Fridge\DBAL\Schema\Column $column The column.
-     * @param string                     $table  The table name.
+     * @param \Fridge\DBAL\Schema\Diff\TableDiff $tableDiff The table diff.
      *
-     * @return string The column comment SQL query.
+     * @return string The rename table SQL quuery.
      */
-    function getCreateColumnCommentSQLQuery(Schema\Column $column, $table);
+    function getRenameTableSQLQuery(Schema\Diff\TableDiff $tableDiff);
+
+    /**
+     * Gets the rename table column SQL query.
+     *
+     * @param \Fridge\DBAL\Schema\Diff\ColumnDiff $columnDiff The column diff.
+     * @param string                              $table      The table name.
+     *
+     * @return string The rename table column SQL query.
+     */
+    function getRenameColumnSQLQueries(Schema\Diff\ColumnDiff $columnDiff, $table);
 
     /**
      * Gets the drop database SQL query.
@@ -555,6 +573,14 @@ interface PlatformInterface
      * @return string The drop table SQL query.
      */
     function getDropTableSQLQuery(Schema\Table $table);
+
+    /**
+     * Gets the drop table column SQL query.
+     *
+     * @param \Fridge\DBAL\Schema\Column $column The column.
+     * @param string                     $table  The table name.
+     */
+    function getDropColumnSQLQuery(Schema\Column $column, $table);
 
     /**
      * Gets the drop constraint SQL query.

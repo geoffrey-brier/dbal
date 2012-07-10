@@ -167,11 +167,26 @@ interface SchemaManagerInterface
     function createView(Schema\View $view);
 
     /**
+     * Creates tables.
+     *
+     * @param array $tables The tables.
+     */
+    function createTables(array $tables);
+
+    /**
      * Creates a table.
      *
      * @param \Fridge\DBAL\Schema\Table $table The table.
      */
     function createTable(Schema\Table $table);
+
+    /**
+     * Creates a table column.
+     *
+     * @param \Fridge\DBAL\Schema\Column $column The column.
+     * @param string                     $table  The table name.
+     */
+    function createColumn(Schema\Column $column, $table);
 
     /**
      * Creates a constraint.
@@ -206,6 +221,35 @@ interface SchemaManagerInterface
     function createIndex(Schema\Index $index, $table);
 
     /**
+     * Alters a schema.
+     *
+     * @param \Fridge\DBAL\Schema\Diff\SchemaDiff $schemaDiff The schema diff.
+     */
+    function alterSchema(Schema\Diff\SchemaDiff $schemaDiff);
+
+    /**
+     * Alter tables.
+     *
+     * @param array $schemaDiffs The table diffs.
+     */
+    function alterTables(array $tableDiffs);
+
+    /**
+     * Alters a table.
+     *
+     * @param \Fridge\DBAL\Schema\Diff\TableDiff $tableDiff The table diff.
+     */
+    function alterTable(Schema\Diff\TableDiff $tableDiff);
+
+    /**
+     * Alters a table column.
+     *
+     * @param \Fridge\DBAL\Schema\Diff\ColumnDiff $columnDiff The column diff.
+     * @param string                              $table      The table name.
+     */
+    function alterColumn(Schema\Diff\ColumnDiff $columnDiff, $table);
+
+    /**
      * Drops a database.
      *
      * @param string $database The database name.
@@ -234,11 +278,26 @@ interface SchemaManagerInterface
     function dropView(Schema\View $view);
 
     /**
+     * Drops tables.
+     *
+     * @param array $tables The tables.
+     */
+    function dropTables(array $tables);
+
+    /**
      * Drops a table.
      *
      * @param \Fridge\DBAL\Schema\Table $table The table.
      */
     function dropTable(Schema\Table $table);
+
+    /**
+     * Drops a table column.
+     *
+     * @param \Fridge\DBAL\Schema\Column $column The column.
+     * @param string                     $table  The table name.
+     */
+    function dropColumn(Schema\Column $column, $table);
 
     /**
      * Drops a constraint.
@@ -301,11 +360,26 @@ interface SchemaManagerInterface
     function dropAndCreateView(Schema\View $view);
 
     /**
+     * Drops & creates tables.
+     *
+     * @param array $tables The tables.
+     */
+    function dropAndCreateTables(array $tables);
+
+    /**
      * Drops & creates a table.
      *
      * @param \Fridge\DBAL\Schema\Table $table The table.
      */
     function dropAndCreateTable(Schema\Table $table);
+
+    /**
+     * Drops & creates a table column.
+     *
+     * @param \Fridge\DBAL\Schema\Column $column The column.
+     * @param string                     $table  The table name.
+     */
+    function dropAndCreateColumn(Schema\Column $column, $table);
 
     /**
      * Drops & creates a constraint.

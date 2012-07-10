@@ -491,6 +491,23 @@ abstract class AbstractPlatform implements PlatformInterface
     /**
      * {@inheritdoc}
      */
+    public function getCreateColumnSQLQueries(Schema\Column $column, $table)
+    {
+        $queries = array();
+        $queries[] = 'ALTER TABLE '.$table.' ADD COLUMN '.$this->getColumnSQLDeclaration($column);
+
+        if (!$this->supportInlineTableColumnComment()
+            && ($this->hasMandatoryType($column->getType()->getName())
+            || ($column->getComment() !== null))) {
+            $queries[] = $this->getCreateColumnCommentSQLQuery($column, $table);
+        }
+
+        return $queries;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getCreateConstraintSQLQuery(Schema\ConstraintInterface $constraint, $table)
     {
         if ($constraint instanceof Schema\PrimaryKey) {
@@ -537,25 +554,35 @@ abstract class AbstractPlatform implements PlatformInterface
     /**
      * {@inheritdoc}
      */
-    public function getCreateColumnCommentsSQLQueries(array $columns, $table)
+    public function getRenameDatabaseSQLQuery(Schema\Diff\SchemaDiff $schemaDiff)
     {
-        $queries = array();
-
-        foreach ($columns as $column) {
-            if ($this->hasMandatoryType($column->getType()->getName()) || ($column->getComment() !== null)) {
-                $queries[] = $this->getCreateColumnCommentSQLQuery($column, $table);
-            }
-        }
-
-        return $queries;
+        return 'ALTER DATABASE '.$schemaDiff->getOldName().' RENAME TO '.$schemaDiff->getNewName();
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getCreateColumnCommentSQLQuery(Schema\Column $column, $table)
+    public function getRenameTableSQLQuery(Schema\Diff\TableDiff $tableDiff)
     {
-        return 'COMMENT ON COLUMN '.$table.'.'.$column->getName().' IS '.$this->getColumnCommentSQLDeclaration($column);
+        return 'ALTER TABLE '.$tableDiff->getOldName().' RENAME TO '.$tableDiff->getNewName();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getRenameColumnSQLQueries(Schema\Diff\ColumnDiff $columnDiff, $table)
+    {
+        $queries = array();
+        $queries[] = 'ALTER TABLE '.$table.' ALTER COLUMN '.$columnDiff->getOldName().' '.
+                     $this->getColumnSQLDeclaration($columnDiff->getColumn());
+
+        if (!$this->supportInlineTableColumnComment()
+            && ($this->hasMandatoryType($columnDiff->getColumn()->getType()->getName())
+            || ($columnDiff->getColumn()->getComment() !== null))) {
+            $queries[] = $this->getCreateColumnCommentSQLQuery($columnDiff->getColumn(), $table);
+        }
+
+        return $queries;
     }
 
     /**
@@ -592,6 +619,14 @@ abstract class AbstractPlatform implements PlatformInterface
     public function getDropTableSQLQuery(Schema\Table $table)
     {
         return 'DROP TABLE '.$table->getName();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getDropColumnSQLQuery(Schema\Column $column, $table)
+    {
+        return 'ALTER TABLE '.$table.' DROP COLUMN '.$column->getName();
     }
 
     /**
@@ -841,6 +876,40 @@ abstract class AbstractPlatform implements PlatformInterface
         }
 
         return 'CONSTRAINT '.$index->getName().' UNIQUE ('.implode(', ', $index->getColumnNames()).')';
+    }
+
+    /**
+     * Gets the create column comments SQL queries.
+     *
+     * @param array  $columns The columns.
+     * @param string $table   The table name.
+     *
+     * @return array The create column comments SQL queries.
+     */
+    protected function getCreateColumnCommentsSQLQueries(array $columns, $table)
+    {
+        $queries = array();
+
+        foreach ($columns as $column) {
+            if ($this->hasMandatoryType($column->getType()->getName()) || ($column->getComment() !== null)) {
+                $queries[] = $this->getCreateColumnCommentSQLQuery($column, $table);
+            }
+        }
+
+        return $queries;
+    }
+
+    /**
+     * Gets the create column comment SQL query.
+     *
+     * @param \Fridge\DBAL\Schema\Column $column The column.
+     * @param string                     $table  The table name.
+     *
+     * @return string The create column comment SQL query.
+     */
+    protected function getCreateColumnCommentSQLQuery(Schema\Column $column, $table)
+    {
+        return 'COMMENT ON COLUMN '.$table.'.'.$column->getName().' IS '.$this->getColumnCommentSQLDeclaration($column);
     }
 
     /**

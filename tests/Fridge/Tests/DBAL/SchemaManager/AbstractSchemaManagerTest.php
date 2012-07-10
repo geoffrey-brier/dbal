@@ -534,6 +534,63 @@ abstract class AbstractSchemaManagerTest extends \PHPUnit_Framework_TestCase
         }
     }
 
+    public function testDropTables()
+    {
+        $this->schemaManager->dropTables(self::$fixture->getTables());
+
+        $this->assertEmpty($this->schemaManager->getTables());
+    }
+
+    public function testCreateTables()
+    {
+        $this->schemaManager->createTables(self::$fixture->getTables());
+
+        $this->assertEquals(self::$fixture->getTables(), $this->schemaManager->getTables());
+    }
+
+    public function testDropAndCreateTables()
+    {
+        $this->schemaManager->dropAndCreateTables(self::$fixture->getTables());
+
+        $this->assertEquals(self::$fixture->getTables(), $this->schemaManager->getTables());
+    }
+
+    public function testDropColumn()
+    {
+        $table = 'tcolumns';
+        $column = 'cinteger';
+
+        $this->schemaManager->dropColumn(self::$fixture->getTable($table)->getColumn($column), $table);
+
+        $this->assertFalse($this->schemaManager->getTable($table)->hasColumn($column));
+    }
+
+    public function testCreateColumn()
+    {
+        $table = 'tcolumns';
+        $column = 'cinteger';
+
+        $this->schemaManager->createColumn(self::$fixture->getTable($table)->getColumn($column), $table);
+
+        $this->assertEquals(
+            self::$fixture->getTable($table)->getColumn($column),
+            $this->schemaManager->getTable($table)->getColumn($column)
+        );
+    }
+
+    public function testDropAndCreateColumn()
+    {
+        $table = 'tcolumns';
+        $column = 'cinteger';
+
+        $this->schemaManager->dropAndCreateColumn(self::$fixture->getTable($table)->getColumn($column), $table);
+
+        $this->assertEquals(
+            self::$fixture->getTable($table)->getColumn($column),
+            $this->schemaManager->getTable($table)->getColumn($column)
+        );
+    }
+
     public function testCreateDatabase()
     {
         self::$fixture->drop();
