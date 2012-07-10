@@ -326,7 +326,7 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
     /**
      * {@inheritdoc}
      */
-    public function dropSequence($sequence)
+    public function dropSequence(Schema\Sequence $sequence)
     {
         $query = $this->getConnection()->getPlatform()->getDropSequenceSQLQuery($sequence);
         $this->getConnection()->executeUpdate($query);
@@ -335,7 +335,7 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
     /**
      * {@inheritdoc}
      */
-    public function dropView($view)
+    public function dropView(Schema\View $view)
     {
         $query = $this->getConnection()->getPlatform()->getDropViewSQLQuery($view);
         $this->getConnection()->executeUpdate($query);
@@ -344,7 +344,7 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
     /**
      * {@inheritdoc}
      */
-    public function dropTable($table)
+    public function dropTable(Schema\Table $table)
     {
         $query = $this->getConnection()->getPlatform()->getDropTableSQLQuery($table);
         $this->getConnection()->executeUpdate($query);
@@ -353,7 +353,7 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
     /**
      * {@inheritdoc}
      */
-    public function dropConstraint($constraint, $table)
+    public function dropConstraint(Schema\ConstraintInterface $constraint, $table)
     {
         $query = $this->getConnection()->getPlatform()->getDropConstraintSQLQuery($constraint, $table);
         $this->getConnection()->executeUpdate($query);
@@ -362,7 +362,7 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
     /**
      * {@inheritdoc}
      */
-    public function dropPrimaryKey($primaryKey, $table)
+    public function dropPrimaryKey(Schema\PrimaryKey $primaryKey, $table)
     {
         $query = $this->getConnection()->getPlatform()->getDropPrimaryKeySQLQuery($primaryKey, $table);
         $this->getConnection()->executeUpdate($query);
@@ -371,7 +371,7 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
     /**
      * {@inheritdoc}
      */
-    public function dropForeignKey($foreignKey, $table)
+    public function dropForeignKey(Schema\ForeignKey $foreignKey, $table)
     {
         $query = $this->getConnection()->getPlatform()->getDropForeignKeySQLQuery($foreignKey, $table);
         $this->getConnection()->executeUpdate($query);
@@ -380,7 +380,7 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
     /**
      * {@inheritdoc}
      */
-    public function dropIndex($index, $table)
+    public function dropIndex(Schema\Index $index, $table)
     {
         $query = $this->getConnection()->getPlatform()->getDropIndexSQLQuery($index, $table);
         $this->getConnection()->executeUpdate($query);
@@ -400,7 +400,7 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
      */
     public function dropAndCreateSequence(Schema\Sequence $sequence)
     {
-        $this->tryMethod('dropSequence', array($sequence->getName()));
+        $this->tryMethod('dropSequence', array($sequence));
         $this->createSequence($sequence);
     }
 
@@ -409,7 +409,7 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
      */
     public function dropAndCreateView(Schema\View $view)
     {
-        $this->tryMethod('dropView', array($view->getName()));
+        $this->tryMethod('dropView', array($view));
         $this->createView($view);
     }
 
@@ -418,7 +418,7 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
      */
     public function dropAndCreateTable(Schema\Table $table)
     {
-        $this->tryMethod('dropTable', array($table->getName()));
+        $this->tryMethod('dropTable', array($table));
         $this->createTable($table);
     }
 
@@ -427,7 +427,7 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
      */
     public function dropAndCreateConstraint(Schema\ConstraintInterface $constraint, $table)
     {
-        $this->tryMethod('dropConstraint', array($constraint->getName(), $table));
+        $this->tryMethod('dropConstraint', array($constraint, $table));
         $this->createConstraint($constraint, $table);
     }
 
@@ -436,7 +436,7 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
      */
     public function dropAndCreatePrimaryKey(Schema\PrimaryKey $primaryKey, $table)
     {
-        $this->tryMethod('dropPrimaryKey', array($primaryKey->getName(), $table));
+        $this->tryMethod('dropPrimaryKey', array($primaryKey, $table));
         $this->createPrimaryKey($primaryKey, $table);
     }
 
@@ -445,7 +445,7 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
      */
     public function dropAndCreateForeignKey(Schema\ForeignKey $foreignKey, $table)
     {
-        $this->tryMethod('dropForeignKey', array($foreignKey->getName(), $table));
+        $this->tryMethod('dropForeignKey', array($foreignKey, $table));
         $this->createForeignKey($foreignKey, $table);
     }
 
@@ -454,7 +454,7 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
      */
     public function dropAndCreateIndex(Schema\Index $index, $table)
     {
-        $this->tryMethod('dropIndex', array($index->getName(), $table));
+        $this->tryMethod('dropIndex', array($index, $table));
         $this->createIndex($index, $table);
     }
 
