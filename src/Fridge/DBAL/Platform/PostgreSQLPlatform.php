@@ -224,11 +224,7 @@ class PostgreSQLPlatform extends AbstractPlatform
      */
     public function getCreateTableSQLQueries(Table $table)
     {
-        $queries = array();
-
-        if (!$this->supportInlineTableColumnComment()) {
-            $queries = $this->getCreateColumnCommentsSQLQueries($table->getColumns(), $table->getName());
-        }
+        $queries = $this->getCreateColumnCommentsSQLQueries($table->getColumns(), $table->getName());
 
         foreach ($this->getCreateTableIndexes($table) as $index) {
             $queries[] = $this->getCreateIndexSQLQuery($index, $table->getName());
