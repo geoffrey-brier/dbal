@@ -1,0 +1,67 @@
+<?php
+
+/*
+ * This file is part of the Fridge DBAL package.
+ *
+ * (c) Eric GELOEN <geloen.eric@gmail.com>
+ *
+ * For the full copyright and license information, please read the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace Fridge\DBAL\Event\Listener;
+
+use Fridge\DBAL\Event,
+    Symfony\Component\EventDispatcher\EventSubscriberInterface;
+
+/**
+ * Sets the character sets of a MySQL connection after a database connection.
+ * This class subscribes to the post connect event.
+ *
+ * @author GeLo <geloen.eric@gmail.com>
+ */
+class MySQLSessionInit implements EventSubscriberInterface
+{
+    /** @var string */
+    protected $charset;
+
+    /**
+     * Creates a MySQL Session initializer.
+     *
+     * @param string $charset The MySQL charset.
+     */
+    public function __construct($charset = 'utf8')
+    {
+        $this->charset = $charset;
+    }
+
+    /**
+     * Gets the MySQL charset.
+     *
+     * @return string The MySQL charset.
+     */
+    public function getCharset()
+    {
+        return $this->charset;
+    }
+
+    /**
+     * Method used when the post connect event is triggered.
+     *
+     * @param Fridge\DBAL\Event\PostConnectEvent $event The post connect event.
+     */
+    public function postConnect(Event\PostConnectEvent $event)
+    {
+        $event->getConnection()->setCharset($this->getCharset());
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    static public function getSubscribedEvents()
+    {
+        return array(
+            Event\Events::POST_CONNECT => 'postConnect',
+        );
+    }
+}
