@@ -196,6 +196,23 @@ abstract class AbstractFixture implements FixtureInterface
     /**
      * {@inheritdoc}
      */
+    public function getTables()
+    {
+        $tables = array();
+
+        $tableNames = $this->getTableNames();
+        sort($tableNames);
+
+        foreach ($tableNames as $tableName) {
+            $tables[] = $this->getTable($tableName);
+        }
+
+        return $tables;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getTable($name)
     {
         return new Schema\Table(

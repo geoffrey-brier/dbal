@@ -132,6 +132,13 @@ class TableTest extends \PHPUnit_Framework_TestCase
         $this->assertEmpty($this->table->getChecks());
     }
 
+    public function testInitialStateWithPrimaryKey()
+    {
+        $this->table = new Table('foo', array($this->columnMock), $this->primaryKeyMock);
+
+        $this->assertSame($this->primaryKeyMock, $this->table->getPrimaryKey());
+    }
+
     public function testSchema()
     {
         $this->schemaMock
@@ -279,7 +286,41 @@ class TableTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(array('foo'), $primaryKey->getColumnNames());
 
         $indexes = array_values($this->table->getIndexes());
+
+        $this->assertArrayHasKey(0, $indexes);
+        $this->assertSame('bar', $indexes[0]->getName());
         $this->assertSame(array('foo'), $indexes[0]->getColumnNames());
+    }
+
+    /**
+     * @expectedException Fridge\DBAL\Exception\SchemaException
+     * @expectedExceptionMessage The table "foo" has already a primary key.
+     */
+    public function testCreatePrimaryKeyWithPrimaryKey()
+    {
+        $this->table->addColumn($this->columnMock);
+        $this->table->createPrimaryKey(array('foo'), 'bar');
+        $this->table->createPrimaryKey(array('foo'), 'bar');
+    }
+
+    public function testDropPrimaryKey()
+    {
+        $this->table->addColumn($this->columnMock);
+        $this->table->createPrimaryKey(array('foo'), 'bar');
+
+        $this->table->dropPrimaryKey();
+
+        $this->assertFalse($this->table->hasPrimaryKey());
+        $this->assertFalse($this->table->hasIndexes());
+    }
+
+    /**
+     * @expectedException Fridge\DBAL\Exception\SchemaException
+     * @expectedExceptionMessage The table "foo" has no primary key.
+     */
+    public function testDropPrimaryKeyWithoutPrimaryKey()
+    {
+        $this->table->dropPrimaryKey();
     }
 
     /**
@@ -564,6 +605,23 @@ class TableTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($indexMock, $this->table->getIndex('bar'));
     }
 
+    public function testGetFilteredIndexesWithoutPrimaryKey()
+    {
+        $this->table->addColumn($this->columnMock);
+        $this->table->setIndexes(array($this->indexMock));
+
+        $this->assertSame(array('foo' => $this->indexMock), $this->table->getFilteredIndexes());
+    }
+
+    public function testGetFilteredTableIndexesWithPrimaryKey()
+    {
+        $this->table->addColumn($this->columnMock);
+        $this->table->setPrimaryKey($this->primaryKeyMock);
+        $this->table->setIndexes(array($this->indexMock));
+
+        $this->assertSame(array('foo' => $this->indexMock), $this->table->getFilteredIndexes());
+    }
+
     /**
      * @expectedException Fridge\DBAL\Exception\SchemaException
      * @expectedExceptionMessage The index "foo" of the table "foo" does not exist.
@@ -790,7 +848,7 @@ class TableTest extends \PHPUnit_Framework_TestCase
 
         $primaryKey = $this->table->createPrimaryKey(array('foo'), 'pk');
         $foreignKey = $this->table->createForeignKey(array('bar'), 'bar', array('bar'), 'fk');
-        $index = $this->table->createIndex(array('bar'), true, 'idx_fk');
+        $index = $this->table->createIndex(array('bar'), true, 'idx');
         $check = $this->table->createCheck('foo', 'ck');
 
         $clone = clone $this->table;

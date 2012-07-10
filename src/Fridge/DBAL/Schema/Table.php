@@ -61,7 +61,11 @@ class Table extends AbstractAsset
         parent::__construct($name);
 
         $this->setColumns($columns);
-        $this->setPrimaryKey($primaryKey);
+
+        if ($primaryKey !== null) {
+            $this->setPrimaryKey($primaryKey);
+        }
+
         $this->setForeignKeys($foreignKeys);
         $this->setIndexes($indexes);
         $this->setChecks($checks);
@@ -245,10 +249,14 @@ class Table extends AbstractAsset
      */
     public function createPrimaryKey(array $columnNames, $name = null)
     {
+        if ($this->hasPrimaryKey()) {
+            throw SchemaException::tablePrimaryKeyAlreadyExists($this->getName());
+        }
+
         $primaryKey = new PrimaryKey($name, $columnNames);
         $this->setPrimaryKey($primaryKey);
 
-        $this->createIndex($columnNames, true);
+        $this->createIndex($columnNames, true, $primaryKey->getName());
 
         return $primaryKey;
     }
@@ -278,15 +286,31 @@ class Table extends AbstractAsset
      *
      * @param \Fridge\DBAL\Schema\PrimaryKey $primaryKey The table primary key.
      */
-    public function setPrimaryKey(PrimaryKey $primaryKey = null)
+    public function setPrimaryKey(PrimaryKey $primaryKey)
     {
-        if ($primaryKey !== null) {
-            foreach ($primaryKey->getColumnNames() as $columnName) {
-                $this->getColumn($columnName)->setNotNull(true);
-            }
+        foreach ($primaryKey->getColumnNames() as $columnName) {
+            $this->getColumn($columnName)->setNotNull(true);
         }
 
         $this->primaryKey = $primaryKey;
+    }
+
+    /**
+     * Drops the table primary key.
+     */
+    public function dropPrimaryKey()
+    {
+        if (!$this->hasPrimaryKey()) {
+            throw SchemaException::tablePrimaryKeyDoesNotExist($this->getName());
+        }
+
+        foreach ($this->getIndexes() as $index) {
+            if ($index->hasSameColumnNames($this->getPrimaryKey()->getColumnNames())) {
+                $this->dropIndex($index->getName());
+            }
+        }
+
+        $this->primaryKey = null;
     }
 
     /**
@@ -308,7 +332,7 @@ class Table extends AbstractAsset
         $foreignKey = new ForeignKey($name, $localColumnNames, $foreignTable, $foreignColumnNames);
         $this->addForeignKey($foreignKey);
 
-        $this->createIndex($localColumnNames);
+        $this->createIndex($localColumnNames, false, 'idx_'.$foreignKey->getName());
 
         return $foreignKey;
     }
@@ -491,6 +515,28 @@ class Table extends AbstractAsset
         foreach ($indexes as $index) {
             $this->addIndex($index);
         }
+    }
+
+    /**
+     * Gets the filtered indexes (remove primary key index if it exists).
+     *
+     * @return array The filtered indexes.
+     */
+    public function getFilteredIndexes()
+    {
+        if (!$this->hasPrimaryKey()) {
+            return $this->getIndexes();
+        }
+
+        $indexes = array();
+
+        foreach ($this->getIndexes() as $name => $index) {
+            if (!$index->hasSameColumnNames($this->getPrimaryKey()->getColumnNames())) {
+                $indexes[$name] = $index;
+            }
+        }
+
+        return $indexes;
     }
 
     /**

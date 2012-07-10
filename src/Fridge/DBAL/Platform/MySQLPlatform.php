@@ -277,6 +277,34 @@ class MySQLPlatform extends AbstractPlatform
     /**
      * {@inheritdoc}
      */
+    public function getRenameDatabaseSQLQueries(Schema\Diff\SchemaDiff $schemaDiff)
+    {
+        $queries = array($this->getCreateDatabaseSQLQuery($schemaDiff->getNewAsset()->getName()));
+
+        foreach ($schemaDiff->getNewAsset()->getTables() as $table) {
+            $queries[] = 'RENAME TABLE '.$schemaDiff->getOldAsset()->getName().'.'.$table->getName().
+                         ' TO '.$schemaDiff->getNewAsset()->getName().'.'.$table->getName();
+        }
+
+        $queries[] = $this->getDropDatabaseSQLQuery($schemaDiff->getOldAsset()->getName());
+
+        return $queries;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAlterColumnSQLQueries(Schema\Diff\ColumnDiff $columnDiff, $table)
+    {
+        return array(
+            'ALTER TABLE '.$table.' CHANGE COLUMN '.$columnDiff->getOldAsset()->getName().' '.
+            $this->getColumnSQLDeclaration($columnDiff->getNewAsset())
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getDropPrimaryKeySQLQuery(Schema\PrimaryKey $primaryKey, $table)
     {
         return 'ALTER TABLE '.$table.' DROP PRIMARY KEY';
@@ -295,7 +323,7 @@ class MySQLPlatform extends AbstractPlatform
      */
     public function getDropIndexSQLQuery(Schema\Index $index, $table)
     {
-        return 'DROP INDEX '.$index->getName().' ON '.$table;
+        return 'ALTER TABLE '.$table.' DROP INDEX '.$index->getName();
     }
 
     /**

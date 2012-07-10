@@ -238,17 +238,17 @@ class ColumnTest extends \PHPUnit_Framework_TestCase
     public function testOptionsWithValidOptions()
     {
         $options = array(
-            'name' => 'foo',
-            'type' => Type::getType(Type::BOOLEAN),
-            'length' => 100,
-            'precision' => 5,
-            'scale' => 2,
-            'unsigned' => true,
-            'fixed' => true,
-            'not_null' => true,
-            'default' => 'foo',
+            'name'           => 'foo',
+            'type'           => Type::getType(Type::BOOLEAN),
+            'length'         => 100,
+            'precision'      => 5,
+            'scale'          => 2,
+            'unsigned'       => true,
+            'fixed'          => true,
+            'not_null'       => true,
+            'default'        => 'foo',
             'auto_increment' => true,
-            'comment' => 'foo',
+            'comment'        => 'foo',
         );
 
         $this->column->setOptions($options);
@@ -278,17 +278,17 @@ class ColumnTest extends \PHPUnit_Framework_TestCase
     public function testToArray()
     {
         $options = array(
-            'name' => 'foo',
-            'type' => Type::getType(Type::BOOLEAN),
-            'length' => 100,
-            'precision' => 5,
-            'scale' => 2,
-            'unsigned' => true,
-            'fixed' => true,
-            'not_null' => true,
-            'default' => 'foo',
+            'name'           => 'foo',
+            'type'           => Type::getType(Type::BOOLEAN),
+            'length'         => 100,
+            'precision'      => 5,
+            'scale'          => 2,
+            'unsigned'       => true,
+            'fixed'          => true,
+            'not_null'       => true,
+            'default'        => 'foo',
             'auto_increment' => true,
-            'comment' => 'foo',
+            'comment'        => 'foo',
         );
 
         $expected = $options;

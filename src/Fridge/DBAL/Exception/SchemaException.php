@@ -274,6 +274,30 @@ class SchemaException extends Exception
     }
 
     /**
+     * Gets the "TABLE PRIMARY KEY ALREADY EXISTS" exception.
+     *
+     * @param string $table The table name.
+     *
+     * @return \Fridge\DBAL\Exception\SchemaException The "TABLE PRIMARY KEY ALREADY EXISTS" exception.
+     */
+    static public function tablePrimaryKeyAlreadyExists($table)
+    {
+        return new static(sprintf('The table "%s" has already a primary key.', $table));
+    }
+
+    /**
+     * Gets the "TABLE PRIMARY KEY DOES NOT EXIST" exception.
+     *
+     * @param string $table The table name.
+     *
+     * @return \Fridge\DBAL\Exception\SchemaException The "TABLE PRIMARY KEY DOES NOT EXIST" exception.
+     */
+    static public function tablePrimaryKeyDoesNotExist($table)
+    {
+        return new static(sprintf('The table "%s" has no primary key.', $table));
+    }
+
+    /**
      * Gets the "TABLE FOREIGN KEY ALREADY EXISTS" exception.
      *
      * @param string $table      The table name.

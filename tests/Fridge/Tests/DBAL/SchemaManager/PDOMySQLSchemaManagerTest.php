@@ -20,7 +20,7 @@ use Fridge\DBAL\SchemaManager\MySQLSchemaManager,
  *
  * @author GeLo <geloen.eric@gmail.com>
  */
-class PDOMySQLSchemaManagerTest extends AbstractSchemaManagerTest
+class PDOMySQLSchemaManagerTest extends AbstractMySQLSchemaManagerTest
 {
     /**
      * {@inheritdoc}
