@@ -240,11 +240,11 @@ class MySQLPlatform extends AbstractPlatform
      */
     public function getCreateTableSQLQueries(Schema\Table $table)
     {
-        $sqls = parent::getCreateTableSQLQueries($table);
+        $queries = parent::getCreateTableSQLQueries($table);
 
-        $sqls[0] .= ' ENGINE = InnoDB';
+        $queries[0] .= ' ENGINE = InnoDB';
 
-        return $sqls;
+        return $queries;
     }
 
     /**

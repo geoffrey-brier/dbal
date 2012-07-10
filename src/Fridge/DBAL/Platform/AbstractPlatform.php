@@ -536,15 +536,15 @@ abstract class AbstractPlatform implements PlatformInterface
      */
     public function getCreateColumnCommentsSQLQueries(array $columns, $table)
     {
-        $sqls = array();
+        $queries = array();
 
         foreach ($columns as $column) {
             if ($this->hasMandatoryType($column->getType()->getName()) || ($column->getComment() !== null)) {
-                $sqls[] = $this->getCreateColumnCommentSQLQuery($column, $table);
+                $queries[] = $this->getCreateColumnCommentSQLQuery($column, $table);
             }
         }
 
-        return $sqls;
+        return $queries;
     }
 
     /**
