@@ -250,22 +250,6 @@ class MySQLPlatform extends AbstractPlatform
     /**
      * {@inheritdoc}
      */
-    public function getDropConstraintSQLQuery(Schema\ConstraintInterface $contraint, $table)
-    {
-        if ($contraint instanceof Schema\PrimaryKey) {
-            return $this->getDropPrimaryKeySQLQuery($contraint, $table);
-        }
-
-        if ($contraint instanceof Schema\ForeignKey) {
-            return $this->getDropForeignKeySQLQuery($contraint, $table);
-        }
-
-        return $this->getDropIndexSQLQuery($contraint, $table);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getDropPrimaryKeySQLQuery(Schema\PrimaryKey $primaryKey, $table)
     {
         return 'ALTER TABLE '.$table.' DROP PRIMARY KEY';
