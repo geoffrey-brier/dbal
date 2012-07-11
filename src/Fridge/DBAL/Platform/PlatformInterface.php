@@ -503,69 +503,69 @@ interface PlatformInterface
     /**
      * Gets the drop sequence SQL query.
      *
-     * @param string $sequence The sequence name.
+     * @param \Fridge\DBAL\Schema\Sequence $sequence The sequence.
      *
      * @return string The drop sequence SQL query.
      */
-    function getDropSequenceSQLQuery($sequence);
+    function getDropSequenceSQLQuery(Schema\Sequence $sequence);
 
     /**
      * Gets the drop view SQL query.
      *
-     * @param string $view The view name.
+     * @param \Fridge\DBAL\Schema\View $view The view.
      *
      * @return string The drop view SQL query.
      */
-    function getDropViewSQLQuery($view);
+    function getDropViewSQLQuery(Schema\View $view);
 
     /**
      * Gets the drop table SQL query.
      *
-     * @param string $table The table name.
+     * @param \Fridge\DBAL\Schema\Table $table The table.
      *
      * @return string The drop table SQL query.
      */
-    function getDropTableSQLQuery($table);
+    function getDropTableSQLQuery(Schema\Table $table);
 
     /**
      * Gets the drop constraint SQL query.
      *
-     * @param string $constraint The constraint name.
-     * @param string $table      The table name of the constraint.
+     * @param \Fridge\DBAL\Schema\ConstraintInterface $constraint The constraint.
+     * @param string                                  $table      The table name of the constraint.
      *
      * @return string The drop constraint SQL query.
      */
-    function getDropConstraintSQLQuery($constraint, $table);
+    function getDropConstraintSQLQuery(Schema\ConstraintInterface $constraint, $table);
 
     /**
      * Gets the drop primary key SQL query.
      *
-     * @param string $primaryKey The primary key name.
-     * @param string $table      The table name of the primary key.
+     * @param \Fridge\DBAL\Schema\PrimaryKey $primaryKey The primary key.
+     * @param string                         $table      The table name of the primary key.
      *
      * @return string The drop primary key SQL query.
      */
-    function getDropPrimaryKeySQLQuery($primaryKey, $table);
+    function getDropPrimaryKeySQLQuery(Schema\PrimaryKey $primaryKey, $table);
 
     /**
      * Gets the drop foreign key SQL query.
      *
-     * @param string $foreignKey The foreign key name.
-     * @param string $table      The table name of the foreign key.
+     * @param \Fridge\DBAL\Schema\ForeignKey $foreignKey The foreign key.
+     * @param string                         $table      The table name of the foreign key.
      *
      * @return string The drop foreign key SQL query.
      */
-    function getDropForeignKeySQLQuery($foreignKey, $table);
+    function getDropForeignKeySQLQuery(Schema\ForeignKey $foreignKey, $table);
 
     /**
      * Gets the drop index SQL query.
      *
-     * @param string $index The index name.
-     * @param string $table The table name of the index.
+     * @param \Fridge\DBAL\Schema\Index $index The index.
+     * @param string                    $table The table name of the index.
      *
      * @return string The drop index SQL query.
      */
-    function getDropIndexSQLQuery($index, $table);
+    function getDropIndexSQLQuery(Schema\Index $index, $table);
 
     /**
      * Gets the quote identifier.

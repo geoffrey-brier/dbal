@@ -208,55 +208,55 @@ interface SchemaManagerInterface
     /**
      * Drops a sequence.
      *
-     * @param string $sequence The sequence name.
+     * @param \Fridge\DBAL\Schema\Sequence $sequence The sequence.
      */
-    function dropSequence($sequence);
+    function dropSequence(Schema\Sequence $sequence);
 
     /**
      * Drops a view.
      *
-     * @param string $view The view name.
+     * @param \Fridge\DBAL\Schema\View $view The view.
      */
-    function dropView($view);
+    function dropView(Schema\View $view);
 
     /**
      * Drops a table.
      *
-     * @param string $table The table name.
+     * @param \Fridge\DBAL\Schema\Table $table The table.
      */
-    function dropTable($table);
+    function dropTable(Schema\Table $table);
 
     /**
      * Drops a constraint.
      *
-     * @param string $constraint The constraint name.
-     * @param string $table      The table name of the constraint.
+     * @param \Fridge\DBAL\Schema\ConstraintInterface $constraint The constraint.
+     * @param string                                  $table      The table name of the constraint.
      */
-    function dropConstraint($constraint, $table);
+    function dropConstraint(Schema\ConstraintInterface $constraint, $table);
 
     /**
      * Drops a primary key.
      *
-     * @param string $primaryKey The primary key name.
-     * @param string $table      The table name of the primary key.
+     * @param \Fridge\DBAL\Schema\PrimaryKey $primaryKey The primary key.
+     * @param string                         $table      The table name of the primary key.
      */
-    function dropPrimaryKey($primaryKey, $table);
+    function dropPrimaryKey(Schema\PrimaryKey $primaryKey, $table);
 
     /**
      * Drops a foreign key.
      *
-     * @param string $foreignKey The foreign key name.
-     * @param string $table      The table name of the foreign key.
+     * @param \Fridge\DBAL\Schema\ForeignKey $foreignKey The foreign key.
+     * @param string                         $table      The table name of the foreign key.
      */
-    function dropForeignKey($foreignKey, $table);
+    function dropForeignKey(Schema\ForeignKey $foreignKey, $table);
 
     /**
      * Drops an index.
      *
-     * @param string $index The index name.
-     * @param string $table The table name of the index.
+     * @param \Fridge\DBAL\Schema\Index $index The index.
+     * @param string                    $table The table name of the index.
      */
-    function dropIndex($index, $table);
+    function dropIndex(Schema\Index $index, $table);
 
     /**
      * Drops & creates a database.

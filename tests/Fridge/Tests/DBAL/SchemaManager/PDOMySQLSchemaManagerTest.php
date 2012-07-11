@@ -69,7 +69,9 @@ class PDOMySQLSchemaManagerTest extends AbstractSchemaManagerTest
      */
     public function testDropSequence()
     {
-        $this->schemaManager->dropSequence('foo');
+        $sequenceMock = $this->getMock('Fridge\DBAL\Schema\Sequence', array(), array('foo'));
+
+        $this->schemaManager->dropSequence($sequenceMock);
     }
 
     /**
@@ -80,60 +82,5 @@ class PDOMySQLSchemaManagerTest extends AbstractSchemaManagerTest
         $sequenceMock = $this->getMock('Fridge\DBAL\Schema\Sequence', array(), array('foo'));
 
         $this->schemaManager->dropAndCreateSequence($sequenceMock);
-    }
-
-    /**
-     * @expectedException \Fridge\DBAL\Exception\PlatformException
-     */
-    public function testDropConstraintWithPrimaryKey()
-    {
-        $this->schemaManager->dropConstraint('foo', 'bar');
-    }
-
-    public function testCreateConstraintWithPrimaryKey()
-    {
-        $tableName = 'tprimarykeyunlock';
-
-        $this->schemaManager->dropPrimaryKey(self::$fixture->getTablePrimaryKey($tableName)->getName(), $tableName);
-
-        parent::testCreateConstraintWithPrimaryKey();
-    }
-
-    /**
-     * @expectedException \Fridge\DBAL\Exception\PlatformException
-     */
-    public function testDropConstraintWithForeignKey()
-    {
-        $this->schemaManager->dropConstraint('foo', 'bar');
-    }
-
-    public function testCreateConstraintWithForeignKey()
-    {
-        $table = 'tforeignkey';
-
-        foreach (self::$fixture->getTableForeignKeys($table) as $foreignKey) {
-            $this->schemaManager->dropForeignKey($foreignKey->getName(), $table);
-        }
-
-        parent::testCreateConstraintWithForeignKey();
-    }
-
-    /**
-     * @expectedException \Fridge\DBAL\Exception\PlatformException
-     */
-    public function testDropConstraintWithIndex()
-    {
-        $this->schemaManager->dropConstraint('foo', 'bar');
-    }
-
-    public function testCreateConstraintWithIndex()
-    {
-        $table = 'tindex';
-
-        foreach (self::$fixture->getTableIndexes($table) as $index) {
-            $this->schemaManager->dropIndex($index->getName(), $table);
-        }
-
-        parent::testCreateConstraintWithIndex();
     }
 }

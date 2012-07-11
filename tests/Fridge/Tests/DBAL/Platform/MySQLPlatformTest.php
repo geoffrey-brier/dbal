@@ -209,36 +209,38 @@ class MySQLPlatformTest extends \PHPUnit_Framework_TestCase
      */
     public function testDropSequenceSQLQuery()
     {
-        $this->platform->getDropSequenceSQLQuery('foo');
-    }
+        $sequence = new Schema\Sequence('foo');
 
-    /**
-     * @expectedException \Fridge\DBAL\Exception\PlatformException
-     * @expectExceptionMessage The method "Fridge\DBAL\Platform\MySQLPlatform::getDropConstraintSQLQuery" is not supported.
-     */
-    public function testDropConstraintSQLQuery()
-    {
-        $this->platform->getDropConstraintSQLQuery('foo', 'bar');
+        $this->platform->getDropSequenceSQLQuery($sequence);
     }
 
     public function testDropPrimaryKeySQLQuery()
     {
+        $primaryKey = new Schema\PrimaryKey('foo');
+
         $this->assertEquals(
             'ALTER TABLE bar DROP PRIMARY KEY',
-            $this->platform->getDropPrimaryKeySQLQuery('foo', 'bar')
+            $this->platform->getDropPrimaryKeySQLQuery($primaryKey, 'bar')
         );
     }
 
     public function testDropIndexSQLQuery()
     {
-        $this->assertEquals('DROP INDEX foo ON bar', $this->platform->getDropIndexSQLQuery('foo', 'bar'));
+        $index = new Schema\Index('foo', array(), true);
+
+        $this->assertEquals(
+            'DROP INDEX foo ON bar',
+            $this->platform->getDropIndexSQLQuery($index, 'bar')
+        );
     }
 
     public function testDropForeignKeySQLQuery()
     {
+        $foreignKey = new Schema\ForeignKey('foo', array(), 'bar', array());
+
         $this->assertEquals(
             'ALTER TABLE bar DROP FOREIGN KEY foo',
-            $this->platform->getDropForeignKeySQLQuery('foo', 'bar')
+            $this->platform->getDropForeignKeySQLQuery($foreignKey, 'bar')
         );
     }
 

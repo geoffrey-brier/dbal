@@ -11,8 +11,6 @@
 
 namespace Fridge\DBAL\SchemaManager;
 
-use Fridge\DBAL\Schema;
-
 /**
  * MySQL schema manager.
  *
@@ -20,20 +18,6 @@ use Fridge\DBAL\Schema;
  */
 class MySQLSchemaManager extends AbstractSchemaManager
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function dropAndCreateConstraint(Schema\ConstraintInterface $constraint, $table)
-    {
-        if ($constraint instanceof Schema\PrimaryKey) {
-            $this->dropAndCreatePrimaryKey($constraint, $table);
-        } else if ($constraint instanceof Schema\ForeignKey) {
-            $this->dropAndCreateForeignKey($constraint, $table);
-        } else if ($constraint instanceof Schema\Index) {
-            $this->dropAndCreateIndex($constraint, $table);
-        }
-    }
-
     /**
      * {@inheritdoc}
      *

@@ -566,61 +566,73 @@ abstract class AbstractPlatform implements PlatformInterface
     /**
      * {@inheritdoc}
      */
-    public function getDropSequenceSQLQuery($sequence)
+    public function getDropSequenceSQLQuery(Schema\Sequence $sequence)
     {
         if (!$this->supportSequence()) {
             throw Exception\PlatformException::methodNotSupported(__METHOD__);
         }
 
-        return 'DROP SEQUENCE '.$sequence;
+        return 'DROP SEQUENCE '.$sequence->getName();
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getDropViewSQLQuery($view)
+    public function getDropViewSQLQuery(Schema\View $view)
     {
-        return 'DROP VIEW '.$view;
+        return 'DROP VIEW '.$view->getName();
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getDropTableSQLQuery($table)
+    public function getDropTableSQLQuery(Schema\Table $table)
     {
-        return 'DROP TABLE '.$table;
+        return 'DROP TABLE '.$table->getName();
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getDropConstraintSQLQuery($contraint, $table)
+    public function getDropConstraintSQLQuery(Schema\ConstraintInterface $contraint, $table)
     {
-        return 'ALTER TABLE '.$table.' DROP CONSTRAINT '.$contraint;
+        if ($contraint instanceof Schema\PrimaryKey) {
+            return $this->getDropPrimaryKeySQLQuery($contraint, $table);
+        }
+
+        if ($contraint instanceof Schema\ForeignKey) {
+            return $this->getDropForeignKeySQLQuery($contraint, $table);
+        }
+
+        return $this->getDropIndexSQLQuery($contraint, $table);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getDropPrimaryKeySQLQuery($primaryKey, $table)
+    public function getDropPrimaryKeySQLQuery(Schema\PrimaryKey $primaryKey, $table)
     {
-        return $this->getDropConstraintSQLQuery($primaryKey, $table);
+        return 'ALTER TABLE '.$table.' DROP CONSTRAINT '.$primaryKey->getName();
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getDropForeignKeySQLQuery($foreignKey, $table)
+    public function getDropForeignKeySQLQuery(Schema\ForeignKey $foreignKey, $table)
     {
-        return $this->getDropConstraintSQLQuery($foreignKey, $table);
+        return 'ALTER TABLE '.$table.' DROP CONSTRAINT '.$foreignKey->getName();
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getDropIndexSQLQuery($index, $table)
+    public function getDropIndexSQLQuery(Schema\Index $index, $table)
     {
-        return 'DROP INDEX '.$index;
+        if ($index->isUnique()) {
+            return 'ALTER TABLE '.$table.' DROP CONSTRAINT '.$index->getName();
+        }
+
+        return 'DROP INDEX '.$index->getName();
     }
 
     /**
