@@ -37,9 +37,19 @@ abstract class AbstractSchemaManagerTest extends \PHPUnit_Framework_TestCase
     /**
      * {@inheritdoc}
      */
+    static public function tearDownAfterClass()
+    {
+        if (self::$fixture !== null) {
+            self::$fixture->dropSchema();
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     protected function setUp()
     {
-        if (($this->schemaManager === null) || (self::$fixture === null)) {
+        if (self::$fixture === null) {
             $this->markTestSkipped();
         }
     }
@@ -49,9 +59,11 @@ abstract class AbstractSchemaManagerTest extends \PHPUnit_Framework_TestCase
      */
     protected function tearDown()
     {
-        $this->schemaManager->getConnection()->close();
+        if ($this->schemaManager !== null) {
+            $this->schemaManager->getConnection()->close();
 
-        unset($this->schemaManager);
+            unset($this->schemaManager);
+        }
     }
 
     public function testConnection()
@@ -516,7 +528,7 @@ abstract class AbstractSchemaManagerTest extends \PHPUnit_Framework_TestCase
 
         $tables = $this->schemaManager->getTables();
         sort($tableNames);
-        
+
         foreach ($tableNames as $index => $tableName) {
             $this->assertEquals(self::$fixture->getTable($tableName), $tables[$index]);
         }

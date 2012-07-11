@@ -56,11 +56,11 @@ abstract class AbstractConnectionTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        if (($this->connection === null) || (self::$fixture === null)) {
+        if (self::$fixture === null) {
             $this->markTestSkipped();
+        } else {
+            self::$fixture->createDatas();
         }
-
-        self::$fixture->createDatas();
     }
 
     /**
@@ -68,9 +68,11 @@ abstract class AbstractConnectionTest extends \PHPUnit_Framework_TestCase
      */
     protected function tearDown()
     {
-        $this->connection->close();
+        if ($this->connection !== null) {
+            $this->connection->close();
 
-        unset($this->connection);
+            unset($this->connection);
+        }
     }
 
     public function testConnectAndClose()
