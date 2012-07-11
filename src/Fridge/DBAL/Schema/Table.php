@@ -39,11 +39,11 @@ class Table extends AbstractAsset
     /**
      * Creates a table.
      *
-     * @param string                        $name        The table name.
-     * @param array                         $columns     The table columns.
+     * @param string                         $name        The table name.
+     * @param array                          $columns     The table columns.
      * @param \Fridge\DBAL\Schema\PrimaryKey $primaryKey  The table primary key.
-     * @param array                         $foreignKeys The table foreign keys.
-     * @param array                         $indexes     The table indexes.
+     * @param array                          $foreignKeys The table foreign keys.
+     * @param array                          $indexes     The table indexes.
      */
     public function __construct(
         $name,
@@ -98,9 +98,9 @@ class Table extends AbstractAsset
     /**
      * Creates & adds a new column.
      *
-     * @param string                                $name    The column name.
+     * @param string                                 $name    The column name.
      * @param string|\Fridge\DBAL\Type\TypeInterface $type    The column type.
-     * @param array                                 $options The column options.
+     * @param array                                  $options The column options.
      *
      * @return \Fridge\DBAL\Schema\Column The new column.
      */
@@ -286,10 +286,10 @@ class Table extends AbstractAsset
     /**
      * Creates & adds a new foreign key.
      *
-     * @param array                           $localColumnNames   The foreign key local column names.
+     * @param array                            $localColumnNames   The foreign key local column names.
      * @param string|\Fridge\DBAL\Schema\Table $foreignTable       The foreign key foreign table.
-     * @param array                           $foreignColumnNames The foreign key foreign column names.
-     * @param string                          $name               The foreign key name.
+     * @param array                            $foreignColumnNames The foreign key foreign column names.
+     * @param string                           $name               The foreign key name.
      *
      * @return \Fridge\DBAL\Schema\ForeignKey The new foreign key.
      */

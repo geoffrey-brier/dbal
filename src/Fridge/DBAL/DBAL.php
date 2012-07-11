@@ -67,7 +67,7 @@ class DBAL
      *  - pdo_mysql: unix_socket (string), charset (string)
      *  - pdo_pgsql: none
      *
-     * @param array                     $parameters    The connection parameters.
+     * @param array                      $parameters    The connection parameters.
      * @param \Fridge\DBAL\Configuration $configuration The connection configuration.
      *
      * @return \Fridge\DBAL\Connection\ConnectionInterface The DBAL Connection.

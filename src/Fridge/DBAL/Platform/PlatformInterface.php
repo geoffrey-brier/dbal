@@ -435,7 +435,7 @@ interface PlatformInterface
      * Gets the create constraint SQL query.
      *
      * @param \Fridge\DBAL\Schema\ConstraintInterface $constraint The constraint.
-     * @param string                                 $table      The table name of the constraint.
+     * @param string                                  $table      The table name of the constraint.
      *
      * @return string The create constraint SQL query.
      */
@@ -445,7 +445,7 @@ interface PlatformInterface
      * Gets the create primary key SQL query.
      *
      * @param \Fridge\DBAL\Schema\PrimaryKey $primaryKey The primary key.
-     * @param string                        $table      The table name of the primary key.
+     * @param string                         $table      The table name of the primary key.
      *
      * @return string The create primary key SQL query.
      */
@@ -455,7 +455,7 @@ interface PlatformInterface
      * Gets the create foreign key SQL query.
      *
      * @param \Fridge\DBAL\Schema\ForeignKey $foreignKey The foreign key.
-     * @param string                        $table      The table name of the foreign key.
+     * @param string                         $table      The table name of the foreign key.
      *
      * @return string The create foreign key SQL query.
      */
@@ -465,7 +465,7 @@ interface PlatformInterface
      * Gets the create index SQL query.
      *
      * @param \Fridge\DBAL\Schema\Index $index The index.
-     * @param string                   $table The table name of the index.
+     * @param string                    $table The table name of the index.
      *
      * @return string The create index SQL query.
      */
@@ -485,7 +485,7 @@ interface PlatformInterface
      * Gets the create column comment SQL query.
      *
      * @param \Fridge\DBAL\Schema\Column $column The column.
-     * @param string                    $table  The table name.
+     * @param string                     $table  The table name.
      *
      * @return string The column comment SQL query.
      */

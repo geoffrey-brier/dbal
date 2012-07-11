@@ -65,7 +65,7 @@ class Connection implements ConnectionInterface
     /**
      * Creates a connection.
      *
-     * @param array                              $parameters    The connection parameters.
+     * @param array                               $parameters    The connection parameters.
      * @param \Fridge\DBAL\Driver\DriverInterface $driver        The connection driver.
      * @param \Fridge\DBAL\Configuration          $configuration The connection configuration.
      */
@@ -655,8 +655,8 @@ class Connection implements ConnectionInterface
      * Binds typed parameters to a statement.
      *
      * @param \Fridge\DBAL\Base\StatementInterface $statement  The statement to bind on.
-     * @param array                               $parameters The statement parameters.
-     * @param array                               $types      The statement parameters types.
+     * @param array                                $parameters The statement parameters.
+     * @param array                                $types      The statement parameters types.
      */
     protected function bindStatementParameters(Base\StatementInterface $statement, array $parameters, array $types)
     {

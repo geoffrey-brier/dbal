@@ -170,7 +170,7 @@ interface SchemaManagerInterface
      * Creates a constraint.
      *
      * @param \Fridge\DBAL\Schema\ConstraintInterface $constraint The constraint.
-     * @param string                                 $table      The table name of the constraint.
+     * @param string                                  $table      The table name of the constraint.
      */
     function createConstraint(Schema\ConstraintInterface $constraint, $table);
 
@@ -178,7 +178,7 @@ interface SchemaManagerInterface
      * Creates a primary key.
      *
      * @param \Fridge\DBAL\Schema\PrimaryKey $primaryKey The primary key.
-     * @param string                        $table      The table name of the primary key.
+     * @param string                         $table      The table name of the primary key.
      */
     function createPrimaryKey(Schema\PrimaryKey $primaryKey, $table);
 
@@ -186,7 +186,7 @@ interface SchemaManagerInterface
      * Creates a foreign key.
      *
      * @param \Fridge\DBAL\Schema\ForeignKey $foreignKey The foreign key.
-     * @param string                        $table      The table name of the foreign key.
+     * @param string                         $table      The table name of the foreign key.
      */
     function createForeignKey(Schema\ForeignKey $foreignKey, $table);
 
@@ -194,7 +194,7 @@ interface SchemaManagerInterface
      * Creates an index.
      *
      * @param \Fridge\DBAL\Schema\Index $index The index.
-     * @param string                   $table The table name of the index.
+     * @param string                    $table The table name of the index.
      */
     function createIndex(Schema\Index $index, $table);
 
@@ -290,7 +290,7 @@ interface SchemaManagerInterface
      * Drops & creates a constraint.
      *
      * @param \Fridge\DBAL\Schema\ConstraintInterface $constraint The constraint.
-     * @param string                                 $table      The table name of the constraint.
+     * @param string                                  $table      The table name of the constraint.
      */
     function dropAndCreateConstraint(Schema\ConstraintInterface $constraint, $table);
 
@@ -298,7 +298,7 @@ interface SchemaManagerInterface
      * Drops & creates a primary key.
      *
      * @param \Fridge\DBAL\Schema\PrimaryKey $primaryKey The primary key.
-     * @param string                        $table      The table name of the primary key.
+     * @param string                         $table      The table name of the primary key.
      */
     function dropAndCreatePrimaryKey(Schema\PrimaryKey $primaryKey, $table);
 
@@ -306,7 +306,7 @@ interface SchemaManagerInterface
      * Drops & creates a foreign key.
      *
      * @param \Fridge\DBAL\Schema\ForeignKey $foreignKey The foreign key.
-     * @param string                        $table      The table name of the foreign key.
+     * @param string                         $table      The table name of the foreign key.
      */
     function dropAndCreateForeignKey(Schema\ForeignKey $foreignKey, $table);
 
@@ -314,7 +314,7 @@ interface SchemaManagerInterface
      * Drops & creates an index.
      *
      * @param \Fridge\DBAL\Schema\Index $index The index.
-     * @param string                   $table The table name of the index.
+     * @param string                    $table The table name of the index.
      */
     function dropAndCreateIndex(Schema\Index $index, $table);
 }

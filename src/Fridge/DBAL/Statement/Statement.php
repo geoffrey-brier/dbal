@@ -39,9 +39,9 @@ class Statement implements StatementInterface, IteratorAggregate
     /**
      * Creates a statement
      *
-     * @param string                                     $sql        The SQL of the statement.
+     * @param string                                      $sql        The SQL of the statement.
      * @param \Fridge\DBAL\Connection\ConnectionInterface $connection The connection linked to the statement.
-     * @param array                                      $options    The PDO driver options.
+     * @param array                                       $options    The PDO driver options.
      */
     public function __construct($sql, ConnectionInterface $connection, array $options = array())
     {

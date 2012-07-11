@@ -26,7 +26,7 @@ class TypeUtility
      * Binding means the value and the type are converted respectivly
      * to this database and PDO representation.
      *
-     * @param mixed                                         &$value   The value.
+     * @param mixed                                          &$value   The value.
      * @param string|integer|\Fridge\DBAL\Type\TypeInterface &$type    The type (PDO or DBAL).
      * @param \Fridge\DBAL\Platform\PlatformInterface        $platform The platform.
      */

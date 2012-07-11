@@ -65,9 +65,9 @@ class Column extends AbstractAsset
      *  - auto_increment (boolean)
      *  - comment (string)
      *
-     * @param string                         $name    The column name.
+     * @param string                          $name    The column name.
      * @param \Fridge\DBAL\Type\TypeInterface $type    The column type.
-     * @param array                          $options Associative array that describes property => value pairs.
+     * @param array                           $options Associative array that describes property => value pairs.
      */
     public function __construct($name, TypeInterface $type, array $options = array())
     {

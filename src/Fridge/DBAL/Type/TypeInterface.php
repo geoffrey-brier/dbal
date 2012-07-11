@@ -26,7 +26,7 @@ interface TypeInterface
      * Gets the type SQL declaration.
      *
      * @param \Fridge\DBAL\Platform\PlatformInterface $platform The platform used.
-     * @param array                                  $options  The type options.
+     * @param array                                   $options  The type options.
      *
      * @return string The type SQL declaration.
      */
@@ -35,7 +35,7 @@ interface TypeInterface
     /**
      * Converts a PHP value to this database value.
      *
-     * @param mixed                                  $value    The PHP value.
+     * @param mixed                                   $value    The PHP value.
      * @param \Fridge\DBAL\Platform\PlatformInterface $platform The platform used.
      *
      * @return mixed The database value.
@@ -45,7 +45,7 @@ interface TypeInterface
     /**
      * Converts a database value to this PHP value.
      *
-     * @param mixed                                  $value    The database value.
+     * @param mixed                                   $value    The database value.
      * @param \Fridge\DBAL\Platform\PlatformInterface $platform The platform used.
      *
      * @return mixed The PHP value.

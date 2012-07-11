@@ -348,7 +348,7 @@ class QueryBuilder
      * Adds a "WHERE" clause to the query.
      *
      * @param string|array|\Fridge\DBAL\Query\Expression\CompositeExpression $expression The expression.
-     * @param string                                                        $type       The expression type (AND, OR).
+     * @param string                                                         $type       The expression type (AND, OR).
      *
      * @return \Fridge\DBAL\Query\QueryBuilder The query builder.
      */
@@ -399,7 +399,7 @@ class QueryBuilder
      * Adds an "HAVING" clause to the query.
      *
      * @param string|array|\Fridge\DBAL\Query\Expression\CompositeExpression $expression The expression.
-     * @param string                                                        $type       The expression type (AND, OR).
+     * @param string                                                         $type       The expression type (AND, OR).
      *
      * @return \Fridge\DBAL\Query\QueryBuilder The query builder.
      */
@@ -671,9 +671,8 @@ class QueryBuilder
     /**
      * Adds a composite expression to the "WHERE" or "HAVING" clause.
      *
-     * @param string                                                        $part       The query part.
-     * @param string                                                        $type       The composite expression type
-     *                                                                                  (AND, OR)
+     * @param string                                                         $part       The query part.
+     * @param string                                                         $type       The composite expression type (AND, OR)
      * @param string|array|\Fridge\DBAL\Query\Expression\CompositeExpression $expression The expression.
      *
      * @return \Fridge\DBAL\Query\QueryBuilder The query builder.
