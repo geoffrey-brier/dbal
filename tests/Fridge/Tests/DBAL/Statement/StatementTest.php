@@ -98,9 +98,13 @@ class StatementTest extends \PHPUnit_Framework_TestCase
                 $this->equalTo($type),
                 $this->equalTo($length),
                 $this->equalTo($driverOptions)
-            );
+            )
+            ->will($this->returnValue('bar'));
 
-        $this->statement->bindColumn($column, $variable, $type, $length, $driverOptions);
+        $this->assertEquals(
+            'bar',
+            $this->statement->bindColumn($column, $variable, $type, $length, $driverOptions)
+        );
     }
 
     public function testBindParam()
@@ -120,9 +124,13 @@ class StatementTest extends \PHPUnit_Framework_TestCase
                 $this->equalTo($type),
                 $this->equalTo($length),
                 $this->equalTo($driverOptions)
-            );
+            )
+            ->will($this->returnValue('bar'));
 
-        $this->statement->bindParam($parameter, $variable, $type, $length, $driverOptions);
+        $this->assertEquals(
+            'bar',
+            $this->statement->bindParam($parameter, $variable, $type, $length, $driverOptions)
+        );
     }
 
     public function testBindValueWithoutType()
@@ -137,9 +145,14 @@ class StatementTest extends \PHPUnit_Framework_TestCase
         $this->baseStatementMock
             ->expects($this->once())
             ->method('bindValue')
-            ->with($this->equalTo('foo'), $this->equalTo('bar'), $this->equalTo(null));
+            ->with(
+                $this->equalTo('foo'),
+                $this->equalTo('bar'),
+                $this->equalTo(null)
+            )
+            ->will($this->returnValue('bar'));
 
-        $this->statement->bindValue('foo', 'bar');
+        $this->assertEquals('bar', $this->statement->bindValue('foo', 'bar'));
     }
 
     public function testBindValueWithPDOType()
@@ -154,9 +167,17 @@ class StatementTest extends \PHPUnit_Framework_TestCase
         $this->baseStatementMock
             ->expects($this->once())
             ->method('bindValue')
-            ->with($this->equalTo('foo'), $this->equalTo('bar'), $this->equalTo(PDO::PARAM_INT));
+            ->with(
+                $this->equalTo('foo'),
+                $this->equalTo('bar'),
+                $this->equalTo(PDO::PARAM_INT)
+            )
+            ->will($this->returnValue('bar'));
 
-        $this->statement->bindValue('foo', 'bar', PDO::PARAM_INT);
+        $this->assertEquals(
+            'bar',
+            $this->statement->bindValue('foo', 'bar', PDO::PARAM_INT)
+        );
     }
 
     public function testBindValueWithFridgeType()
@@ -171,54 +192,67 @@ class StatementTest extends \PHPUnit_Framework_TestCase
         $this->baseStatementMock
             ->expects($this->once())
             ->method('bindValue')
-            ->with($this->equalTo('foo'), $this->equalTo(true), $this->equalTo(PDO::PARAM_BOOL));
+            ->with(
+                $this->equalTo('foo'),
+                $this->equalTo(true),
+                $this->equalTo(PDO::PARAM_BOOL)
+            )
+            ->will($this->returnValue('bar'));
 
-        $this->statement->bindValue('foo', true, Type::BOOLEAN);
+        $this->assertEquals(
+            'bar',
+            $this->statement->bindValue('foo', true, Type::BOOLEAN)
+        );
     }
 
     public function testCloseCursor()
     {
         $this->baseStatementMock
             ->expects($this->once())
-            ->method('closeCursor');
+            ->method('closeCursor')
+            ->will($this->returnValue('bar'));
 
-        $this->statement->closeCursor();
+        $this->assertEquals('bar', $this->statement->closeCursor());
     }
 
     public function testColumnCount()
     {
         $this->baseStatementMock
             ->expects($this->once())
-            ->method('columnCount');
+            ->method('columnCount')
+            ->will($this->returnValue('bar'));
 
-        $this->statement->columnCount();
+        $this->assertEquals('bar', $this->statement->columnCount());
     }
 
     public function testDebugDumpParams()
     {
         $this->baseStatementMock
             ->expects($this->once())
-            ->method('debugDumpParams');
+            ->method('debugDumpParams')
+            ->will($this->returnValue('bar'));
 
-        $this->statement->debugDumpParams();
+        $this->assertEquals('bar', $this->statement->debugDumpParams());
     }
 
     public function testErrorCode()
     {
         $this->baseStatementMock
             ->expects($this->once())
-            ->method('errorCode');
+            ->method('errorCode')
+            ->will($this->returnValue('bar'));
 
-        $this->statement->errorCode();
+        $this->assertEquals('bar', $this->statement->errorCode());
     }
 
     public function testErrorInfo()
     {
         $this->baseStatementMock
             ->expects($this->once())
-            ->method('errorInfo');
+            ->method('errorInfo')
+            ->will($this->returnValue('bar'));
 
-        $this->statement->errorInfo();
+        $this->assertEquals('bar', $this->statement->errorInfo());
     }
 
     public function testExecute()
@@ -226,9 +260,10 @@ class StatementTest extends \PHPUnit_Framework_TestCase
         $this->baseStatementMock
             ->expects($this->once())
             ->method('execute')
-            ->with($this->equalTo(array('foo')));
+            ->with($this->equalTo(array('foo')))
+            ->will($this->returnValue('bar'));
 
-        $this->statement->execute(array('foo'));
+        $this->assertEquals('bar', $this->statement->execute(array('foo')));
     }
 
     public function testFetch()
@@ -236,9 +271,10 @@ class StatementTest extends \PHPUnit_Framework_TestCase
         $this->baseStatementMock
             ->expects($this->once())
             ->method('fetch')
-            ->with($this->equalTo(1), $this->equalTo(2), $this->equalTo(3));
+            ->with($this->equalTo(1), $this->equalTo(2), $this->equalTo(3))
+            ->will($this->returnValue('bar'));
 
-        $this->statement->fetch(1, 2, 3);
+        $this->assertEquals('bar', $this->statement->fetch(1, 2, 3));
     }
 
     public function testFetchAll()
@@ -250,9 +286,13 @@ class StatementTest extends \PHPUnit_Framework_TestCase
                 $this->equalTo(1),
                 $this->equalTo('foo'),
                 $this->equalTo(array('bar'))
-            );
+            )
+            ->will($this->returnValue('bar'));
 
-        $this->statement->fetchAll(1, 'foo', array('bar'));
+        $this->assertEquals(
+            'bar',
+            $this->statement->fetchAll(1, 'foo', array('bar'))
+        );
     }
 
     public function testFetchColumn()
@@ -260,9 +300,10 @@ class StatementTest extends \PHPUnit_Framework_TestCase
         $this->baseStatementMock
             ->expects($this->once())
             ->method('fetchColumn')
-            ->with($this->equalTo(1));
+            ->with($this->equalTo(1))
+            ->will($this->returnValue('bar'));
 
-        $this->statement->fetchColumn(1);
+        $this->assertEquals('bar', $this->statement->fetchColumn(1));
     }
 
     public function testFetchObject()
@@ -270,9 +311,10 @@ class StatementTest extends \PHPUnit_Framework_TestCase
         $this->baseStatementMock
             ->expects($this->once())
             ->method('fetchObject')
-            ->with($this->equalTo('stdClass'), $this->equalTo(array('foo')));
+            ->with($this->equalTo('stdClass'), $this->equalTo(array('foo')))
+            ->will($this->returnValue('bar'));
 
-        $this->statement->fetchObject('stdClass', array('foo'));
+        $this->assertEquals('bar', $this->statement->fetchObject('stdClass', array('foo')));
     }
 
     public function testGetAttribute()
@@ -280,27 +322,30 @@ class StatementTest extends \PHPUnit_Framework_TestCase
         $this->baseStatementMock
             ->expects($this->once())
             ->method('getAttribute')
-            ->with($this->equalTo('foo'));
+            ->with($this->equalTo('foo'))
+            ->will($this->returnValue('bar'));
 
-        $this->statement->getAttribute('foo');
+        $this->assertEquals('bar', $this->statement->getAttribute('foo'));
     }
 
     public function testNextRowset()
     {
         $this->baseStatementMock
             ->expects($this->once())
-            ->method('nextRowset');
+            ->method('nextRowset')
+            ->will($this->returnValue('bar'));
 
-        $this->statement->nextRowset();
+        $this->assertEquals('bar', $this->statement->nextRowset());
     }
 
     public function testRowCount()
     {
         $this->baseStatementMock
             ->expects($this->once())
-            ->method('rowCount');
+            ->method('rowCount')
+            ->will($this->returnValue('bar'));
 
-        $this->statement->rowCount();
+        $this->assertEquals('bar', $this->statement->rowCount());
     }
 
     public function testSetAttribute()
@@ -308,9 +353,13 @@ class StatementTest extends \PHPUnit_Framework_TestCase
         $this->baseStatementMock
             ->expects($this->once())
             ->method('setAttribute')
-            ->with($this->equalTo('foo'), $this->equalTo('bar'));
+            ->with($this->equalTo('foo'), $this->equalTo('bar'))
+            ->will($this->returnValue('bar'));
 
-        $this->statement->setAttribute('foo', 'bar');
+        $this->assertEquals(
+            'bar',
+            $this->statement->setAttribute('foo', 'bar')
+        );
     }
 
     public function testSetFetchMode()
@@ -322,8 +371,12 @@ class StatementTest extends \PHPUnit_Framework_TestCase
                 $this->equalTo('foo'),
                 $this->equalTo('bar'),
                 $this->equalTo('foobar')
-            );
+            )
+            ->will($this->returnValue('bar'));
 
-        $this->statement->setFetchMode('foo', 'bar', 'foobar');
+        $this->assertEquals(
+            'bar',
+            $this->statement->setFetchMode('foo', 'bar', 'foobar')
+        );
     }
 }
