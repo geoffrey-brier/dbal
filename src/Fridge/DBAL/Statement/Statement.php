@@ -15,7 +15,7 @@ use \IteratorAggregate;
 
 use Fridge\DBAL\Base\PDO,
     Fridge\DBAL\Connection\ConnectionInterface,
-    Fridge\DBAL\Type\Type;
+    Fridge\DBAL\Type\TypeUtility;
 
 /**
  * {@inheritdoc}
@@ -119,7 +119,7 @@ class Statement implements StatementInterface, IteratorAggregate
      */
     public function bindValue($parameter, $value, $type = null)
     {
-        list($parameter, $type) = Type::getTypeInfo($parameter, $type, $this->connection->getDriver()->getPlatform());
+        TypeUtility::bindTypedValue($value, $type, $this->connection->getPlatform());
 
         return $this->base->bindValue($parameter, $value, $type);
     }
@@ -209,7 +209,7 @@ class Statement implements StatementInterface, IteratorAggregate
      */
     public function getAttribute($attribute)
     {
-        return $this->getAttribute($attribute);
+        return $this->base->getAttribute($attribute);
     }
 
     /**
@@ -241,6 +241,6 @@ class Statement implements StatementInterface, IteratorAggregate
      */
     public function setFetchMode($mode)
     {
-        return call_user_func_array(array($this->base, 'setFetchMode'), fun_get_args());
+        return call_user_func_array(array($this->base, 'setFetchMode'), func_get_args());
     }
 }
