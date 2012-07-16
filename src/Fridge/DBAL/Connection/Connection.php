@@ -19,7 +19,7 @@ use Fridge\DBAL\Adapter\StatementInterface,
     Fridge\DBAL\Event,
     Fridge\DBAL\Exception\ConnectionException,
     Fridge\DBAL\Logging\Debugger,
-    Fridge\DBAL\Query\QueryBuilder,
+    Fridge\DBAL\Query,
     Fridge\DBAL\Statement\Statement,
     Fridge\DBAL\Type\TypeUtility,
     Monolog\Logger;
@@ -129,7 +129,7 @@ class Connection implements ConnectionInterface
      */
     public function createQueryBuilder()
     {
-        return new QueryBuilder($this);
+        return new Query\QueryBuilder($this);
     }
 
     /**
@@ -390,6 +390,7 @@ class Connection implements ConnectionInterface
         }
 
         if (!empty($parameters)) {
+            list($query, $parameters, $types) = Query\QueryRewriter::rewrite($query, $parameters, $types);
             $statement = $this->getAdapter()->prepare($query);
 
             if (!empty($types)) {
@@ -506,6 +507,7 @@ class Connection implements ConnectionInterface
         }
 
         if (!empty($parameters)) {
+            list($query, $parameters, $types) = Query\QueryRewriter::rewrite($query, $parameters, $types);
             $statement = $this->getAdapter()->prepare($query);
 
             if (!empty($types)) {
