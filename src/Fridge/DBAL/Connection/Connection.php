@@ -43,6 +43,9 @@ class Connection implements ConnectionInterface
     /** @const Transaction read commited constant. */
     const TRANSACTION_SERIALIZABLE = 'SERIALIZABLE';
 
+    /** @const Array parameter constant which enables query rewritting. */
+    const PARAM_ARRAY = '[]';
+
     /** @var \Fridge\DBAL\Adapter\ConnectionInterface */
     protected $adapter;
 
