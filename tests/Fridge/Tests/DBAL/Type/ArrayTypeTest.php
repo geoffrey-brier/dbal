@@ -57,7 +57,7 @@ class ArrayTypeTest extends AbstractTypeTest
 
     /**
      * @expectedException Fridge\DBAL\Exception\TypeException
-     * @expectedExceptionMessage The value "foo" can not be converted to the type "ARRAY".
+     * @expectedExceptionMessage The value "foo" can not be converted to the type "array".
      */
     public function testConvertToPHPValueWithInvalidValue()
     {

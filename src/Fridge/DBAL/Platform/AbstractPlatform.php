@@ -889,7 +889,7 @@ abstract class AbstractPlatform implements PlatformInterface
         $comment .= $column->getComment();
 
         if ($this->hasMandatoryType($column->getType()->getName())) {
-            $comment .= '(FridgeType::'.$column->getType()->getName().')';
+            $comment .= '(FridgeType::'.strtoupper($column->getType()->getName()).')';
         }
 
         $comment .= '\'';

@@ -64,7 +64,7 @@ class DateTypeTest extends AbstractTypeTest
 
     /**
      * @expectedException Fridge\DBAL\Exception\TypeException
-     * @expectedExceptionMessage The value "foo" can not be converted to the type "DATE".
+     * @expectedExceptionMessage The value "foo" can not be converted to the type "date".
      */
     public function testConvertToPHPValueWithInvalidValue()
     {

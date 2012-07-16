@@ -22,43 +22,43 @@ use Fridge\DBAL\Exception\TypeException;
 class Type
 {
     /** @const The array type constant */
-    const TARRAY = 'ARRAY';
+    const TARRAY = 'array';
 
     /** @const The big integer type constant */
-    const BIGINTEGER = 'BIGINTEGER';
+    const BIGINTEGER = 'biginteger';
 
     /** @const The boolean type constant */
-    const BOOLEAN = 'BOOLEAN';
+    const BOOLEAN = 'boolean';
 
     /** @const The date type constant */
-    const DATE = 'DATE';
+    const DATE = 'date';
 
     /** @const The date time type constant */
-    const DATETIME = 'DATETIME';
+    const DATETIME = 'datetime';
 
     /** @const The decimal type constant */
-    const DECIMAL = 'DECIMAL';
+    const DECIMAL = 'decimal';
 
     /** @const The float type constant */
-    const FLOAT = 'FLOAT';
+    const FLOAT = 'float';
 
     /** @const The integer type constant */
-    const INTEGER = 'INTEGER';
+    const INTEGER = 'integer';
 
     /** @const the object type constant */
-    const OBJECT = 'OBJECT';
+    const OBJECT = 'object';
 
     /** @const The small integer type constant */
-    const SMALLINTEGER = 'SMALLINTEGER';
+    const SMALLINTEGER = 'smallinteger';
 
     /** @const The string type constant */
-    const STRING = 'STRING';
+    const STRING = 'string';
 
     /** @const The text type constant */
-    const TEXT = 'TEXT';
+    const TEXT = 'text';
 
     /** @const The time type constant */
-    const TIME = 'TIME';
+    const TIME = 'time';
 
     /** @var array */
     static protected $mappedTypeClasses = array(

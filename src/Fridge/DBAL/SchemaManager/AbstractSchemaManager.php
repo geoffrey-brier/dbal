@@ -767,7 +767,7 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
                 $matches[1] = null;
             }
 
-            return array($matches[1], $matches[2]);
+            return array($matches[1], strtolower($matches[2]));
         }
 
         return array($comment, null);

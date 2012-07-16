@@ -89,7 +89,7 @@ class TypeTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @expectedException Fridge\DBAL\Exception\TypeException
-     * @expectedExceptionMessage The type "BOOLEAN" already exists.
+     * @expectedExceptionMessage The type "boolean" already exists.
      */
     public function testAddTypeWithInvalidType()
     {

@@ -64,7 +64,7 @@ class TimeTypeTest extends AbstractTypeTest
 
     /**
      * @expectedException Fridge\DBAL\Exception\TypeException
-     * @expectedExceptionMessage The value "foo" can not be converted to the type "TIME".
+     * @expectedExceptionMessage The value "foo" can not be converted to the type "time".
      */
     public function testConvertToPHPValueWithInvalidValue()
     {
