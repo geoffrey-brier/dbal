@@ -183,20 +183,20 @@ class QueryRewriter
      * Rewrites a query by expanded a placeholder.
      *
      * Example with positional query:
-     *   - Before:
+     *   - before:
      *     - query: SELECT * FROM foo WHERE foo IN (?)
      *     - placeholderPosition: 32
      *     - placeholderLength: 1
      *     - newPlaceholders: array('?', '?', '?')
-     *   - After: SELECT * FROM foo WHERE foo IN (?, ?, ?)
+     *   - after: SELECT * FROM foo WHERE foo IN (?, ?, ?)
      *
      * Example with named query:
-     *   - Before:
+     *   - before:
      *     - query: SELECT * FROM foo WHERE foo IN (:foo)
      *     - placeholderPosition: 32
      *     - placeholderLength: 4
      *     - newPlaceholders: array(':foo1', ':foo2', ':foo3')
-     *   - After: SELECT * FROM foo WHERE foo IN (:foo1, :foo2, :foo3)
+     *   - after: SELECT * FROM foo WHERE foo IN (:foo1, :foo2, :foo3)
      *
      * @param string  $query               The query.
      * @param integer $placeholderPosition The placeholder position.
