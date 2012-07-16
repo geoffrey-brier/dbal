@@ -60,17 +60,9 @@ class QueryRewriterTest extends \PHPUnit_Framework_TestCase
 
         list($query, $parameters, $types) = QueryRewriter::rewrite($query, $parameters, $types);
 
-        $this->assertEquals(
-            'SELECT * FROM foo WHERE foo IN (?, ?) AND bar = ? AND baz < ?',
-            $query
-        );
-
+        $this->assertEquals('SELECT * FROM foo WHERE foo IN (?, ?) AND bar = ? AND baz < ?', $query);
         $this->assertEquals(array(1, 2, 'bar', $date), $parameters);
-
-        $this->assertEquals(
-            array(0 => Type::INTEGER, 1 => Type::INTEGER, 3 => Type::DATETIME),
-            $types
-        );
+        $this->assertEquals(array(0 => Type::INTEGER, 1 => Type::INTEGER, 3 => Type::DATETIME), $types);
     }
 
     public function testRewriteWithMultiplePartialPositionalTypes()
@@ -78,14 +70,7 @@ class QueryRewriterTest extends \PHPUnit_Framework_TestCase
         $date = new DateTime();
 
         $query = 'SELECT * FROM foo WHERE foo IN (?) AND bar = ? AND baz IN (?) AND bat < ?';
-
-        $parameters = array(
-            array(1, 2),
-            'bar',
-            array('published', 'draft'),
-            $date,
-        );
-
+        $parameters = array(array(1, 2), 'bar', array('published', 'draft'), $date);
         $types = array(
             0 => Type::INTEGER.Connection::PARAM_ARRAY,
             2 => Type::STRING.Connection::PARAM_ARRAY,
@@ -94,13 +79,8 @@ class QueryRewriterTest extends \PHPUnit_Framework_TestCase
 
         list($query, $parameters, $types) = QueryRewriter::rewrite($query, $parameters, $types);
 
-        $this->assertEquals(
-            'SELECT * FROM foo WHERE foo IN (?, ?) AND bar = ? AND baz IN (?, ?) AND bat < ?',
-            $query
-        );
-
+        $this->assertEquals('SELECT * FROM foo WHERE foo IN (?, ?) AND bar = ? AND baz IN (?, ?) AND bat < ?', $query);
         $this->assertEquals(array(1, 2, 'bar', 'published', 'draft', $date), $parameters);
-
         $this->assertEquals(
             array(
                 0 => Type::INTEGER,
@@ -121,17 +101,9 @@ class QueryRewriterTest extends \PHPUnit_Framework_TestCase
 
         list($query, $parameters, $types) = QueryRewriter::rewrite($query, $parameters, $types);
 
-        $this->assertEquals(
-            'SELECT * FROM foo WHERE foo IN (:foo1, :foo2)',
-            $query
-        );
-
+        $this->assertEquals('SELECT * FROM foo WHERE foo IN (:foo1, :foo2)', $query);
         $this->assertEquals(array('foo1' => 1, 'foo2' => 2), $parameters);
-
-        $this->assertEquals(
-            array('foo1' => Type::INTEGER, 'foo2' => Type::INTEGER),
-            $types
-        );
+        $this->assertEquals(array('foo1' => Type::INTEGER, 'foo2' => Type::INTEGER), $types);
     }
 
     public function testRewriteWithPartialNamedTypes()
@@ -139,22 +111,12 @@ class QueryRewriterTest extends \PHPUnit_Framework_TestCase
         $date = new DateTime();
 
         $query = 'SELECT * FROM foo WHERE foo IN (:foo) AND bar = :bar AND baz < :baz';
-        $parameters = array(
-            'foo' => array(1, 2),
-            'bar' => 'bar',
-            'baz' => $date,
-        );
-        $types = array(
-            'foo' => Type::INTEGER.Connection::PARAM_ARRAY,
-            'baz' => Type::DATETIME,
-        );
+        $parameters = array('foo' => array(1, 2), 'bar' => 'bar', 'baz' => $date);
+        $types = array('foo' => Type::INTEGER.Connection::PARAM_ARRAY, 'baz' => Type::DATETIME);
 
         list($query, $parameters, $types) = QueryRewriter::rewrite($query, $parameters, $types);
 
-        $this->assertEquals(
-            'SELECT * FROM foo WHERE foo IN (:foo1, :foo2) AND bar = :bar AND baz < :baz',
-            $query
-        );
+        $this->assertEquals('SELECT * FROM foo WHERE foo IN (:foo1, :foo2) AND bar = :bar AND baz < :baz', $query);
 
         $this->assertEquals(
             array(
@@ -202,14 +164,17 @@ class QueryRewriterTest extends \PHPUnit_Framework_TestCase
             $query
         );
 
-        $this->assertEquals(array(
-            'foo1' => 1,
-            'foo2' => 2,
-            'bar'  => 'bar',
-            'baz1' => 'published',
-            'baz2' => 'draft',
-            'bat'  => $date
-        ), $parameters);
+        $this->assertEquals(
+            array(
+                'foo1' => 1,
+                'foo2' => 2,
+                'bar'  => 'bar',
+                'baz1' => 'published',
+                'baz2' => 'draft',
+                'bat'  => $date
+            ),
+            $parameters
+        );
 
         $this->assertEquals(
             array(

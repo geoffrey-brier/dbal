@@ -21,8 +21,7 @@ use Fridge\DBAL\Connection\Connection;
 class QueryRewriter
 {
     /**
-     * Rewrites a positional/named query in order to expand it according to
-     * the Connection::PARAM_ARRAY ([]).
+     * Rewrites a positional/named query in order to expand it according to the Connection::PARAM_ARRAY ([]).
      *
      * @see \Fridge\DBAL\Query\QueryRewriter::rewritePositionalQuery
      * @see \Fridge\DBAL\Query\QueryRewriter::rewriteNamedQuery
@@ -47,8 +46,7 @@ class QueryRewriter
     }
 
     /**
-     * Rewrites a positional query in order to expand it according to
-     * the Connection::PARAM_ARRAY ([]).
+     * Rewrites a positional query in order to expand it according to the Connection::PARAM_ARRAY ([]).
      *
      * Example:
      *   - before:
@@ -86,12 +84,7 @@ class QueryRewriter
                 $parameterCount = count($parameters[$typePosition]);
                 $newPlaceholders = array_fill(0, $parameterCount, '?');
 
-                $rewritedQuery = self::rewriteQuery(
-                    $rewritedQuery,
-                    $placeholderPosition,
-                    1,
-                    $newPlaceholders
-                );
+                $rewritedQuery = self::rewriteQuery($rewritedQuery, $placeholderPosition, 1, $newPlaceholders);
 
                 for ($index = max(array_keys($parameters)) ; $index > $typePosition - $typePositionGap ; $index--) {
                     $newPosition = $index + $parameterCount + $typePositionGap - 1;
@@ -120,8 +113,7 @@ class QueryRewriter
     }
 
     /**
-     * Rewrites a named query in order to expand it according to the
-     * Connection::PARAM_ARRAY ([]).
+     * Rewrites a named query in order to expand it according to the Connection::PARAM_ARRAY ([]).
      *
      * Example:
      *   - before:
