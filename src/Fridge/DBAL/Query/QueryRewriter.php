@@ -70,42 +70,52 @@ class QueryRewriter
         $rewritedParameters = $parameters;
         $rewritedTypes = $types;
 
-        $typePositionGap = 0;
+        $positionGap = 0;
 
-        foreach ($types as $typePosition => $type) {
+        foreach ($types as $position => $type) {
             if (substr($type, -2) === Connection::PARAM_ARRAY) {
+                // Extract fridge type.
                 $fridgeType = substr($type, 0, strlen($type) - 2);
 
+                // Find the current placeholder position according to the current position and gap.
                 $placeholderPosition = -1;
-                for ($placeholderIndex = 0 ; $placeholderIndex <= $typePosition + $typePositionGap ; $placeholderIndex++) {
+                for ($placeholderIndex = 0 ; $placeholderIndex <= $position + $positionGap ; $placeholderIndex++) {
                     $placeholderPosition = strpos($rewritedQuery, '?', $placeholderPosition + 1);
                 }
 
-                $parameterCount = count($parameters[$typePosition]);
+                // Generate new placeholders.
+                $parameterCount = count($parameters[$position]);
                 $newPlaceholders = array_fill(0, $parameterCount, '?');
 
+                // Rewrite query with new placeholders according to the current placeholder position & length.
                 $rewritedQuery = self::rewriteQuery($rewritedQuery, $placeholderPosition, 1, $newPlaceholders);
 
-                for ($index = max(array_keys($parameters)) ; $index > $typePosition - $typePositionGap ; $index--) {
-                    $newPosition = $index + $parameterCount + $typePositionGap - 1;
+                // Shift parameters & types placed just after the current rewritted position according to the gap.
+                // That's prepare the parameters & types to be rewritten with new placeholders.
+                $maxPosition = max(array_keys($rewritedParameters));
+                $minPosition = $position + $positionGap;
+                for ($rewritePosition = $maxPosition ; $rewritePosition > $minPosition ; $rewritePosition--) {
+                    $newPosition = $rewritePosition + $parameterCount - 1;
 
-                    $rewritedParameters[$newPosition] = $parameters[$index];
+                    $rewritedParameters[$newPosition] = $rewritedParameters[$rewritePosition];
 
-                    if (isset($types[$index])) {
-                        $rewritedTypes[$newPosition] = $types[$index];
+                    if (isset($rewritedTypes[$rewritePosition])) {
+                        $rewritedTypes[$newPosition] = $rewritedTypes[$rewritePosition];
                     } else if (isset($rewritedTypes[$newPosition])) {
                         unset($rewritedTypes[$newPosition]);
                     }
                 }
 
+                // Rewrite parameters & types according to new placeholders & the extracted fridge type.
                 foreach (array_keys($newPlaceholders) as $newPlaceholderIndex) {
-                    $newPosition = $typePosition + $typePositionGap + $newPlaceholderIndex;
+                    $newPosition = $position + $positionGap + $newPlaceholderIndex;
 
-                    $rewritedParameters[$newPosition] = $parameters[$typePosition][$newPlaceholderIndex];
+                    $rewritedParameters[$newPosition] = $parameters[$position][$newPlaceholderIndex];
                     $rewritedTypes[$newPosition] = $fridgeType;
                 }
 
-                $typePositionGap += $parameterCount - 1;
+                // Increase gap according to the rewritted parameter count.
+                $positionGap += $parameterCount - 1;
             }
         }
 
@@ -139,8 +149,10 @@ class QueryRewriter
 
         foreach ($types as $parameter => $type) {
             if (substr($type, -2) === Connection::PARAM_ARRAY) {
-                $fridgeType = substr($type, 0, strlen($type) - 2);
+                // Extract fridge type.
+                $fridgeType = substr($type, 0, strlen($type) - 2);// Extract fridge type.
 
+                // Generate new placeholders.
                 $parameterCount = count($parameters[$parameter]);
                 $placeholder = ':'.$parameter;
 
@@ -149,6 +161,7 @@ class QueryRewriter
                     $newPlaceholders[] = $placeholder.$index;
                 }
 
+                // Rewrite query with new placeholders according to the current placeholder position & lenght.
                 $rewritedQuery = self::rewriteQuery(
                     $rewritedQuery,
                     strpos($rewritedQuery, $placeholder),
@@ -156,6 +169,7 @@ class QueryRewriter
                     $newPlaceholders
                 );
 
+                // Rewrite parameters & types according to new placeholders & the extracted fridge type.
                 foreach ($newPlaceholders as $newPlaceholderIndex => $newPlaceholder) {
                     $newParameter = substr($newPlaceholder, 1);
 
@@ -163,6 +177,7 @@ class QueryRewriter
                     $rewritedTypes[$newParameter] = $fridgeType;
                 }
 
+                // Remove rewritted parameter & type.
                 unset($rewritedParameters[$parameter]);
                 unset($rewritedTypes[$parameter]);
             }
@@ -197,12 +212,7 @@ class QueryRewriter
      *
      * @return string The rewrited query.
      */
-    static protected function rewriteQuery(
-        $query,
-        $placeholderPosition,
-        $placeholderLength,
-        array $newPlaceholders
-    )
+    static protected function rewriteQuery($query, $placeholderPosition, $placeholderLength, array $newPlaceholders)
     {
         return substr($query, 0, $placeholderPosition).
             implode(', ', $newPlaceholders).
