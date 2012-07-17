@@ -14,9 +14,9 @@ namespace Fridge\DBAL\Exception;
 use \Exception as BaseException;
 
 /**
- * Base exception.
+ * Fridge exception.
  *
- * All DBAL exceptions must extend this class.
+ * All Fridge DBAL exceptions must extend this class.
  *
  * @author GeLo <geloen.eric@gmail.com>
  */

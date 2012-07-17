@@ -9,14 +9,14 @@
  * file that was distributed with this source code.
  */
 
-namespace Fridge\DBAL\Base;
+namespace Fridge\DBAL\Adapter;
 
-use Fridge\DBAL\Base\PDO;
+use \PDO;
 
 /**
- * A base statement is a low-level class representing a prepared SQL statement.
+ * Low-level class representing a prepared SQL statement.
  *
- * All base statements must implement this interface.
+ * All low-level statements must implement this interface.
  *
  * @author GeLo <geloen.eric@gmail.com>
  */

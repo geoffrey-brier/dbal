@@ -9,12 +9,12 @@
  * file that was distributed with this source code.
  */
 
-namespace Fridge\DBAL\Base;
+namespace Fridge\DBAL\Adapter;
 
 /**
- * A base connection is a low-level class representing a database connection.
+ * Low-level class representing a database connection.
  *
- * All base connections must implement this interface.
+ * All low-level connections must implement this interface.
  *
  * @author GeLo <geloen.eric@gmail.com>
  */
@@ -61,7 +61,7 @@ interface ConnectionInterface
     /**
      * Executes an SQL query.
      *
-     * @return \Fridge\DBAL\Base\StatementInterface The executed query.
+     * @return \Fridge\DBAL\Adapter\StatementInterface The executed query.
      */
     function query();
 
@@ -71,7 +71,7 @@ interface ConnectionInterface
      * @param string $statement     The statement to prepare.
      * @param array  $driverOptions The driver options.
      *
-     * @return \Fridge\DBAL\Base\StatementInterface The prepared statement.
+     * @return \Fridge\DBAL\Adapter\StatementInterface The prepared statement.
      */
     function prepare($statement, $driverOptions = array());
 

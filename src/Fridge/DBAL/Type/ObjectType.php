@@ -11,8 +11,9 @@
 
 namespace Fridge\DBAL\Type;
 
-use Fridge\DBAL\Base\PDO,
-    Fridge\DBAL\Exception\TypeException,
+use \PDO;
+
+use Fridge\DBAL\Exception\TypeException,
     Fridge\DBAL\Platform\PlatformInterface;
 
 /**

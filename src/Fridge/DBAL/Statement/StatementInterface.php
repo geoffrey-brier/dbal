@@ -11,7 +11,7 @@
 
 namespace Fridge\DBAL\Statement;
 
-use Fridge\DBAL\Base\StatementInterface as BaseStatement;
+use Fridge\DBAL\Adapter\StatementInterface as AdapterStatement;
 
 /**
  * Statement.
@@ -20,14 +20,14 @@ use Fridge\DBAL\Base\StatementInterface as BaseStatement;
  *
  * @author GeLo <geloen.eric@gmail.com>
  */
-interface StatementInterface extends BaseStatement
+interface StatementInterface extends AdapterStatement
 {
     /**
-     * Gets the base statement.
+     * Gets the low-level statement.
      *
-     * @return \Fridge\DBAL\Base\StatementInterface The base statement.
+     * @return \Fridge\DBAL\Adapter\StatementInterface The low-level statement.
      */
-    function getBase();
+    function getAdapter();
 
     /**
      * Gets the connection linked to the statement.

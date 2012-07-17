@@ -11,8 +11,9 @@
 
 namespace Fridge\DBAL\Type;
 
-use Fridge\DBAL\Base\PDO,
-    Fridge\DBAL\Platform\PlatformInterface;
+use \PDO;
+
+use Fridge\DBAL\Platform\PlatformInterface;
 
 /**
  * Integer type.

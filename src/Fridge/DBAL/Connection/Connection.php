@@ -11,7 +11,9 @@
 
 namespace Fridge\DBAL\Connection;
 
-use Fridge\DBAL\Base,
+use \PDO;
+
+use Fridge\DBAL\Adapter\StatementInterface,
     Fridge\DBAL\Configuration,
     Fridge\DBAL\Driver\DriverInterface,
     Fridge\DBAL\Event,
@@ -41,8 +43,8 @@ class Connection implements ConnectionInterface
     /** @const Transaction read commited constant. */
     const TRANSACTION_SERIALIZABLE = 'SERIALIZABLE';
 
-    /** @var \Fridge\DBAL\Base\ConnectionInterface */
-    protected $base;
+    /** @var \Fridge\DBAL\Adapter\ConnectionInterface */
+    protected $adapter;
 
     /** @var \Fridge\DBAL\Driver\DriverInterface */
     protected $driver;
@@ -88,11 +90,11 @@ class Connection implements ConnectionInterface
     /**
      * {@inheritdoc}
      */
-    public function getBase()
+    public function getAdapter()
     {
         $this->connect();
 
-        return $this->base;
+        return $this->adapter;
     }
 
     /**
@@ -315,7 +317,7 @@ class Connection implements ConnectionInterface
             return true;
         }
 
-        $this->base = $this->getDriver()->connect(
+        $this->adapter = $this->getDriver()->connect(
             $this->getParameters(),
             $this->getUsername(),
             $this->getPassword(),
@@ -337,7 +339,7 @@ class Connection implements ConnectionInterface
      */
     public function close()
     {
-        unset($this->base);
+        unset($this->adapter);
         $this->isConnected = false;
     }
 
@@ -346,7 +348,7 @@ class Connection implements ConnectionInterface
      */
     public function fetchAll($query, array $parameters = array(), array $types = array())
     {
-        return $this->executeQuery($query, $parameters, $types)->fetchAll(Base\PDO::FETCH_ASSOC);
+        return $this->executeQuery($query, $parameters, $types)->fetchAll(PDO::FETCH_ASSOC);
     }
 
     /**
@@ -354,7 +356,7 @@ class Connection implements ConnectionInterface
      */
     public function fetchArray($query, array $parameters = array(), array $types = array())
     {
-        return $this->executeQuery($query, $parameters, $types)->fetch(Base\PDO::FETCH_NUM);
+        return $this->executeQuery($query, $parameters, $types)->fetch(PDO::FETCH_NUM);
     }
 
     /**
@@ -362,7 +364,7 @@ class Connection implements ConnectionInterface
      */
     public function fetchAssoc($query, array $parameters = array(), array $types = array())
     {
-        return $this->executeQuery($query, $parameters, $types)->fetch(Base\PDO::FETCH_ASSOC);
+        return $this->executeQuery($query, $parameters, $types)->fetch(PDO::FETCH_ASSOC);
     }
 
     /**
@@ -385,7 +387,7 @@ class Connection implements ConnectionInterface
         }
 
         if (!empty($parameters)) {
-            $statement = $this->getBase()->prepare($query);
+            $statement = $this->getAdapter()->prepare($query);
 
             if (!empty($types)) {
                 $this->bindStatementParameters($statement, $parameters, $types);
@@ -394,7 +396,7 @@ class Connection implements ConnectionInterface
                 $statement->execute($parameters);
             }
         } else {
-            $statement = $this->getBase()->query($query);
+            $statement = $this->getAdapter()->query($query);
         }
 
         if ($debugger !== null) {
@@ -501,7 +503,7 @@ class Connection implements ConnectionInterface
         }
 
         if (!empty($parameters)) {
-            $statement = $this->getBase()->prepare($query);
+            $statement = $this->getAdapter()->prepare($query);
 
             if (!empty($types)) {
                 $this->bindStatementParameters($statement, $parameters, $types);
@@ -512,7 +514,7 @@ class Connection implements ConnectionInterface
 
             $affectedRows = $statement->rowCount();
         } else {
-            $affectedRows = $this->getBase()->exec($query);
+            $affectedRows = $this->getAdapter()->exec($query);
         }
 
         if ($debugger !== null) {
@@ -531,9 +533,9 @@ class Connection implements ConnectionInterface
         $this->transactionLevel++;
 
         if ($this->transactionLevel === 1) {
-            $this->getBase()->beginTransaction();
+            $this->getAdapter()->beginTransaction();
         } else {
-            $this->getBase()->exec($this->getPlatform()->getCreateSavepointSQLQuery($this->generateSavepointName()));
+            $this->getAdapter()->exec($this->getPlatform()->getCreateSavepointSQLQuery($this->generateSavepointName()));
         }
     }
 
@@ -545,9 +547,9 @@ class Connection implements ConnectionInterface
         if ($this->transactionLevel === 0) {
             throw ConnectionException::noActiveTransaction();
         } elseif ($this->transactionLevel === 1) {
-            $this->getBase()->commit();
+            $this->getAdapter()->commit();
         } else {
-            $this->getBase()->exec($this->getPlatform()->getReleaseSavepointSQLQuery($this->generateSavepointName()));
+            $this->getAdapter()->exec($this->getPlatform()->getReleaseSavepointSQLQuery($this->generateSavepointName()));
         }
 
         $this->transactionLevel--;
@@ -561,9 +563,9 @@ class Connection implements ConnectionInterface
         if ($this->transactionLevel === 0) {
             throw ConnectionException::noActiveTransaction();
         } elseif ($this->transactionLevel === 1) {
-            $this->getBase()->rollBack();
+            $this->getAdapter()->rollBack();
         } else {
-            $this->getBase()->exec($this->getPlatform()->getRollbackSavepointSQLQuery($this->generateSavepointName()));
+            $this->getAdapter()->exec($this->getPlatform()->getRollbackSavepointSQLQuery($this->generateSavepointName()));
         }
 
         $this->transactionLevel--;
@@ -584,7 +586,7 @@ class Connection implements ConnectionInterface
     {
         TypeUtility::bindTypedValue($string, $type, $this->getPlatform());
 
-        return $this->getBase()->quote($string, $type);
+        return $this->getAdapter()->quote($string, $type);
     }
 
     /**
@@ -592,7 +594,7 @@ class Connection implements ConnectionInterface
      */
     public function query()
     {
-        return call_user_func_array(array($this->getBase(), 'query'), func_get_args());
+        return call_user_func_array(array($this->getAdapter(), 'query'), func_get_args());
     }
 
     /**
@@ -608,7 +610,7 @@ class Connection implements ConnectionInterface
      */
     public function exec($statement)
     {
-        return $this->getBase()->exec($statement);
+        return $this->getAdapter()->exec($statement);
     }
 
     /**
@@ -616,7 +618,7 @@ class Connection implements ConnectionInterface
      */
     public function lastInsertId($name = null)
     {
-        return $this->getBase()->lastInsertId($name);
+        return $this->getAdapter()->lastInsertId($name);
     }
 
     /**
@@ -624,7 +626,7 @@ class Connection implements ConnectionInterface
      */
     public function errorCode()
     {
-        return $this->getBase()->errorCode();
+        return $this->getAdapter()->errorCode();
     }
 
     /**
@@ -632,7 +634,7 @@ class Connection implements ConnectionInterface
      */
     public function errorInfo()
     {
-        return $this->getBase()->errorInfo();
+        return $this->getAdapter()->errorInfo();
     }
 
     /**
@@ -640,7 +642,7 @@ class Connection implements ConnectionInterface
      */
     public function getAttribute($attribute)
     {
-        return $this->getBase()->getAttribute($attribute);
+        return $this->getAdapter()->getAttribute($attribute);
     }
 
     /**
@@ -648,17 +650,17 @@ class Connection implements ConnectionInterface
      */
     public function setAttribute($attribute, $value)
     {
-        return $this->getBase()->setAttribute($attribute, $value);
+        return $this->getAdapter()->setAttribute($attribute, $value);
     }
 
     /**
      * Binds typed parameters to a statement.
      *
-     * @param \Fridge\DBAL\Base\StatementInterface $statement  The statement to bind on.
-     * @param array                                $parameters The statement parameters.
-     * @param array                                $types      The statement parameters types.
+     * @param \Fridge\DBAL\Adapter\StatementInterface $statement  The statement to bind on.
+     * @param array                                   $parameters The statement parameters.
+     * @param array                                   $types      The statement parameters types.
      */
-    protected function bindStatementParameters(Base\StatementInterface $statement, array $parameters, array $types)
+    protected function bindStatementParameters(StatementInterface $statement, array $parameters, array $types)
     {
         foreach ($parameters as $key => $parameter) {
             if (is_int($key)) {

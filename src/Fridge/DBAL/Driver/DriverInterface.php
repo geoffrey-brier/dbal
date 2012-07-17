@@ -14,7 +14,7 @@ namespace Fridge\DBAL\Driver;
 use Fridge\DBAL\Connection\ConnectionInterface;
 
 /**
- * A driver allows to connect to a database by instantiating a base connection object.
+ * A driver allows to connect to a database by instantiating a low-level connection object.
  * Additionally, it retrieves the associated platform & schema manager.
  *
  * All drivers must implement this interface.
@@ -24,14 +24,14 @@ use Fridge\DBAL\Connection\ConnectionInterface;
 interface DriverInterface
 {
     /**
-     * Connects to the database by instanciating a base connection object.
+     * Connects to the database by instanciating a low-level connection object.
      *
      * @param array  $parameters    The database parameters.
      * @param string $username      The database username.
      * @param string $password      The database password.
      * @param array  $driverOptions The database driver options.
      *
-     * @return \Fridge\DBAL\Base\ConnectionInterface The base connection.
+     * @return \Fridge\DBAL\Adapter\ConnectionInterface The low-level connection.
      */
     function connect(array $parameters, $username = null, $password = null, array $driverOptions = array());
 

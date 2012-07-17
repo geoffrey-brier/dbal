@@ -11,24 +11,24 @@
 
 namespace Fridge\DBAL\Connection;
 
-use Fridge\DBAL\Base\ConnectionInterface as BaseConnection;
+use Fridge\DBAL\Adapter\ConnectionInterface as AdapterConnection;
 
 /**
- * Adds some incredible features to a base connection like asynchronous connection, nested transactions,
+ * Adds some incredible features to a low-level connection like asynchronous connection, nested transactions,
  * transaction isolation, advanced types support and more.
  *
  * All connections must implement this interface.
  *
  * @author GeLo <geloen.eric@gmail.com>
  */
-interface ConnectionInterface extends BaseConnection
+interface ConnectionInterface extends AdapterConnection
 {
     /**
-     * Gets the base connection used by the connection.
+     * Gets the low-level connection used by the connection.
      *
-     * @return \Fridge\DBAL\Base\ConnectionInterface The base connection.
+     * @return \Fridge\DBAL\Adapter\ConnectionInterface The low-level connection.
      */
-    function getBase();
+    function getAdapter();
 
     /**
      * Gets the driver used by the connection.
@@ -263,7 +263,7 @@ interface ConnectionInterface extends BaseConnection
      * @param array  $parameters Associative array that describes placeholder name => value pairs.
      * @param array  $types      Associative array that describes placeholder name => type pairs (PDO or DBAL).
      *
-     * @return \Fridge\DBAL\Base\StatementInterface The statement.
+     * @return \Fridge\DBAL\Adapter\StatementInterface The statement.
      */
     function executeQuery($query, array $parameters = array(), array $types = array());
 

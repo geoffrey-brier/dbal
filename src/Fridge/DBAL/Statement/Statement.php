@@ -11,10 +11,10 @@
 
 namespace Fridge\DBAL\Statement;
 
-use \IteratorAggregate;
+use \IteratorAggregate,
+    \PDO;
 
-use Fridge\DBAL\Base\PDO,
-    Fridge\DBAL\Connection\ConnectionInterface,
+use Fridge\DBAL\Connection\ConnectionInterface,
     Fridge\DBAL\Type\TypeUtility;
 
 /**
@@ -24,8 +24,8 @@ use Fridge\DBAL\Base\PDO,
  */
 class Statement implements StatementInterface, IteratorAggregate
 {
-    /** @var \Fridge\DBAL\Base\StatementInterface */
-    protected $base;
+    /** @var \Fridge\DBAL\Adapter\StatementInterface */
+    protected $adapter;
 
     /** @var \Fridge\DBAL\Connection\ConnectionInterface */
     protected $connection;
@@ -49,15 +49,15 @@ class Statement implements StatementInterface, IteratorAggregate
         $this->connection = $connection;
         $this->options = $options;
 
-        $this->base = $this->connection->getBase()->prepare($this->sql, $this->options);
+        $this->adapter = $this->connection->getAdapter()->prepare($this->sql, $this->options);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getBase()
+    public function getAdapter()
     {
-        return $this->base;
+        return $this->adapter;
     }
 
     /**
@@ -89,7 +89,7 @@ class Statement implements StatementInterface, IteratorAggregate
      */
     public function getIterator()
     {
-        return $this->base;
+        return $this->adapter;
     }
 
     /**
@@ -99,7 +99,7 @@ class Statement implements StatementInterface, IteratorAggregate
      */
     public function bindColumn($column, &$variable, $type = null, $length = null, $driverOptions = null)
     {
-        return $this->base->bindColumn($column, $variable, $type, $length, $driverOptions);
+        return $this->adapter->bindColumn($column, $variable, $type, $length, $driverOptions);
     }
 
     /**
@@ -109,7 +109,7 @@ class Statement implements StatementInterface, IteratorAggregate
      */
     public function bindParam($parameter, &$variable, $type = null, $length = null, $driverOptions = null)
     {
-        return $this->base->bindParam($parameter, $variable, $type, $length, $driverOptions);
+        return $this->adapter->bindParam($parameter, $variable, $type, $length, $driverOptions);
     }
 
     /**
@@ -121,7 +121,7 @@ class Statement implements StatementInterface, IteratorAggregate
     {
         TypeUtility::bindTypedValue($value, $type, $this->connection->getPlatform());
 
-        return $this->base->bindValue($parameter, $value, $type);
+        return $this->adapter->bindValue($parameter, $value, $type);
     }
 
     /**
@@ -129,7 +129,7 @@ class Statement implements StatementInterface, IteratorAggregate
      */
     public function closeCursor()
     {
-        return $this->base->closeCursor();
+        return $this->adapter->closeCursor();
     }
 
     /**
@@ -137,7 +137,7 @@ class Statement implements StatementInterface, IteratorAggregate
      */
     public function columnCount()
     {
-        return $this->base->columnCount();
+        return $this->adapter->columnCount();
     }
 
     /**
@@ -145,7 +145,7 @@ class Statement implements StatementInterface, IteratorAggregate
      */
     public function debugDumpParams()
     {
-        return $this->base->debugDumpParams();
+        return $this->adapter->debugDumpParams();
     }
 
     /**
@@ -153,7 +153,7 @@ class Statement implements StatementInterface, IteratorAggregate
      */
     public function errorCode()
     {
-        return $this->base->errorCode();
+        return $this->adapter->errorCode();
     }
 
     /**
@@ -161,7 +161,7 @@ class Statement implements StatementInterface, IteratorAggregate
      */
     public function errorInfo()
     {
-        return $this->base->errorInfo();
+        return $this->adapter->errorInfo();
     }
 
     /**
@@ -169,7 +169,7 @@ class Statement implements StatementInterface, IteratorAggregate
      */
     public function execute($parameters = array())
     {
-        return $this->base->execute($parameters);
+        return $this->adapter->execute($parameters);
     }
 
     /**
@@ -177,7 +177,7 @@ class Statement implements StatementInterface, IteratorAggregate
      */
     public function fetch($fetchStyle = PDO::FETCH_BOTH, $cursorOrientation = PDO::FETCH_ORI_NEXT, $cursorOffset = 0)
     {
-        return $this->base->fetch($fetchStyle, $cursorOrientation, $cursorOffset);
+        return $this->adapter->fetch($fetchStyle, $cursorOrientation, $cursorOffset);
     }
 
     /**
@@ -185,7 +185,7 @@ class Statement implements StatementInterface, IteratorAggregate
      */
     public function fetchAll($fetchStyle = PDO::FETCH_BOTH, $fetchArgument = null, $constructorArguments = array())
     {
-        return $this->base->fetchAll($fetchStyle, $fetchArgument, $constructorArguments);
+        return $this->adapter->fetchAll($fetchStyle, $fetchArgument, $constructorArguments);
     }
 
     /**
@@ -193,7 +193,7 @@ class Statement implements StatementInterface, IteratorAggregate
      */
     public function fetchColumn($columnIndex = 0)
     {
-        return $this->base->fetchColumn($columnIndex);
+        return $this->adapter->fetchColumn($columnIndex);
     }
 
     /**
@@ -201,7 +201,7 @@ class Statement implements StatementInterface, IteratorAggregate
      */
     public function fetchObject($className = 'stdClass', $constructorArguments = array())
     {
-        return $this->base->fetchObject($className, $constructorArguments);
+        return $this->adapter->fetchObject($className, $constructorArguments);
     }
 
     /**
@@ -209,7 +209,7 @@ class Statement implements StatementInterface, IteratorAggregate
      */
     public function getAttribute($attribute)
     {
-        return $this->base->getAttribute($attribute);
+        return $this->adapter->getAttribute($attribute);
     }
 
     /**
@@ -217,7 +217,7 @@ class Statement implements StatementInterface, IteratorAggregate
      */
     public function nextRowset()
     {
-        return $this->base->nextRowset();
+        return $this->adapter->nextRowset();
     }
 
     /**
@@ -225,7 +225,7 @@ class Statement implements StatementInterface, IteratorAggregate
      */
     public function rowCount()
     {
-        return $this->base->rowCount();
+        return $this->adapter->rowCount();
     }
 
     /**
@@ -233,7 +233,7 @@ class Statement implements StatementInterface, IteratorAggregate
      */
     public function setAttribute($attribute, $value)
     {
-        return $this->base->setAttribute($attribute, $value);
+        return $this->adapter->setAttribute($attribute, $value);
     }
 
     /**
@@ -241,6 +241,6 @@ class Statement implements StatementInterface, IteratorAggregate
      */
     public function setFetchMode($mode)
     {
-        return call_user_func_array(array($this->base, 'setFetchMode'), func_get_args());
+        return call_user_func_array(array($this->adapter, 'setFetchMode'), func_get_args());
     }
 }
