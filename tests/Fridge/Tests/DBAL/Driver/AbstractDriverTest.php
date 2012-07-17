@@ -47,7 +47,7 @@ abstract class AbstractDriverTest extends \PHPUnit_Framework_TestCase
     public function testConnect()
     {
         $this->assertInstanceOf(
-            'Fridge\DBAL\Base\PDO',
+            'Fridge\DBAL\Adapter\PDO\Connection',
             $this->driver->connect(self::$settings, self::$settings['username'], self::$settings['password'])
         );
     }

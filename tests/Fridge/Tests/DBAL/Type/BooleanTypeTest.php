@@ -11,8 +11,9 @@
 
 namespace Fridge\Tests\DBAL\Type;
 
-use Fridge\DBAL\Base\PDO,
-    Fridge\DBAL\Type;
+use \PDO;
+
+use Fridge\DBAL\Type;
 
 /**
  * Boolean type test.

@@ -11,10 +11,10 @@
 
 namespace Fridge\Tests\DBAL\Type;
 
-use \DateTime;
+use \DateTime,
+    \PDO;
 
-use Fridge\DBAL\Base\PDO,
-    Fridge\DBAL\Type;
+use Fridge\DBAL\Type;
 
 /**
  * Date type test.

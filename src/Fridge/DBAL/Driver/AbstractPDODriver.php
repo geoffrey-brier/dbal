@@ -11,12 +11,12 @@
 
 namespace Fridge\DBAL\Driver;
 
-use Fridge\DBAL\Base\PDO;
+use Fridge\DBAL\Adapter\PDO\Connection;
 
 /**
- * The PDO driver allows to easily support base PDO connections by adding the DSN notion.
+ * The PDO driver allows to easily support low-level PDO connections by adding the DSN notion.
  *
- * All drivers using a base PDO connection must extend this class.
+ * All drivers using a low-level PDO connection must extend this class.
  *
  * @author GeLo <geloen.eric@gmail.com>
  */
@@ -27,7 +27,7 @@ abstract class AbstractPDODriver extends AbstractDriver
      */
     public function connect(array $parameters, $username = null, $password = null, array $driverOptions = array())
     {
-        return new PDO($this->generateDSN($parameters), $username, $password, $driverOptions);
+        return new Connection($this->generateDSN($parameters), $username, $password, $driverOptions);
     }
 
     /**

@@ -9,19 +9,21 @@
  * file that was distributed with this source code.
  */
 
-namespace Fridge\DBAL\Base;
+namespace Fridge\DBAL\Adapter\PDO;
 
-use \PDO as BasePDO;
+use \PDO;
+
+use Fridge\DBAL\Adapter\ConnectionInterface;
 
 /**
  * {@inheritdoc}
  *
  * @author GeLo <geloen.eric@gmail.com>
  */
-class PDO extends BasePDO implements ConnectionInterface
+class Connection extends PDO implements ConnectionInterface
 {
     /**
-     * Creates a base PDO connection.
+     * Creates a PDO connection.
      *
      * @param string $dsn           The database DSN.
      * @param string $username      The database username.
@@ -33,6 +35,6 @@ class PDO extends BasePDO implements ConnectionInterface
         parent::__construct($dsn, $username, $password, $driverOptions);
 
         $this->setAttribute(self::ATTR_ERRMODE, self::ERRMODE_EXCEPTION);
-        $this->setAttribute(self::ATTR_STATEMENT_CLASS, array('Fridge\DBAL\Base\PDOStatement', array()));
+        $this->setAttribute(self::ATTR_STATEMENT_CLASS, array('Fridge\DBAL\Adapter\PDO\Statement', array()));
     }
 }
