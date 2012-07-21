@@ -11,7 +11,7 @@
 
 namespace Fridge\Tests\DBAL\Driver;
 
-use Fridge\DBAL\Driver\PDOPostgreSQLDriver,
+use Fridge\DBAL\Driver\PDO\PostgreSQLDriver,
     Fridge\Tests\PHPUnitUtility;
 
 /**
@@ -39,7 +39,7 @@ class PDOPostgreSQLDriverTest extends AbstractDriverTest
     protected function setUp()
     {
         if (PHPUnitUtility::hasSettings(PHPUnitUtility::PDO_PGSQL)) {
-            $this->driver = new PDOPostgreSQLDriver();
+            $this->driver = new PostgreSQLDriver();
         }
 
         parent::setUp();

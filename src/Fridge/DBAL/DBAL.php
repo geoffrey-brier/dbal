@@ -26,8 +26,8 @@ class DBAL
 
     /** @var array */
     static protected $mappedDriverClasses = array(
-        'pdo_mysql' => 'Fridge\DBAL\Driver\PDOMySQLDriver',
-        'pdo_pgsql' => 'Fridge\DBAL\Driver\PDOPostgreSQLDriver'
+        'pdo_mysql' => 'Fridge\DBAL\Driver\PDO\MySQLDriver',
+        'pdo_pgsql' => 'Fridge\DBAL\Driver\PDO\PostgreSQLDriver',
     );
 
     /**

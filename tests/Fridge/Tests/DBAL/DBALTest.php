@@ -41,7 +41,8 @@ class DBALTest extends \PHPUnit_Framework_TestCase
     static public function validDriverClassProvider()
     {
         return array(
-            array('Fridge\DBAL\Driver\PDOMySQLDriver'),
+            array('Fridge\DBAL\Driver\PDO\MySQLDriver'),
+            array('Fridge\DBAL\Driver\PDO\PostgreSQLDriver'),
         );
     }
 

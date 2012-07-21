@@ -11,7 +11,7 @@
 
 namespace Fridge\Tests\DBAL\Driver;
 
-use Fridge\DBAL\Driver\PDOMySQLDriver,
+use Fridge\DBAL\Driver\PDO\MySQLDriver,
     Fridge\Tests\PHPUnitUtility;
 
 /**
@@ -39,7 +39,7 @@ class PDOMySQLDriverTest extends AbstractDriverTest
     protected function setUp()
     {
         if (PHPUnitUtility::hasSettings(PHPUnitUtility::PDO_MYSQL)) {
-            $this->driver = new PDOMySQLDriver();
+            $this->driver = new MySQLDriver();
         }
 
         parent::setUp();
@@ -55,7 +55,7 @@ class PDOMySQLDriverTest extends AbstractDriverTest
         $settings['unix_socket'] = '/var/run/mysqld/mysqld.sock';
 
         $this->assertInstanceOf(
-            'Fridge\DBAL\Adapter\PDO\Connection',
+            'Fridge\DBAL\Adapter\ConnectionInterface',
             $this->driver->connect($settings, $settings['username'], $settings['password'])
         );
     }
@@ -66,7 +66,7 @@ class PDOMySQLDriverTest extends AbstractDriverTest
         $settings['charset'] = 'utf8';
 
         $this->assertInstanceOf(
-            'Fridge\DBAL\Adapter\PDO\Connection',
+            'Fridge\DBAL\Adapter\ConnectionInterface',
             $this->driver->connect($settings, $settings['username'], $settings['password'])
         );
     }
