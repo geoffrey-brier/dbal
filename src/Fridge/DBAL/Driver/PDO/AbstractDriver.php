@@ -9,18 +9,19 @@
  * file that was distributed with this source code.
  */
 
-namespace Fridge\DBAL\Driver;
+namespace Fridge\DBAL\Driver\PDO;
 
-use Fridge\DBAL\Adapter\PDO\Connection;
+use Fridge\DBAL\Adapter\PDO\Connection,
+    Fridge\DBAL\Driver\AbstractDriver as BaseDriver;
 
 /**
- * The PDO driver allows to easily support low-level PDO connections by adding the DSN notion.
+ * The abstract PDO driver allows to easily support low-level PDO connections by adding the DSN notion.
  *
  * All drivers using a low-level PDO connection must extend this class.
  *
  * @author GeLo <geloen.eric@gmail.com>
  */
-abstract class AbstractPDODriver extends AbstractDriver
+abstract class AbstractDriver extends BaseDriver
 {
     /**
      * {@inheritdoc}

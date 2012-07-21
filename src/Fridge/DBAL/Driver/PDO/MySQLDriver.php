@@ -9,18 +9,18 @@
  * file that was distributed with this source code.
  */
 
-namespace Fridge\DBAL\Driver;
+namespace Fridge\DBAL\Driver\PDO;
 
 use Fridge\DBAL\Connection\ConnectionInterface,
     Fridge\DBAL\Platform\MySQLPlatform,
     Fridge\DBAL\SchemaManager\MySQLSchemaManager;
 
 /**
- * The PDO MySQL driver.
+ * PDO MySQL driver.
  *
  * @author GeLo <geloen.eric@gmail.com>
  */
-class PDOMySQLDriver extends AbstractPDODriver
+class MySQLDriver extends AbstractDriver
 {
     /**
      * {@inheritdoc}

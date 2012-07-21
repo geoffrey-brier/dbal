@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Fridge\DBAL\Driver;
+namespace Fridge\DBAL\Driver\PDO;
 
 use Fridge\DBAL\Connection\ConnectionInterface,
     Fridge\DBAL\Platform\PostgreSQLPlatform,
@@ -20,7 +20,7 @@ use Fridge\DBAL\Connection\ConnectionInterface,
  *
  * @author GeLo <geloen.eric@gmail.com>
  */
-class PDOPostgreSQLDriver extends AbstractPDODriver
+class PostgreSQLDriver extends AbstractDriver
 {
     /**
      * {@inheritdoc}
