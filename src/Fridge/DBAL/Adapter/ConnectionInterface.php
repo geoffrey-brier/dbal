@@ -11,6 +11,8 @@
 
 namespace Fridge\DBAL\Adapter;
 
+use \PDO;
+
 /**
  * Low-level class representing a database connection.
  *
@@ -56,7 +58,7 @@ interface ConnectionInterface
      *
      * @return string The quoted string.
      */
-    function quote($string, $type = null);
+    function quote($string, $type = PDO::PARAM_STR);
 
     /**
      * Executes an SQL query.
@@ -105,23 +107,4 @@ interface ConnectionInterface
      * @return string The last error code associated with the last operation.
      */
     function errorInfo();
-
-    /**
-     * Retrieve a connection attribute value.
-     *
-     * @param integer $attribute The connection attribute.
-     *
-     * @return mixed The connection attribute value.
-     */
-    function getAttribute($attribute);
-
-    /**
-     * Sets a connection attribute.
-     *
-     * @param integer $attribute The connection attribute.
-     * @param mixed   $value     The connection attribute value.
-     *
-     * @return boolean TRUE if the connection attribute has been setted else FALSE.
-     */
-    function setAttribute($attribute, $value);
 }

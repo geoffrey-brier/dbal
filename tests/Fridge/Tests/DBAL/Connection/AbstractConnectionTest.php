@@ -597,10 +597,4 @@ abstract class AbstractConnectionTest extends \PHPUnit_Framework_TestCase
             $this->assertInternalType('string', $errorInfo[2]);
         }
     }
-
-    public function testAttribute()
-    {
-        $this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $this->assertEquals(PDO::ERRMODE_EXCEPTION, $this->connection->getAttribute(PDO::ATTR_ERRMODE));
-    }
 }

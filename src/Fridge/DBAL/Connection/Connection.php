@@ -587,7 +587,7 @@ class Connection implements ConnectionInterface
     /**
      * {@inheritdoc}
      */
-    public function quote($string, $type = null)
+    public function quote($string, $type = PDO::PARAM_STR)
     {
         TypeUtility::bindTypedValue($string, $type, $this->getPlatform());
 
@@ -640,22 +640,6 @@ class Connection implements ConnectionInterface
     public function errorInfo()
     {
         return $this->getAdapter()->errorInfo();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getAttribute($attribute)
-    {
-        return $this->getAdapter()->getAttribute($attribute);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setAttribute($attribute, $value)
-    {
-        return $this->getAdapter()->setAttribute($attribute, $value);
     }
 
     /**
