@@ -65,11 +65,14 @@ class MySQLSchemaManager extends AbstractSchemaManager
             case 'text':
             case 'tinytext':
             case 'varchar':
-                $precision = $scale = null;
+                $precision = null;
+                $scale = null;
                 break;
 
             default:
-                $length = $precision = $scale = null;
+                $length = null;
+                $precision = null;
+                $scale = null;
                 break;
         }
 
