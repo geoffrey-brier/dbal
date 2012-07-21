@@ -84,19 +84,9 @@ class Statement implements StatementInterface, IteratorAggregate
      *
      * This method only suppports PDO type.
      */
-    public function bindColumn($column, &$variable, $type = null, $length = null, $driverOptions = null)
+    public function bindParam($parameter, &$variable, $type = null)
     {
-        return $this->adapter->bindColumn($column, $variable, $type, $length, $driverOptions);
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * This method only suppports PDO type.
-     */
-    public function bindParam($parameter, &$variable, $type = null, $length = null, $driverOptions = null)
-    {
-        return $this->adapter->bindParam($parameter, $variable, $type, $length, $driverOptions);
+        return $this->adapter->bindParam($parameter, $variable, $type);
     }
 
     /**
@@ -130,14 +120,6 @@ class Statement implements StatementInterface, IteratorAggregate
     /**
      * {@inheritdoc}
      */
-    public function debugDumpParams()
-    {
-        return $this->adapter->debugDumpParams();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function errorCode()
     {
         return $this->adapter->errorCode();
@@ -162,17 +144,17 @@ class Statement implements StatementInterface, IteratorAggregate
     /**
      * {@inheritdoc}
      */
-    public function fetch($fetchStyle = PDO::FETCH_BOTH, $cursorOrientation = PDO::FETCH_ORI_NEXT, $cursorOffset = 0)
+    public function fetch($fetchMode = PDO::FETCH_BOTH)
     {
-        return $this->adapter->fetch($fetchStyle, $cursorOrientation, $cursorOffset);
+        return $this->adapter->fetch($fetchMode);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function fetchAll($fetchStyle = PDO::FETCH_BOTH, $fetchArgument = null, $constructorArguments = array())
+    public function fetchAll($fetchMode = PDO::FETCH_BOTH)
     {
-        return $this->adapter->fetchAll($fetchStyle, $fetchArgument, $constructorArguments);
+        return $this->adapter->fetchAll($fetchMode);
     }
 
     /**
@@ -186,30 +168,6 @@ class Statement implements StatementInterface, IteratorAggregate
     /**
      * {@inheritdoc}
      */
-    public function fetchObject($className = 'stdClass', $constructorArguments = array())
-    {
-        return $this->adapter->fetchObject($className, $constructorArguments);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getAttribute($attribute)
-    {
-        return $this->adapter->getAttribute($attribute);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function nextRowset()
-    {
-        return $this->adapter->nextRowset();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function rowCount()
     {
         return $this->adapter->rowCount();
@@ -218,16 +176,8 @@ class Statement implements StatementInterface, IteratorAggregate
     /**
      * {@inheritdoc}
      */
-    public function setAttribute($attribute, $value)
+    public function setFetchMode($fetchMode)
     {
-        return $this->adapter->setAttribute($attribute, $value);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setFetchMode($mode)
-    {
-        return call_user_func_array(array($this->adapter, 'setFetchMode'), func_get_args());
+        return $this->adapter->setFetchMode($fetchMode);
     }
 }
