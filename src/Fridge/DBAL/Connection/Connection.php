@@ -19,7 +19,7 @@ use Fridge\DBAL\Adapter\StatementInterface,
     Fridge\DBAL\Event,
     Fridge\DBAL\Exception\ConnectionException,
     Fridge\DBAL\Logging\Debugger,
-    Fridge\DBAL\Query\QueryBuilder,
+    Fridge\DBAL\Query,
     Fridge\DBAL\Statement\Statement,
     Fridge\DBAL\Type\TypeUtility,
     Monolog\Logger;
@@ -42,6 +42,9 @@ class Connection implements ConnectionInterface
 
     /** @const Transaction read commited constant. */
     const TRANSACTION_SERIALIZABLE = 'SERIALIZABLE';
+
+    /** @const Array parameter constant which enables query rewritting. */
+    const PARAM_ARRAY = '[]';
 
     /** @var \Fridge\DBAL\Adapter\ConnectionInterface */
     protected $adapter;
@@ -126,7 +129,7 @@ class Connection implements ConnectionInterface
      */
     public function createQueryBuilder()
     {
-        return new QueryBuilder($this);
+        return new Query\QueryBuilder($this);
     }
 
     /**
@@ -387,6 +390,7 @@ class Connection implements ConnectionInterface
         }
 
         if (!empty($parameters)) {
+            list($query, $parameters, $types) = Query\QueryRewriter::rewrite($query, $parameters, $types);
             $statement = $this->getAdapter()->prepare($query);
 
             if (!empty($types)) {
@@ -503,6 +507,7 @@ class Connection implements ConnectionInterface
         }
 
         if (!empty($parameters)) {
+            list($query, $parameters, $types) = Query\QueryRewriter::rewrite($query, $parameters, $types);
             $statement = $this->getAdapter()->prepare($query);
 
             if (!empty($types)) {
