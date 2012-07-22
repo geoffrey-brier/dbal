@@ -91,8 +91,6 @@ class StatementTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @expectedException \Fridge\DBAL\Exception\Adapter\MysqliException
-     * @expectedExceptionMessage You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'foo' at line 1
-     * @expectedExceptionCode 1064
      */
     public function testStatementWithInvalidStatement()
     {
@@ -108,8 +106,6 @@ class StatementTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @expectedException \Fridge\DBAL\Exception\Adapter\MysqliException
-     * @expectedExceptionMessage Attempt to read a row while there is no result set associated with the statement
-     * @expectedExceptionCode 2053
      */
     public function testFetchWithInvalidStatement()
     {
@@ -282,8 +278,6 @@ class StatementTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @expectedException \Fridge\DBAL\Exception\Adapter\MysqliException
-     * @expectedExceptionMessage No data supplied for parameters in prepared statement
-     * @expectedExceptionCode 2031
      */
     public function testExecuteWithInvalidParameters()
     {

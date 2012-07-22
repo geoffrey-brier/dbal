@@ -150,8 +150,6 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @expectedException \Fridge\DBAL\Exception\Adapter\MysqliException
-     * @expectedExceptionMessage Can't initialize character set foo (path: /usr/share/mysql/charsets/)
-     * @expectedExceptionCode 2019
      */
     public function testConnectionWithInvalidCharset()
     {
@@ -162,8 +160,6 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @expectedException \Fridge\DBAL\Exception\Adapter\MysqliException
-     * @expectedExceptionMessage Access denied for user 'foo'@'localhost' (using password: YES)
-     * @expectedExceptionCode 1045
      */
     public function testConnectionWithInvalidParameters()
     {
