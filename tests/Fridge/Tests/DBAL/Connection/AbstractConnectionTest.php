@@ -571,6 +571,8 @@ abstract class AbstractConnectionTest extends \PHPUnit_Framework_TestCase
     {
         try {
             $this->connection->exec('foo');
+
+            $this->fail();
         } catch (Exception $e) {
             $this->assertEquals($e->getCode(), $this->connection->errorCode());
         }
@@ -580,11 +582,18 @@ abstract class AbstractConnectionTest extends \PHPUnit_Framework_TestCase
     {
         try {
             $this->connection->exec('foo');
+
+            $this->fail();
         } catch (Exception $e) {
             $errorInfo = $this->connection->errorInfo();
 
+            $this->assertArrayHasKey(0, $errorInfo);
             $this->assertEquals($e->getCode(), $errorInfo[0]);
+
+            $this->assertArrayHasKey(1, $errorInfo);
             $this->assertInternalType('int', $errorInfo[1]);
+
+            $this->assertArrayHasKey(2, $errorInfo);
             $this->assertInternalType('string', $errorInfo[2]);
         }
     }
