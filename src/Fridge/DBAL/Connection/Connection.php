@@ -605,9 +605,9 @@ class Connection implements ConnectionInterface
     /**
      * {@inheritdoc}
      */
-    public function prepare($statement, $driverOptions = array())
+    public function prepare($statement)
     {
-        return new Statement($statement, $this, $driverOptions);
+        return new Statement($statement, $this);
     }
 
     /**

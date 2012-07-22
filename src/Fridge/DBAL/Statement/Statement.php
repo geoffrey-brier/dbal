@@ -33,23 +33,18 @@ class Statement implements StatementInterface, IteratorAggregate
     /** @var string */
     protected $sql;
 
-    /** @var array */
-    protected $options;
-
     /**
      * Creates a statement
      *
      * @param string                                      $sql        The SQL of the statement.
      * @param \Fridge\DBAL\Connection\ConnectionInterface $connection The connection linked to the statement.
-     * @param array                                       $options    The PDO driver options.
      */
-    public function __construct($sql, ConnectionInterface $connection, array $options = array())
+    public function __construct($sql, ConnectionInterface $connection)
     {
         $this->sql = $sql;
         $this->connection = $connection;
-        $this->options = $options;
 
-        $this->adapter = $this->connection->getAdapter()->prepare($this->sql, $this->options);
+        $this->adapter = $this->connection->getAdapter()->prepare($this->sql);
     }
 
     /**
@@ -74,14 +69,6 @@ class Statement implements StatementInterface, IteratorAggregate
     public function getSQL()
     {
         return $this->sql;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getOptions()
-    {
-        return $this->options;
     }
 
     /**

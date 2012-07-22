@@ -42,11 +42,4 @@ interface StatementInterface extends AdapterStatement
      * @return string The SQL statement.
      */
     function getSQL();
-
-    /**
-     * Gets the PDO driver options.
-     *
-     * @return array The PDO driver options.
-     */
-    function getOptions();
 }

@@ -46,7 +46,7 @@ class StatementTest extends \PHPUnit_Framework_TestCase
         $this->adapterConnectionMock
             ->expects($this->any())
             ->method('prepare')
-            ->with($this->equalTo('foo'), $this->equalTo(array('foo')))
+            ->with($this->equalTo('foo'))
             ->will($this->returnValue($this->adapterStatementMock));
 
         $this->connectionMock = $this->getMock('\Fridge\DBAL\Connection\ConnectionInterface');
@@ -55,7 +55,7 @@ class StatementTest extends \PHPUnit_Framework_TestCase
             ->method('getAdapter')
             ->will($this->returnValue($this->adapterConnectionMock));
 
-        $this->statement = new Statement('foo', $this->connectionMock, array('foo'));
+        $this->statement = new Statement('foo', $this->connectionMock);
     }
 
     /**
@@ -74,7 +74,6 @@ class StatementTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($this->adapterStatementMock, $this->statement->getAdapter());
         $this->assertEquals($this->connectionMock, $this->statement->getConnection());
         $this->assertEquals('foo', $this->statement->getSQL());
-        $this->assertEquals(array('foo'), $this->statement->getOptions());
     }
 
     public function testIterator()

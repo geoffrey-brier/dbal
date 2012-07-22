@@ -58,14 +58,13 @@ class DBAL
      *  - dbname (string)
      *  - host (string)
      *  - port (integer)
-     *  - driver_options (array)
      *
      * If you don't use the connection_class parameter,
      * the class Fridge\DBAL\Connection\Connection will be used.
      *
      * $parameters can contain some specific database parameters:
-     *  - pdo_mysql: unix_socket (string), charset (string)
-     *  - pdo_pgsql: none
+     *  - pdo_mysql: unix_socket (string), charset (string), driver_options (array)
+     *  - pdo_pgsql: driver_options (array)
      *
      * @param array                      $parameters    The connection parameters.
      * @param \Fridge\DBAL\Configuration $configuration The connection configuration.

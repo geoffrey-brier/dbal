@@ -68,12 +68,11 @@ interface ConnectionInterface
     /**
      * Prepares an SQL statement in order to be executed.
      *
-     * @param string $statement     The statement to prepare.
-     * @param array  $driverOptions The driver options.
+     * @param string $statement The statement to prepare.
      *
      * @return \Fridge\DBAL\Adapter\StatementInterface The prepared statement.
      */
-    function prepare($statement, $driverOptions = array());
+    function prepare($statement);
 
     /**
      * Executes an SQL statement.
