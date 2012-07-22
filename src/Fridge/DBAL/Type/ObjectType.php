@@ -48,7 +48,11 @@ class ObjectType implements TypeInterface
             return null;
         }
 
+        $errorReporting = error_reporting(~E_ALL);
+
         $val = unserialize($value);
+        
+        error_reporting($errorReporting);
 
         if ($val === false) {
             throw TypeException::conversionToPHPFailed($value, $this->getName());
