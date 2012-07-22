@@ -25,6 +25,9 @@ class PHPUnitUtility
     /** @const The PDO PgSQL constant */
     const PDO_PGSQL = 'PDO_PGSQL_';
 
+    /** @const The Mysqli constant */
+    const MYSQLI = 'MYSQLI_';
+
     /** @var array */
     static protected $settings = array();
 

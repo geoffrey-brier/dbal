@@ -48,6 +48,13 @@ interface FixtureInterface
     function dropDatas();
 
     /**
+     * Gets the PHPUnit settings.
+     *
+     * @return array The PHPUnit settings.
+     */
+    function getSettings();
+
+    /**
      * Gets the database.
      *
      * @return string The database.

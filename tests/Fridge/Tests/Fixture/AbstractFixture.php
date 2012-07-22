@@ -96,6 +96,14 @@ abstract class AbstractFixture implements FixtureInterface
     /**
      * {@inheritdoc}
      */
+    public function getSettings()
+    {
+        return $this->settings;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getDatabase()
     {
         if ($this->settings !== null) {
