@@ -61,11 +61,11 @@ class ObjectTypeTest extends AbstractTypeTest
      */
     public function testConvertToPHPValueWithInvalidValue()
     {
-        error_reporting((E_ALL | E_STRICT) - E_NOTICE);
+        $errorReporting = error_reporting(~E_ALL);
 
         $this->type->convertToPHPValue('foo', $this->platformMock);
 
-        error_reporting(-1);
+        error_reporting($errorReporting);
     }
 
     public function testConvertToPHPValueWithNullValue()
