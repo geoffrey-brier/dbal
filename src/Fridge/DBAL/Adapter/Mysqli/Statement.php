@@ -22,9 +22,6 @@ use Fridge\DBAL\Adapter\StatementInterface,
 /**
  * {@inheritdoc}
  *
- * @todo Update mapped LOB type to 'b' & deal with \mysqli_stmt::send_long_data if parameter size is upper than
- *        max_allowed_packet size (MySQL constant).
- *
  * @author GeLo <geloen.eric@gmail.com>
  */
 class Statement implements StatementInterface, IteratorAggregate
@@ -345,15 +342,15 @@ class Statement implements StatementInterface, IteratorAggregate
      */
     protected function bindParameters()
     {
-        $bindedParameters = array_fill(0, count($this->bindedParameters) + 1, null);
+        $bindedParameterReferences = array();
 
-        $bindedParameters[0] = implode('', $this->bindedTypes);
+        $bindedParameterReferences[0] = implode('', $this->bindedTypes);
 
         foreach ($this->bindedParameters as $key => &$parameter) {
-            $bindedParameters[$key] = &$parameter;
+            $bindedParameterReferences[$key] = &$parameter;
         }
 
-        call_user_func_array(array($this->base, 'bind_param'), $bindedParameters);
+        call_user_func_array(array($this->base, 'bind_param'), $bindedParameterReferences);
     }
 
     /**
