@@ -37,7 +37,7 @@ class Configuration
     public function __construct(Logger $logger = null, EventDispatcher $eventDispatcher = null)
     {
         if ($logger === null) {
-            $logger = new Logger('DBAL');
+            $logger = new Logger('Fridge DBAL');
         }
 
         if ($eventDispatcher === null) {

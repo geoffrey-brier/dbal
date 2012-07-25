@@ -27,7 +27,7 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
         $configuration = new Configuration();
 
         $this->assertInstanceOf('Monolog\Logger', $configuration->getLogger());
-        $this->assertEquals('DBAL', $configuration->getLogger()->getName());
+        $this->assertEquals('Fridge DBAL', $configuration->getLogger()->getName());
     }
 
     public function testDefaultEventDispatcher()
