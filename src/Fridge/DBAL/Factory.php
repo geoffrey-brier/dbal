@@ -19,7 +19,7 @@ use Fridge\DBAL\Exception\DBALException;
  *
  * @author GeLo <geloen.eric@gmail.com>
  */
-class DBAL
+class Factory
 {
     /** @const The Fridge DBAL version */
     const VERSION = '1.0.0-dev';

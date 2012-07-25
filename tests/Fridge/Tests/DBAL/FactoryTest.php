@@ -11,14 +11,14 @@
 
 namespace Fridge\Tests\DBAL;
 
-use Fridge\DBAL\DBAL;
+use Fridge\DBAL\Factory;
 
 /**
- * DBAL test.
+ * Factory test.
  *
  * @author GeLo <geloen.eric@gmail.com>
  */
-class DBALTest extends \PHPUnit_Framework_TestCase
+class FactoryTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * Gets a list of valid drivers.
@@ -147,7 +147,7 @@ class DBALTest extends \PHPUnit_Framework_TestCase
             'pdo_pgsql',
         );
 
-        $this->assertEquals($expected, DBAL::getAvailableDrivers());
+        $this->assertEquals($expected, Factory::getAvailableDrivers());
     }
 
     /**
@@ -159,7 +159,7 @@ class DBALTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertInstanceOf(
             'Fridge\DBAL\Connection\ConnectionInterface',
-            DBAL::getConnection(array('driver' => $driver))
+            Factory::getConnection(array('driver' => $driver))
         );
     }
 
@@ -172,7 +172,7 @@ class DBALTest extends \PHPUnit_Framework_TestCase
      */
     public function testConnectionWithInvalidDriver($driver)
     {
-        DBAL::getConnection(array('driver' => $driver));
+        Factory::getConnection(array('driver' => $driver));
     }
 
     /**
@@ -184,7 +184,7 @@ class DBALTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertInstanceOf(
             'Fridge\DBAL\Connection\ConnectionInterface',
-            DBAL::getConnection(array('driver_class' => $driverClass))
+            Factory::getConnection(array('driver_class' => $driverClass))
         );
     }
 
@@ -197,7 +197,7 @@ class DBALTest extends \PHPUnit_Framework_TestCase
      */
     public function testConnectionWithInvalidDriverClass($driverClass)
     {
-        DBAL::getConnection(array('driver_class' => $driverClass));
+        Factory::getConnection(array('driver_class' => $driverClass));
     }
 
     /**
@@ -210,7 +210,7 @@ class DBALTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertInstanceOf(
             $driverClass,
-            DBAL::getConnection(array('driver' => $driver, 'driver_class' => $driverClass))->getDriver()
+            Factory::getConnection(array('driver' => $driver, 'driver_class' => $driverClass))->getDriver()
         );
     }
 
@@ -219,7 +219,7 @@ class DBALTest extends \PHPUnit_Framework_TestCase
      */
     public function testConnectionWithoutDriverAndDriverClass()
     {
-        DBAL::getConnection(array());
+        Factory::getConnection(array());
     }
 
     /**
@@ -232,7 +232,7 @@ class DBALTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertInstanceOf(
             $connectionClass,
-            DBAL::getConnection(array('driver' => $driver, 'connection_class' => $connectionClass))
+            Factory::getConnection(array('driver' => $driver, 'connection_class' => $connectionClass))
         );
     }
 
@@ -248,7 +248,7 @@ class DBALTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertInstanceOf(
             $connectionClass,
-            DBAL::getConnection(array('driver' => $driver, 'connection_class' => $connectionClass))
+            Factory::getConnection(array('driver' => $driver, 'connection_class' => $connectionClass))
         );
     }
 }
