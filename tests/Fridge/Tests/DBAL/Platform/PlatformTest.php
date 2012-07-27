@@ -564,12 +564,32 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('DROP TABLE foo', $this->platform->getDropTableSQLQuery($table));
     }
 
-    public function testDropConstraintSQLQuery()
+    public function testDropConstraintSQLQueryWithPrimaryKey()
     {
         $constraint = new Schema\PrimaryKey('foo');
 
         $this->assertEquals(
             'ALTER TABLE bar DROP CONSTRAINT foo',
+            $this->platform->getDropConstraintSQLQuery($constraint, 'bar')
+        );
+    }
+
+    public function testDropConstraintSQLQueryWithForeignKey()
+    {
+        $constraint = new Schema\ForeignKey('foo', array(), 'bar', array());
+
+        $this->assertEquals(
+            'ALTER TABLE bar DROP CONSTRAINT foo',
+            $this->platform->getDropConstraintSQLQuery($constraint, 'bar')
+        );
+    }
+
+    public function testDropConstraintSQLQueryWithIndex()
+    {
+        $constraint = new Schema\Index('foo');
+
+        $this->assertEquals(
+            'DROP INDEX foo',
             $this->platform->getDropConstraintSQLQuery($constraint, 'bar')
         );
     }
