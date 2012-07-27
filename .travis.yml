@@ -9,8 +9,7 @@ before_script:
     - mysql -e 'CREATE DATABASE dbal_test'
     - psql -c 'CREATE DATABASE dbal_test' -U postgres
 
-    - curl -s http://getcomposer.org/installer | php
-    - php composer.phar install --dev
+    - composer install --dev
 
 script: phpunit --configuration phpunit.travis.xml
 
