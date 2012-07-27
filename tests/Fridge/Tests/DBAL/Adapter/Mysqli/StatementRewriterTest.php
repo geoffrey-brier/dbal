@@ -39,34 +39,34 @@ class StatementRewriterTest extends \PHPUnit_Framework_TestCase
     {
         $this->statementRewriter = new StatementRewriter('SELECT * FROM foo');
 
-        $this->assertEquals('SELECT * FROM foo', $this->statementRewriter->rewriteStatement());
+        $this->assertEquals('SELECT * FROM foo', $this->statementRewriter->getRewritedStatement());
 
-        $this->statementRewriter->rewriteParameter('foo');
+        $this->statementRewriter->getRewritedParameters('foo');
     }
 
     public function testRewriteWithOneParameter()
     {
         $this->statementRewriter = new StatementRewriter('SELECT * FROM foo WHERE foo = :foo');
 
-        $this->assertEquals('SELECT * FROM foo WHERE foo = ?', $this->statementRewriter->rewriteStatement());
+        $this->assertEquals('SELECT * FROM foo WHERE foo = ?', $this->statementRewriter->getRewritedStatement());
 
-        $this->assertEquals(array(1), $this->statementRewriter->rewriteParameter(':foo'));
+        $this->assertEquals(array(1), $this->statementRewriter->getRewritedParameters(':foo'));
     }
 
-    public function testRewriteStatementWithMultipleParameters()
+    public function testRewriteWithMultipleParameters()
     {
         $this->statementRewriter = new StatementRewriter('SELECT * FROM foo WHERE foo = :foo AND bar = :bar');
 
         $this->assertEquals(
             'SELECT * FROM foo WHERE foo = ? AND bar = ?',
-            $this->statementRewriter->rewriteStatement()
+            $this->statementRewriter->getRewritedStatement()
         );
 
-        $this->assertEquals(array(1), $this->statementRewriter->rewriteParameter(':foo'));
-        $this->assertEquals(array(2), $this->statementRewriter->rewriteParameter(':bar'));
+        $this->assertEquals(array(1), $this->statementRewriter->getRewritedParameters(':foo'));
+        $this->assertEquals(array(2), $this->statementRewriter->getRewritedParameters(':bar'));
     }
 
-    public function testRewriteStatementWithMultipleSameParameters()
+    public function testRewriteWithMultipleSameParameters()
     {
         $this->statementRewriter = new StatementRewriter(
             'SELECT * FROM foo WHERE foo = :foo AND bar = :bar AND baz = :foo'
@@ -74,10 +74,10 @@ class StatementRewriterTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(
             'SELECT * FROM foo WHERE foo = ? AND bar = ? AND baz = ?',
-            $this->statementRewriter->rewriteStatement()
+            $this->statementRewriter->getRewritedStatement()
         );
 
-        $this->assertEquals(array(1, 3), $this->statementRewriter->rewriteParameter(':foo'));
-        $this->assertEquals(array(2), $this->statementRewriter->rewriteParameter(':bar'));
+        $this->assertEquals(array(1, 3), $this->statementRewriter->getRewritedParameters(':foo'));
+        $this->assertEquals(array(2), $this->statementRewriter->getRewritedParameters(':bar'));
     }
 }

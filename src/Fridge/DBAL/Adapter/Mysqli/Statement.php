@@ -69,7 +69,7 @@ class Statement implements StatementInterface, IteratorAggregate
     {
         $this->statementRewriter = new StatementRewriter($statement);
 
-        $this->base = $connection->prepare($this->statementRewriter->rewriteStatement());
+        $this->base = $connection->prepare($this->statementRewriter->getRewritedStatement());
 
         if ($this->base === false) {
             throw new MysqliException($connection->error, $connection->errno);
@@ -113,15 +113,11 @@ class Statement implements StatementInterface, IteratorAggregate
 
         $mappedType = self::getMappedType($type);
 
-        if (is_string($parameter)) {
-            if (substr($parameter, 0, 1) !== ':') {
-                $parameter = ':'.$parameter;
-            }
-
-            $parameters = $this->statementRewriter->rewriteParameter($parameter);
-        } else {
-            $parameters = array($parameter);
+        if (is_string($parameter) && ($parameter[0] !== ':')) {
+            $parameter = ':'.$parameter;
         }
+
+        $parameters = $this->statementRewriter->getRewritedParameters($parameter);
 
         foreach ($parameters as $parameter) {
             $this->bindedParameters[$parameter] = &$variable;
