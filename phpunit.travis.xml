@@ -25,6 +25,14 @@
         <server name="PDO_PGSQL_DBNAME" value="dbal_test" />
         <server name="PDO_PGSQL_HOST" value="localhost" />
         <server name="PDO_PGSQL_PORT" value="5432" />
+
+        <!-- Mysqli configuration -->
+        <server name="MYSQLI_DRIVER" value="mysqli" />
+        <server name="MYSQLI_USERNAME" value="root" />
+        <server name="MYSQLI_PASSWORD" value="" />
+        <server name="MYSQLI_DBNAME" value="dbal_test" />
+        <server name="MYSQLI_HOST" value="localhost" />
+        <server name="MYSQLI_PORT" value="3306" />
     </php>
     <testsuites>
         <testsuite name="Fridge DBAL Test Suite">

@@ -28,6 +28,7 @@ class Factory
     static protected $mappedDriverClasses = array(
         'pdo_mysql' => 'Fridge\DBAL\Driver\PDO\MySQLDriver',
         'pdo_pgsql' => 'Fridge\DBAL\Driver\PDO\PostgreSQLDriver',
+        'mysqli'    => 'Fridge\DBAL\Driver\MysqliDriver',
     );
 
     /**
@@ -65,6 +66,7 @@ class Factory
      * $parameters can contain some specific database parameters:
      *  - pdo_mysql: unix_socket (string), charset (string), driver_options (array)
      *  - pdo_pgsql: driver_options (array)
+     *  - mysqli: unix_socket (string), charset (string)
      *
      * @param array                      $parameters    The connection parameters.
      * @param \Fridge\DBAL\Configuration $configuration The connection configuration.

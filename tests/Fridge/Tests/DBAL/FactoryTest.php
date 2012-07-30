@@ -30,6 +30,7 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
         return array(
             array('pdo_mysql'),
             array('pdo_pgsql'),
+            array('mysqli'),
         );
     }
 
@@ -43,6 +44,7 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
         return array(
             array('Fridge\DBAL\Driver\PDO\MySQLDriver'),
             array('Fridge\DBAL\Driver\PDO\PostgreSQLDriver'),
+            array('Fridge\DBAL\Driver\MysqliDriver'),
         );
     }
 
@@ -145,6 +147,7 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
         $expected = array(
             'pdo_mysql',
             'pdo_pgsql',
+            'mysqli',
         );
 
         $this->assertEquals($expected, Factory::getAvailableDrivers());

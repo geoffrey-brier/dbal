@@ -26,6 +26,9 @@ class ConnectionUtility
     /** @const The PDO PgSQL constant */
     const PDO_PGSQL = PHPUnitUtility::PDO_PGSQL;
 
+    /** @const The Mysqli constant */
+    const MYSQLI = PHPUnitUtility::MYSQLI;
+
     /**
      * Checks if a connection can be tested.
      *
