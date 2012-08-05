@@ -23,12 +23,18 @@ abstract class AbstractPDOFixture extends AbstractFixture
     /**
      * {@inheritdoc}
      */
-    protected function getConnection()
+    protected function getConnection($database = true)
     {
         $dsnOptions = array();
 
+        $haystack = array('host', 'port');
+
+        if ($database) {
+            $haystack[] = 'dbname';
+        }
+
         foreach ($this->settings as $dsnKey => $dsnSetting) {
-            if (in_array($dsnKey, array('dbname', 'host', 'port'))) {
+            if (in_array($dsnKey, $haystack)) {
                 $dsnOptions[] = $dsnKey.'='.$dsnSetting;
             }
         }

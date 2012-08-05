@@ -45,9 +45,39 @@ abstract class AbstractFixture implements FixtureInterface
      */
     public function create()
     {
+        $this->createSchema();
+        $this->createDatas();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function drop()
+    {
+        $this->dropDatabase();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function createDatabase()
+    {
         if ($this->settings !== null) {
-            $this->createSchema();
-            $this->createDatas();
+            $connection = $this->getConnection(false);
+            $connection->exec($this->getCreateDatabaseSQLQuery());
+            unset($connection);
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function dropDatabase()
+    {
+        if ($this->settings !== null) {
+            $connection = $this->getConnection(false);
+            $connection->exec($this->getDropDatabaseSQLQuery());
+            unset($connection);
         }
     }
 
@@ -56,8 +86,10 @@ abstract class AbstractFixture implements FixtureInterface
      */
     public function createSchema()
     {
+        $this->dropDatabase();
+        $this->createDatabase();
+
         if ($this->settings !== null) {
-            $this->dropSchema();
             $this->executeQueries($this->getCreateSchemaSQLQueries());
         }
     }
@@ -77,8 +109,9 @@ abstract class AbstractFixture implements FixtureInterface
      */
     public function createDatas()
     {
+        $this->dropDatas();
+
         if ($this->settings !== null) {
-            $this->dropDatas();
             $this->executeQueries($this->getCreateDatasSQLQueries());
         }
     }
@@ -585,9 +618,11 @@ abstract class AbstractFixture implements FixtureInterface
     /**
      * Gets the connection used for creating/dropping the fixture.
      *
+     * @param boolean $database TRUE if the connection uses an explicit database else FALSE.
+     *
      * @return mixed The connection.
      */
-    abstract protected function getConnection();
+    abstract protected function getConnection($database = true);
 
     /**
      * Gets the SQL queries used to create the database schema.
@@ -595,6 +630,26 @@ abstract class AbstractFixture implements FixtureInterface
      * @return array The SQL queries used to create the database schema.
      */
     abstract protected function getCreateSchemaSQLQueries();
+
+    /**
+     * Gets the SQL query used to create the database.
+     *
+     * @return string The SQL query used to create the database.
+     */
+    protected function getCreateDatabaseSQLQuery()
+    {
+        return 'CREATE DATABASE '.$this->settings['dbname'];
+    }
+
+    /**
+     * Gets the SQL query used to drop the database.
+     *
+     * @return strinh The SQL query used to drop the database.
+     */
+    protected function getDropDatabaseSQLQuery()
+    {
+        return 'DROP DATABASE IF EXISTS '.$this->settings['dbname'];
+    }
 
     /**
      * Gets the SQL queries used to drop the database schema.

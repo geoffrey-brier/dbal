@@ -28,6 +28,21 @@ interface FixtureInterface
     function create();
 
     /**
+     * Drops the fixture.
+     */
+    function drop();
+
+    /**
+     * Creates the fixture database.
+     */
+    function createDatabase();
+
+    /**
+     * Drops the fixture database.
+     */
+    function dropDatabase();
+
+    /**
      * Creates the fixture schema.
      */
     function createSchema();
