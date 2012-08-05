@@ -244,8 +244,14 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
      */
     public function createDatabase($database)
     {
+        $currentDatabase = $this->getConnection()->getDatabase();
+
+        $this->getConnection()->setDatabase(null);
+
         $query = $this->getConnection()->getPlatform()->getCreateDatabaseSQLQuery($database);
         $this->getConnection()->executeUpdate($query);
+
+        $this->getConnection()->setDatabase($currentDatabase);
     }
 
     /**
@@ -319,8 +325,14 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
      */
     public function dropDatabase($database)
     {
+        $currentDatabase = $this->getConnection()->getDatabase();
+
+        $this->getConnection()->setDatabase(null);
+
         $query = $this->getConnection()->getPlatform()->getDropDatabaseSQLQuery($database);
         $this->getConnection()->executeUpdate($query);
+
+        $this->getConnection()->setDatabase($currentDatabase);
     }
 
     /**

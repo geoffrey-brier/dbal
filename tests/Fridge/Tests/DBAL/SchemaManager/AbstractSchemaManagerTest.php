@@ -536,8 +536,10 @@ abstract class AbstractSchemaManagerTest extends \PHPUnit_Framework_TestCase
 
     public function testCreateDatabase()
     {
-        $this->schemaManager->createDatabase('foo');
-        $this->assertTrue(in_array('foo', $this->schemaManager->getDatabases()));
+        self::$fixture->drop();
+
+        $this->schemaManager->createDatabase(self::$fixture->getDatabase());
+        $this->assertTrue(in_array(self::$fixture->getDatabase(), $this->schemaManager->getDatabases()));
     }
 
     /**
@@ -545,8 +547,10 @@ abstract class AbstractSchemaManagerTest extends \PHPUnit_Framework_TestCase
      */
     public function testDropDatabase()
     {
-        $this->schemaManager->dropDatabase('foo');
-        $this->assertFalse(in_array('foo', $this->schemaManager->getDatabases()));
+        $this->schemaManager->dropDatabase(self::$fixture->getDatabase());
+
+        $this->schemaManager->getConnection()->setDatabase(null);
+        $this->assertFalse(in_array(self::$fixture->getDatabase(), $this->schemaManager->getDatabases()));
     }
 
     public function testDropAndCreateDatabase()

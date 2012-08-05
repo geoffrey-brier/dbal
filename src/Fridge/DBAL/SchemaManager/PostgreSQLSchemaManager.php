@@ -20,40 +20,6 @@ class PostgreSQLSchemaManager extends AbstractSchemaManager
 {
     /**
      * {@inheritdoc}
-     */
-    public function createDatabase($database)
-    {
-        if ($database !== $this->getConnection()->getDatabase()) {
-            return parent::createDatabase($database);
-        }
-
-        $currentDatabase = $this->getConnection()->getDatabase();
-
-        $this->getConnection()->setDatabase('postgres');
-        parent::createDatabase($database);
-
-        $this->getConnection()->setDatabase($currentDatabase);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function dropDatabase($database)
-    {
-        if ($database !== $this->getConnection()->getDatabase()) {
-            return parent::dropDatabase($database);
-        }
-
-        $currentDatabase = $this->getConnection()->getDatabase();
-
-        $this->getConnection()->setDatabase('postgres');
-        parent::dropDatabase($database);
-
-        $this->getConnection()->setDatabase($currentDatabase);
-    }
-
-    /**
-     * {@inheritdoc}
      *
      * The $sequence parameter contains:
      *  - name
