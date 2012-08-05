@@ -40,7 +40,7 @@ abstract class AbstractSchemaManagerTest extends \PHPUnit_Framework_TestCase
     static public function tearDownAfterClass()
     {
         if (self::$fixture !== null) {
-            self::$fixture->dropSchema();
+            self::$fixture->drop();
         }
     }
 

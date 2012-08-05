@@ -14,7 +14,8 @@ namespace Fridge\Tests\DBAL\Adapter\PDO;
 use \PDO;
 
 use Fridge\DBAL\Adapter\PDO\Connection,
-    Fridge\Tests\PHPUnitUtility;
+    Fridge\Tests\PHPUnitUtility,
+    Fridge\Tests\Fixture\MySQLFixture;
 
 /**
  * PDO connection adapter tests.
@@ -23,8 +24,32 @@ use Fridge\DBAL\Adapter\PDO\Connection,
  */
 class ConnectionTest extends \PHPUnit_Framework_TestCase
 {
+    /** @var \Fridge\Tests\Fixture\FixtureInterface */
+    static protected $fixture;
+
     /** @var \Fridge\DBAL\Adapter\PDO\Connection */
     protected $connection;
+
+    /**
+     * {@inheritdoc}
+     */
+    static public function setUpBeforeClass()
+    {
+        if (PHPUnitUtility::hasSettings(PHPUnitUtility::PDO_MYSQL)) {
+            self::$fixture = new MySQLFixture();
+            self::$fixture->createSchema();
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    static public function tearDownAfterCLass()
+    {
+        if (self::$fixture !== null) {
+            self::$fixture->drop();
+        }
+    }
 
     /**
      * {@inheritdoc}
