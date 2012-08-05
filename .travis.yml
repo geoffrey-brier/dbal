@@ -5,14 +5,8 @@ php:
     - 5.3
     - 5.4
 
-before_script:
-    - mysql -e 'CREATE DATABASE dbal_test'
-    - psql -c 'CREATE DATABASE dbal_test' -U postgres
-
-    - composer install --dev
-
+before_script: composer install --dev
 script: phpunit --configuration phpunit.travis.xml
 
 notifications:
-    email:
-        - geloen.eric@gmail.com
+    email: geloen.eric@gmail.com
