@@ -12,7 +12,8 @@
 namespace Fridge\Tests\DBAL\Driver;
 
 use Fridge\DBAL\Driver\PDO\MySQLDriver,
-    Fridge\Tests\PHPUnitUtility;
+    Fridge\Tests\PHPUnitUtility,
+    Fridge\Tests\Fixture\MySQLFixture;
 
 /**
  * PDO MySQL driver test.
@@ -27,7 +28,7 @@ class PDOMySQLDriverTest extends AbstractDriverTest
     static public function setUpBeforeClass()
     {
         if (PHPUnitUtility::hasSettings(PHPUnitUtility::PDO_MYSQL)) {
-            self::$settings = PHPUnitUtility::getSettings(PHPUnitUtility::PDO_MYSQL);
+            self::$fixtures = new MySQLFixture();
         }
 
         parent::setUpBeforeClass();
@@ -47,7 +48,7 @@ class PDOMySQLDriverTest extends AbstractDriverTest
 
     public function testConnectWithUnixSocket()
     {
-        $settings = self::$settings;
+        $settings = self::$fixtures->getSettings();
 
         unset($settings['host']);
         unset($settings['port']);
@@ -62,7 +63,7 @@ class PDOMySQLDriverTest extends AbstractDriverTest
 
     public function testConnectWithCharset()
     {
-        $settings = self::$settings;
+        $settings = self::$fixtures->getSettings();
         $settings['charset'] = 'utf8';
 
         $this->assertInstanceOf(

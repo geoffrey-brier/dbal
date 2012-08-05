@@ -47,7 +47,7 @@ abstract class AbstractConnectionTest extends \PHPUnit_Framework_TestCase
     static public function tearDownAfterClass()
     {
         if (self::$fixture !== null) {
-            self::$fixture->dropSchema();
+            self::$fixture->drop();
         }
     }
 
@@ -58,9 +58,9 @@ abstract class AbstractConnectionTest extends \PHPUnit_Framework_TestCase
     {
         if (self::$fixture === null) {
             $this->markTestSkipped();
-        } else {
-            self::$fixture->createDatas();
         }
+
+        self::$fixture->createDatas();
     }
 
     /**

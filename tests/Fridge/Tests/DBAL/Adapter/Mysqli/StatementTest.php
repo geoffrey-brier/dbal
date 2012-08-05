@@ -52,7 +52,7 @@ class StatementTest extends \PHPUnit_Framework_TestCase
     static public function tearDownAfterCLass()
     {
         if (self::$fixture !== null) {
-            self::$fixture->dropSchema();
+            self::$fixture->drop();
         }
     }
 
