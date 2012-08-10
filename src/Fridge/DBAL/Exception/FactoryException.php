@@ -12,11 +12,11 @@
 namespace Fridge\DBAL\Exception;
 
 /**
- * DBAL exception.
+ * Factory exception.
  *
  * @author GeLo <geloen.eric@gmail.com>
  */
-class DBALException extends Exception
+class FactoryException extends Exception
 {
     /**
      * Gets the "CONNECTION MUST IMPLEMENT ICONNECTION" exception.

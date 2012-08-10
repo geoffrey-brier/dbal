@@ -171,7 +171,7 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
      *
      * @dataProvider invalidDriverProvider
      *
-     * @expectedException \Fridge\DBAL\Exception\DBALException
+     * @expectedException \Fridge\DBAL\Exception\FactoryException
      */
     public function testConnectionWithInvalidDriver($driver)
     {
@@ -196,7 +196,7 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
      *
      * @dataProvider invalidClassProvider
      *
-     * @expectedException \Fridge\DBAL\Exception\DBALException
+     * @expectedException \Fridge\DBAL\Exception\FactoryException
      */
     public function testConnectionWithInvalidDriverClass($driverClass)
     {
@@ -218,7 +218,7 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \Fridge\DBAL\Exception\DBALException
+     * @expectedException \Fridge\DBAL\Exception\FactoryException
      */
     public function testConnectionWithoutDriverAndDriverClass()
     {
@@ -245,7 +245,7 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
      *
      * @dataProvider validDriverAndInvalidConnectionClassProvider
      *
-     * @expectedException \Fridge\DBAL\Exception\DBALException
+     * @expectedException \Fridge\DBAL\Exception\FactoryException
      */
     public function testConnectionWithValidDriverAndInvalidConnectionClass($driver, $connectionClass)
     {

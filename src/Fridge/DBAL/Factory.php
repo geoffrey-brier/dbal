@@ -11,7 +11,7 @@
 
 namespace Fridge\DBAL;
 
-use Fridge\DBAL\Exception\DBALException;
+use Fridge\DBAL\Exception\FactoryException;
 
 /**
  * This class is the central point of the library.
@@ -77,23 +77,23 @@ class Factory
     {
         if (isset($parameters['driver_class'])) {
             if (!in_array('Fridge\DBAL\Driver\DriverInterface', class_implements($parameters['driver_class']))) {
-                throw DBALException::driverMustImplementDriverInterface($parameters['driver_class']);
+                throw FactoryException::driverMustImplementDriverInterface($parameters['driver_class']);
             }
 
             $driverClass = $parameters['driver_class'];
         } elseif (isset($parameters['driver'])) {
             if (!isset(static::$mappedDriverClasses[$parameters['driver']])) {
-                throw DBALException::driverDoesNotExist($parameters['driver'], static::getAvailableDrivers());
+                throw FactoryException::driverDoesNotExist($parameters['driver'], static::getAvailableDrivers());
             }
 
             $driverClass = static::$mappedDriverClasses[$parameters['driver']];
         } else {
-            throw DBALException::driverRequired(static::getAvailableDrivers());
+            throw FactoryException::driverRequired(static::getAvailableDrivers());
         }
 
         if (isset($parameters['connection_class'])) {
             if (!in_array('Fridge\DBAL\Connection\ConnectionInterface', class_implements($parameters['connection_class']))) {
-                throw DBALException::connectionMustImplementConnectionInterface($parameters['connection_class']);
+                throw FactoryException::connectionMustImplementConnectionInterface($parameters['connection_class']);
             }
 
             $connectionClass = $parameters['connection_class'];
