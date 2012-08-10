@@ -1,5 +1,5 @@
 {
-    "name": "fridge-project/dbal",
+    "name": "fridge/dbal",
     "description": "Database Abstraction Layer written in PHP 5.3+",
     "keywords": [ "fridge", "dbal", "database", "pdo" ],
     "license": "MIT",
