@@ -56,7 +56,6 @@ class MySQLFixture extends AbstractPDOFixture
 
         if ($primaryKey !== null) {
             $primaryKey->setName('PRIMARY');
-
         }
 
         return $primaryKey;
@@ -69,8 +68,8 @@ class MySQLFixture extends AbstractPDOFixture
     {
         $indexes = parent::getTableIndexes($table);
 
-        if (($table === 'tprimarykeylock') || ($table === 'tprimarykeyunlock')) {
-            foreach ($indexes as $index) {
+        foreach ($indexes as $index) {
+            if (substr($index->getName(), 0, 2) === 'pk') {
                 $index->setName('PRIMARY');
             }
         }
@@ -139,6 +138,16 @@ CREATE TABLE tindex
     CONSTRAINT idx1 UNIQUE (c1, c2),
     INDEX idx2 (c1)
 ) ENGINE = InnoDB
+EOT;
+
+        $queries[] = <<<EOT
+CREATE TABLE tcompound
+(
+    c1 INT(11) NOT NULL,
+    c2 INT(11) NOT NULL,
+    CONSTRAINT PRIMARY KEY (c1),
+    INDEX idx3 (c2)
+)
 EOT;
 
         $queries[] = 'CREATE VIEW vcolumns AS SELECT cinteger FROM tcolumns';

@@ -127,6 +127,17 @@ EOT;
 
         $queries[] = 'CREATE INDEX idx2 ON tindex(c1)';
 
+        $queries[] = <<<EOT
+CREATE TABLE tcompound
+(
+    c1 INT NOT NULL,
+    c2 INT NOT NULL,
+    CONSTRAINT pk3 PRIMARY KEY (c1)
+)
+EOT;
+
+        $queries[] = 'CREATE INDEX idx3 ON tcompound(c2)';
+
         $queries[] = 'CREATE SEQUENCE s1 INCREMENT 1 MINVALUE 1';
         $queries[] = 'CREATE VIEW vcolumns AS SELECT cinteger FROM tcolumns';
 

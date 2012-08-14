@@ -277,10 +277,20 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
      */
     public function createTable(Schema\Table $table)
     {
-        $queries = $this->getConnection()->getPlatform()->getCreateTableSQLQueries($table);
-
-        foreach ($queries as $query) {
+        foreach ($this->getConnection()->getPlatform()->getCreateTableSQLQueries($table) as $query) {
             $this->getConnection()->executeUpdate($query);
+        }
+
+        if ($table->hasPrimaryKey()) {
+            $this->createPrimaryKey($table->getPrimaryKey(), $table->getName());
+        }
+
+        foreach ($this->getCreateTableIndexes($table) as $index) {
+            $this->createIndex($index, $table->getName());
+        }
+
+        foreach ($table->getForeignKeys() as $foreignKey) {
+            $this->createForeignKey($foreignKey, $table->getName());
         }
     }
 
@@ -783,6 +793,30 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
         }
 
         return array($comment, null);
+    }
+
+    /**
+     * Gets the indexes needed for the create table SQL query.
+     *
+     * @param \Fridge\DBAL\Schema\Table $table The table.
+     *
+     * @return array The indexes needed for the created table SQL query.
+    */
+    protected function getCreateTableIndexes(Schema\Table $table)
+    {
+        if (!$table->hasPrimaryKey()) {
+            return $table->getIndexes();
+        }
+
+        $indexes = array();
+
+        foreach ($table->getIndexes() as $index) {
+            if (!$index->hasSameColumnNames($table->getPrimaryKey()->getColumnNames())) {
+                $indexes[] = $index;
+            }
+        }
+
+        return $indexes;
     }
 
     /**

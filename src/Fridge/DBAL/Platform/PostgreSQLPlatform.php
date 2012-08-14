@@ -11,8 +11,7 @@
 
 namespace Fridge\DBAL\Platform;
 
-use Fridge\DBAL\Schema\Table,
-    Fridge\DBAL\Type\Type;
+use Fridge\DBAL\Type\Type;
 
 /**
  * PostgreSQL platform.
@@ -93,7 +92,8 @@ class PostgreSQLPlatform extends AbstractPlatform
     {
         return 'SELECT'.
                '  datname AS database'.
-               ' FROM pg_database';
+               ' FROM pg_database'.
+               ' ORDER BY database ASC';
     }
 
     /**
@@ -104,7 +104,8 @@ class PostgreSQLPlatform extends AbstractPlatform
         return 'SELECT'.
                '  c.relname AS name'.
                ' FROM pg_class c'.
-               ' WHERE c.relkind = \'S\'';
+               ' WHERE c.relkind = \'S\''.
+               ' ORDER BY name ASC';
     }
 
     /**
@@ -116,7 +117,8 @@ class PostgreSQLPlatform extends AbstractPlatform
                '  viewname AS name,'.
                '  definition AS sql'.
                ' FROM pg_views'.
-               ' WHERE schemaname NOT IN (\'pg_catalog\', \'information_schema\')';
+               ' WHERE schemaname NOT IN (\'pg_catalog\', \'information_schema\')'.
+               ' ORDER BY name ASC';
     }
 
     /**
@@ -129,7 +131,7 @@ class PostgreSQLPlatform extends AbstractPlatform
                ' FROM pg_tables'.
                ' WHERE tablename NOT LIKE \'pg_%\''.
                ' AND tablename NOT LIKE \'sql_%\''.
-               ' ORDER BY tablename ASC';
+               ' ORDER BY name ASC';
     }
 
     /**
@@ -211,35 +213,14 @@ class PostgreSQLPlatform extends AbstractPlatform
     public function getSelectTableIndexesSQLQuery($table, $database)
     {
         return 'SELECT'.
-               '  i.indexrelid::regclass AS name,'.
+               '  c2.relname AS name,'.
                '  a.attname AS column_name,'.
                '  i.indisunique AS unique'.
                ' FROM pg_index i'.
-               ' INNER JOIN pg_class c ON (i.indrelid = c.oid AND c.relname = \''.$table.'\')'.
-               ' INNER JOIN pg_attribute a ON (c.oid = a.attrelid AND a.attnum = any(i.indkey) AND a.attnum > 0)';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getCreateTableSQLQueries(Table $table)
-    {
-        $queries = $this->getCreateColumnCommentsSQLQueries($table->getColumns(), $table->getName());
-
-        foreach ($this->getCreateTableIndexes($table) as $index) {
-            $queries[] = $this->getCreateIndexSQLQuery($index, $table->getName());
-        }
-
-        $query = 'CREATE TABLE '.$table->getName().
-                 ' ('.
-                 $this->getColumnsSQLDeclaration($table->getColumns()).
-                 ($table->hasPrimaryKey() ? ', '.$this->getPrimaryKeySQLDeclaration($table->getPrimaryKey()) : null).
-                 ($table->hasForeignKeys() ? ', '.$this->getForeignKeysSQLDeclaration($table->getForeignKeys()) : null).
-                 ' )';
-
-        array_unshift($queries, $query);
-
-        return $queries;
+               ' INNER JOIN pg_class c1 ON (i.indrelid = c1.oid AND c1.relname = \''.$table.'\')'.
+               ' INNER JOIN pg_class c2 ON (i.indexrelid = c2.oid)'.
+               ' INNER JOIN pg_attribute a ON (c1.oid = a.attrelid AND a.attnum = any(i.indkey) AND a.attnum > 0)'.
+               ' ORDER BY name ASC';
     }
 
     /**
