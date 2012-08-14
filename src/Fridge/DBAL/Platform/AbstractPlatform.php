@@ -470,15 +470,8 @@ abstract class AbstractPlatform implements PlatformInterface
             $queries = $this->getCreateColumnCommentsSQLQueries($table->getColumns(), $table->getName());
         }
 
-        $indexes = $this->getCreateTableIndexes($table);
-
         $query = 'CREATE TABLE '.$table->getName().
-                 ' ('.
-                 $this->getColumnsSQLDeclaration($table->getColumns()).
-                 ($table->hasPrimaryKey() ? ', '.$this->getPrimaryKeySQLDeclaration($table->getPrimaryKey()) : null).
-                 (!empty($indexes) ? ', '.$this->getIndexesSQLDeclaration($indexes) : null).
-                 ($table->hasForeignKeys() ? ', '.$this->getForeignKeysSQLDeclaration($table->getForeignKeys()) : null).
-                 ' )';
+                 ' ('.$this->getColumnsSQLDeclaration($table->getColumns()).')';
 
         array_unshift($queries, $query);
 
@@ -725,30 +718,6 @@ abstract class AbstractPlatform implements PlatformInterface
     }
 
     /**
-     * Gets the indexes needed for the create table SQL query.
-     *
-     * @param \Fridge\DBAL\Schema\Table $table The table.
-     *
-     * @return array The indexes needed for the created table SQL query.
-    */
-    protected function getCreateTableIndexes(Schema\Table $table)
-    {
-        if (!$table->hasPrimaryKey()) {
-            return $table->getIndexes();
-        }
-
-        $indexes = array();
-
-        foreach ($table->getIndexes() as $index) {
-            if (!$index->hasSameColumnNames($table->getPrimaryKey()->getColumnNames())) {
-                $indexes[] = $index;
-            }
-        }
-
-        return $indexes;
-    }
-
-    /**
      * Gets the columns SQL declaration.
      *
      * @param array $columns The columns.
@@ -809,24 +778,6 @@ abstract class AbstractPlatform implements PlatformInterface
     }
 
     /**
-     * Gets the foreign keys SQL declaration.
-     *
-     * @param array $foreignKeys The foreign keys.
-     *
-     * @return sting The foreign keys SQL declaration.
-     */
-    protected function getForeignKeysSQLDeclaration(array $foreignKeys)
-    {
-        $foreignKeysDeclaration = array();
-
-        foreach ($foreignKeys as $foreignKey) {
-            $foreignKeysDeclaration[] = $this->getForeignKeySQLDeclaration($foreignKey);
-        }
-
-        return implode(', ', $foreignKeysDeclaration);
-    }
-
-    /**
      * Gets the foreign key SQL declaration.
      *
      * @param \Fridge\DBAL\Schema\ForeignKey $foreignKey The foreign key.
@@ -840,24 +791,6 @@ abstract class AbstractPlatform implements PlatformInterface
                ' ('.implode(', ', $foreignKey->getLocalColumnNames()).')'.
                ' REFERENCES '.$foreignKey->getForeignTableName().
                ' ('.implode(', ', $foreignKey->getForeignColumnNames()).')';
-    }
-
-    /**
-     * Gets the indexes SQL declaration.
-     *
-     * @param array $indexes The indexes.
-     *
-     * @return string The indexes SQL declaration.
-     */
-    protected function getIndexesSQLDeclaration(array $indexes)
-    {
-        $indexesDeclaration = array();
-
-        foreach ($indexes as $index) {
-            $indexesDeclaration[] = $this->getIndexSQLDeclaration($index);
-        }
-
-        return implode(', ', $indexesDeclaration);
     }
 
     /**

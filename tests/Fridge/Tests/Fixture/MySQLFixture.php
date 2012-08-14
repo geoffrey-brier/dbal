@@ -56,7 +56,6 @@ class MySQLFixture extends AbstractPDOFixture
 
         if ($primaryKey !== null) {
             $primaryKey->setName('PRIMARY');
-
         }
 
         return $primaryKey;

@@ -723,32 +723,13 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
         $table = new Schema\Table(
             'foo',
             array(
-                new Schema\Column('foo', Type::getType(Type::INTEGER)),
+                new Schema\Column('foo', Type::getType(Type::INTEGER), array('comment' => 'foo')),
                 new Schema\Column('bar', Type::getType(Type::INTEGER)),
-                new Schema\Column('foo_bar', Type::getType(Type::INTEGER)),
-                new Schema\Column('bar_foo', Type::getType(Type::INTEGER)),
-            ),
-            new Schema\PrimaryKey('pk1', array('foo')),
-            array(new Schema\ForeignKey('fk1', array('bar'), 'bar', array('bar'))),
-            array(
-                new Schema\Index('idx1', array('foo_bar')),
-                new Schema\Index('uniq1', array('bar_foo'), true),
             )
         );
 
         $this->assertEquals(
-            array(
-                'CREATE TABLE foo ('.
-                'foo INT NOT NULL,'.
-                ' bar INT,'.
-                ' foo_bar INT,'.
-                ' bar_foo INT,'.
-                ' CONSTRAINT pk1 PRIMARY KEY (foo),'.
-                ' INDEX idx1 (foo_bar),'.
-                ' CONSTRAINT uniq1 UNIQUE (bar_foo),'.
-                ' CONSTRAINT fk1 FOREIGN KEY (bar) REFERENCES bar (bar)'.
-                ' )',
-            ),
+            array('CREATE TABLE foo (foo INT COMMENT \'foo\', bar INT)'),
             $this->platform->getCreateTableSQLQueries($table)
         );
     }

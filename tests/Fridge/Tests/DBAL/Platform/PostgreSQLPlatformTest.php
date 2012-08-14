@@ -97,26 +97,13 @@ class PostgreSQLPlatformTest extends \PHPUnit_Framework_TestCase
             array(
                 new Schema\Column('foo', Type::getType(Type::INTEGER), array('comment' => 'foo')),
                 new Schema\Column('bar', Type::getType(Type::INTEGER)),
-                new Schema\Column('foo_bar', Type::getType(Type::INTEGER)),
-            ),
-            new Schema\PrimaryKey('pk1', array('foo')),
-            array(new Schema\ForeignKey('fk1', array('bar'), 'bar', array('bar'))),
-            array(
-                new Schema\Index('idx1', array('foo_bar')),
             )
         );
 
         $this->assertEquals(
             array(
-                'CREATE TABLE foo ('.
-                'foo INT NOT NULL,'.
-                ' bar INT,'.
-                ' foo_bar INT,'.
-                ' CONSTRAINT pk1 PRIMARY KEY (foo),'.
-                ' CONSTRAINT fk1 FOREIGN KEY (bar) REFERENCES bar (bar)'.
-                ' )',
+                'CREATE TABLE foo (foo INT, bar INT)',
                 'COMMENT ON COLUMN foo.foo IS \'foo\'',
-                'CREATE INDEX idx1 ON foo (foo_bar)',
             ),
             $this->platform->getCreateTableSQLQueries($table)
         );
