@@ -802,10 +802,6 @@ abstract class AbstractPlatform implements PlatformInterface
      */
     protected function getIndexSQLDeclaration(Schema\Index $index)
     {
-        if (!$index->isUnique()) {
-            return 'INDEX '.$index->getName().' ('.implode(', ', $index->getColumnNames()).')';
-        }
-
         return 'CONSTRAINT '.$index->getName().' UNIQUE ('.implode(', ', $index->getColumnNames()).')';
     }
 
