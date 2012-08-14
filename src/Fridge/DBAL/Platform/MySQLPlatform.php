@@ -120,7 +120,8 @@ class MySQLPlatform extends AbstractPlatform
     public function getSelectDatabasesSQLQuery()
     {
         return 'SELECT schema_name AS `database`'.
-               ' FROM information_schema.schemata';
+               ' FROM information_schema.schemata'.
+               ' ORDER BY `database` ASC';
     }
 
     /**
@@ -140,7 +141,8 @@ class MySQLPlatform extends AbstractPlatform
                '  table_name AS name,'.
                '  view_definition AS `sql`'.
                ' FROM information_schema.views'.
-               ' WHERE table_schema = \''.$database.'\'';
+               ' WHERE table_schema = \''.$database.'\''.
+               ' ORDER BY name ASC';
     }
 
     /**
@@ -152,7 +154,8 @@ class MySQLPlatform extends AbstractPlatform
                '  table_name AS name'.
                ' FROM information_schema.tables'.
                ' WHERE table_schema = \''.$database.'\''.
-               ' AND table_type = \'BASE TABLE\'';
+               ' AND table_type = \'BASE TABLE\''.
+               ' ORDER BY name ASC';
     }
 
     /**
