@@ -30,13 +30,11 @@ interface SchemaManagerInterface
     function getConnection();
 
     /**
-     * Gets the schema.
+     * Gets the databases.
      *
-     * @param string $database The database name.
-     *
-     * @return \Fridge\DBAL\Schema\Schema The schema.
+     * @return array The databases
      */
-    function getSchema($database = null);
+    function getDatabases();
 
     /**
      * Gets the database name.
@@ -46,11 +44,13 @@ interface SchemaManagerInterface
     function getDatabase();
 
     /**
-     * Gets the databases.
+     * Gets the schema.
      *
-     * @return array The databases
+     * @param string $database The database name.
+     *
+     * @return \Fridge\DBAL\Schema\Schema The schema.
      */
-    function getDatabases();
+    function getSchema($database = null);
 
     /**
      * Gets the sequences.
@@ -146,6 +146,13 @@ interface SchemaManagerInterface
     function createDatabase($database);
 
     /**
+     * Creates a schema.
+     *
+     * @param \Fridge\DBAL\Schema\Schema $schema The schema.
+     */
+    function createSchema(Schema\Schema $schema);
+
+    /**
      * Creates a sequence.
      *
      * @param \Fridge\DBAL\Schema\Sequence $sequence The sequence.
@@ -206,6 +213,13 @@ interface SchemaManagerInterface
     function dropDatabase($database);
 
     /**
+     * Drops a schema.
+     *
+     * @param \Fridge\DBAL\Schema\Schema $schema The schema.
+     */
+    function dropSchema(Schema\Schema $schema);
+
+    /**
      * Drops a sequence.
      *
      * @param \Fridge\DBAL\Schema\Sequence $sequence The sequence.
@@ -264,6 +278,13 @@ interface SchemaManagerInterface
      * @param string $database The database name.
      */
     function dropAndCreateDatabase($database);
+
+    /**
+     * Drops & creates a schema.
+     *
+     * @param \Fridge\DBAL\Schema\Schema $schema The schema.
+     */
+    function dropAndCreateSchema(Schema\Schema $schema);
 
     /**
      * Drops & creates a sequence.

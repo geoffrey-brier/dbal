@@ -71,6 +71,11 @@ abstract class AbstractSchemaManagerTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('Fridge\DBAL\Connection\ConnectionInterface', $this->schemaManager->getConnection());
     }
 
+    public function testGetDatabases()
+    {
+        $this->assertTrue(in_array(self::$fixture->getDatabase(), $this->schemaManager->getDatabases()));
+    }
+
     public function testGetDatabaseWithConfiguredDatabase()
     {
         $this->assertEquals(self::$fixture->getDatabase(), $this->schemaManager->getDatabase());
@@ -81,11 +86,6 @@ abstract class AbstractSchemaManagerTest extends \PHPUnit_Framework_TestCase
         $this->schemaManager->getConnection()->setDatabase(null);
 
         $this->assertNull($this->schemaManager->getDatabase());
-    }
-
-    public function testGetDatabases()
-    {
-        $this->assertTrue(in_array(self::$fixture->getDatabase(), $this->schemaManager->getDatabases()));
     }
 
     public function testGetSequences()
@@ -558,5 +558,28 @@ abstract class AbstractSchemaManagerTest extends \PHPUnit_Framework_TestCase
         $this->schemaManager->dropAndCreateDatabase(self::$fixture->getDatabase());
 
         $this->assertTrue(in_array(self::$fixture->getDatabase(), $this->schemaManager->getDatabases()));
+    }
+
+    public function testCreateSchema()
+    {
+        self::$fixture->drop();
+
+        $this->schemaManager->createSchema(self::$fixture->getSchema());
+        $this->assertEquals(self::$fixture->getSchema(), $this->schemaManager->getSchema());
+    }
+
+    public function testDropAndCreateSchema()
+    {
+        $this->schemaManager->dropAndCreateSchema(self::$fixture->getSchema());
+
+        $this->assertEquals(self::$fixture->getSchema(), $this->schemaManager->getSchema());
+    }
+
+    public function testDropSchema()
+    {
+        $this->schemaManager->dropSchema(self::$fixture->getSchema());
+
+        $this->schemaManager->getConnection()->setDatabase(null);
+        $this->assertFalse(in_array(self::$fixture->getDatabase(), $this->schemaManager->getDatabases()));
     }
 }

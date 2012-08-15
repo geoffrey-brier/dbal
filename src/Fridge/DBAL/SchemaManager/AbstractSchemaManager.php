@@ -50,22 +50,12 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
     /**
      * {@inheritdoc}
      */
-    public function getSchema($database = null)
+    public function getDatabases()
     {
-        if ($database === null) {
-            $database = $this->getDatabase();
-        }
+        $query = $this->getConnection()->getPlatform()->getSelectDatabasesSQLQuery();
+        $databases = $this->connection->fetchAll($query);
 
-        $sequences = array();
-
-        if ($this->getConnection()->getPlatform()->supportSequence()) {
-            $sequences = $this->getSequences($database);
-        }
-
-        $tables = $this->getTables($database);
-        $views = $this->getViews($database);
-
-        return new Schema\Schema($database, $tables, $sequences, $views);
+        return $this->getGenericDatabases($databases);
     }
 
     /**
@@ -89,12 +79,22 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
     /**
      * {@inheritdoc}
      */
-    public function getDatabases()
+    public function getSchema($database = null)
     {
-        $query = $this->getConnection()->getPlatform()->getSelectDatabasesSQLQuery();
-        $databases = $this->connection->fetchAll($query);
+        if ($database === null) {
+            $database = $this->getDatabase();
+        }
 
-        return $this->getGenericDatabases($databases);
+        $sequences = array();
+
+        if ($this->getConnection()->getPlatform()->supportSequence()) {
+            $sequences = $this->getSequences($database);
+        }
+
+        $tables = $this->getTables($database);
+        $views = $this->getViews($database);
+
+        return new Schema\Schema($database, $tables, $sequences, $views);
     }
 
     /**
@@ -257,6 +257,48 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
     /**
      * {@inheritdoc}
      */
+    public function createSchema(Schema\Schema $schema)
+    {
+        $this->createDatabase($schema->getName());
+
+        foreach ($schema->getTables() as $table) {
+            $queries = $this->getConnection()->getPlatform()->getCreateTableSQLQueries($table);
+
+            foreach ($queries as $query) {
+                $this->getConnection()->executeUpdate($query);
+            }
+        }
+
+        foreach ($schema->getTables() as $table) {
+            if ($table->hasPrimaryKey()) {
+                $this->createPrimaryKey($table->getPrimaryKey(), $table->getName());
+            }
+        }
+
+        foreach ($schema->getTables() as $table) {
+            foreach ($this->getCreateTableIndexes($table) as $index) {
+                $this->createIndex($index, $table->getName());
+            }
+        }
+
+        foreach ($schema->getTables() as $table) {
+            foreach ($table->getForeignKeys() as $foreignKey) {
+                $this->createForeignKey($foreignKey, $table->getName());
+            }
+        }
+
+        foreach ($schema->getSequences() as $sequence) {
+            $this->createSequence($sequence);
+        }
+
+        foreach ($schema->getViews() as $view) {
+            $this->createView($view);
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function createSequence(Schema\Sequence $sequence)
     {
         $query = $this->getConnection()->getPlatform()->getCreateSequenceSQLQuery($sequence);
@@ -348,6 +390,14 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
     /**
      * {@inheritdoc}
      */
+    public function dropSchema(Schema\Schema $schema)
+    {
+        $this->dropDatabase($schema->getName());
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function dropSequence(Schema\Sequence $sequence)
     {
         $query = $this->getConnection()->getPlatform()->getDropSequenceSQLQuery($sequence);
@@ -415,6 +465,15 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
     {
         $this->tryMethod('dropDatabase', array($database));
         $this->createDatabase($database);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function dropAndCreateSchema(Schema\Schema $schema)
+    {
+        $this->tryMethod('dropSchema', array($schema));
+        $this->createSchema($schema);
     }
 
     /**
