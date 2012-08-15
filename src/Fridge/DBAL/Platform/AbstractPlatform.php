@@ -26,9 +26,6 @@ use Fridge\DBAL\Connection\Connection,
 abstract class AbstractPlatform implements PlatformInterface
 {
     /** @var array */
-    protected $mandatoryTypes;
-
-    /** @var array */
     protected $mappedTypes;
 
     /** @var boolean */
@@ -37,49 +34,20 @@ abstract class AbstractPlatform implements PlatformInterface
     /** @var string */
     protected $fallbackMappedType;
 
+    /** @var array */
+    protected $mandatoryTypes;
+
     /**
      * Platform constructor.
      */
     public function __construct()
     {
-        $this->initializeMandatoryTypes();
         $this->initializeMappedTypes();
 
         $this->strictMappedType = true;
         $this->fallbackMappedType = Type::TEXT;
-    }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function hasMandatoryType($type)
-    {
-        return in_array($type, $this->mandatoryTypes);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function addMandatoryType($type)
-    {
-        if ($this->hasMandatoryType($type)) {
-            throw Exception\PlatformException::mandatoryTypeAlreadyExists($type);
-        }
-
-        $this->mandatoryTypes[] = $type;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function removeMandatoryType($type)
-    {
-        if (!$this->hasMandatoryType($type)) {
-            throw Exception\PlatformException::mandatoryTypeDoesNotExist($type);
-        }
-
-        $index = array_search($type, $this->mandatoryTypes);
-        unset($this->mandatoryTypes[$index]);
+        $this->initializeMandatoryTypes();
     }
 
     /**
@@ -143,11 +111,7 @@ abstract class AbstractPlatform implements PlatformInterface
     }
 
     /**
-     * Checks/sets if the platform uses a strict mapped type strategy.
-     *
-     * @param boolean $strictMappedType TRUE if the platform uses stric mapped type strategy else FALSE.
-     *
-     * @return boolean TRUE if the platform uses stric mapped type strategy else FALSE.
+     * {@inheritdoc}
      */
     public function useStrictMappedType($strictMappedType = null)
     {
@@ -159,9 +123,7 @@ abstract class AbstractPlatform implements PlatformInterface
     }
 
     /**
-     * Gets the fallback mapped type.
-     *
-     * @return string The fallback mapped type.
+     * {@inheritdoc}
      */
     public function getFallbackMappedType()
     {
@@ -169,9 +131,7 @@ abstract class AbstractPlatform implements PlatformInterface
     }
 
     /**
-     * Sets the fallback mapped type.
-     *
-     * @param string $fallbackMappedType The fallback mapped type.
+     * {@inheritdoc}
      */
     public function setFallbackMappedType($fallbackMappedType)
     {
@@ -180,6 +140,39 @@ abstract class AbstractPlatform implements PlatformInterface
         }
 
         $this->fallbackMappedType = $fallbackMappedType;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function hasMandatoryType($type)
+    {
+        return in_array($type, $this->mandatoryTypes);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function addMandatoryType($type)
+    {
+        if ($this->hasMandatoryType($type)) {
+            throw Exception\PlatformException::mandatoryTypeAlreadyExists($type);
+        }
+
+        $this->mandatoryTypes[] = $type;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function removeMandatoryType($type)
+    {
+        if (!$this->hasMandatoryType($type)) {
+            throw Exception\PlatformException::mandatoryTypeDoesNotExist($type);
+        }
+
+        $index = array_search($type, $this->mandatoryTypes);
+        unset($this->mandatoryTypes[$index]);
     }
 
     /**

@@ -64,6 +64,29 @@ interface PlatformInterface
     function removeMappedType($type);
 
     /**
+     * Checks/sets if the platform uses a strict mapped type strategy.
+     *
+     * @param boolean $strictMappedType TRUE if the platform uses stric mapped type strategy else FALSE.
+     *
+     * @return boolean TRUE if the platform uses stric mapped type strategy else FALSE.
+     */
+    function useStrictMappedType($strictMappedType = null);
+
+    /**
+     * Gets the fallback mapped type.
+     *
+     * @return string The fallback mapped type.
+     */
+    function getFallbackMappedType();
+
+    /**
+     * Sets the fallback mapped type.
+     *
+     * @param string $fallbackMappedType The fallback mapped type.
+     */
+    function setFallbackMappedType($fallbackMappedType);
+
+    /**
      * Checks if a mandatory type exists.
      *
      * @param string $type The type.

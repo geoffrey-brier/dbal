@@ -44,6 +44,11 @@ class MySQLPlatformTest extends \PHPUnit_Framework_TestCase
         unset($this->platform);
     }
 
+    public function testMappedTypes()
+    {
+        $this->assertTrue($this->platform->hasMappedType('int'));
+    }
+
     /**
      * Gets the MySQLPlatform::getIntegerSQLDeclarationSnippet method.
      *
@@ -55,11 +60,6 @@ class MySQLPlatformTest extends \PHPUnit_Framework_TestCase
         $method->setAccessible(true);
 
         return $method;
-    }
-
-    public function testMappedTypes()
-    {
-        $this->assertTrue($this->platform->hasMappedType('int'));
     }
 
     public function testIntegerSQLDeclarationSnippetWithoutOptions()

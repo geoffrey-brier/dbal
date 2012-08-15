@@ -87,74 +87,6 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(Type::TEXT, $this->platform->getFallbackMappedType());
     }
 
-    public function testStrictMappedType()
-    {
-        $this->platform->useStrictMappedType(false);
-        $this->assertFalse($this->platform->useStrictMappedType());
-    }
-
-    public function testFallbackMappedTypeWithValidValue()
-    {
-        $this->platform->setFallbackMappedType(Type::INTEGER);
-        $this->assertEquals(Type::INTEGER, $this->platform->getFallbackMappedType());
-    }
-
-    /**
-     * @expectedException \Fridge\DBAL\Exception\TypeException
-     */
-    public function testFallbackMappedTypeWithInvalidValue()
-    {
-        $this->platform->setFallbackMappedType('foo');
-    }
-
-    public function testHasMandatoryType()
-    {
-        $this->initializeMandatoryTypes();
-
-        $this->assertTrue($this->platform->hasMandatoryType('foo'));
-        $this->assertFalse($this->platform->hasMandatoryType('bar'));
-    }
-
-    public function testAddMandatoryTypeWithValidValue()
-    {
-        $this->initializeMandatoryTypes();
-
-        $this->platform->addMandatoryType('bar');
-
-        $this->assertTrue($this->platform->hasMandatoryType('bar'));
-    }
-
-    /**
-     * @expectedException Fridge\DBAL\Exception\PlatformException
-     * @expectedExceptionMessage The mandatory type "foo" already exists.
-     */
-    public function testAddMandatoryTypeWithInvalidValue()
-    {
-        $this->initializeMandatoryTypes();
-
-        $this->platform->addMandatoryType('foo');
-    }
-
-    public function testRemoveMandatoryTypeWithValidValue()
-    {
-        $this->initializeMandatoryTypes();
-
-        $this->platform->removeMandatoryType('foo');
-
-        $this->assertFalse($this->platform->hasMandatoryType('foo'));
-    }
-
-    /**
-     * @expectedException \Fridge\DBAL\Exception\PlatformException
-     * @expectedExceptionMessage The mandatory type "bar" does not exist.
-     */
-    public function testRemoveMandatoryTypeWithInvalidValue()
-    {
-        $this->initializeMandatoryTypes();
-
-        $this->platform->removeMandatoryType('bar');
-    }
-
     public function testHasMappedType()
     {
         $this->initializeMappedTypes();
@@ -245,6 +177,74 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
         $this->initializeMappedTypes();
 
         $this->platform->removeMappedType('bar');
+    }
+
+    public function testStrictMappedType()
+    {
+        $this->platform->useStrictMappedType(false);
+        $this->assertFalse($this->platform->useStrictMappedType());
+    }
+
+    public function testFallbackMappedTypeWithValidValue()
+    {
+        $this->platform->setFallbackMappedType(Type::INTEGER);
+        $this->assertEquals(Type::INTEGER, $this->platform->getFallbackMappedType());
+    }
+
+    /**
+     * @expectedException \Fridge\DBAL\Exception\TypeException
+     */
+    public function testFallbackMappedTypeWithInvalidValue()
+    {
+        $this->platform->setFallbackMappedType('foo');
+    }
+
+    public function testHasMandatoryType()
+    {
+        $this->initializeMandatoryTypes();
+
+        $this->assertTrue($this->platform->hasMandatoryType('foo'));
+        $this->assertFalse($this->platform->hasMandatoryType('bar'));
+    }
+
+    public function testAddMandatoryTypeWithValidValue()
+    {
+        $this->initializeMandatoryTypes();
+
+        $this->platform->addMandatoryType('bar');
+
+        $this->assertTrue($this->platform->hasMandatoryType('bar'));
+    }
+
+    /**
+     * @expectedException Fridge\DBAL\Exception\PlatformException
+     * @expectedExceptionMessage The mandatory type "foo" already exists.
+     */
+    public function testAddMandatoryTypeWithInvalidValue()
+    {
+        $this->initializeMandatoryTypes();
+
+        $this->platform->addMandatoryType('foo');
+    }
+
+    public function testRemoveMandatoryTypeWithValidValue()
+    {
+        $this->initializeMandatoryTypes();
+
+        $this->platform->removeMandatoryType('foo');
+
+        $this->assertFalse($this->platform->hasMandatoryType('foo'));
+    }
+
+    /**
+     * @expectedException \Fridge\DBAL\Exception\PlatformException
+     * @expectedExceptionMessage The mandatory type "bar" does not exist.
+     */
+    public function testRemoveMandatoryTypeWithInvalidValue()
+    {
+        $this->initializeMandatoryTypes();
+
+        $this->platform->removeMandatoryType('bar');
     }
 
     public function testBigIntegerSQLDeclaration()
