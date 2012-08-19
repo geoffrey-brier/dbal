@@ -14,6 +14,8 @@ namespace Fridge\DBAL\Exception;
 /**
  * Schema manager exception.
  *
+ * @codeCoverageIgnore
+ *
  * @author GeLo <geloen.eric@gmail.com>
  */
 class SchemaManagerException extends Exception

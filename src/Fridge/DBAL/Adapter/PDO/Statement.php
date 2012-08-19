@@ -24,6 +24,8 @@ class Statement extends PDOStatement implements StatementInterface
 {
     /**
      * Disabeld constructor.
+     *
+     * @codeCoverageIgnore
      */
     final private function __construct()
     {

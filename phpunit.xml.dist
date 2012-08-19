@@ -50,9 +50,6 @@
             <directory suffix=".php">./src/</directory>
             <exclude>
                 <directory suffix="Interface.php">./src/</directory>
-                <file>./src/Fridge/DBAL/Driver/AbstractDriver.php</file>
-                <file>./src/Fridge/DBAL/Event/Events.php</file>
-                <file>./src/Fridge/DBAL/Exception/SchemaManagerException.php</file>
             </exclude>
         </whitelist>
     </filter>
