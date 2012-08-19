@@ -10,7 +10,7 @@
         }
     ],
     "require": {
-        "php": ">=5.3.0",
+        "php": ">=5.3.3",
         "monolog/monolog": "dev-master",
         "symfony/event-dispatcher": "dev-master"
     },
