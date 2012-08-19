@@ -1,3 +1,6 @@
+# Autoload
+/autoload.php
+
 # Composer
 /composer.phar
 /composer.lock
