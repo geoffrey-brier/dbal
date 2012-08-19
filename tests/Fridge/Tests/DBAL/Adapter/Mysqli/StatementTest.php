@@ -217,7 +217,7 @@ class StatementTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(self::$fixture->getQueryResult(), $this->statement->fetch(PDO::FETCH_ASSOC));
     }
 
-    public function testBindNamedParameters()
+    public function testBindNamedParametersWithColon()
     {
         $this->statement = new Statement(self::$fixture->getQueryWithNamedParameters(), $this->mysqli);
 
@@ -225,6 +225,20 @@ class StatementTest extends \PHPUnit_Framework_TestCase
 
         foreach ($parameters as $parameter => &$value) {
             $this->assertTrue($this->statement->bindParam(':'.$parameter, $value));
+        }
+
+        $this->assertTrue($this->statement->execute());
+        $this->assertEquals(self::$fixture->getQueryResult(), $this->statement->fetch(PDO::FETCH_ASSOC));
+    }
+
+    public function testBindNamedParametersWithoutColon()
+    {
+        $this->statement = new Statement(self::$fixture->getQueryWithNamedParameters(), $this->mysqli);
+
+        $parameters = self::$fixture->getNamedQueryParameters();
+
+        foreach ($parameters as $parameter => &$value) {
+            $this->assertTrue($this->statement->bindParam($parameter, $value));
         }
 
         $this->assertTrue($this->statement->execute());
