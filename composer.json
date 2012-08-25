@@ -11,8 +11,8 @@
     ],
     "require": {
         "php": ">=5.3.3",
-        "monolog/monolog": "dev-master",
-        "symfony/event-dispatcher": "dev-master"
+        "monolog/monolog": ">=1.1.0",
+        "symfony/event-dispatcher": "2.*"
     },
     "autoload": {
         "psr-0": {
