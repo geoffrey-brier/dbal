@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Fridge\Tests\DBAL\Event\Listener;
+namespace Fridge\Tests\DBAL\Event\Subscriber;
 
 use Fridge\DBAL\Event;
 
@@ -18,17 +18,17 @@ use Fridge\DBAL\Event;
  *
  * @author GeLo <geloen.eric@gmail.com>
  */
-class MySQLSessionInitTest extends \PHPUnit_Framework_TestCase
+class CharsetSubscriberTest extends \PHPUnit_Framework_TestCase
 {
-    /** @var Fridge\DBAL\Event\Listener\MySQLSessionInit */
-    protected $listener;
+    /** @var Fridge\DBAL\Event\Subscriber\CharsetSubscriber */
+    protected $subscriber;
 
     /**
      * {@inheritdoc}
      */
     protected function setUp()
     {
-        $this->listener = new Event\Listener\MySQLSessionInit();
+        $this->subscriber = new Event\Subscriber\CharsetSubscriber();
     }
 
     /**
@@ -36,20 +36,20 @@ class MySQLSessionInitTest extends \PHPUnit_Framework_TestCase
      */
     protected function tearDown()
     {
-        unset($this->listener);
+        unset($this->subscriber);
     }
 
     public function testSubscribedEvents()
     {
-        $subscribedEvents = Event\Listener\MySQLSessionInit::getSubscribedEvents();
+        $subscribedEvents = Event\Subscriber\CharsetSubscriber::getSubscribedEvents();
 
         $this->assertTrue(in_array(Event\Events::POST_CONNECT, array_keys($subscribedEvents)));
-        $this->assertTrue(method_exists($this->listener, $subscribedEvents[Event\Events::POST_CONNECT]));
+        $this->assertTrue(method_exists($this->subscriber, $subscribedEvents[Event\Events::POST_CONNECT]));
     }
 
     public function testCharset()
     {
-        $this->assertEquals('utf8', $this->listener->getCharset());
+        $this->assertEquals('utf8', $this->subscriber->getCharset());
     }
 
     public function testPostConnect()
@@ -62,6 +62,6 @@ class MySQLSessionInitTest extends \PHPUnit_Framework_TestCase
 
         $event = new Event\PostConnectEvent($connectionMock);
 
-        $this->listener->postConnect($event);
+        $this->subscriber->postConnect($event);
     }
 }

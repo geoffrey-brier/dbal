@@ -9,18 +9,17 @@
  * file that was distributed with this source code.
  */
 
-namespace Fridge\DBAL\Event\Listener;
+namespace Fridge\DBAL\Event\Subscriber;
 
 use Fridge\DBAL\Event,
     Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
- * Sets the character sets of a MySQL connection after a database connection.
- * This class subscribes to the post connect event.
+ * Sets the character sets of a connection after a database connection.
  *
  * @author GeLo <geloen.eric@gmail.com>
  */
-class MySQLSessionInit implements EventSubscriberInterface
+class CharsetSubscriber implements EventSubscriberInterface
 {
     /** @var string */
     protected $charset;
