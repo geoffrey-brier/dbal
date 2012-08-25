@@ -18,7 +18,7 @@ use Fridge\DBAL\Event;
  *
  * @author GeLo <geloen.eric@gmail.com>
  */
-class CharsetSubscriberTest extends \PHPUnit_Framework_TestCase
+class SetCharsetSubscriberTest extends \PHPUnit_Framework_TestCase
 {
     /** @var Fridge\DBAL\Event\Subscriber\CharsetSubscriber */
     protected $subscriber;
@@ -28,7 +28,7 @@ class CharsetSubscriberTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->subscriber = new Event\Subscriber\CharsetSubscriber();
+        $this->subscriber = new Event\Subscriber\SetCharsetSubscriber();
     }
 
     /**
@@ -41,7 +41,7 @@ class CharsetSubscriberTest extends \PHPUnit_Framework_TestCase
 
     public function testSubscribedEvents()
     {
-        $subscribedEvents = Event\Subscriber\CharsetSubscriber::getSubscribedEvents();
+        $subscribedEvents = Event\Subscriber\SetCharsetSubscriber::getSubscribedEvents();
 
         $this->assertTrue(in_array(Event\Events::POST_CONNECT, array_keys($subscribedEvents)));
         $this->assertTrue(method_exists($this->subscriber, $subscribedEvents[Event\Events::POST_CONNECT]));

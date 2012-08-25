@@ -19,7 +19,7 @@ use Fridge\DBAL\Event,
  *
  * @author GeLo <geloen.eric@gmail.com>
  */
-class CharsetSubscriber implements EventSubscriberInterface
+class SetCharsetSubscriber implements EventSubscriberInterface
 {
     /** @var string */
     protected $charset;
