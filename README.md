@@ -64,3 +64,8 @@ the documentation.
 
 We love contributors! Fridge is an open source project. If you'd like to contribute, please read the
 [contributing](http://fridge-project.org/contributing) section of the documentation.
+
+## License
+
+The Fridge DBAL is under the MIT license. For the full copyright and license information, please read the
+[LICENSE](https://github.com/fridge-project/dbal/blob/master/LICENSE) file that was distributed with this source code.
