@@ -49,9 +49,7 @@ class ObjectType implements TypeInterface
         }
 
         $errorReporting = error_reporting(~E_ALL);
-
         $val = unserialize($value);
-        
         error_reporting($errorReporting);
 
         if ($val === false) {

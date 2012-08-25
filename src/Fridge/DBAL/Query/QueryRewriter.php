@@ -23,12 +23,12 @@ class QueryRewriter
     /**
      * Rewrites a positional/named query in order to expand it according to the Connection::PARAM_ARRAY ([]).
      *
-     * @see \Fridge\DBAL\Query\QueryRewriter::rewritePositionalQuery
-     * @see \Fridge\DBAL\Query\QueryRewriter::rewriteNamedQuery
-     *
      * @param string $query      The query.
      * @param array  $parameters The query parameters.
      * @param array  $types      The query types.
+     * 
+     * @see \Fridge\DBAL\Query\QueryRewriter::rewritePositionalQuery
+     * @see \Fridge\DBAL\Query\QueryRewriter::rewriteNamedQuery
      *
      * @return array 0 => query, 1 => parameters, 2 => types.
      */

@@ -93,11 +93,11 @@ class StatementRewriter
 
         // Find each named placeholder position.
         $placeholderPosition = 0;
-        while(($placeholderPosition = strpos($this->statement, ':', $placeholderPosition)) !== false) {
+        while (($placeholderPosition = strpos($this->statement, ':', $placeholderPosition)) !== false) {
 
             // Determine placeholder length.
             $placeholderLength = 1;
-            while(isset($this->statement[$placeholderPosition + $placeholderLength])
+            while (isset($this->statement[$placeholderPosition + $placeholderLength])
                 && $this->isValidPlaceholderCharacter($this->statement[$placeholderPosition + $placeholderLength])) {
                 $placeholderLength++;
             }
