@@ -2,6 +2,7 @@
 /autoload.php
 
 # Composer
+/installer
 /composer.phar
 /composer.lock
 /vendor
