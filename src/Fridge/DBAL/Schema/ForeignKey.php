@@ -20,6 +20,18 @@ use Fridge\DBAL\Exception\SchemaException;
  */
 class ForeignKey extends AbstractAsset implements ConstraintInterface
 {
+    /** @const Cascade referential action constant. */
+    const CASCADE = 'CASCADE';
+
+    /** @const Rstrict referential action constant. */
+    const RESTRICT = 'RESTRICT';
+
+    /** @const No action referential action constant. */
+    const NO_ACTION = 'NO ACTION';
+
+    /** @const Set null referential action constant. */
+    const SET_NULL = 'SET NULL';
+
     /** @var array */
     protected $localColumnNames;
 
@@ -29,6 +41,12 @@ class ForeignKey extends AbstractAsset implements ConstraintInterface
     /** @var array */
     protected $foreignColumnNames;
 
+    /** @var string */
+    protected $onDelete;
+
+    /** @var string */
+    protected $onUpdate;
+
     /**
      * Creates a foreign key.
      *
@@ -36,8 +54,17 @@ class ForeignKey extends AbstractAsset implements ConstraintInterface
      * @param array  $localColumnNames   The local column names.
      * @param string $foreignTableName   The foreign table name.
      * @param array  $foreignColumnNames The foreign column names.
+     * @param string $onDelete           The foreign key referential on delete action.
+     * @param string $onUpdate           The foreign key referential on update action.
      */
-    public function __construct($name, array $localColumnNames, $foreignTableName, array $foreignColumnNames)
+    public function __construct(
+        $name,
+        array $localColumnNames,
+        $foreignTableName,
+        array $foreignColumnNames,
+        $onDelete = self::RESTRICT,
+        $onUpdate = self::RESTRICT
+    )
     {
         if ($name === null) {
             $name = $this->generateIdentifier('fk_', 20);
@@ -48,6 +75,8 @@ class ForeignKey extends AbstractAsset implements ConstraintInterface
         $this->setLocalColumnNames($localColumnNames);
         $this->setForeignTableName($foreignTableName);
         $this->setForeignColumnNames($foreignColumnNames);
+        $this->setOnDelete($onDelete);
+        $this->setOnUpdate($onUpdate);
     }
 
     /**
@@ -154,5 +183,45 @@ class ForeignKey extends AbstractAsset implements ConstraintInterface
         }
 
         $this->foreignColumnNames[] = $foreignColumnName;
+    }
+
+    /**
+     * Gets the on delete referential action.
+     *
+     * @return string The on delete referential action.
+     */
+    public function getOnDelete()
+    {
+        return $this->onDelete;
+    }
+
+    /**
+     * Sets the on delete referential action.
+     *
+     * @param string $onDelete The on delete referential action.
+     */
+    public function setOnDelete($onDelete)
+    {
+        $this->onDelete = $onDelete;
+    }
+
+    /**
+     * Gets the on update referential action.
+     *
+     * @return string The on update referential action.
+     */
+    public function getOnUpdate()
+    {
+        return $this->onUpdate;
+    }
+
+    /**
+     * Sets the one update referential action.
+     *
+     * @param string $onUpdate The on update referential action.
+     */
+    public function setOnUpdate($onUpdate)
+    {
+        $this->onUpdate = $onUpdate;
     }
 }
