@@ -29,6 +29,8 @@ class PDOMySQLSchemaManagerTest extends AbstractSchemaManagerTest
     {
         if (ConnectionUtility::hasConnection(ConnectionUtility::PDO_MYSQL)) {
             self::$fixture = new MySQLFixture();
+        } else {
+            self::$fixture = null;
         }
 
         parent::setUpBeforeClass();

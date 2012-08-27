@@ -28,6 +28,8 @@ class PDOPostgreSQLConnectionTest extends AbstractConnectionTest
     {
         if (ConnectionUtility::hasConnection(ConnectionUtility::PDO_PGSQL)) {
             self::$fixture = new PostgreSQLFixture();
+        } else {
+            self::$fixture = null;
         }
 
         parent::setUpBeforeClass();
