@@ -29,6 +29,12 @@ class ForeignKey extends AbstractAsset implements ConstraintInterface
     /** @var array */
     protected $foreignColumnNames;
 
+    /** @var string */
+    protected $onUpdate;
+
+    /** @var string */
+    protected $onDelete;
+
     /**
      * Creates a foreign key.
      *
@@ -48,6 +54,8 @@ class ForeignKey extends AbstractAsset implements ConstraintInterface
         $this->setLocalColumnNames($localColumnNames);
         $this->setForeignTableName($foreignTableName);
         $this->setForeignColumnNames($foreignColumnNames);
+        $this->setOnUpdate("NO ACTION");
+        $this->setOnDelete("NO ACTION");
     }
 
     /**
@@ -155,4 +163,45 @@ class ForeignKey extends AbstractAsset implements ConstraintInterface
 
         $this->foreignColumnNames[] = $foreignColumnName;
     }
+
+    /**
+     * Get the type of the on update reference.
+     *
+     * @return string the type of the on update reference
+     */
+    public function getOnUpdate()
+    {
+        return $this->onUpdate;
+    }
+
+    /**
+     * Set the type of the on update reference.
+     *
+     * @param string $onUpdate
+     */
+    public function setOnUpdate($onUpdate)
+    {
+        $this->onUpdate = $onUpdate;
+    }
+
+    /**
+     * Get the type of the on delete reference.
+     *
+     * @return string the type of the on delete reference
+     */
+    public function getOnDelete()
+    {
+        return $this->onDelete;
+    }
+
+    /**
+     *
+     * @param type $onDelete
+     */
+    public function setOnDelete($onDelete)
+    {
+        $this->onDelete = $onDelete;
+    }
+
+
 }

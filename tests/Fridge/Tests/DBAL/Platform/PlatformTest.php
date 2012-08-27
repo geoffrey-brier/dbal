@@ -440,7 +440,7 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
         $foreignKey = new Schema\ForeignKey('foo', array('foo'), 'bar', array('bar'));
 
         $this->assertEquals(
-            'ALTER TABLE foo ADD CONSTRAINT foo FOREIGN KEY (foo) REFERENCES bar (bar)',
+            'ALTER TABLE foo ADD CONSTRAINT foo FOREIGN KEY (foo) REFERENCES bar (bar) ON UPDATE NO ACTION ON DELETE NO ACTION',
             $this->platform->getCreateConstraintSQLQuery($foreignKey, 'foo')
         );
     }
@@ -480,7 +480,7 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
         $foreignKey = new Schema\ForeignKey('foo', array('foo'), 'bar', array('bar'));
 
         $this->assertEquals(
-            'ALTER TABLE foo ADD CONSTRAINT foo FOREIGN KEY (foo) REFERENCES bar (bar)',
+            'ALTER TABLE foo ADD CONSTRAINT foo FOREIGN KEY (foo) REFERENCES bar (bar) ON UPDATE NO ACTION ON DELETE NO ACTION',
             $this->platform->getCreateForeignKeySQLQuery($foreignKey, 'foo')
         );
     }
