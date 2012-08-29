@@ -402,4 +402,28 @@ class SchemaException extends Exception
     {
         return new static(sprintf('The view "%s" of the schema "%s" does not exist.', $view, $schema));
     }
+
+    /**
+     * Gets the "INVALID CHECK CONSTRAINT COLUMN NAME" exception.
+     *
+     * @param string $checkConstraint The check constraint name.
+     *
+     * @return \Fridge\DBAL\Exception\SchemaException The "INVALID CHECK CONSTRAINT COLUMN NAME" exception.
+     */
+    static public function invalidCheckConstraintColumnName($checkConstraint)
+    {
+        return new static(sprintf('The column name of the check constraint "%s" must be a string.', $checkConstraint));
+    }
+
+    /**
+     * Gets the "INVALID CHECK CONSTRAINT CONSTRAINT" exception.
+     *
+     * @param string $checkConstraint The check constraint name.
+     *
+     * @return \Fridge\DBAL\Exception\SchemaException The "INVALID CHECK CONSTRAINT CONSTRAINT" exception.
+     */
+    static public function invalidCheckConstraintConstraint($checkConstraint)
+    {
+        return new static(sprintf('The constraint of the check constraint "%s" must be a string.', $checkConstraint));
+    }
 }
