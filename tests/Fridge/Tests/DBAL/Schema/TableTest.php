@@ -39,6 +39,9 @@ class TableTest extends \PHPUnit_Framework_TestCase
     /** @var \Fridge\DBAL\Schema\Schema */
     protected $schemaMock;
 
+    /** @var \Fridge\DBAL\Schema\CheckConstraint */
+    protected $checkConstraintMock;
+
     /**
      * {@inheritdoc}
      */
@@ -86,6 +89,20 @@ class TableTest extends \PHPUnit_Framework_TestCase
 
         $this->schemaMock = $this->getMock('Fridge\DBAL\Schema\Schema', array(), array(), '', false);
 
+        $this->checkConstraintMock = $this->getMock('Fridge\DBAL\Schema\CheckConstraint', array(), array(), '', false);
+        $this->checkConstraintMock
+            ->expects($this->any())
+            ->method('getName')
+            ->will($this->returnValue('foo'));
+        $this->checkConstraintMock
+            ->expects($this->any())
+            ->method('getColumnNames')
+            ->will($this->returnValue(array('foo')));
+        $this->checkConstraintMock
+            ->expects($this->any())
+            ->method('getConstraint')
+            ->will($this->returnValue('foo'));
+
         $this->table = new Table('foo');
     }
 
@@ -100,6 +117,7 @@ class TableTest extends \PHPUnit_Framework_TestCase
         unset($this->foreignKeyMock);
         unset($this->indexMock);
         unset($this->schemaMock);
+        unset($this->checkConstraintMock);
     }
 
     public function testInitialState()
@@ -115,6 +133,8 @@ class TableTest extends \PHPUnit_Framework_TestCase
         $this->assertEmpty($this->table->getForeignKeys());
         $this->assertFalse($this->table->hasIndexes());
         $this->assertEmpty($this->table->getIndexes());
+        $this->assertFalse($this->table->hasCheckConstraints());
+        $this->assertEmpty($this->table->getCheckConstraints());
     }
 
     public function testSchema()
@@ -679,12 +699,158 @@ class TableTest extends \PHPUnit_Framework_TestCase
         $this->table->dropIndex('foo');
     }
 
+    public function testCheckConstraint()
+    {
+        $this->table->addColumn($this->columnMock);
+        $this->table->setCheckConstraints(array($this->checkConstraintMock));
+
+        $this->assertTrue($this->table->hasCheckConstraints());
+        $this->assertTrue($this->table->hasCheckConstraint('foo'));
+        $this->assertEquals($this->checkConstraintMock, $this->table->getCheckConstraint('foo'));
+    }
+
+    public function testCreateCheckConstraint()
+    {
+        $this->table->addColumn($this->columnMock);
+
+        $checkConstraint = $this->table->createCheckConstraint(array('foo'), 'foo', 'foo');
+
+        $this->assertTrue($this->table->hasCheckConstraint('foo'));
+
+        $this->assertEquals('foo', $checkConstraint->getName());
+        $this->assertEquals(array('foo'), $checkConstraint->getColumnNames());
+        $this->assertEquals('foo', $checkConstraint->getConstraint());
+    }
+
+    public function testSetCheckConstraintsDropPreviousCheckConstraints()
+    {
+        $this->table->addColumn($this->columnMock);
+        $this->table->setCheckConstraints(array($this->checkConstraintMock));
+
+        $this->assertTrue($this->table->hasCheckConstraints());
+        $this->assertTrue($this->table->hasCheckConstraint('foo'));
+        $this->assertFalse($this->table->hasCheckConstraint('bar'));
+        $this->assertEquals($this->checkConstraintMock, $this->table->getCheckConstraint('foo'));
+
+        $checkConstraintMock = $this->getMock('Fridge\DBAL\Schema\CheckConstraint', array(), array(), '', false);
+        $checkConstraintMock
+            ->expects($this->any())
+            ->method('getName')
+            ->will($this->returnValue('bar'));
+        $checkConstraintMock
+            ->expects($this->any())
+            ->method('getColumnNames')
+            ->will($this->returnValue(array('foo')));
+        $checkConstraintMock
+            ->expects($this->any())
+            ->method('getConstraint')
+            ->will($this->returnValue('bar'));
+
+
+        $this->table->setCheckConstraints(array($checkConstraintMock));
+
+        $this->assertTrue($this->table->hasCheckConstraints());
+        $this->assertTrue($this->table->hasCheckConstraint('bar'));
+        $this->assertFalse($this->table->hasCheckConstraint('foo'));
+        $this->assertEquals($checkConstraintMock, $this->table->getCheckConstraint('bar'));
+    }
+
+    /**
+     * @expectedException Fridge\DBAL\Exception\SchemaException
+     * @expectedExceptionMessage The check constraint "foo" of the table "foo" does not exist.
+     */
+    public function testGetCheckConstraintWithInvalidName()
+    {
+        $this->table->getCheckConstraint('foo');
+    }
+
+    /**
+     * @expectedException Fridge\DBAL\Exception\SchemaException
+     * @expectedExceptionMessage The check constraint "foo" of the table "foo" already exists.
+     */
+    public function testAddCheckConstraintWithInvalidName()
+    {
+        $this->table->addColumn($this->columnMock);
+
+        $this->table->addCheckConstraint($this->checkConstraintMock);
+        $this->table->addCheckConstraint($this->checkConstraintMock);
+    }
+
+    /**
+     * @expectedException Fridge\DBAL\Exception\SchemaException
+     * @expectedExceptionMessage The column "foo" of the table "foo" does not exist.
+     */
+    public function testAddCheckConstraintWithInvalidColumn()
+    {
+        $this->table->addCheckConstraint($this->checkConstraintMock);
+    }
+
+    public function testRenameCheckConstraint()
+    {
+        $this->table->addColumn($this->columnMock);
+        $this->table->addCheckConstraint($this->checkConstraintMock);
+
+        $this->assertTrue($this->table->hasCheckConstraint('foo'));
+        $this->assertFalse($this->table->hasCheckConstraint('bar'));
+
+        $this->table->renameCheckConstraint('foo', 'bar');
+
+        $this->assertTrue($this->table->hasCheckConstraint('bar'));
+        $this->assertFalse($this->table->hasCheckConstraint('foo'));
+    }
+
+    /**
+     * @expectedException Fridge\DBAL\Exception\SchemaException
+     * @expectedExceptionMessage The check constraint "foo" of the table "foo" does not exist.
+     */
+    public function testRemaneCheckConstraintWithInvalidOldName()
+    {
+        $this->table->renameCheckConstraint('foo', 'bar');
+    }
+
+    /**
+     * @expectedException Fridge\DBAL\Exception\SchemaException
+     * @expectedExceptionMessage The check constraint "bar" of the table "foo" already exists.
+     */
+    public function testRenameCheckConstraintWithInvalidNewName()
+    {
+        $checkConstraintMock = $this->getMock('Fridge\DBAL\Schema\CheckConstraint', array(), array(), '', false);
+        $checkConstraintMock
+            ->expects($this->any())
+            ->method('getName')
+            ->will($this->returnValue('bar'));
+        $checkConstraintMock
+            ->expects($this->any())
+            ->method('getColumnNames')
+            ->will($this->returnValue(array('foo')));
+        $checkConstraintMock
+            ->expects($this->any())
+            ->method('getConstraint')
+            ->will($this->returnValue('bar'));
+
+        $this->table->addColumn($this->columnMock);
+        $this->table->addCheckConstraint($this->checkConstraintMock);
+        $this->table->addCheckConstraint($checkConstraintMock);
+
+        $this->table->renameCheckConstraint('foo', 'bar');
+    }
+
+    /**
+     * @expectedException Fridge\DBAL\Exception\SchemaException
+     * @expectedExceptionMessage The check constraint "foo" of the table "foo" does not exist.
+     */
+    public function testDropCheckConstraintWithInvalidValue()
+    {
+        $this->table->dropCheckConstraint('foo');
+    }
+
     public function testClone()
     {
         $this->table->addColumn($this->columnMock);
         $this->table->setPrimaryKey($this->primaryKeyMock);
         $this->table->addForeignKey($this->foreignKeyMock);
         $this->table->addIndex($this->indexMock);
+        $this->table->addCheckConstraint($this->checkConstraintMock);
 
         $clone = clone $this->table;
 
@@ -702,5 +868,8 @@ class TableTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals($this->indexMock, $clone->getIndex($this->indexMock->getName()));
         $this->assertNotSame($this->indexMock, $clone->getIndex($this->indexMock->getName()));
+
+        $this->assertEquals($this->checkConstraintMock, $clone->getCheckConstraint($this->checkConstraintMock->getName()));
+        $this->assertNotSame($this->checkConstraintMock, $clone->getCheckConstraint($this->checkConstraintMock->getName()));
     }
 }

@@ -426,4 +426,30 @@ class SchemaException extends Exception
     {
         return new static(sprintf('The constraint of the check constraint "%s" must be a string.', $checkConstraint));
     }
+
+    /**
+     * Gets the "TABLE CHECK CONSTRAINT DOES NOT EXIST" exception.
+     *
+     * @param string $table           The table name.
+     * @param string $checkConstraint The check constraint name.
+     *
+     * @return \Fridge\DBAL\Exception\SchemaException The "TABLE CHECK CONSTRAINT DOES NOT EXIST" exception.
+     */
+    static public function tableCheckConstraintDoesNotExist($table, $checkConstraint)
+    {
+        return new static(sprintf('The check constraint "%s" of the table "%s" does not exist.', $checkConstraint, $table));
+    }
+
+    /**
+     * Gets the "TABLE CHECK CONSTRAINT ALREADY EXISTS" exception.
+     *
+     * @param string $schema The schema name.
+     * @param string $table  The table name.
+     *
+     * @return \Fridge\DBAL\Exception\SchemaException The "TABLE CHECK CONSTRAINT ALREADY EXISTS" exception.
+     */
+    static public function tableCheckConstraintAlreadyExists($table, $checkConstraint)
+    {
+         return new static(sprintf('The check constraint "%s" of the table "%s" already exists.', $checkConstraint, $table));
+    }
 }

@@ -36,21 +36,26 @@ class Table extends AbstractAsset
     /** @var array */
     protected $indexes = array();
 
+    /** @var array */
+    protected $checkConstraints = array();
+
     /**
      * Creates a table.
      *
-     * @param string                         $name        The table name.
-     * @param array                          $columns     The table columns.
-     * @param \Fridge\DBAL\Schema\PrimaryKey $primaryKey  The table primary key.
-     * @param array                          $foreignKeys The table foreign keys.
-     * @param array                          $indexes     The table indexes.
+     * @param string                         $name             The table name.
+     * @param array                          $columns          The table columns.
+     * @param \Fridge\DBAL\Schema\PrimaryKey $primaryKey       The table primary key.
+     * @param array                          $foreignKeys      The table foreign keys.
+     * @param array                          $indexes          The table indexes.
+     * @param array                          $checkConstraints The table check constraint.
      */
     public function __construct(
         $name,
         array $columns = array(),
         PrimaryKey $primaryKey = null,
         array $foreignKeys = array(),
-        array $indexes = array()
+        array $indexes = array(),
+        array $checkConstraints = array()
     )
     {
         parent::__construct($name);
@@ -59,6 +64,7 @@ class Table extends AbstractAsset
         $this->setPrimaryKey($primaryKey);
         $this->setForeignKeys($foreignKeys);
         $this->setIndexes($indexes);
+        $this->setCheckConstraints($checkConstraints);
     }
 
     /**
@@ -583,6 +589,142 @@ class Table extends AbstractAsset
     }
 
     /**
+     * Check if Table has check constraints.
+     *
+     * @return boolean TRUE if the table has check constraints else FALSE.
+     */
+    public function hasCheckConstraints()
+    {
+        return !empty($this->checkConstraints);
+    }
+
+    /**
+     * Return the check constraints.
+     *
+     * @return array The check constraints.
+     */
+    public function getCheckConstraints()
+    {
+        return $this->checkConstraints;
+    }
+
+    /**
+     * Create and return a check constraint.
+     *
+     * @param array  $columnNames The columnNames.
+     * @param string $constraint  The constraint.
+     * @param string $name        The check constraint name.
+     *
+     * @return \Fridge\DBAL\Schema\CheckConstraint
+     */
+    public function createCheckConstraint(array $columnNames, $constraint, $name = null)
+    {
+        $checkConstraint = new CheckConstraint($name, $constraint, $columnNames);
+        $this->addCheckConstraint($checkConstraint);
+
+        return $checkConstraint;
+    }
+
+    /**
+     * Check if check constraint exists.
+     *
+     * @param string $name The check constraint name.
+     *
+     * @return boolean TRUE if the check constraint exists else FALSE.
+     */
+    public function hasCheckConstraint($name)
+    {
+        return isset($this->checkConstraints[$name]);
+    }
+
+    /**
+     * Return a check constraint.
+     *
+     * @param string $name The check constraint name.
+     *
+     * @return \Fridge\DBAL\Schema\CheckConstraint The table check constraint.
+     */
+    public function getCheckConstraint($name)
+    {
+        if (!$this->hasCheckConstraint($name)) {
+            throw SchemaException::tableCheckConstraintDoesNotExist($this->getName(), $name);
+        }
+
+        return $this->checkConstraints[$name];
+    }
+
+    /**
+     * Set table check constraints.
+     *
+     * @param array $checkConstraints
+     */
+    public function setCheckConstraints(array $checkConstraints)
+    {
+        foreach ($this->getCheckConstraints() as $checkConstraint) {
+            $this->dropCheckConstraint($checkConstraint->getName());
+        }
+
+        foreach ($checkConstraints as $checkConstraint) {
+            $this->addCheckConstraint($checkConstraint);
+        }
+    }
+
+    /**
+     * Add a table check constraint.
+     *
+     * @param \Fridge\DBAL\Schema\CheckConstraint $checkConstraint The check constraint.
+     */
+    public function addCheckConstraint(CheckConstraint $checkConstraint)
+    {
+        if ($this->hasCheckConstraint($checkConstraint->getName())) {
+            throw SchemaException::tableCheckConstraintAlreadyExists($this->getName(), $checkConstraint->getName());
+        }
+
+        foreach ($checkConstraint->getColumnNames() as $columnName) {
+            if (!$this->hasColumn($columnName)) {
+                throw SchemaException::tableColumnDoesNotExist($this->getName(), $columnName);
+            }
+        }
+
+        $this->checkConstraints[$checkConstraint->getName()] = $checkConstraint;
+    }
+
+    /**
+     * Drop a check constraint.
+     *
+     * @param string $name The check constraint name to drop.
+     */
+    public function dropCheckConstraint($name)
+    {
+        if (!$this->hasCheckConstraint($name)) {
+            throw SchemaException::tableCheckConstraintDoesNotExist($this->getName(), $name);
+        }
+
+        unset($this->checkConstraints[$name]);
+    }
+
+    /**
+     * Rename the check constraint.
+     *
+     * @param string $oldName The old name.
+     * @param string $newName The new name.
+     */
+    public function renameCheckConstraint($oldName, $newName)
+    {
+        if (!$this->hasCheckConstraint($oldName)) {
+            throw SchemaException::tableCheckConstraintDoesNotExist($this->getName(), $oldName);
+        }
+
+        if ($this->hasCheckConstraint($newName)) {
+            throw SchemaException::tableCheckConstraintAlreadyExists($this->getName(), $newName);
+        }
+
+        $this->checkConstraints[$oldName]->setName($newName);
+        $this->checkConstraints[$newName] = $this->checkConstraints[$oldName];
+        unset($this->checkConstraints[$oldName]);
+    }
+
+    /**
      * {@inhertidoc}
      */
     public function __clone()
@@ -601,6 +743,10 @@ class Table extends AbstractAsset
 
         foreach ($this->indexes as $key => $index) {
             $this->indexes[$key] = clone $index;
+        }
+
+        foreach ($this->checkConstraints as $key => $checkConstraint) {
+            $this->checkConstraints[$key] = clone $checkConstraint;
         }
     }
 }
