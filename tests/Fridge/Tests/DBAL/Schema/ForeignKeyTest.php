@@ -46,6 +46,8 @@ class ForeignKeyTest extends \PHPUnit_Framework_TestCase
         $this->assertEmpty($this->foreignKey->getLocalColumnNames());
         $this->assertEquals('bar', $this->foreignKey->getForeignTableName());
         $this->assertEmpty($this->foreignKey->getForeignColumnNames());
+        $this->assertEquals(Schema\ForeignKey::NO_ACTION, $this->foreignKey->getOnDelete());
+        $this->assertEquals(Schema\ForeignKey::NO_ACTION, $this->foreignKey->getOnUpdate());
     }
 
     public function testGeneratedName()
