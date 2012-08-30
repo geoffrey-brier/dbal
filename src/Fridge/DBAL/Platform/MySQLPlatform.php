@@ -208,7 +208,9 @@ class MySQLPlatform extends AbstractPlatform
                '  c.constraint_name AS name,'.
                '  k.column_name AS local_column_name,'.
                '  k.referenced_table_name AS foreign_table_name,'.
-               '  k.referenced_column_name AS foreign_column_name'.
+               '  k.referenced_column_name AS foreign_column_name,'.
+               '  rc.update_rule,'.
+               '  rc.delete_rule'.
                ' FROM information_schema.table_constraints c'.
                ' INNER JOIN information_schema.key_column_usage k'.
                ' ON'.
@@ -216,6 +218,12 @@ class MySQLPlatform extends AbstractPlatform
                '  c.table_name = k.table_name'.
                '  AND c.table_schema = k.table_schema'.
                '  AND c.constraint_name = k.constraint_name'.
+               ' )'.
+               'INNER JOIN information_schema.REFERENTIAL_CONSTRAINTS rc'.
+               ' ON'.
+               ' ('.
+               '  rc.TABLE_NAME = \''.$table.'\''.
+               '  AND rc.CONSTRAINT_NAME = c.constraint_name'.
                ' )'.
                ' WHERE c.constraint_type = \'FOREIGN KEY\''.
                ' AND c.table_schema = \''.$database.'\''.

@@ -794,7 +794,9 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
                     $foreignKey['name'],
                     array($foreignKey['local_column_name']),
                     $foreignKey['foreign_table_name'],
-                    array($foreignKey['foreign_column_name'])
+                    array($foreignKey['foreign_column_name']),
+                    $foreignKey['update_rule'],
+                    $foreignKey['delete_rule']
                 );
             } else {
                 $genericForeignKeys[$name]->addLocalColumnName($foreignKey['local_column_name']);

@@ -20,6 +20,18 @@ use Fridge\DBAL\Exception\SchemaException;
  */
 class ForeignKey extends AbstractAsset implements ConstraintInterface
 {
+    /** @const NO_ACTION , no action when there is an update or a delete rule */
+    const NO_ACTION = "NO ACTION";
+
+    /** @const CASCADE , cascade the foreign column when there is an update or a delete rule */
+    const CASCADE = "CASCADE";
+
+    /** @const SET_NULL , set null the foreign column when there is an update or a delete rule */
+    const SET_NULL = "SET NULL";
+
+    /** @const RESTRICT , no action when there is an update or a delete rule */
+    const RESTRICT = "RESTRICT";
+
     /** @var array */
     protected $localColumnNames;
 
@@ -43,7 +55,14 @@ class ForeignKey extends AbstractAsset implements ConstraintInterface
      * @param string $foreignTableName   The foreign table name.
      * @param array  $foreignColumnNames The foreign column names.
      */
-    public function __construct($name, array $localColumnNames, $foreignTableName, array $foreignColumnNames)
+    public function __construct(
+        $name,
+        array $localColumnNames,
+        $foreignTableName,
+        array $foreignColumnNames,
+        $onUpdate = self::NO_ACTION,
+        $onDelete = self::NO_ACTION
+    )
     {
         if ($name === null) {
             $name = $this->generateIdentifier('fk_', 20);
@@ -54,8 +73,8 @@ class ForeignKey extends AbstractAsset implements ConstraintInterface
         $this->setLocalColumnNames($localColumnNames);
         $this->setForeignTableName($foreignTableName);
         $this->setForeignColumnNames($foreignColumnNames);
-        $this->setOnUpdate("NO ACTION");
-        $this->setOnDelete("NO ACTION");
+        $this->setOnUpdate($onUpdate);
+        $this->setOnDelete($onDelete);
     }
 
     /**
@@ -167,7 +186,7 @@ class ForeignKey extends AbstractAsset implements ConstraintInterface
     /**
      * Get the type of the on update reference.
      *
-     * @return string the type of the on update reference
+     * @return string the type of the on update rule
      */
     public function getOnUpdate()
     {
@@ -175,7 +194,7 @@ class ForeignKey extends AbstractAsset implements ConstraintInterface
     }
 
     /**
-     * Set the type of the on update reference.
+     * Set the type of the on update rule.
      *
      * @param string $onUpdate
      */
@@ -185,9 +204,9 @@ class ForeignKey extends AbstractAsset implements ConstraintInterface
     }
 
     /**
-     * Get the type of the on delete reference.
+     * Get the type of the on delete rule.
      *
-     * @return string the type of the on delete reference
+     * @return string the type of the on delete rule
      */
     public function getOnDelete()
     {
@@ -195,13 +214,12 @@ class ForeignKey extends AbstractAsset implements ConstraintInterface
     }
 
     /**
+     * Set the tupe of te on delete rule.
      *
-     * @param type $onDelete
+     * @param string $onDelete
      */
     public function setOnDelete($onDelete)
     {
         $this->onDelete = $onDelete;
     }
-
-
 }
