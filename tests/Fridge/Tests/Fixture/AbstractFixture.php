@@ -190,7 +190,7 @@ abstract class AbstractFixture implements FixtureInterface
      */
     public function getTableNames()
     {
-        return array('tcolumns', 'tprimarykeylock', 'tprimarykeyunlock', 'tforeignkey', 'tindex', 'tcompound');
+        return array('tcolumns', 'tprimarykeylock', 'tprimarykeyunlock', 'tforeignkey', 'tindex');
     }
 
     /**
@@ -323,19 +323,6 @@ abstract class AbstractFixture implements FixtureInterface
                     )),
                 );
                 break;
-
-            case 'tcompound':
-                $columns = array(
-                    new Schema\Column('c1', Type::getType(Type::INTEGER), array(
-                        'length'   => 11,
-                        'not_null' => true,
-                    )),
-                    new Schema\Column('c2', Type::getType(Type::INTEGER), array(
-                        'length'   => 11,
-                        'not_null' => true,
-                    )),
-                );
-                break;
         }
 
         return $columns;
@@ -355,10 +342,6 @@ abstract class AbstractFixture implements FixtureInterface
 
             case 'tprimarykeyunlock':
                 $primaryKey = new Schema\PrimaryKey('pk2', array('c1'));
-                break;
-
-            case 'tcompound':
-                $primaryKey = new Schema\PrimaryKey('pk3', array('c1'));
                 break;
         }
 
@@ -409,13 +392,6 @@ abstract class AbstractFixture implements FixtureInterface
                 $indexes = array(
                     new Schema\Index('idx1', array('c1', 'c2'), true),
                     new Schema\Index('idx2', array('c1')),
-                );
-                break;
-
-            case 'tcompound':
-                $indexes = array(
-                    new Schema\Index('idx3', array('c2')),
-                    new Schema\Index('pk3', array('c1'), true),
                 );
                 break;
         }

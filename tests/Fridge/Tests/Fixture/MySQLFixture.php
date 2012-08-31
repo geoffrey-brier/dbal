@@ -140,16 +140,6 @@ CREATE TABLE tindex
 ) ENGINE = InnoDB
 EOT;
 
-        $queries[] = <<<EOT
-CREATE TABLE tcompound
-(
-    c1 INT(11) NOT NULL,
-    c2 INT(11) NOT NULL,
-    CONSTRAINT PRIMARY KEY (c1),
-    INDEX idx3 (c2)
-)
-EOT;
-
         $queries[] = 'CREATE VIEW vcolumns AS SELECT cinteger FROM tcolumns';
 
         return $queries;

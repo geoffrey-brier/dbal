@@ -262,22 +262,13 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
         $this->createDatabase($schema->getName());
 
         foreach ($schema->getTables() as $table) {
-            $queries = $this->getConnection()->getPlatform()->getCreateTableSQLQueries($table);
+            $queries = $this->getConnection()->getPlatform()->getCreateTableSQLQueries(
+                $table,
+                array('foreign_key' => false)
+            );
 
             foreach ($queries as $query) {
                 $this->getConnection()->executeUpdate($query);
-            }
-        }
-
-        foreach ($schema->getTables() as $table) {
-            if ($table->hasPrimaryKey()) {
-                $this->createPrimaryKey($table->getPrimaryKey(), $table->getName());
-            }
-        }
-
-        foreach ($schema->getTables() as $table) {
-            foreach ($this->getCreateTableIndexes($table) as $index) {
-                $this->createIndex($index, $table->getName());
             }
         }
 
@@ -319,16 +310,13 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
      */
     public function createTable(Schema\Table $table)
     {
-        foreach ($this->getConnection()->getPlatform()->getCreateTableSQLQueries($table) as $query) {
+        $queries = $this->getConnection()->getPlatform()->getCreateTableSQLQueries(
+            $table,
+            array('foreign_key' => false)
+        );
+
+        foreach ($queries as $query) {
             $this->getConnection()->executeUpdate($query);
-        }
-
-        if ($table->hasPrimaryKey()) {
-            $this->createPrimaryKey($table->getPrimaryKey(), $table->getName());
-        }
-
-        foreach ($this->getCreateTableIndexes($table) as $index) {
-            $this->createIndex($index, $table->getName());
         }
 
         foreach ($table->getForeignKeys() as $foreignKey) {
@@ -852,30 +840,6 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
         }
 
         return array($comment, null);
-    }
-
-    /**
-     * Gets the indexes needed for the create table SQL query.
-     *
-     * @param \Fridge\DBAL\Schema\Table $table The table.
-     *
-     * @return array The indexes needed for the created table SQL query.
-    */
-    protected function getCreateTableIndexes(Schema\Table $table)
-    {
-        if (!$table->hasPrimaryKey()) {
-            return $table->getIndexes();
-        }
-
-        $indexes = array();
-
-        foreach ($table->getIndexes() as $index) {
-            if (!$index->hasSameColumnNames($table->getPrimaryKey()->getColumnNames())) {
-                $indexes[] = $index;
-            }
-        }
-
-        return $indexes;
     }
 
     /**
