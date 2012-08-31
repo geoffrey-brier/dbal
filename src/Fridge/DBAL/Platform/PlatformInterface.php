@@ -448,11 +448,17 @@ interface PlatformInterface
     /**
      * Gets the create table SQL queries.
      *
+     * The $flash parameters can contain:
+     *  - primary_key: TRUE if queries include primary key else FALSE (default: TRUE).
+     *  - index: TRUE if queries include indexes else FALSE (default: TRUE).
+     *  - foreign_key: TRUE if queries include foreingn keys else FALSE (default: TRUE).
+     *
      * @param \Fridge\DBAL\Schema\Table $table The table.
+     * @param array                     $flags The create table flags.
      *
      * @return array The create table SQL queries.
      */
-    function getCreateTableSQLQueries(Schema\Table $table);
+    function getCreateTableSQLQueries(Schema\Table $table, array $flags = array());
 
     /**
      * Gets the create constraint SQL query.

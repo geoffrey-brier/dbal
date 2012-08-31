@@ -11,7 +11,8 @@
 
 namespace Fridge\DBAL\Platform;
 
-use Fridge\DBAL\Type\Type;
+use Fridge\DBAL\Schema\Table,
+    Fridge\DBAL\Type\Type;
 
 /**
  * PostgreSQL platform.
@@ -221,6 +222,25 @@ class PostgreSQLPlatform extends AbstractPlatform
                ' INNER JOIN pg_class c2 ON (i.indexrelid = c2.oid)'.
                ' INNER JOIN pg_attribute a ON (c1.oid = a.attrelid AND a.attnum = any(i.indkey) AND a.attnum > 0)'.
                ' ORDER BY name ASC';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getCreateTableSQLQueries(Table $table, array $flags = array())
+    {
+        $originalFlags = $flags;
+
+        $flags['index'] = false;
+        $queries = parent::getCreateTableSQLQueries($table, $flags);
+
+        if (!isset($originalFlags['index']) || $originalFlags['index']) {
+            foreach ($this->getCreateTableIndexes($table) as $index) {
+                $queries[] = $this->getCreateIndexSQLQuery($index, $table->getName());
+            }
+        }
+
+        return $queries;
     }
 
     /**

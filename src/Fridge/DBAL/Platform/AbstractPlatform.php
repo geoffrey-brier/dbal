@@ -455,7 +455,7 @@ abstract class AbstractPlatform implements PlatformInterface
     /**
      * {@inheritdoc}
      */
-    public function getCreateTableSQLQueries(Schema\Table $table)
+    public function getCreateTableSQLQueries(Schema\Table $table, array $flags = array())
     {
         $queries = array();
 
@@ -463,8 +463,25 @@ abstract class AbstractPlatform implements PlatformInterface
             $queries = $this->getCreateColumnCommentsSQLQueries($table->getColumns(), $table->getName());
         }
 
-        $query = 'CREATE TABLE '.$table->getName().
-                 ' ('.$this->getColumnsSQLDeclaration($table->getColumns()).')';
+        $query = 'CREATE TABLE '.$table->getName().' ('.$this->getColumnsSQLDeclaration($table->getColumns());
+
+        if ($table->hasPrimaryKey() && (!isset($flags['primary_key']) || $flags['primary_key'])) {
+            $query .= ', '.$this->getPrimaryKeySQLDeclaration($table->getPrimaryKey());
+        }
+
+        if (!isset($flags['index']) || $flags['index']) {
+            foreach ($this->getCreateTableIndexes($table) as $index) {
+                $query .= ', '.$this->getIndexSQLDeclaration($index);
+            }
+        }
+
+        if (!isset($flags['foreign_key']) || $flags['foreign_key']) {
+            foreach ($table->getForeignKeys() as $foreignKey) {
+                $query .= ', '.$this->getForeignKeySQLDeclaration($foreignKey);
+            }
+        }
+
+        $query .= ')';
 
         array_unshift($queries, $query);
 
@@ -711,6 +728,30 @@ abstract class AbstractPlatform implements PlatformInterface
     }
 
     /**
+     * Gets the indexes needed for the create table SQL query.
+     *
+     * @param \Fridge\DBAL\Schema\Table $table The table.
+     *
+     * @return array The indexes needed for the created table SQL query.
+    */
+    protected function getCreateTableIndexes(Schema\Table $table)
+    {
+        if (!$table->hasPrimaryKey()) {
+            return $table->getIndexes();
+        }
+
+        $indexes = array();
+
+        foreach ($table->getIndexes() as $index) {
+            if (!$index->hasSameColumnNames($table->getPrimaryKey()->getColumnNames())) {
+                $indexes[] = $index;
+            }
+        }
+
+        return $indexes;
+    }
+
+    /**
      * Gets the columns SQL declaration.
      *
      * @param array $columns The columns.
@@ -795,6 +836,10 @@ abstract class AbstractPlatform implements PlatformInterface
      */
     protected function getIndexSQLDeclaration(Schema\Index $index)
     {
+        if (!$index->isUnique()) {
+            return 'INDEX '.$index->getName().' ('.implode(', ', $index->getColumnNames()).')';
+        }
+
         return 'CONSTRAINT '.$index->getName().' UNIQUE ('.implode(', ', $index->getColumnNames()).')';
     }
 
