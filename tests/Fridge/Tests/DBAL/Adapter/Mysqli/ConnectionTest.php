@@ -131,7 +131,7 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
         $settings = self::$fixture->getSettings();
 
         $this->connection = new Connection(
-            array('unix_socket' => '/var/run/mysqld/mysqld.sock'),
+            array('unix_socket' => ini_get('mysqli.default_socket')),
             $settings['username'],
             $settings['password']
         );

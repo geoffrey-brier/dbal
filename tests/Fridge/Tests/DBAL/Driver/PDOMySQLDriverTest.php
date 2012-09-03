@@ -55,7 +55,7 @@ class PDOMySQLDriverTest extends AbstractDriverTest
         unset($settings['host']);
         unset($settings['port']);
 
-        $settings['unix_socket'] = '/var/run/mysqld/mysqld.sock';
+        $settings['unix_socket'] = ini_get('mysql.default_socket');
 
         $this->assertInstanceOf(
             'Fridge\DBAL\Adapter\ConnectionInterface',
