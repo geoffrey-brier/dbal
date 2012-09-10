@@ -22,6 +22,23 @@ class Check extends AbstractAsset
     protected $constraint;
 
     /**
+     * Creates a check.
+     *
+     * @param string  $name        The check name.
+     * @param string  $constraint  The check constraint.
+     */
+    public function __construct($name, $constraint = null)
+    {
+        if ($name === null) {
+            $name = $this->generateIdentifier('cct_', 20);
+        }
+
+        parent::__construct($name);
+
+        $this->setConstraint($constraint);
+    }
+
+    /**
      * Gets the constraint.
      *
      * @return string The constraint.
