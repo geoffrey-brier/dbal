@@ -36,6 +36,9 @@ class Table extends AbstractAsset
     /** @var array */
     protected $indexes = array();
 
+    /** @var array */
+    protected $checks = array();
+
     /**
      * Creates a table.
      *
@@ -50,7 +53,8 @@ class Table extends AbstractAsset
         array $columns = array(),
         PrimaryKey $primaryKey = null,
         array $foreignKeys = array(),
-        array $indexes = array()
+        array $indexes = array(),
+        array $checks = array()
     )
     {
         parent::__construct($name);
@@ -59,6 +63,7 @@ class Table extends AbstractAsset
         $this->setPrimaryKey($primaryKey);
         $this->setForeignKeys($foreignKeys);
         $this->setIndexes($indexes);
+        $this->setChecks($checks);
     }
 
     /**
@@ -583,6 +588,119 @@ class Table extends AbstractAsset
     }
 
     /**
+     * Checks if tha table has checks.
+     *
+     * @return boolean TRUE if the table has checks else FALSE.
+     */
+    public function hasChecks()
+    {
+        return !empty($this->checks);
+    }
+
+    /**
+     * Gets the table checks.
+     *
+     * @return array The table checks.
+     */
+    public function getChecks()
+    {
+        return $this->checks;
+    }
+
+    /**
+     * Sets the table indexes.
+     *
+     * @param array $indexes The table indexes.
+     */
+    public function setChecks(array $checks)
+    {
+        foreach ($this->checks as $check) {
+            $this->dropCheck($check->getName());
+        }
+
+        foreach ($checks as $check) {
+            $this->addCheck($check);
+        }
+    }
+
+    /**
+     * Checks if a table check exists.
+     *
+     * @param string $name The check name.
+     *
+     * @return boolean TRUE if the check exists else FALSE.
+     */
+    public function hasCheck($name)
+    {
+        return isset($this->checks[$name]);
+    }
+
+    /**
+     * Gets a table check.
+     *
+     * @param string $name The table check name.
+     *
+     * @return \Fridge\DBAL\Schema\Check The table check.
+     */
+    public function getCheck($name)
+    {
+        if (!$this->hasCheck($name)) {
+            throw SchemaException::tableCheckDoesNotExist($this->getName(), $name);
+        }
+
+        return $this->checks[$name];
+    }
+
+    /**
+     * Adds a check to the table.
+     *
+     * @param \Fridge\DBAL\Schema\Index $index The index to add.
+     */
+    public function addCheck(Check $check)
+    {
+        if ($this->hasCheck($check->getName())) {
+            throw SchemaException::tableCheckAlreadyExists($this->getName(), $check->getName());
+        }
+
+        $this->checks[$check->getName()] = $check;
+    }
+
+    /**
+     * Renames a check.
+     *
+     * @param string $oldName The old check name.
+     * @param string $newName The new check name.
+     */
+    public function renameCheck($oldName, $newName)
+    {
+        if (!$this->hasCheck($oldName)) {
+            throw SchemaException::tableCheckDoesNotExist($this->getName(), $oldName);
+        }
+
+        if ($this->hasCheck($newName)) {
+            throw SchemaException::tableCheckAlreadyExists($this->getName(), $newName);
+        }
+
+        $this->checks[$oldName]->setName($newName);
+        $this->checks[$newName] = $this->checks[$oldName];
+        unset($this->checks[$oldName]);
+    }
+
+    /**
+     * Drops a check.
+     *
+     * @param string $name The check name.
+     */
+    public function dropCheck($name)
+    {
+        if (!$this->hasCheck($name)) {
+            throw SchemaException::tableCheckDoesNotExist($this->getName(), $name);
+        }
+
+        unset($this->checks[$name]);
+    }
+
+    /**
      * {@inhertidoc}
      */
     public function __clone()
@@ -601,6 +719,10 @@ class Table extends AbstractAsset
 
         foreach ($this->indexes as $key => $index) {
             $this->indexes[$key] = clone $index;
+        }
+
+        foreach ($this->checks as $key => $check) {
+            $this->checks[$key] = clone $check;
         }
     }
 }
