@@ -588,7 +588,23 @@ class Table extends AbstractAsset
     }
 
     /**
-     * Checks if tha table has checks.
+     * Creates & adds a new check.
+     *
+     * @param string  $constraint The check constraint.
+     * @param string  $name       The check name.
+     *
+     * @return \Fridge\DBAL\Schema\Check The new index.
+     */
+    public function createCheck($constraint, $name = null)
+    {
+        $check = new Check($name, $constraint);
+        $this->addCheck($check);
+
+        return $check;
+    }
+
+    /**
+     * Checks if the table has checks.
      *
      * @return boolean TRUE if the table has checks else FALSE.
      */
