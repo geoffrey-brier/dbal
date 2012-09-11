@@ -39,6 +39,9 @@ class TableTest extends \PHPUnit_Framework_TestCase
     /** @var \Fridge\DBAL\Schema\Schema */
     protected $schemaMock;
 
+    /** @var \Fridge\DBAL\Schema\Check */
+    protected $checkMock;
+
     /**
      * {@inheritdoc}
      */
@@ -86,6 +89,16 @@ class TableTest extends \PHPUnit_Framework_TestCase
 
         $this->schemaMock = $this->getMock('Fridge\DBAL\Schema\Schema', array(), array(), '', false);
 
+        $this->checkMock = $this->getMock('Fridge\DBAL\Schema\Check', array(), array(), '', false);
+        $this->checkMock
+            ->expects($this->any())
+            ->method('getName')
+            ->will($this->returnValue('foo'));
+        $this->checkMock
+            ->expects($this->any())
+            ->method('getConstraint')
+            ->will($this->returnValue('bar'));
+
         $this->table = new Table('foo');
     }
 
@@ -100,6 +113,7 @@ class TableTest extends \PHPUnit_Framework_TestCase
         unset($this->foreignKeyMock);
         unset($this->indexMock);
         unset($this->schemaMock);
+        unset($this->checkMock);
     }
 
     public function testInitialState()
@@ -115,6 +129,7 @@ class TableTest extends \PHPUnit_Framework_TestCase
         $this->assertEmpty($this->table->getForeignKeys());
         $this->assertFalse($this->table->hasIndexes());
         $this->assertEmpty($this->table->getIndexes());
+        $this->assertEmpty($this->table->getChecks());
     }
 
     public function testSchema()
@@ -679,6 +694,95 @@ class TableTest extends \PHPUnit_Framework_TestCase
         $this->table->dropIndex('foo');
     }
 
+    public function testChecks()
+    {
+        $this->table->addCheck($this->checkMock);
+        $this->table->setChecks(array($this->checkMock));
+
+        $this->assertTrue($this->table->hasChecks());
+        $this->assertTrue($this->table->hasCheck('foo'));
+        $this->assertEquals($this->checkMock, $this->table->getCheck('foo'));
+    }
+
+    public function testCreateCheck()
+    {
+        $check = $this->table->createCheck('bar', 'foo');
+
+        $this->assertTrue($this->table->hasCheck('foo'));
+
+        $this->assertEquals('foo', $check->getName());
+        $this->assertEquals('bar', $check->getConstraint());
+    }
+
+    /**
+     * @expectedException Fridge\DBAL\Exception\SchemaException
+     * @expectedExceptionMessage The check "bar" of the table "foo" does not exist.
+     */
+    public function testGetCheckWithInvalidName()
+    {
+        $this->table->getCheck('bar');
+    }
+
+    /**
+     * @expectedException Fridge\DBAL\Exception\SchemaException
+     * @expectedExceptionMessage The check "foo" of the table "foo" already exists.
+     */
+    public function testAddCheckWithInvalidName()
+    {
+        $this->table->addCheck($this->checkMock);
+        $this->table->addCheck($this->checkMock);
+    }
+
+    public function testRenameCheck()
+    {
+        $this->table->addCheck($this->checkMock);
+
+        $this->assertTrue($this->table->hasCheck('foo'));
+        $this->assertFalse($this->table->hasCheck('bar'));
+
+        $this->table->renameCheck('foo', 'bar');
+
+        $this->assertTrue($this->table->hasCheck('bar'));
+        $this->assertFalse($this->table->hasCheck('foo'));
+    }
+
+    /**
+     * @expectedException Fridge\DBAL\Exception\SchemaException
+     */
+    public function testRemaneCheckWithInvalidOldName()
+    {
+        $this->table->renameCheck('foo', 'bar');
+    }
+
+    /**
+     * @expectedException Fridge\DBAL\Exception\SchemaException
+     */
+    public function testRenameCheckWithInvalidNewName()
+    {
+        $checkMock = $this->getMock('Fridge\DBAL\Schema\Check', array(), array(), '', false, false);
+        $checkMock
+            ->expects($this->any())
+            ->method('getName')
+            ->will($this->returnValue('bar'));
+        $checkMock
+            ->expects($this->any())
+            ->method('getConstraint')
+            ->will($this->returnValue(array('foo')));
+
+        $this->table->addCheck($this->checkMock);
+        $this->table->addCheck($checkMock);
+
+        $this->table->renameCheck('foo', 'bar');
+    }
+
+    /**
+     * @expectedException Fridge\DBAL\Exception\SchemaException
+     */
+    public function testDropCheckWithInvalidValue()
+    {
+        $this->table->dropCheck('foo');
+    }
+
     public function testClone()
     {
         $column1 = $this->table->createColumn('foo', Type::INTEGER);
@@ -687,6 +791,7 @@ class TableTest extends \PHPUnit_Framework_TestCase
         $primaryKey = $this->table->createPrimaryKey(array('foo'), 'pk');
         $foreignKey = $this->table->createForeignKey(array('bar'), 'bar', array('bar'), 'fk');
         $index = $this->table->createIndex(array('bar'), true, 'idx_fk');
+        $check = $this->table->createCheck('foo', 'ck');
 
         $clone = clone $this->table;
 
@@ -707,5 +812,8 @@ class TableTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals($index, $clone->getIndex($index->getName()));
         $this->assertNotSame($index, $clone->getIndex($index->getName()));
+
+        $this->assertEquals($this->checkMock, $clone->getCheck($check->getName()));
+        $this->assertNotSame($this->checkMock, $clone->getCheck($check->getName()));
     }
 }
