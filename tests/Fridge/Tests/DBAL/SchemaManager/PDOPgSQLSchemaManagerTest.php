@@ -52,6 +52,7 @@ class PDOPgSQLSchemaManagerTest extends AbstractSchemaManagerTest
     {
         $this->schemaManager->getConnection()->setDatabase(null);
 
-        $this->assertEquals('postgres', $this->schemaManager->getDatabase());
+        $settings = self::$fixture->getSettings();
+        $this->assertEquals($settings['username'], $this->schemaManager->getDatabase());
     }
 }
