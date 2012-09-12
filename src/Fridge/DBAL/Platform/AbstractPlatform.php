@@ -824,7 +824,9 @@ abstract class AbstractPlatform implements PlatformInterface
                ' FOREIGN KEY'.
                ' ('.implode(', ', $foreignKey->getLocalColumnNames()).')'.
                ' REFERENCES '.$foreignKey->getForeignTableName().
-               ' ('.implode(', ', $foreignKey->getForeignColumnNames()).')';
+               ' ('.implode(', ', $foreignKey->getForeignColumnNames()).')'.
+               ' ON DELETE '.$foreignKey->getOnDelete().
+               ' ON UPDATE '.$foreignKey->getOnUpdate();
     }
 
     /**

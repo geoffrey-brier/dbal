@@ -437,10 +437,22 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
 
     public function testCreateConstraintSQLQueryWithForeignKey()
     {
-        $foreignKey = new Schema\ForeignKey('foo', array('foo'), 'bar', array('bar'));
+        $foreignKey = new Schema\ForeignKey(
+            'foo',
+            array('foo'),
+            'bar',
+            array('bar'),
+            Schema\ForeignKey::SET_NULL,
+            Schema\ForeignKey::CASCADE
+        );
 
         $this->assertEquals(
-            'ALTER TABLE foo ADD CONSTRAINT foo FOREIGN KEY (foo) REFERENCES bar (bar)',
+            'ALTER TABLE foo'.
+            ' ADD CONSTRAINT foo'.
+            ' FOREIGN KEY (foo)'.
+            ' REFERENCES bar (bar)'.
+            ' ON DELETE SET NULL'.
+            ' ON UPDATE CASCADE',
             $this->platform->getCreateConstraintSQLQuery($foreignKey, 'foo')
         );
     }
@@ -477,10 +489,22 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
 
     public function testCreateForeignKeySQLQuery()
     {
-        $foreignKey = new Schema\ForeignKey('foo', array('foo'), 'bar', array('bar'));
+        $foreignKey = new Schema\ForeignKey(
+            'foo',
+            array('foo'),
+            'bar',
+            array('bar'),
+            Schema\ForeignKey::SET_NULL,
+            Schema\ForeignKey::CASCADE
+        );
 
         $this->assertEquals(
-            'ALTER TABLE foo ADD CONSTRAINT foo FOREIGN KEY (foo) REFERENCES bar (bar)',
+            'ALTER TABLE foo'.
+            ' ADD CONSTRAINT foo'.
+            ' FOREIGN KEY (foo)'.
+            ' REFERENCES bar (bar)'.
+            ' ON DELETE SET NULL'.
+            ' ON UPDATE CASCADE',
             $this->platform->getCreateForeignKeySQLQuery($foreignKey, 'foo')
         );
     }
@@ -729,7 +753,16 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
                 new Schema\Column('bar_foo', Type::getType(Type::INTEGER)),
             ),
             new Schema\PrimaryKey('pk1', array('foo')),
-            array(new Schema\ForeignKey('fk1', array('bar'), 'bar', array('bar'))),
+            array(
+                new Schema\ForeignKey(
+                    'fk1',
+                    array('bar'),
+                    'bar',
+                    array('bar'),
+                    Schema\ForeignKey::CASCADE,
+                    Schema\ForeignKey::CASCADE
+                )
+            ),
             array(
                 new Schema\Index('idx1', array('foo_bar')),
                 new Schema\Index('uniq1', array('bar_foo'), true),
@@ -746,7 +779,7 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
                 ' CONSTRAINT pk1 PRIMARY KEY (foo),'.
                 ' INDEX idx1 (foo_bar),'.
                 ' CONSTRAINT uniq1 UNIQUE (bar_foo),'.
-                ' CONSTRAINT fk1 FOREIGN KEY (bar) REFERENCES bar (bar)'.
+                ' CONSTRAINT fk1 FOREIGN KEY (bar) REFERENCES bar (bar) ON DELETE CASCADE ON UPDATE CASCADE'.
                 ')',
             ),
             $this->platform->getCreateTableSQLQueries($table)

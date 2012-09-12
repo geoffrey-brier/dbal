@@ -100,7 +100,16 @@ class PostgreSQLPlatformTest extends \PHPUnit_Framework_TestCase
                 new Schema\Column('foo_bar', Type::getType(Type::INTEGER)),
             ),
             new Schema\PrimaryKey('pk1', array('foo')),
-            array(new Schema\ForeignKey('fk1', array('bar'), 'bar', array('bar'))),
+            array(
+                new Schema\ForeignKey(
+                    'fk1',
+                    array('bar'),
+                    'bar',
+                    array('bar'),
+                    Schema\ForeignKey::CASCADE,
+                    Schema\ForeignKey::CASCADE
+                )
+            ),
             array(
                 new Schema\Index('idx1', array('foo_bar')),
             )
@@ -113,7 +122,7 @@ class PostgreSQLPlatformTest extends \PHPUnit_Framework_TestCase
                 ' bar INT,'.
                 ' foo_bar INT,'.
                 ' CONSTRAINT pk1 PRIMARY KEY (foo),'.
-                ' CONSTRAINT fk1 FOREIGN KEY (bar) REFERENCES bar (bar)'.
+                ' CONSTRAINT fk1 FOREIGN KEY (bar) REFERENCES bar (bar) ON DELETE CASCADE ON UPDATE CASCADE'.
                 ')',
                 'COMMENT ON COLUMN foo.foo IS \'foo\'',
                 'CREATE INDEX idx1 ON foo (foo_bar)',

@@ -175,11 +175,19 @@ class PostgreSQLPlatform extends AbstractPlatform
      */
     public function getSelectTableForeignKeysSQLQuery($table, $database)
     {
+        $actions =  'WHEN \'a\' THEN \'NO ACTION\''.
+                    ' WHEN \'r\' THEN \'RESTRICT\''.
+                    ' WHEN \'c\' THEN \'CASCADE\''.
+                    ' WHEN \'n\' THEN \'SET NULL\''.
+                    ' WHEN \'d\' THEN \'SET DEFAULT\'';
+
         return 'SELECT'.
                '  sq.conname AS name,'.
                '  a.attname AS local_column_name,'.
                '  sq.confrelid::regclass AS foreign_table_name,'.
-               '  a1.attname AS foreign_column_name'.
+               '  a1.attname AS foreign_column_name,'.
+               '  sq.on_delete,'.
+               '  sq.on_update'.
                ' FROM'.
                ' ('.
                '  SELECT'.
@@ -188,7 +196,9 @@ class PostgreSQLPlatform extends AbstractPlatform
                '   ssq.confrelid,'.
                '   ssq.conkey[i] AS conkey,'.
                '   ssq.confkey[i] as confkey,'.
-               '   i AS position'.
+               '   i AS position,'.
+               '   ssq.on_delete,'.
+               '   ssq.on_update'.
                '  FROM'.
                '  ('.
                '   SELECT'.
@@ -197,7 +207,9 @@ class PostgreSQLPlatform extends AbstractPlatform
                '    co.confrelid,'.
                '    co.conkey,'.
                '    co.confkey,'.
-               '    generate_series(1, array_upper(co.conkey, 1)) AS i'.
+               '    generate_series(1, array_upper(co.conkey, 1)) AS i,'.
+               '    CASE co.confdeltype '.$actions.' END AS on_delete,'.
+               '    CASE co.confupdtype '.$actions.' END AS on_update'.
                '   FROM pg_constraint co'.
                '   INNER JOIN pg_class c ON (co.conrelid = c.oid AND c.relname = \''.$table.'\')'.
                '   WHERE co.contype = \'f\''.

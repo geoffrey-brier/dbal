@@ -114,7 +114,12 @@ CREATE TABLE tforeignkey
 EOT;
 
         $queries[] = 'CREATE INDEX _fk1 ON tforeignkey(c1, c2)';
-        $queries[] = 'ALTER TABLE tforeignkey ADD CONSTRAINT fk1 FOREIGN KEY(c1, c2) REFERENCES tprimarykeylock(c1, c2)';
+        $queries[] = 'ALTER TABLE tforeignkey'.
+                     ' ADD CONSTRAINT fk1'.
+                     ' FOREIGN KEY(c1, c2)'.
+                     ' REFERENCES tprimarykeylock(c1, c2)'.
+                     ' ON DELETE CASCADE'.
+                     ' ON UPDATE CASCADE';
 
         $queries[] = <<<EOT
 CREATE TABLE tindex

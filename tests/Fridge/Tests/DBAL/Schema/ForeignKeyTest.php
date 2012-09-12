@@ -46,6 +46,8 @@ class ForeignKeyTest extends \PHPUnit_Framework_TestCase
         $this->assertEmpty($this->foreignKey->getLocalColumnNames());
         $this->assertEquals('bar', $this->foreignKey->getForeignTableName());
         $this->assertEmpty($this->foreignKey->getForeignColumnNames());
+        $this->assertEquals(Schema\ForeignKey::RESTRICT, $this->foreignKey->getOnDelete());
+        $this->assertEquals(Schema\ForeignKey::RESTRICT, $this->foreignKey->getOnUpdate());
     }
 
     public function testGeneratedName()
@@ -102,5 +104,19 @@ class ForeignKeyTest extends \PHPUnit_Framework_TestCase
     public function testForeignColumnNamesWithInvalidValues()
     {
         $this->foreignKey->setForeignColumnNames(array(true));
+    }
+
+    public function testOnDelete()
+    {
+        $this->foreignKey->setOnDelete(Schema\ForeignKey::SET_NULL);
+
+        $this->assertEquals(Schema\ForeignKey::SET_NULL, $this->foreignKey->getOnDelete());
+    }
+
+    public function testOnUpdate()
+    {
+        $this->foreignKey->setOnUpdate(Schema\ForeignKey::CASCADE);
+
+        $this->assertEquals(Schema\ForeignKey::CASCADE, $this->foreignKey->getOnUpdate());
     }
 }

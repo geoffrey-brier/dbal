@@ -765,6 +765,8 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
      *  - local_column_name
      *  - foreign_table_name
      *  - foreign_column_name
+     *  - on_delete
+     *  - on_update
      *
      * @param array $foreignKeys The foreign keys.
      *
@@ -782,7 +784,9 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
                     $foreignKey['name'],
                     array($foreignKey['local_column_name']),
                     $foreignKey['foreign_table_name'],
-                    array($foreignKey['foreign_column_name'])
+                    array($foreignKey['foreign_column_name']),
+                    $foreignKey['on_delete'],
+                    $foreignKey['on_update']
                 );
             } else {
                 $genericForeignKeys[$name]->addLocalColumnName($foreignKey['local_column_name']);

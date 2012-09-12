@@ -358,7 +358,14 @@ abstract class AbstractFixture implements FixtureInterface
         switch ($table) {
             case 'tforeignkey':
                 $foreignKeys = array(
-                    new Schema\ForeignKey('fk1', array('c1', 'c2'), 'tprimarykeylock', array('c1', 'c2')),
+                    new Schema\ForeignKey(
+                        'fk1',
+                        array('c1', 'c2'),
+                        'tprimarykeylock',
+                        array('c1', 'c2'),
+                        Schema\ForeignKey::CASCADE,
+                        Schema\ForeignKey::CASCADE
+                    ),
                 );
                 break;
         }

@@ -126,7 +126,7 @@ CREATE TABLE tforeignkey
     c1 INT(11) NOT NULL,
     c2 VARCHAR(20) NOT NULL,
     INDEX _fk1 (c1, c2),
-    CONSTRAINT fk1 FOREIGN KEY(c1, c2) REFERENCES tprimarykeylock(c1, c2)
+    CONSTRAINT fk1 FOREIGN KEY(c1, c2) REFERENCES tprimarykeylock(c1, c2) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE = InnoDB
 EOT;
 
