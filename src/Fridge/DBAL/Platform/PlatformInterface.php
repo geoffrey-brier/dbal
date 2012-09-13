@@ -447,6 +447,16 @@ interface PlatformInterface
     function getSelectTableIndexesSQLQuery($table, $database);
 
     /**
+     * Gets the select query to fetch table check constraints.
+     *
+     * @param string $table    The table name.
+     * @param string $database The database name.
+     *
+     * @return string The select query to fetch table check constraints.
+     */
+    function getSelectTableCheckConstraintSQLQuery($table, $database);
+
+    /**
      * Gets the create database SQL query.
      *
      * @param string $database The database name.
@@ -527,6 +537,16 @@ interface PlatformInterface
      * @return string The create index SQL query.
      */
     function getCreateIndexSQLQuery(Schema\Index $index, $table);
+
+    /**
+     * Gets the create check constraint SQL query.
+     *
+     * @param \Fridge\DBAL\Schema\Check $check The check constraint.
+     * @param string                    $table The table name of the check constraint.
+     *
+     * @return string The create check constraint SQL query.
+     */
+    function getCreateCheckConstraintSQLQuery(Schema\Check $check, $table);
 
     /**
      * Gets the create column comments SQL queries.
@@ -623,6 +643,16 @@ interface PlatformInterface
      * @return string The drop index SQL query.
      */
     function getDropIndexSQLQuery(Schema\Index $index, $table);
+
+    /**
+     * Gets the drop check constraint SQL query.
+     *
+     * @param \Fridge\DBAL\Schema\Check $check The check.
+     * @param string                    $table The table name of the check constraint.
+     *
+     * @return string The drop index SQL query.
+     */
+    function getDropCheckConstraintSQLQuery(Schema\Check $check, $table);
 
     /**
      * Gets the quote identifier.
