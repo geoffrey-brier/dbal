@@ -577,6 +577,14 @@ abstract class AbstractPlatform implements PlatformInterface
     /**
      * {@inheritdoc}
      */
+    public function getCreateCheckConstraintSQLQuery(Schema\Check $check, $table)
+    {
+        return 'ALTER TABLE '.$table.' ADD '.$this->getCheckConstraintSQLDeclaration($check);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getCreateColumnCommentsSQLQueries(array $columns, $table)
     {
         $queries = array();
@@ -692,6 +700,14 @@ abstract class AbstractPlatform implements PlatformInterface
         }
 
         return 'DROP INDEX '.$index->getName();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getDropCheckConstraintSQLQuery(Schema\Check $check, $table)
+    {
+        return 'ALTER TABLE '.$table.' DROP CONSTRAINT '.$check->getName();
     }
 
     /**
@@ -911,6 +927,18 @@ abstract class AbstractPlatform implements PlatformInterface
         }
 
         return 'CONSTRAINT '.$index->getName().' UNIQUE ('.implode(', ', $index->getColumnNames()).')';
+    }
+
+    /**
+     * Gets the check constraint SQL declaration.
+     *
+     * @param \Fridge\DBAL\Schema\Check $check The check constraint.
+     *
+     * @return string The check constraint SQL declaration.
+     */
+    protected function getCheckConstraintSQLDeclaration(Schema\Check $check)
+    {
+        return 'CONSTRAINT '.$check->getName().' CHECK ('.$check->getConstraint().')';
     }
 
     /**

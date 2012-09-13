@@ -249,6 +249,28 @@ class MySQLPlatform extends AbstractPlatform
     /**
      * {@inheritdoc}
      */
+    public function getSelectTableCheckConstraintSQLQuery($table, $database)
+    {
+        return 'SELECT'.
+               '  c.constraint_name AS name,'.
+               '  k.column_name'.
+               ' FROM information_schema.table_constraints c'.
+               ' INNER JOIN information_schema.key_column_usage k'.
+               ' ON'.
+               ' ('.
+               '  c.table_name = k.table_name'.
+               '  AND c.table_schema = k.table_schema'.
+               '  AND c.constraint_name = k.constraint_name'.
+               ' )'.
+               ' WHERE c.constraint_type = \'CHECK\''.
+               ' AND c.table_schema = \''.$database.'\''.
+               ' AND c.table_name = \''.$table.'\''.
+               ' ORDER BY k.ordinal_position ASC';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getCreateTableSQLQueries(Schema\Table $table, array $flags = array())
     {
         $queries = parent::getCreateTableSQLQueries($table, $flags);
