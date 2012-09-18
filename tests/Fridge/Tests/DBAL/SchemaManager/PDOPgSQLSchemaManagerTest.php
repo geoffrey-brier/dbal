@@ -53,6 +53,6 @@ class PDOPgSQLSchemaManagerTest extends AbstractSchemaManagerTest
         $this->schemaManager->getConnection()->setDatabase(null);
 
         $settings = self::$fixture->getSettings();
-        $this->assertEquals($settings['username'], $this->schemaManager->getDatabase());
+        $this->assertSame($settings['username'], $this->schemaManager->getDatabase());
     }
 }

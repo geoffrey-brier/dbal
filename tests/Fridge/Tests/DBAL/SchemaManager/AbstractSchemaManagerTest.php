@@ -78,7 +78,7 @@ abstract class AbstractSchemaManagerTest extends \PHPUnit_Framework_TestCase
 
     public function testGetDatabaseWithConfiguredDatabase()
     {
-        $this->assertEquals(self::$fixture->getDatabase(), $this->schemaManager->getDatabase());
+        $this->assertSame(self::$fixture->getDatabase(), $this->schemaManager->getDatabase());
     }
 
     public function testGetDatabaseWithoutConfiguredDatabase()
@@ -153,7 +153,7 @@ abstract class AbstractSchemaManagerTest extends \PHPUnit_Framework_TestCase
             $this->assertTrue(in_array($tableName, $tableNames));
         }
 
-        $this->assertEquals(count(self::$fixture->getTableNames()), count($tableNames));
+        $this->assertSame(count(self::$fixture->getTableNames()), count($tableNames));
     }
 
     public function testGetTables()
@@ -167,7 +167,7 @@ abstract class AbstractSchemaManagerTest extends \PHPUnit_Framework_TestCase
             $this->assertEquals(self::$fixture->getTable($tableName), $tables[$index]);
         }
 
-        $this->assertEquals(count($tableNames), count($tables));
+        $this->assertSame(count($tableNames), count($tables));
     }
 
     public function testGetSchema()
