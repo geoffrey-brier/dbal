@@ -43,8 +43,8 @@ class BooleanTypeTest extends AbstractTypeTest
 
     public function testConvertToDatabaseValueWithValidValue()
     {
-        $this->assertEquals(1, $this->type->convertToDatabaseValue(true, $this->platformMock));
-        $this->assertEquals(0, $this->type->convertToDatabaseValue(false, $this->platformMock));
+        $this->assertSame(1, $this->type->convertToDatabaseValue(true, $this->platformMock));
+        $this->assertSame(0, $this->type->convertToDatabaseValue(false, $this->platformMock));
     }
 
     public function testConvertToDatabaseValueWithNullValue()
@@ -65,11 +65,11 @@ class BooleanTypeTest extends AbstractTypeTest
 
     public function testBindingType()
     {
-        $this->assertEquals(PDO::PARAM_BOOL, $this->type->getBindingType());
+        $this->assertSame(PDO::PARAM_BOOL, $this->type->getBindingType());
     }
 
     public function testName()
     {
-        $this->assertEquals(Type\Type::BOOLEAN, $this->type->getName());
+        $this->assertSame(Type\Type::BOOLEAN, $this->type->getName());
     }
 }

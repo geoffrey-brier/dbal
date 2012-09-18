@@ -43,7 +43,7 @@ class FloatTypeTest extends AbstractTypeTest
 
     public function testConvertToDatabaseValueWithValidValue()
     {
-        $this->assertEquals('1.12', $this->type->convertToDatabaseValue(1.12, $this->platformMock));
+        $this->assertSame('1.12', $this->type->convertToDatabaseValue(1.12, $this->platformMock));
     }
 
     public function testConvertToDatabaseValueWithNullValue()
@@ -53,7 +53,7 @@ class FloatTypeTest extends AbstractTypeTest
 
     public function testConvertToPHPValueWithValidValue()
     {
-        $this->assertEquals(1.12, $this->type->convertToPHPValue('1.12', $this->platformMock));
+        $this->assertSame(1.12, $this->type->convertToPHPValue('1.12', $this->platformMock));
     }
 
     public function testConvertToPHPValueWithNullValue()
@@ -63,11 +63,11 @@ class FloatTypeTest extends AbstractTypeTest
 
     public function testBindingType()
     {
-        $this->assertEquals(PDO::PARAM_STR, $this->type->getBindingType());
+        $this->assertSame(PDO::PARAM_STR, $this->type->getBindingType());
     }
 
     public function testName()
     {
-        $this->assertEquals(Type\Type::FLOAT, $this->type->getName());
+        $this->assertSame(Type\Type::FLOAT, $this->type->getName());
     }
 }

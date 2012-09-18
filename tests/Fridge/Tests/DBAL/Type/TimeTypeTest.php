@@ -49,7 +49,7 @@ class TimeTypeTest extends AbstractTypeTest
 
     public function testConvertToDatabaseValueWithValidValue()
     {
-        $this->assertEquals('01:23:45', $this->type->convertToDatabaseValue(new DateTime('01:23:45'), $this->platformMock));
+        $this->assertSame('01:23:45', $this->type->convertToDatabaseValue(new DateTime('01:23:45'), $this->platformMock));
     }
 
     public function testConvertToDatabaseValueWithNullValue()
@@ -78,11 +78,11 @@ class TimeTypeTest extends AbstractTypeTest
 
     public function testBindingType()
     {
-        $this->assertEquals(PDO::PARAM_STR, $this->type->getBindingType());
+        $this->assertSame(PDO::PARAM_STR, $this->type->getBindingType());
     }
 
     public function testName()
     {
-        $this->assertEquals(Type\Type::TIME, $this->type->getName());
+        $this->assertSame(Type\Type::TIME, $this->type->getName());
     }
 }

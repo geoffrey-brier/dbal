@@ -43,7 +43,7 @@ class TextTypeTest extends AbstractTypeTest
 
     public function testConvertToDatabaseValueWithValidValue()
     {
-        $this->assertEquals('foo', $this->type->convertToDatabaseValue('foo', $this->platformMock));
+        $this->assertSame('foo', $this->type->convertToDatabaseValue('foo', $this->platformMock));
     }
 
     public function testConvertToDatabaseValueWithNullValue()
@@ -53,7 +53,7 @@ class TextTypeTest extends AbstractTypeTest
 
     public function testConvertToPHPValueWithValidValue()
     {
-        $this->assertEquals('foo', $this->type->convertToPHPValue('foo', $this->platformMock));
+        $this->assertSame('foo', $this->type->convertToPHPValue('foo', $this->platformMock));
     }
 
     public function testConvertToPHPValueWithNullValue()
@@ -63,11 +63,11 @@ class TextTypeTest extends AbstractTypeTest
 
     public function testBindingType()
     {
-        $this->assertEquals(PDO::PARAM_STR, $this->type->getBindingType());
+        $this->assertSame(PDO::PARAM_STR, $this->type->getBindingType());
     }
 
     public function testName()
     {
-        $this->assertEquals(Type\Type::TEXT, $this->type->getName());
+        $this->assertSame(Type\Type::TEXT, $this->type->getName());
     }
 }
