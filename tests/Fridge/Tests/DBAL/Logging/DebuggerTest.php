@@ -44,7 +44,7 @@ class DebuggerTest extends \PHPUnit_Framework_TestCase
         $this->debugger->start('foo');
         $this->debugger->stop();
 
-        $this->assertEquals($this->debugger->getQuery(), 'foo');
+        $this->assertSame($this->debugger->getQuery(), 'foo');
         $this->assertInternalType('float', $this->debugger->getTime());
     }
 
@@ -66,6 +66,6 @@ class DebuggerTest extends \PHPUnit_Framework_TestCase
             'time'  => $this->debugger->getTime()
         );
 
-        $this->assertEquals($expected, $this->debugger->toArray());
+        $this->assertSame($expected, $this->debugger->toArray());
     }
 }
