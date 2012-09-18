@@ -41,7 +41,7 @@ class IndexTest extends \PHPUnit_Framework_TestCase
 
     public function testInitialState()
     {
-        $this->assertEquals('foo', $this->index->getName());
+        $this->assertSame('foo', $this->index->getName());
         $this->assertEmpty($this->index->getColumnNames());
         $this->assertFalse($this->index->isUnique());
     }
@@ -57,7 +57,7 @@ class IndexTest extends \PHPUnit_Framework_TestCase
         $columnNames = array('foo', 'bar');
         $this->index->setColumnNames($columnNames);
 
-        $this->assertEquals($columnNames, $this->index->getColumnNames());
+        $this->assertSame($columnNames, $this->index->getColumnNames());
     }
 
     /**

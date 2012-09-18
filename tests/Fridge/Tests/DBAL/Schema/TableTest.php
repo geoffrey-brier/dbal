@@ -104,7 +104,7 @@ class TableTest extends \PHPUnit_Framework_TestCase
 
     public function testInitialState()
     {
-        $this->assertEquals('foo', $this->table->getName());
+        $this->assertSame('foo', $this->table->getName());
         $this->assertFalse($this->table->hasSchema());
         $this->assertNull($this->table->getSchema());
         $this->assertFalse($this->table->hasColumns());
@@ -127,7 +127,7 @@ class TableTest extends \PHPUnit_Framework_TestCase
         $this->table->setSchema($this->schemaMock);
 
         $this->assertTrue($this->table->hasSchema());
-        $this->assertEquals($this->schemaMock, $this->table->getSchema());
+        $this->assertSame($this->schemaMock, $this->table->getSchema());
     }
 
     public function testColumns()
@@ -136,7 +136,7 @@ class TableTest extends \PHPUnit_Framework_TestCase
 
         $this->assertTrue($this->table->hasColumns());
         $this->assertTrue($this->table->hasColumn('foo'));
-        $this->assertEquals($this->columnMock, $this->table->getColumn('foo'));
+        $this->assertSame($this->columnMock, $this->table->getColumn('foo'));
     }
 
     public function testCreateColumnWithDBALType()
@@ -145,9 +145,9 @@ class TableTest extends \PHPUnit_Framework_TestCase
 
         $this->assertTrue($this->table->hasColumn('foo'));
 
-        $this->assertEquals('foo', $column->getName());
-        $this->assertEquals(Type::STRING, $column->getType()->getName());
-        $this->assertEquals(20, $column->getLength());
+        $this->assertSame('foo', $column->getName());
+        $this->assertSame(Type::STRING, $column->getType()->getName());
+        $this->assertSame(20, $column->getLength());
     }
 
     public function testCreateColumnWithStringType()
@@ -156,9 +156,9 @@ class TableTest extends \PHPUnit_Framework_TestCase
 
         $this->assertTrue($this->table->hasColumn('foo'));
 
-        $this->assertEquals('foo', $column->getName());
-        $this->assertEquals(Type::STRING, $column->getType()->getName());
-        $this->assertEquals(20, $column->getLength());
+        $this->assertSame('foo', $column->getName());
+        $this->assertSame(Type::STRING, $column->getType()->getName());
+        $this->assertSame(20, $column->getLength());
     }
 
     public function testSetColumnsDropPreviousColumns()
@@ -174,14 +174,14 @@ class TableTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($this->table->hasColumns());
         $this->assertTrue($this->table->hasColumn('bar'));
         $this->assertFalse($this->table->hasColumn('foo'));
-        $this->assertEquals($columnMock, $this->table->getColumn('bar'));
+        $this->assertSame($columnMock, $this->table->getColumn('bar'));
 
         $this->table->setColumns(array($this->columnMock));
 
         $this->assertTrue($this->table->hasColumns());
         $this->assertTrue($this->table->hasColumn('foo'));
         $this->assertFalse($this->table->hasColumn('bar'));
-        $this->assertEquals($this->columnMock, $this->table->getColumn('foo'));
+        $this->assertSame($this->columnMock, $this->table->getColumn('foo'));
     }
 
     /**
@@ -249,7 +249,7 @@ class TableTest extends \PHPUnit_Framework_TestCase
         $this->table->setPrimaryKey($this->primaryKeyMock);
 
         $this->assertTrue($this->table->hasPrimaryKey());
-        $this->assertEquals($this->primaryKeyMock, $this->table->getPrimaryKey());
+        $this->assertSame($this->primaryKeyMock, $this->table->getPrimaryKey());
     }
 
     public function testCreatePrimaryKey()
@@ -260,11 +260,11 @@ class TableTest extends \PHPUnit_Framework_TestCase
 
         $this->assertTrue($this->table->hasPrimaryKey());
 
-        $this->assertEquals('bar', $primaryKey->getName());
-        $this->assertEquals(array('foo'), $primaryKey->getColumnNames());
+        $this->assertSame('bar', $primaryKey->getName());
+        $this->assertSame(array('foo'), $primaryKey->getColumnNames());
 
         $indexes = array_values($this->table->getIndexes());
-        $this->assertEquals(array('foo'), $indexes[0]->getColumnNames());
+        $this->assertSame(array('foo'), $indexes[0]->getColumnNames());
     }
 
     /**
@@ -282,7 +282,7 @@ class TableTest extends \PHPUnit_Framework_TestCase
 
         $this->assertTrue($this->table->hasForeignKeys());
         $this->assertTrue($this->table->hasForeignKey('foo'));
-        $this->assertEquals($this->foreignKeyMock, $this->table->getForeignKey('foo'));
+        $this->assertSame($this->foreignKeyMock, $this->table->getForeignKey('foo'));
     }
 
     public function testForeignKeyWithSchema()
@@ -306,7 +306,7 @@ class TableTest extends \PHPUnit_Framework_TestCase
 
         $this->assertTrue($this->table->hasForeignKeys());
         $this->assertTrue($this->table->hasForeignKey('foo'));
-        $this->assertEquals($this->foreignKeyMock, $this->table->getForeignKey('foo'));
+        $this->assertSame($this->foreignKeyMock, $this->table->getForeignKey('foo'));
     }
 
     public function testCreateForeignKeyWithForeignTableName()
@@ -317,13 +317,13 @@ class TableTest extends \PHPUnit_Framework_TestCase
 
         $this->assertTrue($this->table->hasForeignKey('foo'));
 
-        $this->assertEquals('foo', $foreignKey->getName());
-        $this->assertEquals(array('foo'), $foreignKey->getLocalColumnNames());
-        $this->assertEquals('bar', $foreignKey->getForeignTableName());
-        $this->assertEquals(array('bar'), $foreignKey->getForeignColumnNames());
+        $this->assertSame('foo', $foreignKey->getName());
+        $this->assertSame(array('foo'), $foreignKey->getLocalColumnNames());
+        $this->assertSame('bar', $foreignKey->getForeignTableName());
+        $this->assertSame(array('bar'), $foreignKey->getForeignColumnNames());
 
         $indexes = array_values($this->table->getIndexes());
-        $this->assertEquals(array('foo'), $indexes[0]->getColumnNames());
+        $this->assertSame(array('foo'), $indexes[0]->getColumnNames());
     }
 
     public function testCreateForeignKeyWithForeignTable()
@@ -334,10 +334,10 @@ class TableTest extends \PHPUnit_Framework_TestCase
 
         $this->assertTrue($this->table->hasForeignKey('foo'));
 
-        $this->assertEquals('foo', $foreignKey->getName());
-        $this->assertEquals(array('foo'), $foreignKey->getLocalColumnNames());
-        $this->assertEquals('bar', $foreignKey->getForeignTableName());
-        $this->assertEquals(array('bar'), $foreignKey->getForeignColumnNames());
+        $this->assertSame('foo', $foreignKey->getName());
+        $this->assertSame(array('foo'), $foreignKey->getLocalColumnNames());
+        $this->assertSame('bar', $foreignKey->getForeignTableName());
+        $this->assertSame(array('bar'), $foreignKey->getForeignColumnNames());
     }
 
     public function testSetForeignKeysDropPreviousForeignKeys()
@@ -364,7 +364,7 @@ class TableTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($this->table->hasForeignKeys());
         $this->assertTrue($this->table->hasForeignKey('bar'));
         $this->assertFalse($this->table->hasForeignKey('foo'));
-        $this->assertEquals($foreignKeyMock, $this->table->getForeignKey('bar'));
+        $this->assertSame($foreignKeyMock, $this->table->getForeignKey('bar'));
 
         $this->foreignKeyMock
             ->expects($this->any())
@@ -377,7 +377,7 @@ class TableTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($this->table->hasForeignKeys());
         $this->assertTrue($this->table->hasForeignKey('foo'));
         $this->assertFalse($this->table->hasForeignKey('bar'));
-        $this->assertEquals($this->foreignKeyMock, $this->table->getForeignKey('foo'));
+        $this->assertSame($this->foreignKeyMock, $this->table->getForeignKey('foo'));
     }
 
     /**
@@ -505,7 +505,7 @@ class TableTest extends \PHPUnit_Framework_TestCase
 
         $this->assertTrue($this->table->hasIndexes());
         $this->assertTrue($this->table->hasIndex('foo'));
-        $this->assertEquals($this->indexMock, $this->table->getIndex('foo'));
+        $this->assertSame($this->indexMock, $this->table->getIndex('foo'));
     }
 
     public function testCreateIndex()
@@ -516,9 +516,9 @@ class TableTest extends \PHPUnit_Framework_TestCase
 
         $this->assertTrue($this->table->hasIndex('foo'));
 
-        $this->assertEquals('foo', $index->getName());
-        $this->assertEquals(array('foo'), $index->getColumnNames());
-        $this->assertEquals(true, $index->isUnique());
+        $this->assertSame('foo', $index->getName());
+        $this->assertSame(array('foo'), $index->getColumnNames());
+        $this->assertSame(true, $index->isUnique());
     }
 
     public function testSetIndexesDropPreviousIndexes()
@@ -529,7 +529,7 @@ class TableTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($this->table->hasIndexes());
         $this->assertTrue($this->table->hasIndex('foo'));
         $this->assertFalse($this->table->hasIndex('bar'));
-        $this->assertEquals($this->indexMock, $this->table->getIndex('foo'));
+        $this->assertSame($this->indexMock, $this->table->getIndex('foo'));
 
         $indexMock = $this->getMock('Fridge\DBAL\Schema\Index', array(), array(), '', false);
         $indexMock
@@ -546,7 +546,7 @@ class TableTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($this->table->hasIndexes());
         $this->assertTrue($this->table->hasIndex('bar'));
         $this->assertFalse($this->table->hasIndex('foo'));
-        $this->assertEquals($indexMock, $this->table->getIndex('bar'));
+        $this->assertSame($indexMock, $this->table->getIndex('bar'));
     }
 
     /**

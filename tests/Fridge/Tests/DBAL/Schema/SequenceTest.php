@@ -41,15 +41,15 @@ class SequenceTest extends \PHPUnit_Framework_TestCase
 
     public function testInitialState()
     {
-        $this->assertEquals('foo', $this->sequence->getName());
-        $this->assertEquals(1, $this->sequence->getInitialValue());
-        $this->assertEquals(1, $this->sequence->getIncrementSize());
+        $this->assertSame('foo', $this->sequence->getName());
+        $this->assertSame(1, $this->sequence->getInitialValue());
+        $this->assertSame(1, $this->sequence->getIncrementSize());
     }
 
     public function testInitialValueWithValidValue()
     {
         $this->sequence->setInitialValue(3);
-        $this->assertEquals(3, $this->sequence->getInitialValue());
+        $this->assertSame(3, $this->sequence->getInitialValue());
     }
 
     /**
@@ -64,7 +64,7 @@ class SequenceTest extends \PHPUnit_Framework_TestCase
     public function testIncrementSizeWithValidValue()
     {
         $this->sequence->setIncrementSize(2);
-        $this->assertEquals(2, $this->sequence->getIncrementSize());
+        $this->assertSame(2, $this->sequence->getIncrementSize());
     }
 
     /**

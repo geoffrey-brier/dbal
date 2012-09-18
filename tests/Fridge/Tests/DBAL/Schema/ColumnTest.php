@@ -42,8 +42,8 @@ class ColumnTest extends \PHPUnit_Framework_TestCase
 
     public function testInitialState()
     {
-        $this->assertEquals('foo', $this->column->getName());
-        $this->assertEquals(Type::BOOLEAN, $this->column->getType()->getName());
+        $this->assertSame('foo', $this->column->getName());
+        $this->assertSame(Type::BOOLEAN, $this->column->getType()->getName());
         $this->assertNull($this->column->getLength());
         $this->assertNull($this->column->getPrecision());
         $this->assertNull($this->column->getScale());
@@ -58,13 +58,13 @@ class ColumnTest extends \PHPUnit_Framework_TestCase
     public function testType()
     {
         $this->column->setType(Type::getType(Type::STRING));
-        $this->assertEquals(Type::STRING, $this->column->getType()->getName());
+        $this->assertSame(Type::STRING, $this->column->getType()->getName());
     }
 
     public function testLengthWithValidValue()
     {
         $this->column->setLength(50);
-        $this->assertEquals(50, $this->column->getLength());
+        $this->assertSame(50, $this->column->getLength());
     }
 
     public function testLengthWithNullValue()
@@ -85,7 +85,7 @@ class ColumnTest extends \PHPUnit_Framework_TestCase
     public function testPrecisionWithValidValue()
     {
         $this->column->setPrecision(9);
-        $this->assertEquals(9, $this->column->getPrecision());
+        $this->assertSame(9, $this->column->getPrecision());
     }
 
     public function testPrecisionWithNullValue()
@@ -106,7 +106,7 @@ class ColumnTest extends \PHPUnit_Framework_TestCase
     public function testScaleWithValidValue()
     {
         $this->column->setScale(5);
-        $this->assertEquals(5, $this->column->getScale());
+        $this->assertSame(5, $this->column->getScale());
     }
 
     public function testScaleWithNullValue()
@@ -190,7 +190,7 @@ class ColumnTest extends \PHPUnit_Framework_TestCase
     public function testDefault()
     {
         $this->column->setDefault('foo');
-        $this->assertEquals('foo', $this->column->getDefault());
+        $this->assertSame('foo', $this->column->getDefault());
     }
 
     public function testAutoIncrementWithValidValue()
@@ -217,7 +217,7 @@ class ColumnTest extends \PHPUnit_Framework_TestCase
     public function testCommentWithValidValue()
     {
         $this->column->setComment('foo');
-        $this->assertEquals('foo', $this->column->getComment());
+        $this->assertSame('foo', $this->column->getComment());
     }
 
     public function testCommentWithNullValue()
@@ -253,17 +253,17 @@ class ColumnTest extends \PHPUnit_Framework_TestCase
 
         $this->column->setOptions($options);
 
-        $this->assertEquals('foo', $this->column->getName());
-        $this->assertEquals(Type::BOOLEAN, $this->column->getType()->getName());
-        $this->assertEquals(100, $this->column->getLength());
-        $this->assertEquals(5, $this->column->getPrecision());
-        $this->assertEquals(2, $this->column->getScale());
+        $this->assertSame('foo', $this->column->getName());
+        $this->assertSame(Type::BOOLEAN, $this->column->getType()->getName());
+        $this->assertSame(100, $this->column->getLength());
+        $this->assertSame(5, $this->column->getPrecision());
+        $this->assertSame(2, $this->column->getScale());
         $this->assertTrue($this->column->isUnsigned());
         $this->assertTrue($this->column->isFixed());
         $this->assertTrue($this->column->isNotNull());
-        $this->assertEquals('foo', $this->column->getDefault());
+        $this->assertSame('foo', $this->column->getDefault());
         $this->assertTrue($this->column->isAutoIncrement());
-        $this->assertEquals('foo', $this->column->getComment());
+        $this->assertSame('foo', $this->column->getComment());
     }
 
     /**
@@ -295,6 +295,6 @@ class ColumnTest extends \PHPUnit_Framework_TestCase
         $expected['type'] = $expected['type']->getName();
 
         $this->column->setOptions($options);
-        $this->assertEquals($expected, $this->column->toArray());
+        $this->assertSame($expected, $this->column->toArray());
     }
 }
