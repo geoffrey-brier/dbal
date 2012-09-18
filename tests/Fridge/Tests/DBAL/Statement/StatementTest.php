@@ -71,14 +71,14 @@ class StatementTest extends \PHPUnit_Framework_TestCase
 
     public function testInitialState()
     {
-        $this->assertEquals($this->adapterStatementMock, $this->statement->getAdapter());
-        $this->assertEquals($this->connectionMock, $this->statement->getConnection());
-        $this->assertEquals('foo', $this->statement->getSQL());
+        $this->assertSame($this->adapterStatementMock, $this->statement->getAdapter());
+        $this->assertSame($this->connectionMock, $this->statement->getConnection());
+        $this->assertSame('foo', $this->statement->getSQL());
     }
 
     public function testIterator()
     {
-        $this->assertEquals($this->adapterStatementMock, $this->statement->getIterator());
+        $this->assertSame($this->adapterStatementMock, $this->statement->getIterator());
     }
 
     public function testBindParam()
@@ -97,7 +97,7 @@ class StatementTest extends \PHPUnit_Framework_TestCase
             )
             ->will($this->returnValue('bar'));
 
-        $this->assertEquals('bar', $this->statement->bindParam($parameter, $variable, $type));
+        $this->assertSame('bar', $this->statement->bindParam($parameter, $variable, $type));
     }
 
     public function testBindValueWithoutType()
@@ -119,7 +119,7 @@ class StatementTest extends \PHPUnit_Framework_TestCase
             )
             ->will($this->returnValue('bar'));
 
-        $this->assertEquals('bar', $this->statement->bindValue('foo', 'bar'));
+        $this->assertSame('bar', $this->statement->bindValue('foo', 'bar'));
     }
 
     public function testBindValueWithPDOType()
@@ -141,7 +141,7 @@ class StatementTest extends \PHPUnit_Framework_TestCase
             )
             ->will($this->returnValue('bar'));
 
-        $this->assertEquals('bar', $this->statement->bindValue('foo', 'bar', PDO::PARAM_INT));
+        $this->assertSame('bar', $this->statement->bindValue('foo', 'bar', PDO::PARAM_INT));
     }
 
     public function testBindValueWithFridgeType()
@@ -163,7 +163,7 @@ class StatementTest extends \PHPUnit_Framework_TestCase
             )
             ->will($this->returnValue('bar'));
 
-        $this->assertEquals('bar', $this->statement->bindValue('foo', true, Type::BOOLEAN));
+        $this->assertSame('bar', $this->statement->bindValue('foo', true, Type::BOOLEAN));
     }
 
     public function testCloseCursor()
@@ -173,7 +173,7 @@ class StatementTest extends \PHPUnit_Framework_TestCase
             ->method('closeCursor')
             ->will($this->returnValue('bar'));
 
-        $this->assertEquals('bar', $this->statement->closeCursor());
+        $this->assertSame('bar', $this->statement->closeCursor());
     }
 
     public function testColumnCount()
@@ -183,7 +183,7 @@ class StatementTest extends \PHPUnit_Framework_TestCase
             ->method('columnCount')
             ->will($this->returnValue('bar'));
 
-        $this->assertEquals('bar', $this->statement->columnCount());
+        $this->assertSame('bar', $this->statement->columnCount());
     }
 
     public function testErrorCode()
@@ -193,7 +193,7 @@ class StatementTest extends \PHPUnit_Framework_TestCase
             ->method('errorCode')
             ->will($this->returnValue('bar'));
 
-        $this->assertEquals('bar', $this->statement->errorCode());
+        $this->assertSame('bar', $this->statement->errorCode());
     }
 
     public function testErrorInfo()
@@ -203,7 +203,7 @@ class StatementTest extends \PHPUnit_Framework_TestCase
             ->method('errorInfo')
             ->will($this->returnValue('bar'));
 
-        $this->assertEquals('bar', $this->statement->errorInfo());
+        $this->assertSame('bar', $this->statement->errorInfo());
     }
 
     public function testExecute()
@@ -214,7 +214,7 @@ class StatementTest extends \PHPUnit_Framework_TestCase
             ->with($this->equalTo(array('foo')))
             ->will($this->returnValue('bar'));
 
-        $this->assertEquals('bar', $this->statement->execute(array('foo')));
+        $this->assertSame('bar', $this->statement->execute(array('foo')));
     }
 
     public function testFetch()
@@ -225,7 +225,7 @@ class StatementTest extends \PHPUnit_Framework_TestCase
             ->with($this->equalTo(1))
             ->will($this->returnValue('bar'));
 
-        $this->assertEquals('bar', $this->statement->fetch(1));
+        $this->assertSame('bar', $this->statement->fetch(1));
     }
 
     public function testFetchAll()
@@ -236,7 +236,7 @@ class StatementTest extends \PHPUnit_Framework_TestCase
             ->with($this->equalTo(1))
             ->will($this->returnValue('bar'));
 
-        $this->assertEquals('bar', $this->statement->fetchAll(1, 'foo', array('bar')));
+        $this->assertSame('bar', $this->statement->fetchAll(1, 'foo', array('bar')));
     }
 
     public function testFetchColumn()
@@ -247,7 +247,7 @@ class StatementTest extends \PHPUnit_Framework_TestCase
             ->with($this->equalTo(1))
             ->will($this->returnValue('bar'));
 
-        $this->assertEquals('bar', $this->statement->fetchColumn(1));
+        $this->assertSame('bar', $this->statement->fetchColumn(1));
     }
 
     public function testRowCount()
@@ -257,7 +257,7 @@ class StatementTest extends \PHPUnit_Framework_TestCase
             ->method('rowCount')
             ->will($this->returnValue('bar'));
 
-        $this->assertEquals('bar', $this->statement->rowCount());
+        $this->assertSame('bar', $this->statement->rowCount());
     }
 
     public function testSetFetchMode()
@@ -268,6 +268,6 @@ class StatementTest extends \PHPUnit_Framework_TestCase
             ->with($this->equalTo(1))
             ->will($this->returnValue('bar'));
 
-        $this->assertEquals('bar', $this->statement->setFetchMode(1));
+        $this->assertSame('bar', $this->statement->setFetchMode(1));
     }
 }
