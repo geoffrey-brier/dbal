@@ -198,7 +198,7 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
     {
         $this->setUpConnection();
 
-        $this->assertEquals('\'foo\'', $this->connection->quote('foo'));
+        $this->assertSame('\'foo\'', $this->connection->quote('foo'));
     }
 
     public function testPrepare()
@@ -225,14 +225,14 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
     {
         $this->setUpConnection();
 
-        $this->assertEquals(0, $this->connection->exec(self::$fixture->getUpdateQuery()));
+        $this->assertSame(0, $this->connection->exec(self::$fixture->getUpdateQuery()));
     }
 
     public function testLastInsertId()
     {
         $this->setUpConnection();
 
-        $this->assertEquals(0, $this->connection->lastInsertId());
+        $this->assertSame(0, $this->connection->lastInsertId());
     }
 
     public function testErrorCode()
@@ -244,7 +244,7 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
 
             $this->fail();
         } catch (Exception $e) {
-            $this->assertEquals($e->getCode(), $this->connection->errorCode());
+            $this->assertSame($e->getCode(), $this->connection->errorCode());
         }
     }
 
@@ -260,13 +260,13 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
             $errorInfo = $this->connection->errorInfo();
 
             $this->assertArrayHasKey(0, $errorInfo);
-            $this->assertEquals($e->getCode(), $errorInfo[0]);
+            $this->assertSame($e->getCode(), $errorInfo[0]);
 
             $this->assertArrayHasKey(1, $errorInfo);
-            $this->assertEquals($e->getCode(), $errorInfo[1]);
+            $this->assertSame($e->getCode(), $errorInfo[1]);
 
             $this->assertArrayHasKey(2, $errorInfo);
-            $this->assertEquals($e->getMessage(), $errorInfo[2]);
+            $this->assertSame($e->getMessage(), $errorInfo[2]);
         }
     }
 }

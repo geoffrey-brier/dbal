@@ -87,9 +87,9 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
 
     public function testAttribute()
     {
-        $this->assertEquals(PDO::ERRMODE_EXCEPTION, $this->connection->getAttribute(PDO::ATTR_ERRMODE));
+        $this->assertSame(PDO::ERRMODE_EXCEPTION, $this->connection->getAttribute(PDO::ATTR_ERRMODE));
 
-        $this->assertEquals(
+        $this->assertSame(
             array('Fridge\DBAL\Adapter\PDO\Statement', array()),
             $this->connection->getAttribute(PDO::ATTR_STATEMENT_CLASS)
         );
