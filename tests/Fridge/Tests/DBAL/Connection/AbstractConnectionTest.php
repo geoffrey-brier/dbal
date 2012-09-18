@@ -115,7 +115,7 @@ abstract class AbstractConnectionTest extends \PHPUnit_Framework_TestCase
 
     public function testTransactionIsolation()
     {
-        $this->assertEquals(
+        $this->assertSame(
             $this->connection->getPlatform()->getDefaultTransactionIsolation(),
             $this->connection->getTransactionIsolation()
         );
@@ -228,12 +228,12 @@ abstract class AbstractConnectionTest extends \PHPUnit_Framework_TestCase
 
     public function testExecuteUpdateWithoutParameters()
     {
-        $this->assertEquals(0, $this->connection->executeUpdate(self::$fixture->getUpdateQuery()));
+        $this->assertSame(0, $this->connection->executeUpdate(self::$fixture->getUpdateQuery()));
     }
 
     public function testExecuteUpdateWithNamedParameters()
     {
-        $this->assertEquals(1, $this->connection->executeUpdate(
+        $this->assertSame(1, $this->connection->executeUpdate(
             self::$fixture->getUpdateQueryWithNamedParameters(),
             self::$fixture->getNamedQueryParameters()
         ));
@@ -241,7 +241,7 @@ abstract class AbstractConnectionTest extends \PHPUnit_Framework_TestCase
 
     public function testExecuteUpdateWithNamedTypedParameters()
     {
-        $this->assertEquals(1, $this->connection->executeUpdate(
+        $this->assertSame(1, $this->connection->executeUpdate(
             self::$fixture->getUpdateQueryWithNamedParameters(),
             self::$fixture->getNamedTypedQueryParameters(),
             self::$fixture->getNamedQueryTypes()
@@ -250,7 +250,7 @@ abstract class AbstractConnectionTest extends \PHPUnit_Framework_TestCase
 
     public function testExecuteUpdateWithPositionalParameters()
     {
-        $this->assertEquals(1, $this->connection->executeUpdate(
+        $this->assertSame(1, $this->connection->executeUpdate(
             self::$fixture->getUpdateQueryWithPositionalParameters(),
             self::$fixture->getPositionalQueryParameters()
         ));
@@ -258,7 +258,7 @@ abstract class AbstractConnectionTest extends \PHPUnit_Framework_TestCase
 
     public function testExecuteUpdateWithPositionalTypedParameters()
     {
-        $this->assertEquals(1, $this->connection->executeUpdate(
+        $this->assertSame(1, $this->connection->executeUpdate(
             self::$fixture->getUpdateQueryWithPositionalParameters(),
             self::$fixture->getPositionalTypedQueryParameters(),
             self::$fixture->getPositionalQueryTypes()
@@ -324,7 +324,7 @@ abstract class AbstractConnectionTest extends \PHPUnit_Framework_TestCase
     {
         $queryResult = self::$fixture->getQueryResult();
 
-        $this->assertEquals(
+        $this->assertSame(
             $queryResult['carray'],
             $this->connection->fetchColumn(
                 self::$fixture->getQueryWithNamedParameters(),
@@ -336,7 +336,7 @@ abstract class AbstractConnectionTest extends \PHPUnit_Framework_TestCase
 
     public function testInsertWithTypedParameters()
     {
-        $this->assertEquals(1, $this->connection->insert(
+        $this->assertSame(1, $this->connection->insert(
             'tcolumns',
             self::$fixture->getNamedTypedQueryParameters(),
             self::$fixture->getNamedQueryTypes()
@@ -345,7 +345,7 @@ abstract class AbstractConnectionTest extends \PHPUnit_Framework_TestCase
 
     public function testInsertWithPartialTypedParameters()
     {
-        $this->assertEquals(1, $this->connection->insert(
+        $this->assertSame(1, $this->connection->insert(
             'tcolumns',
             self::$fixture->getNamedTypedQueryParameters(),
             self::$fixture->getPartialNamedQueryTypes()
@@ -359,7 +359,7 @@ abstract class AbstractConnectionTest extends \PHPUnit_Framework_TestCase
             array('carray' => array('bar' => 'foo'))
         );
 
-        $this->assertEquals(1, $this->connection->update(
+        $this->assertSame(1, $this->connection->update(
             'tcolumns',
             $datas,
             self::$fixture->getNamedQueryTypes()
@@ -375,7 +375,7 @@ abstract class AbstractConnectionTest extends \PHPUnit_Framework_TestCase
             array('carray' => array('bar' => 'foo'))
         );
 
-        $this->assertEquals(1, $this->connection->update(
+        $this->assertSame(1, $this->connection->update(
             'tcolumns',
             $datas,
             self::$fixture->getNamedQueryTypes(),
@@ -394,7 +394,7 @@ abstract class AbstractConnectionTest extends \PHPUnit_Framework_TestCase
             array('carray' => array('bar' => 'foo'))
         );
 
-        $this->assertEquals(1, $this->connection->update(
+        $this->assertSame(1, $this->connection->update(
             'tcolumns',
             $datas,
             self::$fixture->getNamedQueryTypes(),
@@ -406,12 +406,12 @@ abstract class AbstractConnectionTest extends \PHPUnit_Framework_TestCase
 
     public function testDeleteWithoutExpression()
     {
-        $this->assertEquals(1, $this->connection->delete('tcolumns'));
+        $this->assertSame(1, $this->connection->delete('tcolumns'));
     }
 
     public function testDeleteWithTypedExpressionParameters()
     {
-        $this->assertEquals(1, $this->connection->delete(
+        $this->assertSame(1, $this->connection->delete(
             'tcolumns',
             'carray = :carrayParameter',
             array('carrayParameter' => array('foo' => 'bar')),
@@ -422,12 +422,12 @@ abstract class AbstractConnectionTest extends \PHPUnit_Framework_TestCase
     public function testBeginTransaction()
     {
         $this->assertFalse($this->connection->inTransaction());
-        $this->assertEquals(0, $this->connection->getTransactionLevel());
+        $this->assertSame(0, $this->connection->getTransactionLevel());
 
         $this->connection->beginTransaction();
 
         $this->assertTrue($this->connection->inTransaction());
-        $this->assertEquals(1, $this->connection->getTransactionLevel());
+        $this->assertSame(1, $this->connection->getTransactionLevel());
     }
 
     public function testTransactionWithCommit()
@@ -443,7 +443,7 @@ abstract class AbstractConnectionTest extends \PHPUnit_Framework_TestCase
         }
 
         $this->assertFalse($this->connection->inTransaction());
-        $this->assertEquals(0, $this->connection->getTransactionLevel());
+        $this->assertSame(0, $this->connection->getTransactionLevel());
     }
 
     public function testTransactionWithRollback()
@@ -457,7 +457,7 @@ abstract class AbstractConnectionTest extends \PHPUnit_Framework_TestCase
         }
 
         $this->assertFalse($this->connection->inTransaction());
-        $this->assertEquals(0, $this->connection->getTransactionLevel());
+        $this->assertSame(0, $this->connection->getTransactionLevel());
     }
 
     public function testNestedTransactionWithCommit()
@@ -466,7 +466,7 @@ abstract class AbstractConnectionTest extends \PHPUnit_Framework_TestCase
 
         try {
             $this->connection->beginTransaction();
-            $this->assertEquals(2, $this->connection->getTransactionLevel());
+            $this->assertSame(2, $this->connection->getTransactionLevel());
 
             try {
                 $this->connection->commit();
@@ -476,7 +476,7 @@ abstract class AbstractConnectionTest extends \PHPUnit_Framework_TestCase
                 $this->fail($e->getMessage());
             }
 
-            $this->assertEquals(1, $this->connection->getTransactionLevel());
+            $this->assertSame(1, $this->connection->getTransactionLevel());
 
             $this->connection->commit();
         } catch (Exception $e) {
@@ -496,7 +496,7 @@ abstract class AbstractConnectionTest extends \PHPUnit_Framework_TestCase
 
         try {
             $this->connection->beginTransaction();
-            $this->assertEquals(2, $this->connection->getTransactionLevel());
+            $this->assertSame(2, $this->connection->getTransactionLevel());
 
             try {
                 throw new Exception();
@@ -504,7 +504,7 @@ abstract class AbstractConnectionTest extends \PHPUnit_Framework_TestCase
                 $this->connection->rollBack();
             }
 
-            $this->assertEquals(1, $this->connection->getTransactionLevel());
+            $this->assertSame(1, $this->connection->getTransactionLevel());
 
             throw new Exception();
         } catch (Exception $e) {
@@ -533,12 +533,12 @@ abstract class AbstractConnectionTest extends \PHPUnit_Framework_TestCase
 
     public function testQuoteWithDBALType()
     {
-        $this->assertEquals('\'foo\'', $this->connection->quote('foo', Type::STRING));
+        $this->assertSame('\'foo\'', $this->connection->quote('foo', Type::STRING));
     }
 
     public function testQuoteWithPDOType()
     {
-        $this->assertEquals('\'foo\'', $this->connection->quote('foo', PDO::PARAM_STR));
+        $this->assertSame('\'foo\'', $this->connection->quote('foo', PDO::PARAM_STR));
     }
 
     public function testQuery()
@@ -559,7 +559,7 @@ abstract class AbstractConnectionTest extends \PHPUnit_Framework_TestCase
 
     public function testExec()
     {
-        $this->assertEquals(0, $this->connection->exec(self::$fixture->getUpdateQuery()));
+        $this->assertSame(0, $this->connection->exec(self::$fixture->getUpdateQuery()));
     }
 
     public function testLastInsertId()
@@ -574,7 +574,7 @@ abstract class AbstractConnectionTest extends \PHPUnit_Framework_TestCase
 
             $this->fail();
         } catch (Exception $e) {
-            $this->assertEquals($e->getCode(), $this->connection->errorCode());
+            $this->assertSame($e->getCode(), $this->connection->errorCode());
         }
     }
 
@@ -588,7 +588,7 @@ abstract class AbstractConnectionTest extends \PHPUnit_Framework_TestCase
             $errorInfo = $this->connection->errorInfo();
 
             $this->assertArrayHasKey(0, $errorInfo);
-            $this->assertEquals($e->getCode(), $errorInfo[0]);
+            $this->assertSame($e->getCode(), $errorInfo[0]);
 
             $this->assertArrayHasKey(1, $errorInfo);
             $this->assertInternalType('int', $errorInfo[1]);
