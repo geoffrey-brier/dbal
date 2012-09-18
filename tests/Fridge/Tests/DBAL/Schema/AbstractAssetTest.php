@@ -41,14 +41,14 @@ class AbstractAssetTest extends \PHPUnit_Framework_TestCase
 
     public function testInitialState()
     {
-        $this->assertEquals('foo', $this->asset->getName());
+        $this->assertSame('foo', $this->asset->getName());
     }
 
     public function testNameWithValidValue()
     {
         $this->asset->setName('bar');
 
-        $this->assertEquals('bar', $this->asset->getName());
+        $this->assertSame('bar', $this->asset->getName());
     }
 
     /**

@@ -64,12 +64,12 @@ class MySQLPlatformTest extends \PHPUnit_Framework_TestCase
 
     public function testIntegerSQLDeclarationSnippetWithoutOptions()
     {
-        $this->assertEquals('', $this->getIntegerSQLDeclarationSnippetMethod()->invoke($this->platform, array()));
+        $this->assertSame('', $this->getIntegerSQLDeclarationSnippetMethod()->invoke($this->platform, array()));
     }
 
     public function testIntegerSQLDeclarationSnippetWithLength()
     {
-        $this->assertEquals(
+        $this->assertSame(
             '(100)',
             $this->getIntegerSQLDeclarationSnippetMethod()->invoke($this->platform, array('length' => 100))
         );
@@ -77,7 +77,7 @@ class MySQLPlatformTest extends \PHPUnit_Framework_TestCase
 
     public function testIntegerSQLDeclarationSnippetWithUnsignedFlag()
     {
-        $this->assertEquals(
+        $this->assertSame(
             ' UNSIGNED',
             $this->getIntegerSQLDeclarationSnippetMethod()->invoke($this->platform, array('unsigned' => true))
         );
@@ -85,7 +85,7 @@ class MySQLPlatformTest extends \PHPUnit_Framework_TestCase
 
     public function testIntegerSQLDeclarationSnippetWithAutoIncrementFlag()
     {
-        $this->assertEquals(
+        $this->assertSame(
             ' AUTO_INCREMENT',
             $this->getIntegerSQLDeclarationSnippetMethod()->invoke($this->platform, array('auto_increment' => true))
         );
@@ -93,57 +93,57 @@ class MySQLPlatformTest extends \PHPUnit_Framework_TestCase
 
     public function testBigIntegerSQLDeclaration()
     {
-        $this->assertEquals('BIGINT(100)', $this->platform->getBigIntegerSQLDeclaration(array('length' => 100)));
+        $this->assertSame('BIGINT(100)', $this->platform->getBigIntegerSQLDeclaration(array('length' => 100)));
     }
 
     public function testBooleanSQLDeclaration()
     {
-        $this->assertEquals('TINYINT(1)', $this->platform->getBooleanSQLDeclaration());
+        $this->assertSame('TINYINT(1)', $this->platform->getBooleanSQLDeclaration());
     }
 
     public function testClobSQLDeclarationWithoutLength()
     {
-        $this->assertEquals('LONGTEXT', $this->platform->getClobSQLDeclaration());
+        $this->assertSame('LONGTEXT', $this->platform->getClobSQLDeclaration());
     }
 
     public function testClobSQLDeclarationWithLengthLowerThan266()
     {
-        $this->assertEquals('TINYTEXT', $this->platform->getClobSQLDeclaration(array('length' => 255)));
+        $this->assertSame('TINYTEXT', $this->platform->getClobSQLDeclaration(array('length' => 255)));
     }
 
     public function testClobSQLDeclarationWithLengthLowerThan65536()
     {
-        $this->assertEquals('TEXT', $this->platform->getClobSQLDeclaration(array('length' => 65535)));
+        $this->assertSame('TEXT', $this->platform->getClobSQLDeclaration(array('length' => 65535)));
     }
 
     public function testClobSQLDeclarationWithLengthLowerThan16777216()
     {
-        $this->assertEquals('MEDIUMTEXT', $this->platform->getClobSQLDeclaration(array('length' => 16777215)));
+        $this->assertSame('MEDIUMTEXT', $this->platform->getClobSQLDeclaration(array('length' => 16777215)));
     }
 
     public function testClobSQLDeclarationWithLengthGreaterThan16777215()
     {
-        $this->assertEquals('LONGTEXT', $this->platform->getClobSQLDeclaration(array('length' => 16777216)));
+        $this->assertSame('LONGTEXT', $this->platform->getClobSQLDeclaration(array('length' => 16777216)));
     }
 
     public function testDateTimeSQLDeclarationWithoutOptions()
     {
-        $this->assertEquals('DATETIME', $this->platform->getDateTimeSQLDeclaration());
+        $this->assertSame('DATETIME', $this->platform->getDateTimeSQLDeclaration());
     }
 
     public function testDateTimeSQLDeclarationWithVersionFlag()
     {
-        $this->assertEquals('TIMESTAMP', $this->platform->getDateTimeSQLDeclaration(array('version' => true)));
+        $this->assertSame('TIMESTAMP', $this->platform->getDateTimeSQLDeclaration(array('version' => true)));
     }
 
     public function testIntegerSQLDeclaration()
     {
-        $this->assertEquals('INT(100)', $this->platform->getIntegerSQLDeclaration(array('length' => 100)));
+        $this->assertSame('INT(100)', $this->platform->getIntegerSQLDeclaration(array('length' => 100)));
     }
 
     public function testSmallIntegerSQLDeclaration()
     {
-        $this->assertEquals('SMALLINT(100)', $this->platform->getSmallIntegerSQLDeclaration(array('length' => 100)));
+        $this->assertSame('SMALLINT(100)', $this->platform->getSmallIntegerSQLDeclaration(array('length' => 100)));
     }
 
     public function testSupportSequence()
@@ -153,7 +153,7 @@ class MySQLPlatformTest extends \PHPUnit_Framework_TestCase
 
     public function testSetTransactionIsolationSQLQuery()
     {
-        $this->assertEquals(
+        $this->assertSame(
             'SET SESSION TRANSACTION ISOLATION LEVEL '.Connection::TRANSACTION_READ_COMMITTED,
             $this->platform->getSetTransactionIsolationSQLQuery(Connection::TRANSACTION_READ_COMMITTED)
         );
@@ -183,7 +183,7 @@ class MySQLPlatformTest extends \PHPUnit_Framework_TestCase
     {
         $primaryKey = new Schema\PrimaryKey('foo', array('foo'));
 
-        $this->assertEquals(
+        $this->assertSame(
             'ALTER TABLE foo ADD CONSTRAINT PRIMARY KEY (foo)',
             $this->platform->getCreatePrimaryKeySQLQuery($primaryKey, 'foo')
         );
@@ -200,7 +200,7 @@ class MySQLPlatformTest extends \PHPUnit_Framework_TestCase
 
         $sqls = $this->platform->getCreateTableSQLQueries($table);
 
-        $this->assertEquals('ENGINE = InnoDB', substr($sqls[0], -15));
+        $this->assertSame('ENGINE = InnoDB', substr($sqls[0], -15));
     }
 
     /**
@@ -218,7 +218,7 @@ class MySQLPlatformTest extends \PHPUnit_Framework_TestCase
     {
         $primaryKey = new Schema\PrimaryKey('foo');
 
-        $this->assertEquals(
+        $this->assertSame(
             'ALTER TABLE bar DROP PRIMARY KEY',
             $this->platform->getDropPrimaryKeySQLQuery($primaryKey, 'bar')
         );
@@ -228,7 +228,7 @@ class MySQLPlatformTest extends \PHPUnit_Framework_TestCase
     {
         $index = new Schema\Index('foo', array(), true);
 
-        $this->assertEquals(
+        $this->assertSame(
             'DROP INDEX foo ON bar',
             $this->platform->getDropIndexSQLQuery($index, 'bar')
         );
@@ -238,7 +238,7 @@ class MySQLPlatformTest extends \PHPUnit_Framework_TestCase
     {
         $foreignKey = new Schema\ForeignKey('foo', array(), 'bar', array());
 
-        $this->assertEquals(
+        $this->assertSame(
             'ALTER TABLE bar DROP FOREIGN KEY foo',
             $this->platform->getDropForeignKeySQLQuery($foreignKey, 'bar')
         );
@@ -246,6 +246,6 @@ class MySQLPlatformTest extends \PHPUnit_Framework_TestCase
 
     public function testQuoteIdentifier()
     {
-        $this->assertEquals('`', $this->platform->getQuoteIdentifier());
+        $this->assertSame('`', $this->platform->getQuoteIdentifier());
     }
 }

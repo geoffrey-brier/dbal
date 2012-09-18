@@ -49,7 +49,7 @@ class DateTypeTest extends AbstractTypeTest
 
     public function testConvertToDatabaseValueWithValidValue()
     {
-        $this->assertEquals('2012-01-01', $this->type->convertToDatabaseValue(new DateTime('2012-01-01 01:23:45'), $this->platformMock));
+        $this->assertSame('2012-01-01', $this->type->convertToDatabaseValue(new DateTime('2012-01-01 01:23:45'), $this->platformMock));
     }
 
     public function testConvertToDatabaseValueWithNullValue()
@@ -78,11 +78,11 @@ class DateTypeTest extends AbstractTypeTest
 
     public function testBindingType()
     {
-        $this->assertEquals(PDO::PARAM_STR, $this->type->getBindingType());
+        $this->assertSame(PDO::PARAM_STR, $this->type->getBindingType());
     }
 
     public function testName()
     {
-        $this->assertEquals(Type\Type::DATE, $this->type->getName());
+        $this->assertSame(Type\Type::DATE, $this->type->getName());
     }
 }

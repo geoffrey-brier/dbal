@@ -49,7 +49,7 @@ class SetCharsetSubscriberTest extends \PHPUnit_Framework_TestCase
 
     public function testCharset()
     {
-        $this->assertEquals('utf8', $this->subscriber->getCharset());
+        $this->assertSame('utf8', $this->subscriber->getCharset());
     }
 
     public function testPostConnect()

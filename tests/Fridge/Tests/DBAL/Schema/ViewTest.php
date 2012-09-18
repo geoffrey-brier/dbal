@@ -41,14 +41,14 @@ class ViewTest extends \PHPUnit_Framework_TestCase
 
     public function testInitialState()
     {
-        $this->assertEquals('foo', $this->view->getName());
-        $this->assertEquals('bar', $this->view->getSQL());
+        $this->assertSame('foo', $this->view->getName());
+        $this->assertSame('bar', $this->view->getSQL());
     }
 
     public function testSQLWithValidValue()
     {
         $this->view->setSQL('foo');
-        $this->assertEquals('foo', $this->view->getSQL());
+        $this->assertSame('foo', $this->view->getSQL());
     }
 
     /**

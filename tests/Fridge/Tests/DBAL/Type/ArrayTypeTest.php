@@ -43,7 +43,7 @@ class ArrayTypeTest extends AbstractTypeTest
 
     public function testConvertToDatabaseValueWithValidValue()
     {
-        $this->assertEquals('a:1:{s:3:"foo";s:3:"bar";}', $this->type->convertToDatabaseValue(array('foo' => 'bar'), $this->platformMock));
+        $this->assertSame('a:1:{s:3:"foo";s:3:"bar";}', $this->type->convertToDatabaseValue(array('foo' => 'bar'), $this->platformMock));
     }
 
     public function testConvertToDatabaseValueWithNullValue()
@@ -53,7 +53,7 @@ class ArrayTypeTest extends AbstractTypeTest
 
     public function testConvertToPHPValueWithValidValue()
     {
-        $this->assertEquals(array('foo' => 'bar'), $this->type->convertToPHPValue('a:1:{s:3:"foo";s:3:"bar";}', $this->platformMock));
+        $this->assertSame(array('foo' => 'bar'), $this->type->convertToPHPValue('a:1:{s:3:"foo";s:3:"bar";}', $this->platformMock));
     }
 
     /**
@@ -76,11 +76,11 @@ class ArrayTypeTest extends AbstractTypeTest
 
     public function testBindingType()
     {
-        $this->assertEquals(PDO::PARAM_STR, $this->type->getBindingType());
+        $this->assertSame(PDO::PARAM_STR, $this->type->getBindingType());
     }
 
     public function testName()
     {
-        $this->assertEquals(Type\Type::TARRAY, $this->type->getName());
+        $this->assertSame(Type\Type::TARRAY, $this->type->getName());
     }
 }

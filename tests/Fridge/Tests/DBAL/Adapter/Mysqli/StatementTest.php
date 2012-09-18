@@ -170,7 +170,7 @@ class StatementTest extends \PHPUnit_Framework_TestCase
 
         $queryResult = array_values(self::$fixture->getQueryResult());
 
-        $this->assertEquals($queryResult[1], $this->statement->fetchColumn(1));
+        $this->assertSame($queryResult[1], $this->statement->fetchColumn(1));
     }
 
     public function testFetchColumnWithoutDatas()
@@ -304,7 +304,7 @@ class StatementTest extends \PHPUnit_Framework_TestCase
         $this->statement = new Statement(self::$fixture->getQuery(), $this->mysqli);
         $this->statement->execute();
 
-        $this->assertEquals(1, $this->statement->rowCount());
+        $this->assertSame(1, $this->statement->rowCount());
     }
 
     public function testRowCountWithQueryUpdate()
@@ -312,7 +312,7 @@ class StatementTest extends \PHPUnit_Framework_TestCase
         $this->statement = new Statement(self::$fixture->getUpdateQuery(), $this->mysqli);
         $this->statement->execute();
 
-        $this->assertEquals(0, $this->statement->rowCount());
+        $this->assertSame(0, $this->statement->rowCount());
     }
 
     public function testSetFetchMode()
@@ -329,7 +329,7 @@ class StatementTest extends \PHPUnit_Framework_TestCase
         $this->statement = new Statement(self::$fixture->getQuery(), $this->mysqli);
         $this->statement->execute();
 
-        $this->assertEquals(count(self::$fixture->getQueryResult()), $this->statement->columnCount());
+        $this->assertSame(count(self::$fixture->getQueryResult()), $this->statement->columnCount());
     }
 
     public function testCloseCursor()
@@ -349,7 +349,7 @@ class StatementTest extends \PHPUnit_Framework_TestCase
 
             $this->fail();
         } catch (Exception $e) {
-            $this->assertEquals($e->getCode(), $this->statement->errorCode());
+            $this->assertSame($e->getCode(), $this->statement->errorCode());
         }
     }
 
@@ -365,13 +365,13 @@ class StatementTest extends \PHPUnit_Framework_TestCase
             $errorInfo = $this->statement->errorInfo();
 
             $this->assertArrayHasKey(0, $errorInfo);
-            $this->assertEquals($e->getCode(), $errorInfo[0]);
+            $this->assertSame($e->getCode(), $errorInfo[0]);
 
             $this->assertArrayHasKey(1, $errorInfo);
-            $this->assertEquals($e->getCode(), $errorInfo[1]);
+            $this->assertSame($e->getCode(), $errorInfo[1]);
 
             $this->assertArrayHasKey(2, $errorInfo);
-            $this->assertEquals($e->getMessage(), $errorInfo[2]);
+            $this->assertSame($e->getMessage(), $errorInfo[2]);
         }
     }
 

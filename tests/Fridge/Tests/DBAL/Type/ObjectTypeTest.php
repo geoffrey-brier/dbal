@@ -43,7 +43,7 @@ class ObjectTypeTest extends AbstractTypeTest
 
     public function testConvertToDatabaseValueWithValidValue()
     {
-        $this->assertEquals('O:8:"stdClass":1:{s:3:"foo";s:3:"bar";}', $this->type->convertToDatabaseValue((object) array('foo' => 'bar'), $this->platformMock));
+        $this->assertSame('O:8:"stdClass":1:{s:3:"foo";s:3:"bar";}', $this->type->convertToDatabaseValue((object) array('foo' => 'bar'), $this->platformMock));
     }
 
     public function testConvertToDatabaseValueWithNullValue()
@@ -71,11 +71,11 @@ class ObjectTypeTest extends AbstractTypeTest
 
     public function testBindingType()
     {
-        $this->assertEquals(PDO::PARAM_STR, $this->type->getBindingType());
+        $this->assertSame(PDO::PARAM_STR, $this->type->getBindingType());
     }
 
     public function testName()
     {
-        $this->assertEquals(Type\Type::OBJECT, $this->type->getName());
+        $this->assertSame(Type\Type::OBJECT, $this->type->getName());
     }
 }

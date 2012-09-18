@@ -84,7 +84,7 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
     public function testInitialState()
     {
         $this->assertTrue($this-> platform->useStrictMappedType());
-        $this->assertEquals(Type::TEXT, $this->platform->getFallbackMappedType());
+        $this->assertSame(Type::TEXT, $this->platform->getFallbackMappedType());
     }
 
     public function testHasMappedType()
@@ -99,7 +99,7 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
     {
         $this->initializeMappedTypes();
 
-        $this->assertEquals('bar', $this->platform->getMappedType('foo'));
+        $this->assertSame('bar', $this->platform->getMappedType('foo'));
     }
 
     /**
@@ -118,7 +118,7 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
         $this->initializeMappedTypes();
 
         $this->platform->useStrictMappedType(false);
-        $this->assertEquals($this->platform->getFallbackMappedType(), $this->platform->getMappedType('bar'));
+        $this->assertSame($this->platform->getFallbackMappedType(), $this->platform->getMappedType('bar'));
     }
 
     public function testAddMappedTypeWithValidValue()
@@ -147,7 +147,7 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
 
         $this->platform->overrideMappedType('foo', 'foo');
 
-        $this->assertEquals('foo', $this->platform->getMappedType('foo'));
+        $this->assertSame('foo', $this->platform->getMappedType('foo'));
     }
 
     /**
@@ -188,7 +188,7 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
     public function testFallbackMappedTypeWithValidValue()
     {
         $this->platform->setFallbackMappedType(Type::INTEGER);
-        $this->assertEquals(Type::INTEGER, $this->platform->getFallbackMappedType());
+        $this->assertSame(Type::INTEGER, $this->platform->getFallbackMappedType());
     }
 
     /**
@@ -249,72 +249,72 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
 
     public function testBigIntegerSQLDeclaration()
     {
-        $this->assertEquals('BIGINT', $this->platform->getBigIntegerSQLDeclaration());
+        $this->assertSame('BIGINT', $this->platform->getBigIntegerSQLDeclaration());
     }
 
     public function testBooleanSQLDeclaration()
     {
-        $this->assertEquals('BOOLEAN', $this->platform->getBooleanSQLDeclaration());
+        $this->assertSame('BOOLEAN', $this->platform->getBooleanSQLDeclaration());
     }
 
     public function testClobSQLDeclaration()
     {
-        $this->assertEquals('TEXT', $this->platform->getClobSQLDeclaration());
+        $this->assertSame('TEXT', $this->platform->getClobSQLDeclaration());
     }
 
     public function testDateSQLDeclaration()
     {
-        $this->assertEquals('DATE', $this->platform->getDateSQLDeclaration());
+        $this->assertSame('DATE', $this->platform->getDateSQLDeclaration());
     }
 
     public function testDateTimeSQLDeclaration()
     {
-        $this->assertEquals('DATETIME', $this->platform->getDateTimeSQLDeclaration());
+        $this->assertSame('DATETIME', $this->platform->getDateTimeSQLDeclaration());
     }
 
     public function testDecimalSQLDeclarationWithoutOptions()
     {
-        $this->assertEquals('NUMERIC(5, 2)', $this->platform->getDecimalSQLDeclaration());
+        $this->assertSame('NUMERIC(5, 2)', $this->platform->getDecimalSQLDeclaration());
     }
 
     public function testDecimalSQLDeclarationWithPrecision()
     {
-        $this->assertEquals('NUMERIC(3, 2)', $this->platform->getDecimalSQLDeclaration(array('precision' => 3)));
+        $this->assertSame('NUMERIC(3, 2)', $this->platform->getDecimalSQLDeclaration(array('precision' => 3)));
     }
 
     public function testDecimalSQLDeclarationWithScale()
     {
-        $this->assertEquals('NUMERIC(5, 1)', $this->platform->getDecimalSQLDeclaration(array('scale' => 1)));
+        $this->assertSame('NUMERIC(5, 1)', $this->platform->getDecimalSQLDeclaration(array('scale' => 1)));
     }
 
     public function testFloatSQLDeclaration()
     {
-        $this->assertEquals('DOUBLE PRECISION', $this->platform->getFloatSQLDeclaration());
+        $this->assertSame('DOUBLE PRECISION', $this->platform->getFloatSQLDeclaration());
     }
 
     public function testIntegerSQLDeclaration()
     {
-        $this->assertEquals('INT', $this->platform->getIntegerSQLDeclaration());
+        $this->assertSame('INT', $this->platform->getIntegerSQLDeclaration());
     }
 
     public function testSmallIntegerSQLDeclaration()
     {
-        $this->assertEquals('SMALLINT', $this->platform->getSmallIntegerSQLDeclaration());
+        $this->assertSame('SMALLINT', $this->platform->getSmallIntegerSQLDeclaration());
     }
 
     public function testTimeSQLDeclaration()
     {
-        $this->assertEquals('TIME', $this->platform->getTimeSQLDeclaration());
+        $this->assertSame('TIME', $this->platform->getTimeSQLDeclaration());
     }
 
     public function testVarcharSQLDeclarationWithoutOptions()
     {
-        $this->assertEquals('VARCHAR(255)', $this->platform->getVarcharSQLDeclaration(array()));
+        $this->assertSame('VARCHAR(255)', $this->platform->getVarcharSQLDeclaration(array()));
     }
 
     public function testVarcharSQLDeclarationWithFixedFlag()
     {
-        $this->assertEquals(
+        $this->assertSame(
             'CHAR(20)',
             $this->platform->getVarcharSQLDeclaration(array('length' => 20, 'fixed' => true))
         );
@@ -340,27 +340,27 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
 
     public function testVarcharSQLDeclarationWithLenngthGreaterThanMaxVarcharLength()
     {
-        $this->assertEquals('TEXT', $this->platform->getVarcharSQLDeclaration(array('length' => 65536)));
+        $this->assertSame('TEXT', $this->platform->getVarcharSQLDeclaration(array('length' => 65536)));
     }
 
     public function testDefaultTransactionIsolation()
     {
-        $this->assertEquals(Connection::TRANSACTION_READ_COMMITTED, $this->platform->getDefaultTransactionIsolation());
+        $this->assertSame(Connection::TRANSACTION_READ_COMMITTED, $this->platform->getDefaultTransactionIsolation());
     }
 
     public function testDateFormat()
     {
-        $this->assertEquals('Y-m-d', $this->platform->getDateFormat());
+        $this->assertSame('Y-m-d', $this->platform->getDateFormat());
     }
 
     public function testTimeFormat()
     {
-        $this->assertEquals('H:i:s', $this->platform->getTimeFormat());
+        $this->assertSame('H:i:s', $this->platform->getTimeFormat());
     }
 
     public function testDateTimeFormat()
     {
-        $this->assertEquals('Y-m-d H:i:s', $this->platform->getDateTimeFormat());
+        $this->assertSame('Y-m-d H:i:s', $this->platform->getDateTimeFormat());
     }
 
     public function testSupportSavepoint()
@@ -385,34 +385,34 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
 
     public function testCreateSavepointSQLQuery()
     {
-        $this->assertEquals('SAVEPOINT foo', $this->platform->getCreateSavepointSQLQuery('foo'));
+        $this->assertSame('SAVEPOINT foo', $this->platform->getCreateSavepointSQLQuery('foo'));
     }
 
     public function testReleaseSavepointSQLQuery()
     {
-        $this->assertEquals('RELEASE SAVEPOINT foo', $this->platform->getReleaseSavepointSQLQuery('foo'));
+        $this->assertSame('RELEASE SAVEPOINT foo', $this->platform->getReleaseSavepointSQLQuery('foo'));
     }
 
     public function testRollbackSavepointSQLQuery()
     {
-        $this->assertEquals('ROLLBACK TO SAVEPOINT foo', $this->platform->getRollbackSavepointSQLQuery('foo'));
+        $this->assertSame('ROLLBACK TO SAVEPOINT foo', $this->platform->getRollbackSavepointSQLQuery('foo'));
     }
 
     public function testSetCharsetSQLQuery()
     {
-        $this->assertEquals('SET NAMES \'foo\'', $this->platform->getSetCharsetSQLQuery('foo'));
+        $this->assertSame('SET NAMES \'foo\'', $this->platform->getSetCharsetSQLQuery('foo'));
     }
 
     public function testCreateDatabaseSQLQuery()
     {
-        $this->assertEquals('CREATE DATABASE foo', $this->platform->getCreateDatabaseSQLQuery('foo'));
+        $this->assertSame('CREATE DATABASE foo', $this->platform->getCreateDatabaseSQLQuery('foo'));
     }
 
     public function testCreateSequenceSQLQuery()
     {
         $sequence = new Schema\Sequence('foo', 1, 1);
 
-        $this->assertEquals(
+        $this->assertSame(
             'CREATE SEQUENCE foo INCREMENT BY 1 MINVALUE 1 START WITH 1',
             $this->platform->getCreateSequenceSQLQuery($sequence)
         );
@@ -422,14 +422,14 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
     {
         $view = new Schema\View('foo', 'bar');
 
-        $this->assertEquals('CREATE VIEW foo AS bar', $this->platform->getCreateViewSQLQuery($view));
+        $this->assertSame('CREATE VIEW foo AS bar', $this->platform->getCreateViewSQLQuery($view));
     }
 
     public function testCreateConstraintSQLQueryWithPrimaryKey()
     {
         $primaryKey = new Schema\PrimaryKey('foo', array('bar'));
 
-        $this->assertEquals(
+        $this->assertSame(
             'ALTER TABLE foo ADD CONSTRAINT foo PRIMARY KEY (bar)',
             $this->platform->getCreateConstraintSQLQuery($primaryKey, 'foo')
         );
@@ -446,7 +446,7 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
             Schema\ForeignKey::CASCADE
         );
 
-        $this->assertEquals(
+        $this->assertSame(
             'ALTER TABLE foo'.
             ' ADD CONSTRAINT foo'.
             ' FOREIGN KEY (foo)'.
@@ -461,7 +461,7 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
     {
         $index = new Schema\Index('foo', array('foo'), true);
 
-        $this->assertEquals(
+        $this->assertSame(
             'ALTER TABLE foo ADD CONSTRAINT foo UNIQUE (foo)',
             $this->platform->getCreateConstraintSQLQuery($index, 'foo')
         );
@@ -471,7 +471,7 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
     {
         $index = new Schema\Index('foo', array('foo'));
 
-        $this->assertEquals(
+        $this->assertSame(
             'CREATE INDEX foo ON foo (foo)',
             $this->platform->getCreateConstraintSQLQuery($index, 'foo')
         );
@@ -481,7 +481,7 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
     {
         $primaryKey = new Schema\PrimaryKey('foo', array('foo'));
 
-        $this->assertEquals(
+        $this->assertSame(
             'ALTER TABLE foo ADD CONSTRAINT foo PRIMARY KEY (foo)',
             $this->platform->getCreatePrimaryKeySQLQuery($primaryKey, 'foo')
         );
@@ -498,7 +498,7 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
             Schema\ForeignKey::CASCADE
         );
 
-        $this->assertEquals(
+        $this->assertSame(
             'ALTER TABLE foo'.
             ' ADD CONSTRAINT foo'.
             ' FOREIGN KEY (foo)'.
@@ -513,7 +513,7 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
     {
         $index = new Schema\Index('foo', array('foo'), true);
 
-        $this->assertEquals(
+        $this->assertSame(
             'ALTER TABLE foo ADD CONSTRAINT foo UNIQUE (foo)',
             $this->platform->getCreateIndexSQLQuery($index, 'foo')
         );
@@ -523,7 +523,7 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
     {
         $index = new Schema\Index('foo', array('foo'));
 
-        $this->assertEquals(
+        $this->assertSame(
             'CREATE INDEX foo ON foo (foo)',
             $this->platform->getCreateIndexSQLQuery($index, 'foo')
         );
@@ -533,7 +533,7 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
     {
         $column = new Schema\Column('foo', Type::getType(Type::STRING), array('comment' => 'bar'));
 
-        $this->assertEquals(
+        $this->assertSame(
             'COMMENT ON COLUMN foo.foo IS \'bar\'',
             $this->platform->getCreateColumnCommentSQLQuery($column, 'foo')
         );
@@ -546,7 +546,7 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
             new Schema\Column('bar', Type::getType(Type::STRING), array('comment' => 'bar')),
         );
 
-        $this->assertEquals(
+        $this->assertSame(
             array('COMMENT ON COLUMN foo.foo IS \'foo\'', 'COMMENT ON COLUMN foo.bar IS \'bar\''),
             $this->platform->getCreateColumnCommentsSQLQueries($columns, 'foo')
         );
@@ -564,35 +564,35 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
 
     public function testDropDatabaseSQLQuery()
     {
-        $this->assertEquals('DROP DATABASE foo', $this->platform->getDropDatabaseSQLQuery('foo'));
+        $this->assertSame('DROP DATABASE foo', $this->platform->getDropDatabaseSQLQuery('foo'));
     }
 
     public function testDropSequenceSQLQuery()
     {
         $sequence = new Schema\Sequence('foo');
 
-        $this->assertEquals('DROP SEQUENCE foo', $this->platform->getDropSequenceSQLQuery($sequence));
+        $this->assertSame('DROP SEQUENCE foo', $this->platform->getDropSequenceSQLQuery($sequence));
     }
 
     public function testDropViewSQLQuery()
     {
         $view = new Schema\View('foo');
 
-        $this->assertEquals('DROP VIEW foo', $this->platform->getDropViewSQLQuery($view));
+        $this->assertSame('DROP VIEW foo', $this->platform->getDropViewSQLQuery($view));
     }
 
     public function testDropTableSQLQuery()
     {
         $table = new Schema\Table('foo');
 
-        $this->assertEquals('DROP TABLE foo', $this->platform->getDropTableSQLQuery($table));
+        $this->assertSame('DROP TABLE foo', $this->platform->getDropTableSQLQuery($table));
     }
 
     public function testDropConstraintSQLQueryWithPrimaryKey()
     {
         $constraint = new Schema\PrimaryKey('foo');
 
-        $this->assertEquals(
+        $this->assertSame(
             'ALTER TABLE bar DROP CONSTRAINT foo',
             $this->platform->getDropConstraintSQLQuery($constraint, 'bar')
         );
@@ -602,7 +602,7 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
     {
         $constraint = new Schema\ForeignKey('foo', array(), 'bar', array());
 
-        $this->assertEquals(
+        $this->assertSame(
             'ALTER TABLE bar DROP CONSTRAINT foo',
             $this->platform->getDropConstraintSQLQuery($constraint, 'bar')
         );
@@ -612,7 +612,7 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
     {
         $constraint = new Schema\Index('foo');
 
-        $this->assertEquals(
+        $this->assertSame(
             'DROP INDEX foo',
             $this->platform->getDropConstraintSQLQuery($constraint, 'bar')
         );
@@ -622,7 +622,7 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
     {
         $primaryKey = new Schema\PrimaryKey('foo');
 
-        $this->assertEquals(
+        $this->assertSame(
             'ALTER TABLE bar DROP CONSTRAINT foo',
             $this->platform->getDropPrimaryKeySQLQuery($primaryKey, 'bar')
         );
@@ -632,7 +632,7 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
     {
         $foreignKey = new Schema\ForeignKey('foo', array(), 'bar', array());
 
-        $this->assertEquals(
+        $this->assertSame(
             'ALTER TABLE bar DROP CONSTRAINT foo',
             $this->platform->getDropForeignKeySQLQuery($foreignKey, 'bar')
         );
@@ -642,7 +642,7 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
     {
         $index = new Schema\Index('foo', array(), true);
 
-        $this->assertEquals(
+        $this->assertSame(
             'ALTER TABLE bar DROP CONSTRAINT foo',
             $this->platform->getDropIndexSQLQuery($index, 'bar')
         );
@@ -652,7 +652,7 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
     {
         $index = new Schema\Index('foo');
 
-        $this->assertEquals(
+        $this->assertSame(
             'DROP INDEX foo',
             $this->platform->getDropIndexSQLQuery($index, 'bar')
         );
@@ -668,7 +668,7 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
         $method = new ReflectionMethod($this->platform, 'getTransactionIsolationSQLDeclaration');
         $method->setAccessible(true);
 
-        $this->assertEquals($isolation, $method->invoke($this->platform, $isolation));
+        $this->assertSame($isolation, $method->invoke($this->platform, $isolation));
     }
 
     /**
@@ -699,7 +699,7 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
         $method = new ReflectionMethod($this->platform, 'getColumnSQLDeclaration');
         $method->setAccessible(true);
 
-        $this->assertEquals(
+        $this->assertSame(
             'foo VARCHAR(255) NOT NULL DEFAULT \'foo\' COMMENT \'bar\'',
             $method->invoke($this->platform, $column)
         );
@@ -716,7 +716,7 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
         $method = new ReflectionMethod($this->platform, 'getColumnSQLDeclaration');
         $method->setAccessible(true);
 
-        $this->assertEquals('\'2012-01-01 12:12:12\'', substr($method->invoke($this->platform, $column), -21));
+        $this->assertSame('\'2012-01-01 12:12:12\'', substr($method->invoke($this->platform, $column), -21));
     }
 
     public function testColumnSQLDeclarationWithMandatoryType()
@@ -726,7 +726,7 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
         $method = new ReflectionMethod($this->platform, 'getColumnSQLDeclaration');
         $method->setAccessible(true);
 
-        $this->assertEquals('\'(FridgeType::ARRAY)\'', substr($method->invoke($this->platform, $column), -21));
+        $this->assertSame('\'(FridgeType::ARRAY)\'', substr($method->invoke($this->platform, $column), -21));
     }
 
     public function testColumnsSQLDeclaration()
@@ -739,7 +739,7 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
         $method = new ReflectionMethod($this->platform, 'getColumnsSQLDeclaration');
         $method->setAccessible(true);
 
-        $this->assertEquals('foo INT, bar INT', $method->invoke($this->platform, $columns));
+        $this->assertSame('foo INT, bar INT', $method->invoke($this->platform, $columns));
     }
 
     public function testCreateTableSQLQueries()
@@ -769,7 +769,7 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
             )
         );
 
-        $this->assertEquals(
+        $this->assertSame(
             array(
                 'CREATE TABLE foo ('.
                 'foo INT NOT NULL,'.
@@ -796,7 +796,7 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
             array(new Schema\Index('idx1', array('foo')))
         );
 
-        $this->assertEquals(
+        $this->assertSame(
             array('CREATE TABLE foo (foo INT, INDEX idx1 (foo))'),
             $this->platform->getCreateTableSQLQueries($table)
         );
@@ -810,7 +810,7 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
             new Schema\PrimaryKey('pk1', array('foo'))
         );
 
-        $this->assertEquals(
+        $this->assertSame(
             array('CREATE TABLE foo (foo INT NOT NULL)'),
             $this->platform->getCreateTableSQLQueries($table, array('primary_key' => false))
         );
@@ -825,7 +825,7 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
             array(new Schema\ForeignKey('fk1', array('foo'), 'bar', array('bar')))
         );
 
-        $this->assertEquals(
+        $this->assertSame(
             array('CREATE TABLE foo (foo INT)'),
             $this->platform->getCreateTableSQLQueries($table, array('foreign_key' => false))
         );
@@ -841,7 +841,7 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
             array(new Schema\Index('idx1', array('foo')))
         );
 
-        $this->assertEquals(
+        $this->assertSame(
             array('CREATE TABLE foo (foo INT)'),
             $this->platform->getCreateTableSQLQueries($table, array('index' => false))
         );
@@ -849,11 +849,11 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
 
     public function testQuoteIdentifier()
     {
-        $this->assertEquals('"foo"', $this->platform->quoteIdentifier('foo'));
+        $this->assertSame('"foo"', $this->platform->quoteIdentifier('foo'));
     }
 
     public function testQuoteIdentifiers()
     {
-        $this->assertEquals(array('"foo"', '"bar"'), $this->platform->quoteIdentifiers(array('foo', 'bar')));
+        $this->assertSame(array('"foo"', '"bar"'), $this->platform->quoteIdentifiers(array('foo', 'bar')));
     }
 }

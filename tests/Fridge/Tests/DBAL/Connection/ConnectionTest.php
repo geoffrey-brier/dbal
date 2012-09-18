@@ -54,7 +54,7 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
         $configurationMock = $this->getMock('Fridge\DBAL\Configuration');
         $connection = new Connection(array(), $this->driverMock, $configurationMock);
 
-        $this->assertEquals($configurationMock, $connection->getConfiguration());
+        $this->assertSame($configurationMock, $connection->getConfiguration());
     }
 
     public function testConnectionWithoutConfiguration()
@@ -68,7 +68,7 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
     {
         $connection = new Connection(array(), $this->driverMock);
 
-        $this->assertEquals($this->driverMock, $connection->getDriver());
+        $this->assertSame($this->driverMock, $connection->getDriver());
     }
 
     public function testPlatform()
@@ -100,14 +100,14 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
         $queryBuilder = $connection->createQueryBuilder();
 
         $this->assertInstanceOf('Fridge\DBAL\Query\QueryBuilder', $queryBuilder);
-        $this->assertEquals($connection, $queryBuilder->getConnection());
+        $this->assertSame($connection, $queryBuilder->getConnection());
     }
 
     public function testUsername()
     {
         $connection = new Connection(array('username' => 'foo'), $this->driverMock);
 
-        $this->assertEquals('foo', $connection->getUsername());
+        $this->assertSame('foo', $connection->getUsername());
     }
 
     public function testSetUsername()
@@ -115,14 +115,14 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
         $connection = new Connection(array(), $this->driverMock);
         $connection->setUsername('foo');
 
-        $this->assertEquals('foo', $connection->getUsername());
+        $this->assertSame('foo', $connection->getUsername());
     }
 
     public function testPassword()
     {
         $connection = new Connection(array('password' => 'foo'), $this->driverMock);
 
-        $this->assertEquals('foo', $connection->getPassword());
+        $this->assertSame('foo', $connection->getPassword());
     }
 
     public function testSetPassword()
@@ -130,7 +130,7 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
         $connection = new Connection(array(), $this->driverMock);
         $connection->setPassword('foo');
 
-        $this->assertEquals('foo', $connection->getPassword());
+        $this->assertSame('foo', $connection->getPassword());
     }
 
     public function testDatabase()
@@ -158,14 +158,14 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
         $parameters = $connection->getParameters();
 
         $this->assertArrayHasKey('dbname', $parameters);
-        $this->assertEquals('foo', $parameters['dbname']);
+        $this->assertSame('foo', $parameters['dbname']);
     }
 
     public function testHost()
     {
         $connection = new Connection(array('host' => 'foo'), $this->driverMock);
 
-        $this->assertEquals('foo', $connection->getHost());
+        $this->assertSame('foo', $connection->getHost());
     }
 
     public function testSetHost()
@@ -173,14 +173,14 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
         $connection = new Connection(array(), $this->driverMock);
         $connection->setHost('foo');
 
-        $this->assertEquals('foo', $connection->getHost());
+        $this->assertSame('foo', $connection->getHost());
     }
 
     public function testPort()
     {
         $connection = new Connection(array('port' => 'foo'), $this->driverMock);
 
-        $this->assertEquals('foo', $connection->getPort());
+        $this->assertSame('foo', $connection->getPort());
     }
 
     public function testSetPort()
@@ -188,14 +188,14 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
         $connection = new Connection(array(), $this->driverMock);
         $connection->setPort(1000);
 
-        $this->assertEquals(1000, $connection->getPort());
+        $this->assertSame(1000, $connection->getPort());
     }
 
     public function testDriverOptions()
     {
         $connection = new Connection(array('driver_options' => array('foo' => 'bar')), $this->driverMock);
 
-        $this->assertEquals(array('foo' => 'bar'), $connection->getDriverOptions());
+        $this->assertSame(array('foo' => 'bar'), $connection->getDriverOptions());
     }
 
     public function testSetDriverOptions()
@@ -205,14 +205,14 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
         $driverOptions = array('foo');
         $connection->setDriverOptions($driverOptions);
 
-        $this->assertEquals($driverOptions, $connection->getDriverOptions());
+        $this->assertSame($driverOptions, $connection->getDriverOptions());
     }
 
     public function testParameters()
     {
         $connection = new Connection(array('foo' => 'bar'), $this->driverMock);
 
-        $this->assertEquals(array('foo' => 'bar'), $connection->getParameters());
+        $this->assertSame(array('foo' => 'bar'), $connection->getParameters());
     }
 
     public function testSetParameters()
@@ -236,7 +236,7 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
         $connection = new Connection($oldParameters, $this->driverMock);
         $connection->setParameters($newParameters);
 
-        $this->assertEquals($expectedParameters, $connection->getParameters());
+        $this->assertSame($expectedParameters, $connection->getParameters());
 
     }
 

@@ -30,8 +30,8 @@ class TypeUtilityTest extends \PHPUnit_Framework_TestCase
         $platformMock = $this->getMock('Fridge\DBAL\Platform\PlatformInterface');
         Type\TypeUtility::bindTypedValue($value, $type, $platformMock);
 
-        $this->assertEquals(1, $value);
-        $this->assertEquals(PDO::PARAM_BOOL, $type);
+        $this->assertSame(1, $value);
+        $this->assertSame(PDO::PARAM_BOOL, $type);
     }
 
     public function testBindTypedValueWithPDOType()
@@ -42,7 +42,7 @@ class TypeUtilityTest extends \PHPUnit_Framework_TestCase
         $platformMock = $this->getMock('Fridge\DBAL\Platform\PlatformInterface');
         Type\TypeUtility::bindTypedValue($value, $type, $platformMock);
 
-        $this->assertEquals(true, $value);
-        $this->assertEquals(PDO::PARAM_BOOL, $type);
+        $this->assertSame(true, $value);
+        $this->assertSame(PDO::PARAM_BOOL, $type);
     }
 }

@@ -43,7 +43,7 @@ class IntegerTypeTest extends AbstractTypeTest
 
     public function testConvertToDatabaseValueWithValidValue()
     {
-        $this->assertEquals(1, $this->type->convertToDatabaseValue(1, $this->platformMock));
+        $this->assertSame(1, $this->type->convertToDatabaseValue(1, $this->platformMock));
     }
 
     public function testConvertToDatabaseValueWithNullValue()
@@ -53,7 +53,7 @@ class IntegerTypeTest extends AbstractTypeTest
 
     public function testConvertToPHPValueWithValidValue()
     {
-        $this->assertEquals(1, $this->type->convertToPHPValue(1, $this->platformMock));
+        $this->assertSame(1, $this->type->convertToPHPValue(1, $this->platformMock));
     }
 
     public function testConvertToPHPValueWithNullValue()
@@ -63,11 +63,11 @@ class IntegerTypeTest extends AbstractTypeTest
 
     public function testBindingType()
     {
-        $this->assertEquals(PDO::PARAM_INT, $this->type->getBindingType());
+        $this->assertSame(PDO::PARAM_INT, $this->type->getBindingType());
     }
 
     public function testName()
     {
-        $this->assertEquals(Type\Type::INTEGER, $this->type->getName());
+        $this->assertSame(Type\Type::INTEGER, $this->type->getName());
     }
 }

@@ -41,13 +41,13 @@ class ForeignKeyTest extends \PHPUnit_Framework_TestCase
 
     public function testInitialState()
     {
-        $this->assertEquals('foo', $this->foreignKey->getName());
+        $this->assertSame('foo', $this->foreignKey->getName());
         $this->assertEmpty($this->foreignKey->getColumnNames());
         $this->assertEmpty($this->foreignKey->getLocalColumnNames());
-        $this->assertEquals('bar', $this->foreignKey->getForeignTableName());
+        $this->assertSame('bar', $this->foreignKey->getForeignTableName());
         $this->assertEmpty($this->foreignKey->getForeignColumnNames());
-        $this->assertEquals(Schema\ForeignKey::RESTRICT, $this->foreignKey->getOnDelete());
-        $this->assertEquals(Schema\ForeignKey::RESTRICT, $this->foreignKey->getOnUpdate());
+        $this->assertSame(Schema\ForeignKey::RESTRICT, $this->foreignKey->getOnDelete());
+        $this->assertSame(Schema\ForeignKey::RESTRICT, $this->foreignKey->getOnUpdate());
     }
 
     public function testGeneratedName()
@@ -61,8 +61,8 @@ class ForeignKeyTest extends \PHPUnit_Framework_TestCase
         $columnNames = array('foo', 'bar');
         $this->foreignKey->setLocalColumnNames($columnNames);
 
-        $this->assertEquals($columnNames, $this->foreignKey->getLocalColumnNames());
-        $this->assertEquals($columnNames, $this->foreignKey->getColumnNames());
+        $this->assertSame($columnNames, $this->foreignKey->getLocalColumnNames());
+        $this->assertSame($columnNames, $this->foreignKey->getColumnNames());
     }
 
     /**
@@ -77,7 +77,7 @@ class ForeignKeyTest extends \PHPUnit_Framework_TestCase
     public function testForeignTableNameWithValidValue()
     {
         $this->foreignKey->setForeignTableName('foo');
-        $this->assertEquals('foo', $this->foreignKey->getForeignTableName());
+        $this->assertSame('foo', $this->foreignKey->getForeignTableName());
     }
 
     /**
@@ -94,7 +94,7 @@ class ForeignKeyTest extends \PHPUnit_Framework_TestCase
         $columnNames = array('foo', 'bar');
         $this->foreignKey->setForeignColumnNames($columnNames);
 
-        $this->assertEquals($columnNames, $this->foreignKey->getForeignColumnNames());
+        $this->assertSame($columnNames, $this->foreignKey->getForeignColumnNames());
     }
 
     /**
@@ -110,13 +110,13 @@ class ForeignKeyTest extends \PHPUnit_Framework_TestCase
     {
         $this->foreignKey->setOnDelete(Schema\ForeignKey::SET_NULL);
 
-        $this->assertEquals(Schema\ForeignKey::SET_NULL, $this->foreignKey->getOnDelete());
+        $this->assertSame(Schema\ForeignKey::SET_NULL, $this->foreignKey->getOnDelete());
     }
 
     public function testOnUpdate()
     {
         $this->foreignKey->setOnUpdate(Schema\ForeignKey::CASCADE);
 
-        $this->assertEquals(Schema\ForeignKey::CASCADE, $this->foreignKey->getOnUpdate());
+        $this->assertSame(Schema\ForeignKey::CASCADE, $this->foreignKey->getOnUpdate());
     }
 }

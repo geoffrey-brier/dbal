@@ -25,6 +25,6 @@ class PostConnectEventTest extends \PHPUnit_Framework_TestCase
         $connectionMock = $this->getMock('Fridge\DBAL\Connection\ConnectionInterface');
         $event = new PostConnectEvent($connectionMock);
 
-        $this->assertEquals($connectionMock, $event->getConnection());
+        $this->assertSame($connectionMock, $event->getConnection());
     }
 }

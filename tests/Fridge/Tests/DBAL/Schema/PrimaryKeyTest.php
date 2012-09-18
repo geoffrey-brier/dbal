@@ -41,7 +41,7 @@ class PrimaryKeyTest extends \PHPUnit_Framework_TestCase
 
     public function testInitialState()
     {
-        $this->assertEquals('foo', $this->primaryKey->getName());
+        $this->assertSame('foo', $this->primaryKey->getName());
         $this->assertEmpty($this->primaryKey->getColumnNames());
     }
 
@@ -56,7 +56,7 @@ class PrimaryKeyTest extends \PHPUnit_Framework_TestCase
         $columnNames = array('foo', 'bar');
         $this->primaryKey->setColumnNames($columnNames);
 
-        $this->assertEquals($columnNames, $this->primaryKey->getColumnNames());
+        $this->assertSame($columnNames, $this->primaryKey->getColumnNames());
     }
 
     /**
