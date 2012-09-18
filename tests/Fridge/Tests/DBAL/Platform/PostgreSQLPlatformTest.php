@@ -49,32 +49,32 @@ class PostgreSQLPlatformTest extends \PHPUnit_Framework_TestCase
 
     public function testBigIntegerSQLDeclarationWithoutOptions()
     {
-        $this->assertEquals('BIGINT', $this->platform->getBigIntegerSQLDeclaration());
+        $this->assertSame('BIGINT', $this->platform->getBigIntegerSQLDeclaration());
     }
 
     public function testBigIntegerSQLDeclarationWithAutoIncrementFlag()
     {
-        $this->assertEquals('BIGSERIAL', $this->platform->getBigIntegerSQLDeclaration(array('auto_increment' => true)));
+        $this->assertSame('BIGSERIAL', $this->platform->getBigIntegerSQLDeclaration(array('auto_increment' => true)));
     }
 
     public function testDateTimeSQLDeclaration()
     {
-        $this->assertEquals('TIMESTAMP(0) WITHOUT TIME ZONE', $this->platform->getDateTimeSQLDeclaration());
+        $this->assertSame('TIMESTAMP(0) WITHOUT TIME ZONE', $this->platform->getDateTimeSQLDeclaration());
     }
 
     public function testIntegerSQLDeclarationWithoutOptions()
     {
-        $this->assertEquals('INT', $this->platform->getIntegerSQLDeclaration());
+        $this->assertSame('INT', $this->platform->getIntegerSQLDeclaration());
     }
 
     public function testIntegerSQLDeclarationWithAutoIncrementFlag()
     {
-        $this->assertEquals('SERIAL', $this->platform->getIntegerSQLDeclaration(array('auto_increment' => true)));
+        $this->assertSame('SERIAL', $this->platform->getIntegerSQLDeclaration(array('auto_increment' => true)));
     }
 
     public function testTimeSQLDeclaration()
     {
-        $this->assertEquals('TIME(0) WITHOUT TIME ZONE', $this->platform->getTimeSQLDeclaration());
+        $this->assertSame('TIME(0) WITHOUT TIME ZONE', $this->platform->getTimeSQLDeclaration());
     }
 
     public function testSupportInlineTableColumnComment()
@@ -84,7 +84,7 @@ class PostgreSQLPlatformTest extends \PHPUnit_Framework_TestCase
 
     public function testSetTransactionIsolationSQLQuery()
     {
-        $this->assertEquals(
+        $this->assertSame(
             'SET SESSION CHARACTERISTICS AS TRANSACTION ISOLATION LEVEL '.Connection::TRANSACTION_READ_COMMITTED,
             $this->platform->getSetTransactionIsolationSQLQuery(Connection::TRANSACTION_READ_COMMITTED)
         );
@@ -115,7 +115,7 @@ class PostgreSQLPlatformTest extends \PHPUnit_Framework_TestCase
             )
         );
 
-        $this->assertEquals(
+        $this->assertSame(
             array(
                 'CREATE TABLE foo ('.
                 'foo INT NOT NULL,'.
@@ -141,7 +141,7 @@ class PostgreSQLPlatformTest extends \PHPUnit_Framework_TestCase
             array(new Schema\Index('idx1', array('foo')))
         );
 
-        $this->assertEquals(
+        $this->assertSame(
             array('CREATE TABLE foo (foo INT)'),
             $this->platform->getCreateTableSQLQueries($table, array('index' => false))
         );
