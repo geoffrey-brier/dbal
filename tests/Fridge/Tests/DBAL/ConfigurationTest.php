@@ -27,7 +27,7 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
         $configuration = new Configuration();
 
         $this->assertInstanceOf('Monolog\Logger', $configuration->getLogger());
-        $this->assertEquals('Fridge DBAL', $configuration->getLogger()->getName());
+        $this->assertSame('Fridge DBAL', $configuration->getLogger()->getName());
     }
 
     public function testDefaultEventDispatcher()
@@ -45,12 +45,12 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
         $logger1 = new Logger('foo');
         $configuration = new Configuration($logger1);
 
-        $this->assertEquals($logger1, $configuration->getLogger());
+        $this->assertSame($logger1, $configuration->getLogger());
 
         $logger2 = new Logger('bar');
         $configuration->setLogger($logger2);
 
-        $this->assertEquals($logger2, $configuration->getLogger());
+        $this->assertSame($logger2, $configuration->getLogger());
     }
 
     public function testCustomEventDispatcher()
@@ -58,11 +58,11 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
         $eventDispatcher1 = new EventDispatcher();
         $configuration = new Configuration(null, $eventDispatcher1);
 
-        $this->assertEquals($eventDispatcher1, $configuration->getEventDispatcher());
+        $this->assertSame($eventDispatcher1, $configuration->getEventDispatcher());
 
         $eventDispatcher2 = new EventDispatcher();
         $configuration->setEventDispatcher($eventDispatcher2);
 
-        $this->assertEquals($eventDispatcher2, $configuration->getEventDispatcher());
+        $this->assertSame($eventDispatcher2, $configuration->getEventDispatcher());
     }
 }
