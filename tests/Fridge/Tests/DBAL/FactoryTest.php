@@ -150,7 +150,7 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
             'mysqli',
         );
 
-        $this->assertEquals($expected, Factory::getAvailableDrivers());
+        $this->assertSame($expected, Factory::getAvailableDrivers());
     }
 
     /**
