@@ -32,9 +32,9 @@ class QueryRewriterTest extends \PHPUnit_Framework_TestCase
 
         list($query, $parameters, $types) = QueryRewriter::rewrite($query, $parameters, $types);
 
-        $this->assertEquals('SELECT * FROM foo WHERE foo = ?', $query);
-        $this->assertEquals(array(1), $parameters);
-        $this->assertEquals(array(), $types);
+        $this->assertSame('SELECT * FROM foo WHERE foo = ?', $query);
+        $this->assertSame(array(1), $parameters);
+        $this->assertSame(array(), $types);
     }
 
     public function testRewriteWithPositionalTypes()
@@ -45,9 +45,9 @@ class QueryRewriterTest extends \PHPUnit_Framework_TestCase
 
         list($query, $parameters, $types) = QueryRewriter::rewrite($query, $parameters, $types);
 
-        $this->assertEquals('SELECT * FROM foo WHERE foo IN (?, ?)', $query);
-        $this->assertEquals(array(1, 2), $parameters);
-        $this->assertEquals(array(Type::INTEGER, Type::INTEGER), $types);
+        $this->assertSame('SELECT * FROM foo WHERE foo IN (?, ?)', $query);
+        $this->assertSame(array(1, 2), $parameters);
+        $this->assertSame(array(Type::INTEGER, Type::INTEGER), $types);
     }
 
     public function testRewriteWithPartialPositionalTypes()
@@ -60,8 +60,8 @@ class QueryRewriterTest extends \PHPUnit_Framework_TestCase
 
         list($query, $parameters, $types) = QueryRewriter::rewrite($query, $parameters, $types);
 
-        $this->assertEquals('SELECT * FROM foo WHERE foo IN (?, ?) AND bar = ? AND baz < ?', $query);
-        $this->assertEquals(array(1, 2, 'bar', $date), $parameters);
+        $this->assertSame('SELECT * FROM foo WHERE foo IN (?, ?) AND bar = ? AND baz < ?', $query);
+        $this->assertSame(array(1, 2, 'bar', $date), $parameters);
         $this->assertEquals(array(0 => Type::INTEGER, 1 => Type::INTEGER, 3 => Type::DATETIME), $types);
     }
 
@@ -79,8 +79,8 @@ class QueryRewriterTest extends \PHPUnit_Framework_TestCase
 
         list($query, $parameters, $types) = QueryRewriter::rewrite($query, $parameters, $types);
 
-        $this->assertEquals('SELECT * FROM foo WHERE foo IN (?, ?) AND bar = ? AND baz IN (?, ?) AND bat < ?', $query);
-        $this->assertEquals(array(1, 2, 'bar', 'published', 'draft', $date), $parameters);
+        $this->assertSame('SELECT * FROM foo WHERE foo IN (?, ?) AND bar = ? AND baz IN (?, ?) AND bat < ?', $query);
+        $this->assertSame(array(1, 2, 'bar', 'published', 'draft', $date), $parameters);
         $this->assertEquals(
             array(
                 0 => Type::INTEGER,
@@ -101,9 +101,9 @@ class QueryRewriterTest extends \PHPUnit_Framework_TestCase
 
         list($query, $parameters, $types) = QueryRewriter::rewrite($query, $parameters, $types);
 
-        $this->assertEquals('SELECT * FROM foo WHERE foo IN (:foo1, :foo2)', $query);
-        $this->assertEquals(array('foo1' => 1, 'foo2' => 2), $parameters);
-        $this->assertEquals(array('foo1' => Type::INTEGER, 'foo2' => Type::INTEGER), $types);
+        $this->assertSame('SELECT * FROM foo WHERE foo IN (:foo1, :foo2)', $query);
+        $this->assertSame(array('foo1' => 1, 'foo2' => 2), $parameters);
+        $this->assertSame(array('foo1' => Type::INTEGER, 'foo2' => Type::INTEGER), $types);
     }
 
     public function testRewriteWithPartialNamedTypes()
@@ -116,7 +116,7 @@ class QueryRewriterTest extends \PHPUnit_Framework_TestCase
 
         list($query, $parameters, $types) = QueryRewriter::rewrite($query, $parameters, $types);
 
-        $this->assertEquals('SELECT * FROM foo WHERE foo IN (:foo1, :foo2) AND bar = :bar AND baz < :baz', $query);
+        $this->assertSame('SELECT * FROM foo WHERE foo IN (:foo1, :foo2) AND bar = :bar AND baz < :baz', $query);
 
         $this->assertEquals(
             array(
@@ -159,7 +159,7 @@ class QueryRewriterTest extends \PHPUnit_Framework_TestCase
 
         list($query, $parameters, $types) = QueryRewriter::rewrite($query, $parameters, $types);
 
-        $this->assertEquals(
+        $this->assertSame(
             'SELECT * FROM foo WHERE foo IN (:foo1, :foo2) AND bar = :bar AND baz IN (:baz1, :baz2) AND bat < :bat',
             $query
         );
