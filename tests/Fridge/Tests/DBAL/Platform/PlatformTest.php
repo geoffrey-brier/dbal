@@ -529,13 +529,13 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public function testCreateCheckConstraintSQLQuery()
+    public function testCreateCheckSQLQuery()
     {
         $check = new Schema\Check('foo', 'bar');
 
         $this->assertSame(
             'ALTER TABLE zaz ADD CONSTRAINT foo CHECK (bar)',
-            $this->platform->getCreateCheckConstraintSQLQuery($check, 'zaz')
+            $this->platform->getCreateCheckSQLQuery($check, 'zaz')
         );
     }
 
@@ -668,13 +668,13 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public function testDropCheckConstraint()
+    public function testDropCheck()
     {
         $check = new Schema\Check('foo', 'bar');
 
         $this->assertSame(
             'ALTER TABLE zaz DROP CONSTRAINT foo',
-            $this->platform->getDropCheckConstraintSQLQuery($check, 'zaz')
+            $this->platform->getDropCheckSQLQuery($check, 'zaz')
         );
     }
 

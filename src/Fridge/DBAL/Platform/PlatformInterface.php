@@ -454,7 +454,7 @@ interface PlatformInterface
      *
      * @return string The select query to fetch table check constraints.
      */
-    function getSelectTableCheckConstraintSQLQuery($table, $database);
+    function getSelectTableCheckSQLQuery($table, $database);
 
     /**
      * Gets the create database SQL query.
@@ -546,7 +546,7 @@ interface PlatformInterface
      *
      * @return string The create check constraint SQL query.
      */
-    function getCreateCheckConstraintSQLQuery(Schema\Check $check, $table);
+    function getCreateCheckSQLQuery(Schema\Check $check, $table);
 
     /**
      * Gets the create column comments SQL queries.
@@ -652,7 +652,7 @@ interface PlatformInterface
      *
      * @return string The drop index SQL query.
      */
-    function getDropCheckConstraintSQLQuery(Schema\Check $check, $table);
+    function getDropCheckSQLQuery(Schema\Check $check, $table);
 
     /**
      * Gets the quote identifier.

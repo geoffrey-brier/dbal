@@ -239,7 +239,7 @@ class PostgreSQLPlatform extends AbstractPlatform
     /**
      * {@inheritdoc}
      */
-    public function getSelectTableCheckConstraintSQLQuery($table, $database)
+    public function getSelectTableCheckSQLQuery($table, $database)
     {
         throw new \Exception('WIP');
     }

@@ -249,7 +249,7 @@ class MySQLPlatform extends AbstractPlatform
     /**
      * {@inheritdoc}
      */
-    public function getSelectTableCheckConstraintSQLQuery($table, $database)
+    public function getSelectTableCheckSQLQuery($table, $database)
     {
         return 'SELECT'.
                '  c.constraint_name AS name,'.

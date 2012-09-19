@@ -263,10 +263,10 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
             $database = $this->getDatabase();
         }
 
-        $query = $this->getConnection()->getPlatform()->getSelectTableCheckConstraintSQLQuery($table, $database);
+        $query = $this->getConnection()->getPlatform()->getSelectTableCheckSQLQuery($table, $database);
         $checks = $this->getConnection()->fetchAll($query);
 
-        return $this->getGenericTableCheckConstraints($checks);
+        return $this->getGenericTableChecks($checks);
     }
 
     /**
@@ -395,7 +395,7 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
      */
     public function createCheck(Schema\Check $check, $table)
     {
-        $query = $this->getConnection()->getPlatform()->getCreateCheckConstraintSQLQuery($check, $table);
+        $query = $this->getConnection()->getPlatform()->getCreateCheckSQLQuery($check, $table);
         $this->getConnection()->executeUpdate($query);
     }
 
@@ -490,7 +490,7 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
      */
     public function dropCheck(Schema\Check $check, $table)
     {
-        $query = $this->getConnection()->getPlatform()->getDropCheckConstraintSQLQuery($check, $table);
+        $query = $this->getConnection()->getPlatform()->getDropCheckSQLQuery($check, $table);
         $this->getConnection()->executeUpdate($query);
     }
 
@@ -894,7 +894,7 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
      *
      * @return array The generic checks.
      */
-    protected function getGenericTableCheckConstraints(array $checks)
+    protected function getGenericTableChecks(array $checks)
     {
         $genericChecks = array();
 

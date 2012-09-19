@@ -577,9 +577,9 @@ abstract class AbstractPlatform implements PlatformInterface
     /**
      * {@inheritdoc}
      */
-    public function getCreateCheckConstraintSQLQuery(Schema\Check $check, $table)
+    public function getCreateCheckSQLQuery(Schema\Check $check, $table)
     {
-        return 'ALTER TABLE '.$table.' ADD '.$this->getCheckConstraintSQLDeclaration($check);
+        return 'ALTER TABLE '.$table.' ADD '.$this->getCheckSQLDeclaration($check);
     }
 
     /**
@@ -705,7 +705,7 @@ abstract class AbstractPlatform implements PlatformInterface
     /**
      * {@inheritdoc}
      */
-    public function getDropCheckConstraintSQLQuery(Schema\Check $check, $table)
+    public function getDropCheckSQLQuery(Schema\Check $check, $table)
     {
         return 'ALTER TABLE '.$table.' DROP CONSTRAINT '.$check->getName();
     }
@@ -936,7 +936,7 @@ abstract class AbstractPlatform implements PlatformInterface
      *
      * @return string The check constraint SQL declaration.
      */
-    protected function getCheckConstraintSQLDeclaration(Schema\Check $check)
+    protected function getCheckSQLDeclaration(Schema\Check $check)
     {
         return 'CONSTRAINT '.$check->getName().' CHECK ('.$check->getConstraint().')';
     }
