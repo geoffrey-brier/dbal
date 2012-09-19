@@ -41,7 +41,7 @@ class CheckTest extends \PHPUnit_Framework_TestCase
 
     public function testInitialState()
     {
-        $this->assertEquals('foo', $this->check->getName());
+        $this->assertSame('foo', $this->check->getName());
         $this->assertNull($this->check->getConstraint());
     }
 
@@ -55,6 +55,6 @@ class CheckTest extends \PHPUnit_Framework_TestCase
     {
         $check = new Check(null);
         $check->setConstraint('foo');
-        $this->assertEquals('foo', $check->getConstraint());
+        $this->assertSame('foo', $check->getConstraint());
     }
 }

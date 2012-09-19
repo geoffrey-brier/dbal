@@ -701,7 +701,7 @@ class TableTest extends \PHPUnit_Framework_TestCase
 
         $this->assertTrue($this->table->hasChecks());
         $this->assertTrue($this->table->hasCheck('foo'));
-        $this->assertEquals($this->checkMock, $this->table->getCheck('foo'));
+        $this->assertSame($this->checkMock, $this->table->getCheck('foo'));
     }
 
     public function testCreateCheck()
@@ -710,8 +710,8 @@ class TableTest extends \PHPUnit_Framework_TestCase
 
         $this->assertTrue($this->table->hasCheck('foo'));
 
-        $this->assertEquals('foo', $check->getName());
-        $this->assertEquals('bar', $check->getConstraint());
+        $this->assertSame('foo', $check->getName());
+        $this->assertSame('bar', $check->getConstraint());
     }
 
     /**
