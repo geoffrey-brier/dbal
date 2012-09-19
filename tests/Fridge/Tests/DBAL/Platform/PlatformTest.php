@@ -529,6 +529,16 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    public function testCreateCheckConstraintSQLQuery()
+    {
+        $check = new Schema\Check('foo', 'bar');
+
+        $this->assertSame(
+            'ALTER TABLE zaz ADD CONSTRAINT foo CHECK (bar)',
+            $this->platform->getCreateCheckConstraintSQLQuery($check, 'zaz')
+        );
+    }
+
     public function testCreateColumnCommentSQLQuery()
     {
         $column = new Schema\Column('foo', Type::getType(Type::STRING), array('comment' => 'bar'));
@@ -655,6 +665,16 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(
             'DROP INDEX foo',
             $this->platform->getDropIndexSQLQuery($index, 'bar')
+        );
+    }
+
+    public function testDropCheckConstraint()
+    {
+        $check = new Schema\Check('foo', 'bar');
+
+        $this->assertSame(
+            'ALTER TABLE zaz DROP CONSTRAINT foo',
+            $this->platform->getDropCheckConstraintSQLQuery($check, 'zaz')
         );
     }
 
