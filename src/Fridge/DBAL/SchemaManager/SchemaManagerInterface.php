@@ -139,6 +139,16 @@ interface SchemaManagerInterface
     function getTableIndexes($table, $database = null);
 
     /**
+     * Gets the check constraints of a table.
+     *
+     * @param string $table    The table name.
+     * @param string $database The database name.
+     *
+     * @return array The table indexes.
+     */
+    function getTableChecks($table, $database = null);
+
+    /**
      * Creates a database.
      *
      * @param string $database The database name.
@@ -204,6 +214,14 @@ interface SchemaManagerInterface
      * @param string                    $table The table name of the index.
      */
     function createIndex(Schema\Index $index, $table);
+
+    /**
+     * Creates a check constraint.
+     *
+     * @param \Fridge\DBAL\Schema\Check $check The check constraint.
+     * @param string                    $table The table name of the check constraint.
+     */
+    function createCheck(Schema\Check $check, $table);
 
     /**
      * Drops a database.
@@ -273,6 +291,14 @@ interface SchemaManagerInterface
     function dropIndex(Schema\Index $index, $table);
 
     /**
+     * Drops a ceck constraint.
+     *
+     * @param \Fridge\DBAL\Schema\Check $check The check constraint.
+     * @param string                    $table The table name of the check constraint.
+     */
+    function dropCheck(Schema\Check $check, $table);
+
+    /**
      * Drops & creates a database.
      *
      * @param string $database The database name.
@@ -338,4 +364,12 @@ interface SchemaManagerInterface
      * @param string                    $table The table name of the index.
      */
     function dropAndCreateIndex(Schema\Index $index, $table);
+
+    /**
+     * Drops & creates an check constraint.
+     *
+     * @param \Fridge\DBAL\Schema\Check $check The check constraint.
+     * @param string                    $table The table name of the check constraint.
+     */
+    function dropAndCreateCheck(Schema\Check $check, $table);
 }

@@ -257,6 +257,21 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
     /**
      * {@inheritdoc}
      */
+    public function getTableChecks($table, $database = null)
+    {
+        if ($database === null) {
+            $database = $this->getDatabase();
+        }
+
+        $query = $this->getConnection()->getPlatform()->getSelectTableCheckConstraintSQLQuery($table, $database);
+        $checks = $this->getConnection()->fetchAll($query);
+
+        return $this->getGenericTableCheckConstraints($checks);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function createDatabase($database)
     {
         $currentDatabase = $this->getConnection()->getDatabase();
@@ -378,6 +393,15 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
     /**
      * {@inheritdoc}
      */
+    public function createCheck(Schema\Check $check, $table)
+    {
+        $query = $this->getConnection()->getPlatform()->getCreateCheckConstraintSQLQuery($check, $table);
+        $this->getConnection()->executeUpdate($query);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function dropDatabase($database)
     {
         $currentDatabase = $this->getConnection()->getDatabase();
@@ -464,6 +488,15 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
     /**
      * {@inheritdoc}
      */
+    public function dropCheck(Schema\Check $check, $table)
+    {
+        $query = $this->getConnection()->getPlatform()->getDropCheckConstraintSQLQuery($check, $table);
+        $this->getConnection()->executeUpdate($query);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function dropAndCreateDatabase($database)
     {
         $this->tryMethod('dropDatabase', array($database));
@@ -540,6 +573,15 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
     {
         $this->tryMethod('dropIndex', array($index, $table));
         $this->createIndex($index, $table);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function dropAndCreateCheck(Schema\Check $check, $table)
+    {
+        $this->tryMethod('dropCheck', array($check, $table));
+        $this->createCheck($check, $table);
     }
 
     /**
@@ -839,6 +881,34 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
         }
 
         return array_values($genericIndexes);
+    }
+
+    /**
+     * Gets the generic table checks.
+     *
+     * The $checks parameter contains:
+     *  - name
+     *  - constraint
+     *
+     * @param array $checks The checks constraints.
+     *
+     * @return array The generic checks.
+     */
+    protected function getGenericTableCheckConstraints(array $checks)
+    {
+        $genericChecks = array();
+
+        foreach ($checks as $check) {
+            $name = $check['name'];
+
+            if (!isset($genericChecks[$name])) {
+                $genericChecks[$name] = new Schema\Check($name, $check['constraint']);
+            } else {
+                $genericChecks[$name]->setConstraint($check['constraint']);
+            }
+        }
+
+        return array_values($check);
     }
 
     /**
