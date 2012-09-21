@@ -28,9 +28,9 @@ class MysqliDriverTest extends AbstractDriverTest
     static public function setUpBeforeClass()
     {
         if (PHPUnitUtility::hasSettings(PHPUnitUtility::MYSQLI)) {
-            self::$fixtures = new MySQLFixture();
+            self::$fixture = new MySQLFixture();
         } else {
-            self::$fixtures = null;
+            self::$fixture = null;
         }
 
         parent::setUpBeforeClass();

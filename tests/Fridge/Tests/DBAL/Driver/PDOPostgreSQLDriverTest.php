@@ -28,9 +28,9 @@ class PDOPostgreSQLDriverTest extends AbstractDriverTest
     static public function setUpBeforeClass()
     {
         if (PHPUnitUtility::hasSettings(PHPUnitUtility::PDO_PGSQL)) {
-            self::$fixtures = new PostgreSQLFixture();
+            self::$fixture = new PostgreSQLFixture();
         } else {
-            self::$fixtures = null;
+            self::$fixture = null;
         }
 
         parent::setUpBeforeClass();

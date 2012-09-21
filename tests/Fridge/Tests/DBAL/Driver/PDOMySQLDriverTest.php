@@ -28,9 +28,9 @@ class PDOMySQLDriverTest extends AbstractDriverTest
     static public function setUpBeforeClass()
     {
         if (PHPUnitUtility::hasSettings(PHPUnitUtility::PDO_MYSQL)) {
-            self::$fixtures = new MySQLFixture();
+            self::$fixture = new MySQLFixture();
         } else {
-            self::$fixtures = null;
+            self::$fixture = null;
         }
 
         parent::setUpBeforeClass();
@@ -50,7 +50,7 @@ class PDOMySQLDriverTest extends AbstractDriverTest
 
     public function testConnectWithUnixSocket()
     {
-        $settings = self::$fixtures->getSettings();
+        $settings = self::$fixture->getSettings();
 
         unset($settings['host']);
         unset($settings['port']);
@@ -65,7 +65,7 @@ class PDOMySQLDriverTest extends AbstractDriverTest
 
     public function testConnectWithCharset()
     {
-        $settings = self::$fixtures->getSettings();
+        $settings = self::$fixture->getSettings();
         $settings['charset'] = 'utf8';
 
         $this->assertInstanceOf(
