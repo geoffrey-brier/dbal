@@ -16,7 +16,7 @@ namespace Fridge\DBAL\Schema;
  *
  * @author Benjamin Lazarecki <benjamin.lazarecki@gmail.com>
  */
-class Check extends AbstractAsset
+class Check extends AbstractAsset implements ConstraintInterface
 {
     /** @var string */
     protected $definition;
