@@ -42,7 +42,7 @@ class CheckTest extends \PHPUnit_Framework_TestCase
     public function testInitialState()
     {
         $this->assertSame('foo', $this->check->getName());
-        $this->assertNull($this->check->getConstraint());
+        $this->assertNull($this->check->getDefinition());
     }
 
     public function testGenerateName()
@@ -51,10 +51,10 @@ class CheckTest extends \PHPUnit_Framework_TestCase
         $this->assertRegExp('/^cct_[a-z0-9]{16}$/', $check->getName());
     }
 
-    public function testSetGetsConstraint()
+    public function testSetGetsDefinition()
     {
         $check = new Check(null);
-        $check->setConstraint('foo');
-        $this->assertSame('foo', $check->getConstraint());
+        $check->setDefinition('foo');
+        $this->assertSame('foo', $check->getDefinition());
     }
 }

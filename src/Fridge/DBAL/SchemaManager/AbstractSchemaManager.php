@@ -904,7 +904,7 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
             if (!isset($genericChecks[$name])) {
                 $genericChecks[$name] = new Schema\Check($name, $check['constraint']);
             } else {
-                $genericChecks[$name]->setConstraint($check['constraint']);
+                $genericChecks[$name]->setDefinition($check['constraint']);
             }
         }
 

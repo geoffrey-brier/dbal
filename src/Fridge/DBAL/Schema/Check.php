@@ -12,22 +12,22 @@
 namespace Fridge\DBAL\Schema;
 
 /**
- * Describes a check constraint.
+ * Describes a check definition.
  *
  * @author Benjamin Lazarecki <benjamin.lazarecki@gmail.com>
  */
 class Check extends AbstractAsset
 {
     /** @var string */
-    protected $constraint;
+    protected $definition;
 
     /**
      * Creates a check.
      *
      * @param string  $name        The check name.
-     * @param string  $constraint  The check constraint.
+     * @param string  $definition  The check definition.
      */
-    public function __construct($name, $constraint = null)
+    public function __construct($name, $definition = null)
     {
         if ($name === null) {
             $name = $this->generateIdentifier('cct_', 20);
@@ -35,26 +35,26 @@ class Check extends AbstractAsset
 
         parent::__construct($name);
 
-        $this->setConstraint($constraint);
+        $this->setDefinition($definition);
     }
 
     /**
-     * Gets the constraint.
+     * Gets the definition.
      *
-     * @return string The constraint.
+     * @return string The definition.
      */
-    public function getConstraint()
+    public function getDefinition()
     {
-        return $this->constraint;
+        return $this->definition;
     }
 
     /**
-     * Set the constraint.
+     * Set the definition.
      *
-     * @param string $constraint
+     * @param string $definition
      */
-    public function setConstraint($constraint)
+    public function setDefinition($definition)
     {
-        $this->constraint = $constraint;
+        $this->definition = $definition;
     }
 }

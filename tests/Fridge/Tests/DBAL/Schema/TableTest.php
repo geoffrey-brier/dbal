@@ -96,7 +96,7 @@ class TableTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue('foo'));
         $this->checkMock
             ->expects($this->any())
-            ->method('getConstraint')
+            ->method('getDefinition')
             ->will($this->returnValue('bar'));
 
         $this->table = new Table('foo');
@@ -711,7 +711,7 @@ class TableTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($this->table->hasCheck('foo'));
 
         $this->assertSame('foo', $check->getName());
-        $this->assertSame('bar', $check->getConstraint());
+        $this->assertSame('bar', $check->getDefinition());
     }
 
     /**
@@ -766,7 +766,7 @@ class TableTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue('bar'));
         $checkMock
             ->expects($this->any())
-            ->method('getConstraint')
+            ->method('getDefinition')
             ->will($this->returnValue(array('foo')));
 
         $this->table->addCheck($this->checkMock);

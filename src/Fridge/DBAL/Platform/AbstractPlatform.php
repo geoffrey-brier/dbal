@@ -938,7 +938,7 @@ abstract class AbstractPlatform implements PlatformInterface
      */
     protected function getCheckSQLDeclaration(Schema\Check $check)
     {
-        return 'CONSTRAINT '.$check->getName().' CHECK ('.$check->getConstraint().')';
+        return 'CONSTRAINT '.$check->getName().' CHECK ('.$check->getDefinition().')';
     }
 
     /**
