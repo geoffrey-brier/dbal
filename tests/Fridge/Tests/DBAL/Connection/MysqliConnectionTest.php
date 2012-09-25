@@ -27,7 +27,7 @@ class MysqliConnectionTest extends AbstractConnectionTest
     static public function setUpBeforeClass()
     {
         if (ConnectionUtility::hasConnection(ConnectionUtility::MYSQLI)) {
-            self::$fixture = new MySQLFixture();
+            self::$fixture = new MySQLFixture(ConnectionUtility::MYSQLI);
         } else {
             self::$fixture = null;
         }

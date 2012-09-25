@@ -27,7 +27,7 @@ class PDOMySQLConnectionTest extends AbstractConnectionTest
     static public function setUpBeforeClass()
     {
         if (ConnectionUtility::hasConnection(ConnectionUtility::PDO_MYSQL)) {
-            self::$fixture = new MySQLFixture();
+            self::$fixture = new MySQLFixture(ConnectionUtility::PDO_MYSQL);
         } else {
             self::$fixture = null;
         }

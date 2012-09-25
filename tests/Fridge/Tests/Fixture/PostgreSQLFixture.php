@@ -11,7 +11,8 @@
 
 namespace Fridge\Tests\Fixture;
 
-use Fridge\DBAL\Type\Type,
+use \PDO,
+    Fridge\DBAL\Type\Type,
     Fridge\Tests\PHPUnitUtility;
 
 /**
@@ -19,7 +20,7 @@ use Fridge\DBAL\Type\Type,
  *
  * @author GeLo <geloen.eric@gmail.com>
  */
-class PostgreSQLFixture extends AbstractPDOFixture
+class PostgreSQLFixture extends AbstractFixture
 {
     /**
      * PostgreSQL fixture constructor.
@@ -136,5 +137,30 @@ EOT;
         $queries[] = 'CREATE VIEW vcolumns AS SELECT cinteger FROM tcolumns';
 
         return $queries;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getConnection($database = true)
+    {
+        $dsnOptions = array();
+
+        $haystack = array('host', 'port');
+
+        if ($database) {
+            $haystack[] = 'dbname';
+        }
+
+        foreach ($this->settings as $dsnKey => $dsnSetting) {
+            if (in_array($dsnKey, $haystack)) {
+                $dsnOptions[] = $dsnKey.'='.$dsnSetting;
+            }
+        }
+
+        $username = $this->settings['username'];
+        $password = $this->settings['password'];
+
+        return new PDO('pgsql:'.implode(';', $dsnOptions), $username, $password);
     }
 }

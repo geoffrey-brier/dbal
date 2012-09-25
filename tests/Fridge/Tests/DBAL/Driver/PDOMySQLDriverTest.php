@@ -28,7 +28,7 @@ class PDOMySQLDriverTest extends AbstractDriverTest
     static public function setUpBeforeClass()
     {
         if (PHPUnitUtility::hasSettings(PHPUnitUtility::PDO_MYSQL)) {
-            self::$fixture = new MySQLFixture();
+            self::$fixture = new MySQLFixture(PHPUnitUtility::PDO_MYSQL);
         } else {
             self::$fixture = null;
         }

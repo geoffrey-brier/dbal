@@ -11,7 +11,8 @@
 
 namespace Fridge\Tests\Fixture;
 
-use Fridge\DBAL\Schema,
+use \PDO,
+    Fridge\DBAL\Schema,
     Fridge\Tests\PHPUnitUtility;
 
 /**
@@ -19,16 +20,8 @@ use Fridge\DBAL\Schema,
  *
  * @author GeLo <geloen.eric@gmail.com>
  */
-class MySQLFixture extends AbstractPDOFixture
+class MySQLFixture extends AbstractFixture
 {
-    /**
-     * MySQL fixture constructor.
-     */
-    public function __construct()
-    {
-        parent::__construct(PHPUnitUtility::PDO_MYSQL);
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -151,5 +144,30 @@ EOT;
     public function getDropSchemaSQLQueries()
     {
         return array_slice(parent::getDropSchemaSQLQueries(), 1);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getConnection($database = true)
+    {
+        $dsnOptions = array();
+
+        $haystack = array('host', 'port');
+
+        if ($database) {
+            $haystack[] = 'dbname';
+        }
+
+        foreach ($this->settings as $dsnKey => $dsnSetting) {
+            if (in_array($dsnKey, $haystack)) {
+                $dsnOptions[] = $dsnKey.'='.$dsnSetting;
+            }
+        }
+
+        $username = $this->settings['username'];
+        $password = $this->settings['password'];
+
+        return new PDO('mysql:'.implode(';', $dsnOptions), $username, $password);
     }
 }

@@ -41,7 +41,7 @@ class StatementTest extends \PHPUnit_Framework_TestCase
     static public function setUpBeforeClass()
     {
         if (PHPUnitUtility::hasSettings(PHPUnitUtility::MYSQLI)) {
-            self::$fixture = new MySQLFixture();
+            self::$fixture = new MySQLFixture(PHPUnitUtility::MYSQLI);
             self::$fixture->createSchema();
         }
     }
