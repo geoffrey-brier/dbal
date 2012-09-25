@@ -460,22 +460,22 @@ class SchemaTest extends \PHPUnit_Framework_TestCase
 
     public function testClone()
     {
-        $this->schema->addTable($this->tableMock);
-        $this->schema->addSequence($this->sequenceMock);
-        $this->schema->addView($this->viewMock);
+        $table = $this->schema->createTable('foo');
+        $sequence = $this->schema->createSequence('foo');
+        $view = $this->schema->createView('foo');
 
         $clone = clone $this->schema;
 
         $this->assertEquals($this->schema, $clone);
         $this->assertNotSame($this->schema, $clone);
 
-        $this->assertEquals($this->tableMock, $clone->getTable($this->tableMock->getName()));
-        $this->assertNotSame($this->tableMock, $clone->getTable($this->tableMock->getName()));
+        $this->assertEquals($table, $clone->getTable($table->getName()));
+        $this->assertNotSame($table, $clone->getTable($table->getName()));
 
-        $this->assertEquals($this->sequenceMock, $clone->getSequence($this->sequenceMock->getName()));
-        $this->assertNotSame($this->sequenceMock, $clone->getSequence($this->sequenceMock->getName()));
+        $this->assertEquals($sequence, $clone->getSequence($sequence->getName()));
+        $this->assertNotSame($sequence, $clone->getSequence($sequence->getName()));
 
-        $this->assertEquals($this->viewMock, $clone->getView($this->viewMock->getName()));
-        $this->assertNotSame($this->viewMock, $clone->getView($this->viewMock->getName()));
+        $this->assertEquals($view, $clone->getView($view->getName()));
+        $this->assertNotSame($view, $clone->getView($view->getName()));
     }
 }

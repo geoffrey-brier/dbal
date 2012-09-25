@@ -681,26 +681,31 @@ class TableTest extends \PHPUnit_Framework_TestCase
 
     public function testClone()
     {
-        $this->table->addColumn($this->columnMock);
-        $this->table->setPrimaryKey($this->primaryKeyMock);
-        $this->table->addForeignKey($this->foreignKeyMock);
-        $this->table->addIndex($this->indexMock);
+        $column1 = $this->table->createColumn('foo', Type::INTEGER);
+        $column2 = $this->table->createColumn('bar', Type::INTEGER);
+
+        $primaryKey = $this->table->createPrimaryKey(array('foo'), 'pk');
+        $foreignKey = $this->table->createForeignKey(array('bar'), 'bar', array('bar'), 'fk');
+        $index = $this->table->createIndex(array('bar'), true, 'idx_fk');
 
         $clone = clone $this->table;
 
         $this->assertEquals($this->table, $clone);
         $this->assertNotSame($this->table, $clone);
 
-        $this->assertEquals($this->columnMock, $clone->getColumn($this->columnMock->getName()));
-        $this->assertNotSame($this->columnMock, $clone->getColumn($this->columnMock->getName()));
+        $this->assertEquals($column1, $clone->getColumn($column1->getName()));
+        $this->assertNotSame($column1, $clone->getColumn($column1->getName()));
 
-        $this->assertEquals($this->primaryKeyMock, $clone->getPrimaryKey());
-        $this->assertNotSame($this->primaryKeyMock, $clone->getPrimaryKey());
+        $this->assertEquals($column2, $clone->getColumn($column2->getName()));
+        $this->assertNotSame($column2, $clone->getColumn($column2->getName()));
 
-        $this->assertEquals($this->foreignKeyMock, $clone->getForeignKey($this->foreignKeyMock->getName()));
-        $this->assertNotSame($this->foreignKeyMock, $clone->getForeignKey($this->foreignKeyMock->getName()));
+        $this->assertEquals($primaryKey, $clone->getPrimaryKey());
+        $this->assertNotSame($primaryKey, $clone->getPrimaryKey());
 
-        $this->assertEquals($this->indexMock, $clone->getIndex($this->indexMock->getName()));
-        $this->assertNotSame($this->indexMock, $clone->getIndex($this->indexMock->getName()));
+        $this->assertEquals($foreignKey, $clone->getForeignKey($foreignKey->getName()));
+        $this->assertNotSame($foreignKey, $clone->getForeignKey($foreignKey->getName()));
+
+        $this->assertEquals($index, $clone->getIndex($index->getName()));
+        $this->assertNotSame($index, $clone->getIndex($index->getName()));
     }
 }
