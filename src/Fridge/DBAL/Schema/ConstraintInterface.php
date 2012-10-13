@@ -26,11 +26,4 @@ interface ConstraintInterface
      * @return string The constraint name.
      */
     function getName();
-
-    /**
-     * Gets the constraint column names.
-     *
-     * @return array The constraint column names.
-     */
-    function getColumnNames();
 }

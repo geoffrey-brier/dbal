@@ -42,7 +42,6 @@ class ForeignKeyTest extends \PHPUnit_Framework_TestCase
     public function testInitialState()
     {
         $this->assertSame('foo', $this->foreignKey->getName());
-        $this->assertEmpty($this->foreignKey->getColumnNames());
         $this->assertEmpty($this->foreignKey->getLocalColumnNames());
         $this->assertSame('bar', $this->foreignKey->getForeignTableName());
         $this->assertEmpty($this->foreignKey->getForeignColumnNames());
@@ -62,7 +61,6 @@ class ForeignKeyTest extends \PHPUnit_Framework_TestCase
         $this->foreignKey->setLocalColumnNames($columnNames);
 
         $this->assertSame($columnNames, $this->foreignKey->getLocalColumnNames());
-        $this->assertSame($columnNames, $this->foreignKey->getColumnNames());
     }
 
     /**

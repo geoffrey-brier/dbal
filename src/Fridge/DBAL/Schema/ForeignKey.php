@@ -80,14 +80,6 @@ class ForeignKey extends AbstractAsset implements ConstraintInterface
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function getColumnNames()
-    {
-        return $this->getLocalColumnNames();
-    }
-
-    /**
      * Gets the local column names.
      *
      * @return array The local column names.
