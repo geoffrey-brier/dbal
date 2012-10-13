@@ -150,6 +150,15 @@ interface FixtureInterface
     function getTableIndexes($table);
 
     /**
+     * Gets the table checks.
+     *
+     * @param string $table The table name.
+     *
+     * @return array The table checks.
+     */
+    function getTableChecks($table);
+
+    /**
      * Gets a query that can be executed on the database.
      *
      * @return string The query.

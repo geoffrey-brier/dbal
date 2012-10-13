@@ -190,7 +190,7 @@ abstract class AbstractFixture implements FixtureInterface
      */
     public function getTableNames()
     {
-        return array('tcolumns', 'tprimarykeylock', 'tprimarykeyunlock', 'tforeignkey', 'tindex');
+        return array('tcolumns', 'tprimarykeylock', 'tprimarykeyunlock', 'tforeignkey', 'tindex', 'tcheck');
     }
 
     /**
@@ -203,7 +203,8 @@ abstract class AbstractFixture implements FixtureInterface
             $this->getTableColumns($name),
             $this->getTablePrimaryKey($name),
             $this->getTableForeignKeys($name),
-            $this->getTableIndexes($name)
+            $this->getTableIndexes($name),
+            $this->getTableChecks($name)
         );
     }
 
@@ -323,6 +324,15 @@ abstract class AbstractFixture implements FixtureInterface
                     )),
                 );
                 break;
+
+            case 'tcheck':
+                $columns = array(
+                    new Schema\Column('c1', Type::getType(Type::INTEGER), array(
+                        'length'   => 11,
+                        'not_null' => true,
+                    )),
+                );
+                break;
         }
 
         return $columns;
@@ -404,6 +414,24 @@ abstract class AbstractFixture implements FixtureInterface
         }
 
         return $indexes;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getTableChecks($table)
+    {
+        $checks = array();
+
+        switch ($table) {
+            case 'tcheck':
+                $checks = array(
+                    new Schema\Check('ck1', 'c1 > 0'),
+                );
+                break;
+        }
+
+        return $checks;
     }
 
     /**

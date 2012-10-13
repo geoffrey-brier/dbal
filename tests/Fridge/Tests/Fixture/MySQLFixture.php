@@ -12,8 +12,7 @@
 namespace Fridge\Tests\Fixture;
 
 use \PDO,
-    Fridge\DBAL\Schema,
-    Fridge\Tests\PHPUnitUtility;
+    Fridge\DBAL\Schema;
 
 /**
  * MySQL fixture.
@@ -38,6 +37,14 @@ class MySQLFixture extends AbstractFixture
         $sql = 'select `dbal_test`.`tcolumns`.`cinteger` AS `cinteger` from `dbal_test`.`tcolumns`';
 
         return array(new Schema\View('vcolumns', $sql));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getTableNames()
+    {
+        return array('tcolumns', 'tprimarykeylock', 'tprimarykeyunlock', 'tforeignkey', 'tindex');
     }
 
     /**
