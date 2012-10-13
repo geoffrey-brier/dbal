@@ -74,16 +74,16 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase
     public function testParts()
     {
         $this->assertSame(array(
-            'select'  => array(),
-            'from'    => array(),
-            'join'    => array(),
-            'set'     => array(),
-            'where'   => null,
-            'groupBy' => array(),
-            'having'  => null,
-            'orderBy' => array(),
-            'offset'  => null,
-            'limit'   => null,
+            'select'   => array(),
+            'from'     => array(),
+            'join'     => array(),
+            'set'      => array(),
+            'where'    => null,
+            'group_by' => array(),
+            'having'   => null,
+            'order_by' => array(),
+            'offset'   => null,
+            'limit'    => null,
         ), $this->queryBuilder->getParts());
     }
 
@@ -479,10 +479,10 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase
         );
         $this->assertSame(CompositeExpression::TYPE_OR, $this->queryBuilder->getPart('where')->getType());
         $this->assertSame(array('a = b'), $this->queryBuilder->getPart('where')->getParts());
-        $this->assertSame(array('foo'), $this->queryBuilder->getPart('groupBy'));
+        $this->assertSame(array('foo'), $this->queryBuilder->getPart('group_by'));
         $this->assertSame(CompositeExpression::TYPE_OR, $this->queryBuilder->getPart('having')->getType());
         $this->assertSame(array('a = b'), $this->queryBuilder->getPart('having')->getParts());
-        $this->assertSame(array('foo ASC'), $this->queryBuilder->getPart('orderBy'));
+        $this->assertSame(array('foo ASC'), $this->queryBuilder->getPart('order_by'));
         $this->assertSame(10, $this->queryBuilder->getPart('offset'));
         $this->assertSame(10, $this->queryBuilder->getPart('limit'));
 
@@ -508,16 +508,16 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase
         $this->queryBuilder->resetParts();
 
         $this->assertSame(array(
-            'select'  => array(),
-            'from'    => array(),
-            'join'    => array(),
-            'set'     => array(),
-            'where'   => null,
-            'groupBy' => array(),
-            'having'  => null,
-            'orderBy' => array(),
-            'offset'  => null,
-            'limit'   => null,
+            'select'   => array(),
+            'from'     => array(),
+            'join'     => array(),
+            'set'      => array(),
+            'where'    => null,
+            'group_by' => array(),
+            'having'   => null,
+            'order_by' => array(),
+            'offset'   => null,
+            'limit'    => null,
         ), $this->queryBuilder->getParts());
     }
 

@@ -65,16 +65,16 @@ class QueryBuilder
 
         $this->type = self::SELECT;
         $this->parts = array(
-            'select'  => array(),
-            'from'    => array(),
-            'join'    => array(),
-            'set'     => array(),
-            'where'   => null,
-            'groupBy' => array(),
-            'having'  => null,
-            'orderBy' => array(),
-            'offset'  => null,
-            'limit'   => null,
+            'select'   => array(),
+            'from'     => array(),
+            'join'     => array(),
+            'set'      => array(),
+            'where'    => null,
+            'group_by' => array(),
+            'having'   => null,
+            'order_by' => array(),
+            'offset'   => null,
+            'limit'    => null,
         );
 
         $this->parameters = array();
@@ -390,7 +390,7 @@ class QueryBuilder
      */
     public function groupBy($groupBy)
     {
-        $this->parts['groupBy'] = array_merge($this->parts['groupBy'], (array) $groupBy);
+        $this->parts['group_by'] = array_merge($this->parts['group_by'], (array) $groupBy);
 
         return $this;
     }
@@ -441,7 +441,7 @@ class QueryBuilder
      */
     public function orderBy($orderBy)
     {
-        $this->parts['orderBy'] = array_merge($this->parts['orderBy'], (array) $orderBy);
+        $this->parts['order_by'] = array_merge($this->parts['order_by'], (array) $orderBy);
 
         return $this;
     }
@@ -710,9 +710,9 @@ class QueryBuilder
         return 'SELECT '.(empty($this->parts['select']) ? '*' : implode(', ', $this->parts['select'])).
                ' FROM '.$this->getFromClause().
                (($this->parts['where'] !== null) ? ' WHERE '.$this->parts['where'] : null).
-               (!empty($this->parts['groupBy']) ? ' GROUP BY '.implode(', ', $this->parts['groupBy']) : null).
+               (!empty($this->parts['group_by']) ? ' GROUP BY '.implode(', ', $this->parts['group_by']) : null).
                (($this->parts['having'] !== null) ? ' HAVING '.$this->parts['having'] : null).
-               (!empty($this->parts['orderBy']) ? ' ORDER BY '.implode(', ', $this->parts['orderBy']) : null).
+               (!empty($this->parts['order_by']) ? ' ORDER BY '.implode(', ', $this->parts['order_by']) : null).
                (($this->parts['limit'] !== null) ? ' LIMIT '.$this->parts['limit'] : null).
                (($this->parts['offset'] !== null) ? ' OFFSET '.$this->parts['offset'] : null);
     }
