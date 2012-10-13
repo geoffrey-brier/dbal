@@ -189,7 +189,12 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
             $indexes = $this->getTableIndexes($table, $database);
         }
 
-        return new Schema\Table($table, $columns, $primaryKey, $foreignKeys, $indexes);
+        $checks = array();
+        if ($this->getConnection()->getPlatform()->supportCheck()) {
+            $checks = $this->getTableChecks($table, $database);
+        }
+
+        return new Schema\Table($table, $columns, $primaryKey, $foreignKeys, $indexes, $checks);
     }
 
     /**
@@ -888,9 +893,9 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
      *
      * The $checks parameter contains:
      *  - name
-     *  - constraint
+     *  - definition
      *
-     * @param array $checks The checks constraints.
+     * @param array $checks The checks.
      *
      * @return array The generic checks.
      */
@@ -899,16 +904,10 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
         $genericChecks = array();
 
         foreach ($checks as $check) {
-            $name = $check['name'];
-
-            if (!isset($genericChecks[$name])) {
-                $genericChecks[$name] = new Schema\Check($name, $check['constraint']);
-            } else {
-                $genericChecks[$name]->setDefinition($check['constraint']);
-            }
+            $genericChecks[] = new Schema\Check($check['name'], $check['definition']);
         }
 
-        return array_values($check);
+        return $genericChecks;
     }
 
     /**

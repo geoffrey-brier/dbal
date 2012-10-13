@@ -124,4 +124,16 @@ class PostgreSQLSchemaManager extends AbstractSchemaManager
             'comment'        => !empty($column['comment']) ? $column['comment'] : null,
         ));
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getGenericTableChecks(array $checks)
+    {
+        foreach ($checks as &$check) {
+            $check['definition'] = substr($check['definition'], 1, -1);
+        }
+
+        return parent::getGenericTableChecks($checks);
+    }
 }

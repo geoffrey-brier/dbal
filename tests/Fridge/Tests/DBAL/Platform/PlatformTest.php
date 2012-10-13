@@ -477,6 +477,27 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    public function testCreateConstraintSQLQueryWithCheck()
+    {
+        $check = new Schema\Check('foo', 'bar');
+
+        $this->assertSame(
+            'ALTER TABLE foo ADD CONSTRAINT foo CHECK (bar)',
+            $this->platform->getCreateConstraintSQLQuery($check, 'foo')
+        );
+    }
+
+    /**
+     * @expectedException Fridge\DBAL\Exception\PlatformException
+     * @expectedExceptionMessage The constraint "foo" is not supported.
+     */
+    public function testCreateConstraintWithInvalidConstraint()
+    {
+        $check = $this->getMock('Fridge\DBAL\Schema\ConstraintInterface', array(), array(), 'foo', false);
+
+        $this->platform->getCreateConstraintSQLQuery($check, 'foo');
+    }
+
     public function testCreatePrimaryKeySQLQuery()
     {
         $primaryKey = new Schema\PrimaryKey('foo', array('foo'));
@@ -626,6 +647,26 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
             'DROP INDEX foo',
             $this->platform->getDropConstraintSQLQuery($constraint, 'bar')
         );
+    }
+
+    public function testDropConstraintSQLQueryWithCheck()
+    {
+        $check = new Schema\Check('foo', 'bar');
+
+        $this->assertSame(
+            'ALTER TABLE foo DROP CONSTRAINT foo',
+            $this->platform->getDropConstraintSQLQuery($check, 'foo')
+        );
+    }
+
+    /**
+     * @expectedException Fridge\DBAL\Exception\PlatformException
+     */
+    public function testDropConstraintWithInvalidConstraint()
+    {
+        $check = $this->getMock('Fridge\DBAL\Schema\ConstraintInterface', array(), array(), '', false);
+
+        $this->platform->getDropConstraintSQLQuery($check, 'foo');
     }
 
     public function testDropPrimaryKeySQLQuery()
@@ -786,6 +827,9 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
             array(
                 new Schema\Index('idx1', array('foo_bar')),
                 new Schema\Index('uniq1', array('bar_foo'), true),
+            ),
+            array(
+                new Schema\Check('ck1', 'foo > 0'),
             )
         );
 
@@ -799,7 +843,8 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
                 ' CONSTRAINT pk1 PRIMARY KEY (foo),'.
                 ' INDEX idx1 (foo_bar),'.
                 ' CONSTRAINT uniq1 UNIQUE (bar_foo),'.
-                ' CONSTRAINT fk1 FOREIGN KEY (bar) REFERENCES bar (bar) ON DELETE CASCADE ON UPDATE CASCADE'.
+                ' CONSTRAINT fk1 FOREIGN KEY (bar) REFERENCES bar (bar) ON DELETE CASCADE ON UPDATE CASCADE,'.
+                ' CONSTRAINT ck1 CHECK (foo > 0)'.
                 ')',
             ),
             $this->platform->getCreateTableSQLQueries($table)
@@ -864,6 +909,23 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(
             array('CREATE TABLE foo (foo INT)'),
             $this->platform->getCreateTableSQLQueries($table, array('index' => false))
+        );
+    }
+
+    public function testCreateTableSQLQueriesWithCheckDisabled()
+    {
+        $table = new Schema\Table(
+            'foo',
+            array(new Schema\Column('foo', Type::getType(Type::INTEGER))),
+            null,
+            array(),
+            array(),
+            array(new Schema\Check('ck1', array('foo > 0')))
+        );
+
+        $this->assertSame(
+            array('CREATE TABLE foo (foo INT)'),
+            $this->platform->getCreateTableSQLQueries($table, array('check' => false))
         );
     }
 

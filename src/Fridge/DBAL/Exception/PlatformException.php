@@ -19,9 +19,21 @@ namespace Fridge\DBAL\Exception;
 class PlatformException extends Exception
 {
     /**
+     * Gets the "CONSTRAINT NOT SUPPORTED" exception.
+     *
+     * @param string $constraint The constraint class name.
+     *
+     * @return \Fridge\DBAL\Exception\PlatformException The "CONSTRAINT NOT SUPPORTED" exception.
+     */
+    public static function constraintNotSupported($constraint)
+    {
+        return new static(sprintf('The constraint "%s" is not supported.', $constraint));
+    }
+
+    /**
      * Gets the "INVALID VARCHAR FIXED FLAG" exception.
      *
-     * @return \Fridge\DBAL\Exception\PlatformException  The "INVALID VARCHAR FIXED FLAG" exception.
+     * @return \Fridge\DBAL\Exception\PlatformException The "INVALID VARCHAR FIXED FLAG" exception.
      */
     public static function invalidVarcharFixedFlag()
     {

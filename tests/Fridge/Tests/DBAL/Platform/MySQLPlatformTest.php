@@ -189,6 +189,16 @@ class MySQLPlatformTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * @expectedException \Fridge\DBAL\Exception\PlatformException
+     */
+    public function testCreateCheckSQLQuery()
+    {
+        $check = new Schema\Check('foo', 'bar');
+
+        $this->platform->getCreateCheckSQLQuery($check, 'zaz');
+    }
+
     public function testCreateTableSQLQueries()
     {
         $table = new Schema\Table(
@@ -242,6 +252,16 @@ class MySQLPlatformTest extends \PHPUnit_Framework_TestCase
             'ALTER TABLE bar DROP FOREIGN KEY foo',
             $this->platform->getDropForeignKeySQLQuery($foreignKey, 'bar')
         );
+    }
+
+    /**
+     * @expectedException \Fridge\DBAL\Exception\PlatformException
+     */
+    public function testDropCheckSQLQuery()
+    {
+        $check = new Schema\Check('foo', 'bar');
+
+        $this->platform->getDropCheckSQLQuery($check, 'zaz');
     }
 
     public function testQuoteIdentifier()

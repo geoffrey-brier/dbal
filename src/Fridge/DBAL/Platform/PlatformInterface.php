@@ -314,6 +314,13 @@ interface PlatformInterface
     function supportIndex();
 
     /**
+     * Checks if the platform support check.
+     *
+     * @return boolean TRUE if the platform supports check else FALSE.
+     */
+    function supportCheck();
+
+    /**
      * Checks if the platform supports inline table column comment.
      *
      * @return boolean TRUE if the platform supports inline table column comment else FALSE.
@@ -490,6 +497,7 @@ interface PlatformInterface
      *  - primary_key: TRUE if queries include primary key else FALSE (default: TRUE).
      *  - index: TRUE if queries include indexes else FALSE (default: TRUE).
      *  - foreign_key: TRUE if queries include foreingn keys else FALSE (default: TRUE).
+     *  - check: TRUE if queries include checks else FALSE (default: TRUE).
      *
      * @param \Fridge\DBAL\Schema\Table $table The table.
      * @param array                     $flags The create table flags.

@@ -241,7 +241,12 @@ class PostgreSQLPlatform extends AbstractPlatform
      */
     public function getSelectTableCheckSQLQuery($table, $database)
     {
-        throw new \Exception('WIP');
+        return 'SELECT'.
+               '  co.conname AS name,'.
+               '  co.consrc AS definition'.
+               ' FROM pg_constraint co'.
+               ' INNER JOIN pg_class c ON (co.conrelid = c.oid AND c.relname = \''.$table.'\')'.
+               ' WHERE co.contype = \'c\'';
     }
 
     /**

@@ -404,6 +404,14 @@ abstract class AbstractPlatform implements PlatformInterface
     /**
      * {@inheritdoc}
      */
+    public function supportCheck()
+    {
+        return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function supportInlineTableColumnComment()
     {
         return true;
@@ -517,6 +525,12 @@ abstract class AbstractPlatform implements PlatformInterface
             }
         }
 
+        if (!isset($flags['check']) || $flags['check']) {
+            foreach ($table->getChecks() as $check) {
+                $query .= ', '.$this->getCheckSQLDeclaration($check);
+            }
+        }
+
         $query .= ')';
 
         array_unshift($queries, $query);
@@ -537,7 +551,15 @@ abstract class AbstractPlatform implements PlatformInterface
             return $this->getCreateForeignKeySQLQuery($constraint, $table);
         }
 
-        return $this->getCreateIndexSQLQuery($constraint, $table);
+        if ($constraint instanceof Schema\Index) {
+            return $this->getCreateIndexSQLQuery($constraint, $table);
+        }
+
+        if ($constraint instanceof Schema\Check) {
+            return $this->getCreateCheckSQLQuery($constraint, $table);
+        }
+
+        throw Exception\PlatformException::constraintNotSupported(get_class($constraint));
     }
 
     /**
@@ -659,7 +681,15 @@ abstract class AbstractPlatform implements PlatformInterface
             return $this->getDropForeignKeySQLQuery($contraint, $table);
         }
 
-        return $this->getDropIndexSQLQuery($contraint, $table);
+        if ($contraint instanceof Schema\Index) {
+            return $this->getDropIndexSQLQuery($contraint, $table);
+        }
+
+        if ($contraint instanceof Schema\Check) {
+            return $this->getDropCheckSQLQuery($contraint, $table);
+        }
+
+        throw Exception\PlatformException::constraintNotSupported(get_class($contraint));
     }
 
     /**
@@ -707,6 +737,10 @@ abstract class AbstractPlatform implements PlatformInterface
      */
     public function getDropCheckSQLQuery(Schema\Check $check, $table)
     {
+        if (!$this->supportCheck()) {
+            throw Exception\PlatformException::methodNotSupported(__METHOD__);
+        }
+
         return 'ALTER TABLE '.$table.' DROP CONSTRAINT '.$check->getName();
     }
 
@@ -938,6 +972,10 @@ abstract class AbstractPlatform implements PlatformInterface
      */
     protected function getCheckSQLDeclaration(Schema\Check $check)
     {
+        if (!$this->supportCheck()) {
+            throw Exception\PlatformException::methodNotSupported(__METHOD__);
+        }
+
         return 'CONSTRAINT '.$check->getName().' CHECK ('.$check->getDefinition().')';
     }
 
