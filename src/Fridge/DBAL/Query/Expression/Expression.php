@@ -12,16 +12,16 @@
 namespace Fridge\DBAL\Query\Expression;
 
 /**
- * A composite expression groups expression according to a type (AND, OR).
+ * An expression groups simple expression according to a type (AND, OR).
  *
  * @author GeLo <geloen.eric@gmail.com>
  */
-class CompositeExpression
+class Expression
 {
-    /** @cosnt The AND composite expression type */
+    /** @cosnt The AND expression type */
     const TYPE_AND = 'AND';
 
-    /** @const The OR composite expression type */
+    /** @const The OR expression type */
     const TYPE_OR  = 'OR';
 
     /** @var string */
@@ -31,7 +31,7 @@ class CompositeExpression
     protected $parts;
 
     /**
-     * Composite expression constructor.
+     * Expression constructor.
      *
      * @param string $type  The type (AND, OR).
      * @param array  $parts The parts.
@@ -73,9 +73,9 @@ class CompositeExpression
     }
 
     /**
-     * Set the composite expression parts.
+     * Set the expression parts.
      *
-     * @param array $parts The composite expression parts.
+     * @param array $parts The expression parts.
      */
     public function setParts(array $parts)
     {
@@ -87,9 +87,9 @@ class CompositeExpression
     }
 
     /**
-     * Add a part to the composite expression.
+     * Add a part to the expression.
      *
-     * @param string|\Fridge\DBAL\Query\Expression\CompositeExpression $part The part to add to the composite expression.
+     * @param string|\Fridge\DBAL\Query\Expression\Expression $part The part to add to the expression.
      */
     public function addPart($part)
     {
@@ -97,9 +97,9 @@ class CompositeExpression
     }
 
     /**
-     * Gets the string representation of the composite expression.
+     * Gets the string representation of the expression.
      *
-     * @return string The string representation of the composite expression.
+     * @return string The string representation of the expression.
      */
     public function __toString()
     {

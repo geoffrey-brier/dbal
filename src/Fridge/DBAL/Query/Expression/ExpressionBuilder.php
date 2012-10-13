@@ -37,27 +37,27 @@ class ExpressionBuilder
     const LTE = '<=';
 
     /**
-     * Creates an "AND" composite expression.
+     * Creates an "AND" expression.
      *
      * @param string|array $expression The expression.
      *
-     * @return \Fridge\DBAL\Query\Expression\CompositeExpression The "AND" composite expression.
+     * @return \Fridge\DBAL\Query\Expression\Expression The "AND" expression.
      */
     public function andX($expression = array())
     {
-        return new CompositeExpression(CompositeExpression::TYPE_AND, (array) $expression);
+        return new Expression(Expression::TYPE_AND, (array) $expression);
     }
 
     /**
-     * Creates an "OR" composite expression.
+     * Creates an "OR" expression.
      *
      * @param string|array $expression The expression.
      *
-     * @return \Fridge\DBAL\Query\Expression\CompositeExpression The "OR" composite expression.
+     * @return \Fridge\DBAL\Query\Expression\Expression The "OR" expression.
      */
     public function orX($expression = array())
     {
-        return new CompositeExpression(CompositeExpression::TYPE_OR, (array) $expression);
+        return new Expression(Expression::TYPE_OR, (array) $expression);
     }
 
     /**

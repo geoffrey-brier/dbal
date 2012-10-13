@@ -12,7 +12,7 @@
 namespace Fridge\Tests\DBAL\Query;
 
 use Fridge\DBAL\Query\QueryBuilder,
-    Fridge\DBAL\Query\Expression\CompositeExpression,
+    Fridge\DBAL\Query\Expression\Expression,
     Fridge\DBAL\Type\Type;
 
 /**
@@ -464,9 +464,9 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase
             ->select(array('foo'))
             ->from('foo', 'f')
             ->join('foo', 'left', 'bar', 'foo', 'bar')
-            ->where('a = b', CompositeExpression::TYPE_OR)
+            ->where('a = b', Expression::TYPE_OR)
             ->groupBy('foo')
-            ->having('a = b', CompositeExpression::TYPE_OR)
+            ->having('a = b', Expression::TYPE_OR)
             ->orderBy('foo ASC')
             ->offset(10)
             ->limit(10);
@@ -477,10 +477,10 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase
             array('foo' => array(array('type' => 'left', 'table' => 'bar', 'alias' => 'foo', 'expression' => 'bar'))),
             $this->queryBuilder->getPart('join')
         );
-        $this->assertSame(CompositeExpression::TYPE_OR, $this->queryBuilder->getPart('where')->getType());
+        $this->assertSame(Expression::TYPE_OR, $this->queryBuilder->getPart('where')->getType());
         $this->assertSame(array('a = b'), $this->queryBuilder->getPart('where')->getParts());
         $this->assertSame(array('foo'), $this->queryBuilder->getPart('group_by'));
-        $this->assertSame(CompositeExpression::TYPE_OR, $this->queryBuilder->getPart('having')->getType());
+        $this->assertSame(Expression::TYPE_OR, $this->queryBuilder->getPart('having')->getType());
         $this->assertSame(array('a = b'), $this->queryBuilder->getPart('having')->getParts());
         $this->assertSame(array('foo ASC'), $this->queryBuilder->getPart('order_by'));
         $this->assertSame(10, $this->queryBuilder->getPart('offset'));

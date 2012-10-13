@@ -347,38 +347,38 @@ class QueryBuilder
     /**
      * Adds a "WHERE" clause to the query.
      *
-     * @param string|array|\Fridge\DBAL\Query\Expression\CompositeExpression $expression The expression.
-     * @param string                                                         $type       The expression type (AND, OR).
+     * @param string|array|\Fridge\DBAL\Query\Expression\Expression $expression The expression.
+     * @param string                                                $type       The expression type (AND, OR).
      *
      * @return \Fridge\DBAL\Query\QueryBuilder The query builder.
      */
-    public function where($expression, $type = Expression\CompositeExpression::TYPE_AND)
+    public function where($expression, $type = Expression\Expression::TYPE_AND)
     {
-        return $this->addCompositeExpression('where', $type, $expression);
+        return $this->addExpression('where', $type, $expression);
     }
 
     /**
      * Adds an "AND (WHERE)" clause to the query.
      *
-     * @param string|array|\Fridge\DBAL\Query\Expression\CompositeExpression $expression The expression.
+     * @param string|array|\Fridge\DBAL\Query\Expression\Expression $expression The expression.
      *
      * @return \Fridge\DBAL\Query\QueryBuilder The query builder.
      */
     public function andWhere($expression)
     {
-        return $this->addCompositeExpression('where', Expression\CompositeExpression::TYPE_AND, $expression);
+        return $this->addExpression('where', Expression\Expression::TYPE_AND, $expression);
     }
 
     /**
      * Adds an "OR (WHERE)" clause to the query.
      *
-     * @param string|array|\Fridge\DBAL\Query\Expression\CompositeExpression $expression The expression.
+     * @param string|array|\Fridge\DBAL\Query\Expression\Expression $expression The expression.
      *
      * @return \Fridge\DBAL\Query\QueryBuilder The query builder.
      */
     public function orWhere($expression)
     {
-        return $this->addCompositeExpression('where', Expression\CompositeExpression::TYPE_OR, $expression);
+        return $this->addExpression('where', Expression\Expression::TYPE_OR, $expression);
     }
 
     /**
@@ -398,38 +398,38 @@ class QueryBuilder
     /**
      * Adds an "HAVING" clause to the query.
      *
-     * @param string|array|\Fridge\DBAL\Query\Expression\CompositeExpression $expression The expression.
-     * @param string                                                         $type       The expression type (AND, OR).
+     * @param string|array|\Fridge\DBAL\Query\Expression\Expression $expression The expression.
+     * @param string                                                $type       The expression type (AND, OR).
      *
      * @return \Fridge\DBAL\Query\QueryBuilder The query builder.
      */
-    public function having($expression, $type = Expression\CompositeExpression::TYPE_AND)
+    public function having($expression, $type = Expression\Expression::TYPE_AND)
     {
-        return $this->addCompositeExpression('having', $type, $expression);
+        return $this->addExpression('having', $type, $expression);
     }
 
     /**
      * Adds an "AND (HAVING)" clause to the query.
      *
-     * @param string|array|\Fridge\DBAL\Query\Expression\CompositeExpression $expression The expression.
+     * @param string|array|\Fridge\DBAL\Query\Expression\Expression $expression The expression.
      *
      * @return \Fridge\DBAL\Query\QueryBuilder The query builder.
      */
     public function andHaving($expression)
     {
-        return $this->addCompositeExpression('having', Expression\CompositeExpression::TYPE_AND, $expression);
+        return $this->addExpression('having', Expression\Expression::TYPE_AND, $expression);
     }
 
     /**
      * Adds an "OR (HAVING)" clause to the query.
      *
-     * @param string|array|\Fridge\DBAL\Query\Expression\CompositeExpression $expression The expression.
+     * @param string|array|\Fridge\DBAL\Query\Expression\Expression $expression The expression.
      *
      * @return \Fridge\DBAL\Query\QueryBuilder The query builder.
      */
     public function orHaving($expression)
     {
-        return $this->addCompositeExpression('having', Expression\CompositeExpression::TYPE_OR, $expression);
+        return $this->addExpression('having', Expression\Expression::TYPE_OR, $expression);
     }
 
     /**
@@ -669,18 +669,18 @@ class QueryBuilder
     }
 
     /**
-     * Adds a composite expression to the "WHERE" or "HAVING" clause.
+     * Adds an expression to the "WHERE" or "HAVING" clause.
      *
-     * @param string                                                         $part       The query part.
-     * @param string                                                         $type       The composite expression type (AND, OR)
-     * @param string|array|\Fridge\DBAL\Query\Expression\CompositeExpression $expression The expression.
+     * @param string                                                $part       The query part.
+     * @param string                                                $type       The expression type (AND, OR)
+     * @param string|array|\Fridge\DBAL\Query\Expression\Expression $expression The expression.
      *
      * @return \Fridge\DBAL\Query\QueryBuilder The query builder.
      */
-    protected function addCompositeExpression($part, $type, $expression)
+    protected function addExpression($part, $type, $expression)
     {
-        if (!($expression instanceof Expression\CompositeExpression)) {
-            $expression = new Expression\CompositeExpression($type, (array) $expression);
+        if (!($expression instanceof Expression\Expression)) {
+            $expression = new Expression\Expression($type, (array) $expression);
         }
 
         if ($this->parts[$part] === null) {
@@ -690,7 +690,7 @@ class QueryBuilder
         }
 
         if ($this->parts[$part]->getType() !== $type) {
-            $this->parts[$part] = new Expression\CompositeExpression($type, array($this->parts[$part]));
+            $this->parts[$part] = new Expression\Expression($type, array($this->parts[$part]));
         }
 
         foreach ($expression->getParts() as $expressionPart) {
