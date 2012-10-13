@@ -813,7 +813,7 @@ class TableTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($index, $clone->getIndex($index->getName()));
         $this->assertNotSame($index, $clone->getIndex($index->getName()));
 
-        $this->assertEquals($this->checkMock, $clone->getCheck($check->getName()));
-        $this->assertNotSame($this->checkMock, $clone->getCheck($check->getName()));
+        $this->assertEquals($check, $clone->getCheck($check->getName()));
+        $this->assertNotSame($check, $clone->getCheck($check->getName()));
     }
 }
