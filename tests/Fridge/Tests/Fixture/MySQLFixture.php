@@ -42,6 +42,14 @@ class MySQLFixture extends AbstractFixture
     /**
      * {@inheritdoc}
      */
+    public function getTableNames()
+    {
+        return array('tcolumns', 'tprimarykeylock', 'tprimarykeyunlock', 'tforeignkey', 'tindex');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getTablePrimaryKey($table)
     {
         $primaryKey = parent::getTablePrimaryKey($table);

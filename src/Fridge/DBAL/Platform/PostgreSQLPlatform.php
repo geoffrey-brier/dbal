@@ -239,6 +239,19 @@ class PostgreSQLPlatform extends AbstractPlatform
     /**
      * {@inheritdoc}
      */
+    public function getSelectTableCheckSQLQuery($table, $database)
+    {
+        return 'SELECT'.
+               '  co.conname AS name,'.
+               '  co.consrc AS definition'.
+               ' FROM pg_constraint co'.
+               ' INNER JOIN pg_class c ON (co.conrelid = c.oid AND c.relname = \''.$table.'\')'.
+               ' WHERE co.contype = \'c\'';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getCreateTableSQLQueries(Table $table, array $flags = array())
     {
         $originalFlags = $flags;

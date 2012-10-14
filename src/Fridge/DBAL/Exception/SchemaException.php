@@ -402,4 +402,30 @@ class SchemaException extends Exception
     {
         return new static(sprintf('The view "%s" of the schema "%s" does not exist.', $view, $schema));
     }
+
+    /**
+     * Gets the "TABLE CHECK DOES NOT EXIST" exception.
+     *
+     * @param string $table The table name.
+     * @param string $check The check name.
+     *
+     * @return \Fridge\DBAL\Exception\SchemaException The "TABLE CHECK DOES NOT EXIST" exception.
+     */
+    static public function tableCheckDoesNotExist($table, $check)
+    {
+        return new static(sprintf('The check "%s" of the table "%s" does not exist.', $check, $table));
+    }
+
+    /**
+     * Gets the "TABLE CHECK ALREADY EXISTS" exception.
+     *
+     * @param string $table The table name.
+     * @param string $check The check name.
+     *
+     * @return \Fridge\DBAL\Exception\SchemaException The "TABLE CHECK ALREADY EXISTS" exception.
+     */
+    static public function tableCheckAlreadyExists($table, $check)
+    {
+        return new static(sprintf('The check "%s" of the table "%s" already exists.', $check, $table));
+    }
 }

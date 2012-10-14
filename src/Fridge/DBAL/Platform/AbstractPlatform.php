@@ -404,6 +404,14 @@ abstract class AbstractPlatform implements PlatformInterface
     /**
      * {@inheritdoc}
      */
+    public function supportCheck()
+    {
+        return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function supportInlineTableColumnComment()
     {
         return true;
@@ -517,6 +525,12 @@ abstract class AbstractPlatform implements PlatformInterface
             }
         }
 
+        if (!isset($flags['check']) || $flags['check']) {
+            foreach ($table->getChecks() as $check) {
+                $query .= ', '.$this->getCheckSQLDeclaration($check);
+            }
+        }
+
         $query .= ')';
 
         array_unshift($queries, $query);
@@ -537,7 +551,15 @@ abstract class AbstractPlatform implements PlatformInterface
             return $this->getCreateForeignKeySQLQuery($constraint, $table);
         }
 
-        return $this->getCreateIndexSQLQuery($constraint, $table);
+        if ($constraint instanceof Schema\Index) {
+            return $this->getCreateIndexSQLQuery($constraint, $table);
+        }
+
+        if ($constraint instanceof Schema\Check) {
+            return $this->getCreateCheckSQLQuery($constraint, $table);
+        }
+
+        throw Exception\PlatformException::constraintNotSupported(get_class($constraint));
     }
 
     /**
@@ -572,6 +594,14 @@ abstract class AbstractPlatform implements PlatformInterface
         return 'CREATE INDEX '.$index->getName().
                 ' ON '.$table.
                 ' ('.implode(', ', $index->getColumnNames()).')';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getCreateCheckSQLQuery(Schema\Check $check, $table)
+    {
+        return 'ALTER TABLE '.$table.' ADD '.$this->getCheckSQLDeclaration($check);
     }
 
     /**
@@ -651,7 +681,15 @@ abstract class AbstractPlatform implements PlatformInterface
             return $this->getDropForeignKeySQLQuery($contraint, $table);
         }
 
-        return $this->getDropIndexSQLQuery($contraint, $table);
+        if ($contraint instanceof Schema\Index) {
+            return $this->getDropIndexSQLQuery($contraint, $table);
+        }
+
+        if ($contraint instanceof Schema\Check) {
+            return $this->getDropCheckSQLQuery($contraint, $table);
+        }
+
+        throw Exception\PlatformException::constraintNotSupported(get_class($contraint));
     }
 
     /**
@@ -692,6 +730,18 @@ abstract class AbstractPlatform implements PlatformInterface
         }
 
         return 'DROP INDEX '.$index->getName();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getDropCheckSQLQuery(Schema\Check $check, $table)
+    {
+        if (!$this->supportCheck()) {
+            throw Exception\PlatformException::methodNotSupported(__METHOD__);
+        }
+
+        return 'ALTER TABLE '.$table.' DROP CONSTRAINT '.$check->getName();
     }
 
     /**
@@ -911,6 +961,22 @@ abstract class AbstractPlatform implements PlatformInterface
         }
 
         return 'CONSTRAINT '.$index->getName().' UNIQUE ('.implode(', ', $index->getColumnNames()).')';
+    }
+
+    /**
+     * Gets the check constraint SQL declaration.
+     *
+     * @param \Fridge\DBAL\Schema\Check $check The check constraint.
+     *
+     * @return string The check constraint SQL declaration.
+     */
+    protected function getCheckSQLDeclaration(Schema\Check $check)
+    {
+        if (!$this->supportCheck()) {
+            throw Exception\PlatformException::methodNotSupported(__METHOD__);
+        }
+
+        return 'CONSTRAINT '.$check->getName().' CHECK ('.$check->getDefinition().')';
     }
 
     /**

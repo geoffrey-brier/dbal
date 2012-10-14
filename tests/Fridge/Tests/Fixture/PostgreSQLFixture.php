@@ -133,6 +133,14 @@ EOT;
 
         $queries[] = 'CREATE INDEX idx2 ON tindex(c1)';
 
+        $queries[] = <<<EOT
+CREATE TABLE tcheck
+(
+    c1 INT NOT NULL,
+    CONSTRAINT ck1 CHECK (c1 > 0)
+)
+EOT;
+
         $queries[] = 'CREATE SEQUENCE s1 INCREMENT 1 MINVALUE 1';
         $queries[] = 'CREATE VIEW vcolumns AS SELECT cinteger FROM tcolumns';
 

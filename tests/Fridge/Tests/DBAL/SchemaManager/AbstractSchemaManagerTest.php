@@ -138,6 +138,16 @@ abstract class AbstractSchemaManagerTest extends \PHPUnit_Framework_TestCase
         }
     }
 
+    public function testGetTableChecks()
+    {
+        foreach (self::$fixture->getTableNames() as $tableName) {
+            $this->assertEquals(
+                self::$fixture->getTableChecks($tableName),
+                $this->schemaManager->getTableChecks($tableName)
+            );
+        }
+    }
+
     public function testGetTable()
     {
         foreach (self::$fixture->getTableNames() as $table) {
@@ -352,6 +362,45 @@ abstract class AbstractSchemaManagerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($indexes, $this->schemaManager->getTableIndexes($table));
     }
 
+    public function testDropCheck()
+    {
+        $table = 'tcheck';
+
+        $checks = self::$fixture->getTableChecks($table);
+
+        foreach ($checks as $check) {
+            $this->schemaManager->dropCheck($check, $table);
+        }
+
+        $this->assertFalse($this->schemaManager->getTable($table)->hasChecks());
+    }
+
+    public function testCreateCheck()
+    {
+        $table = 'tcheck';
+
+        $checks = self::$fixture->getTableChecks($table);
+
+        foreach ($checks as $check) {
+            $this->schemaManager->createCheck($check, $table);
+        }
+
+        $this->assertEquals($checks, $this->schemaManager->getTableChecks($table));
+    }
+
+    public function testDropAndCreateCheck()
+    {
+        $table = 'tcheck';
+
+        $checks = self::$fixture->getTableChecks($table);
+
+        foreach ($checks as $check) {
+            $this->schemaManager->dropAndCreateCheck($check, $table);
+        }
+
+        $this->assertEquals($checks, $this->schemaManager->getTableChecks($table));
+    }
+
     public function testDropConstraintWithPrimaryKey()
     {
         $table = 'tprimarykeyunlock';
@@ -475,6 +524,45 @@ abstract class AbstractSchemaManagerTest extends \PHPUnit_Framework_TestCase
         foreach ($indexes as $index) {
             $this->assertEquals($index, $table->getIndex($index->getName()));
         }
+    }
+
+    public function testDropConstraintWithCheck()
+    {
+        $table = 'tcheck';
+
+        $checks = self::$fixture->getTableChecks($table);
+
+        foreach ($checks as $check) {
+            $this->schemaManager->dropConstraint($check, $table);
+        }
+
+        $this->assertFalse($this->schemaManager->getTable($table)->hasChecks());
+    }
+
+    public function testCreateConstraintWithCheck()
+    {
+        $table = 'tcheck';
+
+        $checks = self::$fixture->getTableChecks($table);
+
+        foreach ($checks as $check) {
+            $this->schemaManager->createConstraint($check, $table);
+        }
+
+        $this->assertEquals($checks, $this->schemaManager->getTableChecks($table));
+    }
+
+    public function testDropAndCreateConstraintWithCheck()
+    {
+        $table = 'tcheck';
+
+        $checks = self::$fixture->getTableChecks($table);
+
+        foreach ($checks as $check) {
+            $this->schemaManager->dropAndCreateConstraint($check, $table);
+        }
+
+        $this->assertEquals($checks, $this->schemaManager->getTableChecks($table));
     }
 
     public function testDropTable()

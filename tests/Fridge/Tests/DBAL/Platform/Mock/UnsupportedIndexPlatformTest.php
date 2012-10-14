@@ -150,6 +150,14 @@ class UnsupportedIndexPlatformMock extends AbstractPlatform
     /**
      * {@inheritdoc}
      */
+    public function getSelectTableCheckSQLQuery($table, $database)
+    {
+
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getSelectTableColumnsSQLQuery($table, $database)
     {
 

@@ -101,6 +101,14 @@ class MySQLPlatform extends AbstractPlatform
     /**
      * {@inheritdoc}
      */
+    public function supportCheck()
+    {
+        return false;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getSetTransactionIsolationSQLQuery($isolation)
     {
         return 'SET SESSION TRANSACTION ISOLATION LEVEL '.$this->getTransactionIsolationSQLDeclaration($isolation);
@@ -244,6 +252,14 @@ class MySQLPlatform extends AbstractPlatform
                ' WHERE s.table_schema = \''.$database.'\''.
                ' AND s.table_name = \''.$table.'\''.
                ' ORDER BY s.index_name ASC, s.seq_in_index ASC';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getSelectTableCheckSQLQuery($table, $database)
+    {
+        throw PlatformException::methodNotSupported(__METHOD__);
     }
 
     /**

@@ -189,7 +189,12 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
             $indexes = $this->getTableIndexes($table, $database);
         }
 
-        return new Schema\Table($table, $columns, $primaryKey, $foreignKeys, $indexes);
+        $checks = array();
+        if ($this->getConnection()->getPlatform()->supportCheck()) {
+            $checks = $this->getTableChecks($table, $database);
+        }
+
+        return new Schema\Table($table, $columns, $primaryKey, $foreignKeys, $indexes, $checks);
     }
 
     /**
@@ -252,6 +257,21 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
         $indexes = $this->getConnection()->fetchAll($query);
 
         return $this->getGenericTableIndexes($indexes);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getTableChecks($table, $database = null)
+    {
+        if ($database === null) {
+            $database = $this->getDatabase();
+        }
+
+        $query = $this->getConnection()->getPlatform()->getSelectTableCheckSQLQuery($table, $database);
+        $checks = $this->getConnection()->fetchAll($query);
+
+        return $this->getGenericTableChecks($checks);
     }
 
     /**
@@ -378,6 +398,15 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
     /**
      * {@inheritdoc}
      */
+    public function createCheck(Schema\Check $check, $table)
+    {
+        $query = $this->getConnection()->getPlatform()->getCreateCheckSQLQuery($check, $table);
+        $this->getConnection()->executeUpdate($query);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function dropDatabase($database)
     {
         $currentDatabase = $this->getConnection()->getDatabase();
@@ -464,6 +493,15 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
     /**
      * {@inheritdoc}
      */
+    public function dropCheck(Schema\Check $check, $table)
+    {
+        $query = $this->getConnection()->getPlatform()->getDropCheckSQLQuery($check, $table);
+        $this->getConnection()->executeUpdate($query);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function dropAndCreateDatabase($database)
     {
         $this->tryMethod('dropDatabase', array($database));
@@ -540,6 +578,15 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
     {
         $this->tryMethod('dropIndex', array($index, $table));
         $this->createIndex($index, $table);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function dropAndCreateCheck(Schema\Check $check, $table)
+    {
+        $this->tryMethod('dropCheck', array($check, $table));
+        $this->createCheck($check, $table);
     }
 
     /**
@@ -839,6 +886,28 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
         }
 
         return array_values($genericIndexes);
+    }
+
+    /**
+     * Gets the generic table checks.
+     *
+     * The $checks parameter contains:
+     *  - name
+     *  - definition
+     *
+     * @param array $checks The checks.
+     *
+     * @return array The generic checks.
+     */
+    protected function getGenericTableChecks(array $checks)
+    {
+        $genericChecks = array();
+
+        foreach ($checks as $check) {
+            $genericChecks[] = new Schema\Check($check['name'], $check['definition']);
+        }
+
+        return $genericChecks;
     }
 
     /**
