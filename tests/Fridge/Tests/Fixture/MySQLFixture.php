@@ -12,8 +12,7 @@
 namespace Fridge\Tests\Fixture;
 
 use \PDO,
-    Fridge\DBAL\Schema,
-    Fridge\Tests\PHPUnitUtility;
+    Fridge\DBAL\Schema;
 
 /**
  * MySQL fixture.
