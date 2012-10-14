@@ -11,7 +11,8 @@
 
 namespace Fridge\Tests\DBAL\Schema;
 
-use Fridge\DBAL\Schema\Check;
+use Fridge\DBAL\Schema\Check,
+    Fridge\DBAL\Query\Expression\ExpressionBuilder;
 
 /**
  * Check tests.
@@ -51,10 +52,22 @@ class CheckTest extends \PHPUnit_Framework_TestCase
         $this->assertRegExp('/^cct_[a-z0-9]{16}$/', $check->getName());
     }
 
-    public function testSetGetsDefinition()
+    public function testDefinitionWithStringValue()
     {
-        $check = new Check(null);
-        $check->setDefinition('foo');
-        $this->assertSame('foo', $check->getDefinition());
+        $check = new Check('foo');
+        $check->setDefinition('bar');
+
+        $this->assertSame('bar', $check->getDefinition());
+    }
+
+    public function testDefinitionWithExpressionValue()
+    {
+        $expressionBuilder = new ExpressionBuilder();
+        $expression = $expressionBuilder->andX(array('bar'));
+
+        $check = new Check('foo');
+        $check->setDefinition($expression);
+
+        $this->assertSame((string) $expression, $check->getDefinition());
     }
 }

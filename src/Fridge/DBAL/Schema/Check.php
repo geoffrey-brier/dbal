@@ -11,6 +11,8 @@
 
 namespace Fridge\DBAL\Schema;
 
+use Fridge\DBAL\Query\Expression\Expression;
+
 /**
  * Describes a check definition.
  *
@@ -51,10 +53,14 @@ class Check extends AbstractAsset implements ConstraintInterface
     /**
      * Set the definition.
      *
-     * @param string $definition
+     * @param string|\Fridge\DBAL\Query\Expression\Expression $definition The definition.
      */
     public function setDefinition($definition)
     {
+        if ($definition instanceof Expression) {
+            $definition = (string) $definition;
+        }
+
         $this->definition = $definition;
     }
 }
