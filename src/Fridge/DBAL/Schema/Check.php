@@ -26,8 +26,8 @@ class Check extends AbstractAsset implements ConstraintInterface
     /**
      * Creates a check.
      *
-     * @param string  $name        The check name.
-     * @param string  $definition  The check definition.
+     * @param string $name       The check name.
+     * @param string $definition The check definition.
      */
     public function __construct($name, $definition = null)
     {

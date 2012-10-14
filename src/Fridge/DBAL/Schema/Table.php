@@ -47,6 +47,7 @@ class Table extends AbstractAsset
      * @param \Fridge\DBAL\Schema\PrimaryKey $primaryKey  The table primary key.
      * @param array                          $foreignKeys The table foreign keys.
      * @param array                          $indexes     The table indexes.
+     * @param array                          $checks      The table checks.
      */
     public function __construct(
         $name,
@@ -590,8 +591,8 @@ class Table extends AbstractAsset
     /**
      * Creates & adds a new check.
      *
-     * @param string  $constraint The check constraint.
-     * @param string  $name       The check name.
+     * @param string $constraint The check constraint.
+     * @param string $name       The check name.
      *
      * @return \Fridge\DBAL\Schema\Check The new index.
      */
@@ -624,9 +625,9 @@ class Table extends AbstractAsset
     }
 
     /**
-     * Sets the table indexes.
+     * Sets the table chekcs.
      *
-     * @param array $indexes The table indexes.
+     * @param array $checks The table checks.
      */
     public function setChecks(array $checks)
     {
@@ -670,7 +671,7 @@ class Table extends AbstractAsset
     /**
      * Adds a check to the table.
      *
-     * @param \Fridge\DBAL\Schema\Index $index The index to add.
+     * @param \Fridge\DBAL\Schema\Check $check The check to add.
      */
     public function addCheck(Check $check)
     {
