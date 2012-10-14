@@ -286,6 +286,34 @@ interface PlatformInterface
     function supportSequence();
 
     /**
+     * Checks if the platform supports view.
+     *
+     * @return boolean TRUE if the platform supports view else FALSE.
+     */
+    function supportView();
+
+    /**
+     * Checks if the platform supports primary key.
+     *
+     * @return boolean TRUE if the platform supports primary key else FALSE.
+     */
+    function supportPrimaryKey();
+
+    /**
+     * Checks if the platform supports foreign key.
+     *
+     * @return boolean TRUE if the platform supports foreign key else FALSE.
+     */
+    function supportForeignKey();
+
+    /**
+     * Checks if the platform supports index.
+     *
+     * @return boolean TRUE if the platform supports index else FALSE.
+     */
+    function supportIndex();
+
+    /**
      * Checks if the platform supports inline table column comment.
      *
      * @return boolean TRUE if the platform supports inline table column comment else FALSE.

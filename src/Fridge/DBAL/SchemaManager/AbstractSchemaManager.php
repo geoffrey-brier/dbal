@@ -85,14 +85,17 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
             $database = $this->getDatabase();
         }
 
-        $sequences = array();
+        $tables = $this->getTables($database);
 
+        $sequences = array();
         if ($this->getConnection()->getPlatform()->supportSequence()) {
             $sequences = $this->getSequences($database);
         }
 
-        $tables = $this->getTables($database);
-        $views = $this->getViews($database);
+        $views = array();
+        if ($this->getConnection()->getPlatform()->supportView()) {
+            $views = $this->getViews($database);
+        }
 
         return new Schema\Schema($database, $tables, $sequences, $views);
     }
@@ -170,9 +173,21 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
         }
 
         $columns = $this->getTableColumns($table, $database);
-        $primaryKey = $this->getTablePrimaryKey($table, $database);
-        $foreignKeys = $this->getTableForeignKeys($table, $database);
-        $indexes = $this->getTableIndexes($table, $database);
+
+        $primaryKey = null;
+        if ($this->getConnection()->getPlatform()->supportPrimaryKey()) {
+            $primaryKey = $this->getTablePrimaryKey($table, $database);
+        }
+
+        $foreignKeys = array();
+        if ($this->getConnection()->getPlatform()->supportForeignKey()) {
+            $foreignKeys = $this->getTableForeignKeys($table, $database);
+        }
+
+        $indexes = array();
+        if ($this->getConnection()->getPlatform()->supportIndex()) {
+            $indexes = $this->getTableIndexes($table, $database);
+        }
 
         return new Schema\Table($table, $columns, $primaryKey, $foreignKeys, $indexes);
     }

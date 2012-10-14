@@ -372,6 +372,38 @@ abstract class AbstractPlatform implements PlatformInterface
     /**
      * {@inheritdoc}
      */
+    public function supportView()
+    {
+        return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function supportPrimaryKey()
+    {
+        return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function supportForeignKey()
+    {
+        return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function supportIndex()
+    {
+        return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function supportInlineTableColumnComment()
     {
         return true;
@@ -449,6 +481,10 @@ abstract class AbstractPlatform implements PlatformInterface
      */
     public function getCreateViewSQLQuery(Schema\View $view)
     {
+        if (!$this->supportView()) {
+            throw Exception\PlatformException::methodNotSupported(__METHOD__);
+        }
+
         return 'CREATE VIEW '.$view->getName().' AS '.$view->getSQL();
     }
 
@@ -529,6 +565,10 @@ abstract class AbstractPlatform implements PlatformInterface
             return 'ALTER TABLE '.$table.' ADD '.$this->getIndexSQLDeclaration($index);
         }
 
+        if (!$this->supportIndex()) {
+            throw Exception\PlatformException::methodNotSupported(__METHOD__);
+        }
+
         return 'CREATE INDEX '.$index->getName().
                 ' ON '.$table.
                 ' ('.implode(', ', $index->getColumnNames()).')';
@@ -583,6 +623,10 @@ abstract class AbstractPlatform implements PlatformInterface
      */
     public function getDropViewSQLQuery(Schema\View $view)
     {
+        if (!$this->supportView()) {
+            throw Exception\PlatformException::methodNotSupported(__METHOD__);
+        }
+
         return 'DROP VIEW '.$view->getName();
     }
 
@@ -615,6 +659,10 @@ abstract class AbstractPlatform implements PlatformInterface
      */
     public function getDropPrimaryKeySQLQuery(Schema\PrimaryKey $primaryKey, $table)
     {
+        if (!$this->supportPrimaryKey()) {
+            throw Exception\PlatformException::methodNotSupported(__METHOD__);
+        }
+
         return 'ALTER TABLE '.$table.' DROP CONSTRAINT '.$primaryKey->getName();
     }
 
@@ -623,6 +671,10 @@ abstract class AbstractPlatform implements PlatformInterface
      */
     public function getDropForeignKeySQLQuery(Schema\ForeignKey $foreignKey, $table)
     {
+        if (!$this->supportForeignKey()) {
+            throw Exception\PlatformException::methodNotSupported(__METHOD__);
+        }
+
         return 'ALTER TABLE '.$table.' DROP CONSTRAINT '.$foreignKey->getName();
     }
 
@@ -631,6 +683,10 @@ abstract class AbstractPlatform implements PlatformInterface
      */
     public function getDropIndexSQLQuery(Schema\Index $index, $table)
     {
+        if (!$this->supportIndex()) {
+            throw Exception\PlatformException::methodNotSupported(__METHOD__);
+        }
+
         if ($index->isUnique()) {
             return 'ALTER TABLE '.$table.' DROP CONSTRAINT '.$index->getName();
         }
@@ -808,6 +864,10 @@ abstract class AbstractPlatform implements PlatformInterface
      */
     protected function getPrimaryKeySQLDeclaration(Schema\PrimaryKey $primaryKey)
     {
+        if (!$this->supportPrimaryKey()) {
+            throw Exception\PlatformException::methodNotSupported(__METHOD__);
+        }
+
         return 'CONSTRAINT '.$primaryKey->getName().' PRIMARY KEY ('.implode(', ', $primaryKey->getColumnNames()).')';
     }
 
@@ -820,6 +880,10 @@ abstract class AbstractPlatform implements PlatformInterface
      */
     protected function getForeignKeySQLDeclaration(Schema\ForeignKey $foreignKey)
     {
+        if (!$this->supportForeignKey()) {
+            throw Exception\PlatformException::methodNotSupported(__METHOD__);
+        }
+
         return 'CONSTRAINT '.$foreignKey->getName().
                ' FOREIGN KEY'.
                ' ('.implode(', ', $foreignKey->getLocalColumnNames()).')'.
@@ -838,6 +902,10 @@ abstract class AbstractPlatform implements PlatformInterface
      */
     protected function getIndexSQLDeclaration(Schema\Index $index)
     {
+        if (!$this->supportIndex()) {
+            throw Exception\PlatformException::methodNotSupported(__METHOD__);
+        }
+
         if (!$index->isUnique()) {
             return 'INDEX '.$index->getName().' ('.implode(', ', $index->getColumnNames()).')';
         }
