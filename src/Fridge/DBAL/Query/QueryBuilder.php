@@ -50,9 +50,6 @@ class QueryBuilder
     /** @var array */
     protected $parameterCounters;
 
-    /** @var \Fridge\DBAL\Query\Expression\ExpressionBuilder */
-    protected $expressionBuilder;
-
     /**
      * Query builder constructor.
      *
@@ -61,7 +58,6 @@ class QueryBuilder
     public function __construct(ConnectionInterface $connection)
     {
         $this->connection = $connection;
-        $this->expressionBuilder = new Expression\ExpressionBuilder();
 
         $this->type = self::SELECT;
         $this->parts = array(
@@ -86,16 +82,6 @@ class QueryBuilder
     }
 
     /**
-     * Gets the expression builder.
-     *
-     * @return \Fridge\DBAL\Query\Expression\ExpressionBuilder The expression builder.
-     */
-    public function getExpressionBuilder()
-    {
-        return $this->expressionBuilder;
-    }
-
-    /**
      * Gets the query builder connection.
      *
      * @return \Fridge\DBAL\Connection\ConnectionInterface The query builder connection.
@@ -103,6 +89,16 @@ class QueryBuilder
     public function getConnection()
     {
         return $this->connection;
+    }
+
+    /**
+     * Gets the expression builder.
+     *
+     * @return \Fridge\DBAL\Query\Expression\ExpressionBuilder The expression builder.
+     */
+    public function getExpressionBuilder()
+    {
+        return $this->getConnection()->getExpressionBuilder();
     }
 
     /**

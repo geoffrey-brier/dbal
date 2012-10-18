@@ -52,6 +52,9 @@ class Connection implements ConnectionInterface
     /** @var \Fridge\DBAL\Driver\DriverInterface */
     protected $driver;
 
+    /** @var \Fridge\DBAL\Query\Expression\ExpressionBuilder */
+    protected $expressionBuilder;
+
     /** @var \Fridge\DBAL\Configuration */
     protected $configuration;
 
@@ -78,6 +81,7 @@ class Connection implements ConnectionInterface
     {
         $this->parameters = $parameters;
         $this->driver = $driver;
+        $this->expressionBuilder = new Query\Expression\ExpressionBuilder();
 
         if ($configuration === null) {
             $this->configuration = new Configuration();
@@ -130,6 +134,14 @@ class Connection implements ConnectionInterface
     public function createQueryBuilder()
     {
         return new Query\QueryBuilder($this);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getExpressionBuilder()
+    {
+        return $this->expressionBuilder;
     }
 
     /**

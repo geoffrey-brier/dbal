@@ -52,11 +52,18 @@ interface ConnectionInterface extends AdapterConnection
     function getSchemaManager();
 
     /**
-     * Get the query builder using this connection.
+     * Creates a query builder using this connection.
      *
      * @return \Fridge\DBAL\Query\QueryBuilder The query builder using the connection.
      */
     function createQueryBuilder();
+
+    /**
+     * Gets the expression builder.
+     *
+     * @return \Fridge\DBAL\Query\Expression\ExpressionBuilder The expression builder.
+     */
+    function getExpressionBuilder();
 
     /**
      * Gets the connection configuration.
