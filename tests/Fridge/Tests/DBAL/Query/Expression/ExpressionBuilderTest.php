@@ -109,6 +109,11 @@ class ExpressionBuilderTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('a LIKE b', $this->expressionBuilder->like('a', 'b'));
     }
 
+    public function testNotLike()
+    {
+        $this->assertSame('a NOT LIKE b', $this->expressionBuilder->notLike('a', 'b'));
+    }
+
     public function testisNull()
     {
         $this->assertSame('a IS NULL', $this->expressionBuilder->isNull('a'));

@@ -152,6 +152,19 @@ class ExpressionBuilder
     }
 
     /**
+     * Creates a "NOT LIKE" comparison.
+     *
+     * @param string $x The first parameter of the comparison.
+     * @param string $y The second parameter of the comparison.
+     *
+     * @return string The "NOT LIKE" comparison.
+     */
+    public function notLike($x, $y)
+    {
+        return $this->comparison($x, 'NOT LIKE', $y);
+    }
+
+    /**
      * Creates an "IS NULL" comparison.
      *
      * @param string $expression The expression.
