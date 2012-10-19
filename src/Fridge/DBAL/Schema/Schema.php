@@ -503,6 +503,7 @@ class Schema extends AbstractAsset
     {
         foreach ($this->tables as $key => $table) {
             $this->tables[$key] = clone $table;
+            $this->tables[$key]->setSchema($this);
         }
 
         foreach ($this->sequences as $key => $sequence) {

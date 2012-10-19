@@ -471,6 +471,7 @@ class SchemaTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals($table, $clone->getTable($table->getName()));
         $this->assertNotSame($table, $clone->getTable($table->getName()));
+        $this->assertSame($clone, $clone->getTable($table->getName())->getSchema());
 
         $this->assertEquals($sequence, $clone->getSequence($sequence->getName()));
         $this->assertNotSame($sequence, $clone->getSequence($sequence->getName()));
