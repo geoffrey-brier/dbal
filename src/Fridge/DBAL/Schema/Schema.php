@@ -58,6 +58,7 @@ class Schema extends AbstractAsset
      * @param array  $primaryKey  The table primary key.
      * @param array  $foreignKeys The table foreign keys.
      * @param array  $indexes     The table indexes.
+     * @param array  $checks      The table checks.
      *
      * @return \Fridge\DBAL\Schema\Table The new table.
      */
@@ -66,7 +67,8 @@ class Schema extends AbstractAsset
         array $columns = array(),
         array $primaryKey = array(),
         array $foreignKeys = array(),
-        array $indexes = array()
+        array $indexes = array(),
+        array $checks = array()
     )
     {
         $table = new Table($name);
@@ -120,6 +122,14 @@ class Schema extends AbstractAsset
             }
 
             $table->createIndex($index['columns'], $index['unique'], $index['name']);
+        }
+
+        foreach ($checks as $check) {
+            if (!isset($check['name'])) {
+                $check['name'] = null;
+            }
+
+            $table->createCheck($check['definition'], $check['name']);
         }
 
         $this->addTable($table);

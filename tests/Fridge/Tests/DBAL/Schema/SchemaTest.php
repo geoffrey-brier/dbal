@@ -115,6 +115,9 @@ class SchemaTest extends \PHPUnit_Framework_TestCase
             ),
             array(
                 array('name' => 'bar', 'columns' => array('bar'), 'unique' => true),
+            ),
+            array(
+                array('name' => 'baz', 'definition' => 'baz'),
             )
         );
 
@@ -141,6 +144,9 @@ class SchemaTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($table->hasIndex('bar'));
         $this->assertSame(array('bar'), $table->getIndex('bar')->getColumnNames());
         $this->assertTrue($table->getIndex('bar')->isUnique());
+
+        $this->assertTrue($table->hasCheck('baz'));
+        $this->assertSame('baz', $table->getCheck('baz')->getDefinition());
     }
 
     public function testCreateTableWithMinimalOptions()
@@ -157,6 +163,9 @@ class SchemaTest extends \PHPUnit_Framework_TestCase
             ),
             array(
                 array('columns' => array('bar')),
+            ),
+            array(
+                array('definition' => 'baz'),
             )
         );
 
@@ -175,6 +184,9 @@ class SchemaTest extends \PHPUnit_Framework_TestCase
 
         $this->assertSame(array('bar'), $indexes[1]->getColumnNames());
         $this->assertFalse($indexes[1]->isUnique());
+
+        $checks = array_values($table->getChecks());
+        $this->assertSame('baz', $checks[0]->getDefinition());
     }
 
     public function testSetTablesDropPreviousTables()
