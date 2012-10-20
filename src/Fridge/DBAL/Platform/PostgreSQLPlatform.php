@@ -11,7 +11,7 @@
 
 namespace Fridge\DBAL\Platform;
 
-use Fridge\DBAL\Schema\Table,
+use Fridge\DBAL\Schema,
     Fridge\DBAL\Type\Type;
 
 /**
@@ -252,7 +252,7 @@ class PostgreSQLPlatform extends AbstractPlatform
     /**
      * {@inheritdoc}
      */
-    public function getCreateTableSQLQueries(Table $table, array $flags = array())
+    public function getCreateTableSQLQueries(Schema\Table $table, array $flags = array())
     {
         $originalFlags = $flags;
 
@@ -260,9 +260,65 @@ class PostgreSQLPlatform extends AbstractPlatform
         $queries = parent::getCreateTableSQLQueries($table, $flags);
 
         if (!isset($originalFlags['index']) || $originalFlags['index']) {
-            foreach ($this->getCreateTableIndexes($table) as $index) {
+            foreach ($table->getFilteredIndexes() as $index) {
                 $queries[] = $this->getCreateIndexSQLQuery($index, $table->getName());
             }
+        }
+
+        return $queries;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAlterColumnSQLQueries(Schema\Diff\ColumnDiff $columnDiff, $table)
+    {
+        $queries = array();
+
+        $alterTableQuery = 'ALTER TABLE '.$table;
+        $alterColumnQuery = $alterTableQuery.' ALTER COLUMN '.$columnDiff->getNewAsset()->getName();
+
+        if ($columnDiff->getOldAsset()->getName() !== $columnDiff->getNewAsset()->getName()) {
+            $queries[] = $alterTableQuery.' RENAME COLUMN '.$columnDiff->getOldAsset()->getName().
+                         ' TO '.$columnDiff->getNewAsset()->getName();
+        }
+
+        if (in_array('type', $columnDiff->getDifferences())
+            || in_array('length', $columnDiff->getDifferences())
+            || in_array('precision', $columnDiff->getDifferences())
+            || in_array('scale', $columnDiff->getDifferences())) {
+            $typeDeclaration = $columnDiff->getNewAsset()->getType()->getSQLDeclaration(
+                $this,
+                $columnDiff->getNewAsset()->toArray()
+            );
+
+            $queries[] = $alterColumnQuery.' TYPE '.$typeDeclaration;
+        }
+
+        if (in_array('not_null', $columnDiff->getDifferences())) {
+            if ($columnDiff->getNewAsset()->isNotNull()) {
+                $notNullDeclaration = ' SET NOT NULL';
+            } else {
+                $notNullDeclaration = ' DROP NOT NULL';
+            }
+
+            $queries[] = $alterColumnQuery.$notNullDeclaration;
+        }
+
+        if (in_array('default', $columnDiff->getDifferences())) {
+            if ($columnDiff->getNewAsset()->getDefault() !== null) {
+                $defaultDeclaration = ' SET DEFAULT \''.$columnDiff->getNewAsset()->getDefault().'\'';
+            } else {
+                $defaultDeclaration = ' DROP DEFAULT';
+            }
+
+            $queries[] = $alterColumnQuery.$defaultDeclaration;
+        }
+
+        if (in_array('comment', $columnDiff->getDifferences())
+            || (in_array('type', $columnDiff->getDifferences())
+            && $this->hasMandatoryType($columnDiff->getNewAsset()->getType()->getName()))) {
+            $queries[] = $this->getCreateColumnCommentSQLQuery($columnDiff->getNewAsset(), $table);
         }
 
         return $queries;

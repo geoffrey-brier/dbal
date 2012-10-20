@@ -146,4 +146,115 @@ class PostgreSQLPlatformTest extends \PHPUnit_Framework_TestCase
             $this->platform->getCreateTableSQLQueries($table, array('index' => false))
         );
     }
+
+    public function testCreateColumnSQLQueries()
+    {
+        $column = new Schema\Column('foo', Type::getType(Type::INTEGER), array('comment' => 'foo'));
+
+        $this->assertSame(
+            array(
+                'ALTER TABLE foo ADD COLUMN foo INT',
+                'COMMENT ON COLUMN foo.foo IS \'foo\'',
+            ),
+            $this->platform->getCreateColumnSQLQueries($column, 'foo')
+        );
+    }
+
+    public function testAlterColumnSQLQueriesWithNameDifference()
+    {
+        $columnDiff = new Schema\Diff\ColumnDiff(
+            new Schema\Column('foo', Type::getType(Type::INTEGER)),
+            new Schema\Column('bar', Type::getType(Type::INTEGER)),
+            array()
+        );
+
+        $this->assertSame(
+            array('ALTER TABLE foo RENAME COLUMN foo TO bar'),
+            $this->platform->getAlterColumnSQLQueries($columnDiff, 'foo')
+        );
+    }
+
+    public function testAlterColumnSQLQueriesWithTypeDifference()
+    {
+        $columnDiff = new Schema\Diff\ColumnDiff(
+            new Schema\Column('foo', Type::getType(Type::INTEGER)),
+            new Schema\Column('foo', Type::getType(Type::INTEGER)),
+            array('type')
+        );
+
+        $this->assertSame(
+            array('ALTER TABLE foo ALTER COLUMN foo TYPE INT'),
+            $this->platform->getAlterColumnSQLQueries($columnDiff, 'foo')
+        );
+    }
+
+    public function testAlterColumnSQLQueriesWithAddedNotNullDifference()
+    {
+        $columnDiff = new Schema\Diff\ColumnDiff(
+            new Schema\Column('foo', Type::getType(Type::INTEGER)),
+            new Schema\Column('foo', Type::getType(Type::INTEGER), array('not_null' => true)),
+            array('not_null')
+        );
+
+        $this->assertSame(
+            array('ALTER TABLE foo ALTER COLUMN foo SET NOT NULL'),
+            $this->platform->getAlterColumnSQLQueries($columnDiff, 'foo')
+        );
+    }
+
+    public function testAlterColumnSQLQueriesWithDroppedNotNullDifference()
+    {
+        $columnDiff = new Schema\Diff\ColumnDiff(
+            new Schema\Column('foo', Type::getType(Type::INTEGER)),
+            new Schema\Column('foo', Type::getType(Type::INTEGER)),
+            array('not_null')
+        );
+
+        $this->assertSame(
+            array('ALTER TABLE foo ALTER COLUMN foo DROP NOT NULL'),
+            $this->platform->getAlterColumnSQLQueries($columnDiff, 'foo')
+        );
+    }
+
+    public function testAlterColumnSQLQueriesWithAddedDefaultDifference()
+    {
+        $columnDiff = new Schema\Diff\ColumnDiff(
+            new Schema\Column('foo', Type::getType(Type::INTEGER)),
+            new Schema\Column('foo', Type::getType(Type::INTEGER), array('default' => 'foo')),
+            array('default')
+        );
+
+        $this->assertSame(
+            array('ALTER TABLE foo ALTER COLUMN foo SET DEFAULT \'foo\''),
+            $this->platform->getAlterColumnSQLQueries($columnDiff, 'foo')
+        );
+    }
+
+    public function testAlterColumnSQLQueriesWithDroppedDefaultDifference()
+    {
+        $columnDiff = new Schema\Diff\ColumnDiff(
+            new Schema\Column('foo', Type::getType(Type::INTEGER)),
+            new Schema\Column('foo', Type::getType(Type::INTEGER)),
+            array('default')
+        );
+
+        $this->assertSame(
+            array('ALTER TABLE foo ALTER COLUMN foo DROP DEFAULT'),
+            $this->platform->getAlterColumnSQLQueries($columnDiff, 'foo')
+        );
+    }
+
+    public function testAlterColumnSQLQueriesWithCommentDifference()
+    {
+        $columnDiff = new Schema\Diff\ColumnDiff(
+            new Schema\Column('foo', Type::getType(Type::INTEGER)),
+            new Schema\Column('foo', Type::getType(Type::INTEGER), array('comment' => 'foo')),
+            array('comment')
+        );
+
+        $this->assertSame(
+            array('COMMENT ON COLUMN foo.foo IS \'foo\''),
+            $this->platform->getAlterColumnSQLQueries($columnDiff, 'foo')
+        );
+    }
 }

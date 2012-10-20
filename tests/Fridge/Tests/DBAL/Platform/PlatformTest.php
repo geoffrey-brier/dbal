@@ -425,6 +425,16 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('CREATE VIEW foo AS bar', $this->platform->getCreateViewSQLQuery($view));
     }
 
+    public function testCreateColumnSQLQueries()
+    {
+        $column = new Schema\Column('foo', Type::getType(Type::INTEGER), array('comment' => 'foo'));
+
+        $this->assertSame(
+            array('ALTER TABLE foo ADD COLUMN foo INT COMMENT \'foo\''),
+            $this->platform->getCreateColumnSQLQueries($column, 'foo')
+        );
+    }
+
     public function testCreateConstraintSQLQueryWithPrimaryKey()
     {
         $primaryKey = new Schema\PrimaryKey('foo', array('bar'));
@@ -560,37 +570,41 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public function testCreateColumnCommentSQLQuery()
+    public function testRenameDatabaseSQLQueries()
     {
-        $column = new Schema\Column('foo', Type::getType(Type::STRING), array('comment' => 'bar'));
+        $oldSchema = new Schema\Schema('foo');
+        $newSchema = new Schema\Schema('bar');
+
+        $schemaDiff = new Schema\Diff\SchemaDiff($oldSchema, $newSchema);
 
         $this->assertSame(
-            'COMMENT ON COLUMN foo.foo IS \'bar\'',
-            $this->platform->getCreateColumnCommentSQLQuery($column, 'foo')
+            array('ALTER DATABASE foo RENAME TO bar'),
+            $this->platform->getRenameDatabaseSQLQueries($schemaDiff)
         );
     }
 
-    public function testCreateColumnCommentsSQLQueriesWithColumnComments()
+    public function testRenameTableSQLQuery()
     {
-        $columns = array(
-            new Schema\Column('foo', Type::getType(Type::STRING), array('comment' => 'foo')),
-            new Schema\Column('bar', Type::getType(Type::STRING), array('comment' => 'bar')),
+        $oldTable = new Schema\Table('foo');
+        $newTable = new Schema\Table('bar');
+
+        $tableDiff = new Schema\Diff\TableDiff($oldTable, $newTable);
+
+        $this->assertSame('ALTER TABLE foo RENAME TO bar', $this->platform->getRenameTableSQLQuery($tableDiff));
+    }
+
+    public function testAlterColumnSQLQueries()
+    {
+        $columnDiff = new Schema\Diff\ColumnDiff(
+            new Schema\Column('foo', Type::getType(Type::INTEGER)),
+            new Schema\Column('bar', Type::getType(Type::INTEGER), array('comment' => 'foo')),
+            array()
         );
 
         $this->assertSame(
-            array('COMMENT ON COLUMN foo.foo IS \'foo\'', 'COMMENT ON COLUMN foo.bar IS \'bar\''),
-            $this->platform->getCreateColumnCommentsSQLQueries($columns, 'foo')
+            array('ALTER TABLE foo ALTER COLUMN foo bar INT COMMENT \'foo\''),
+            $this->platform->getAlterColumnSQLQueries($columnDiff, 'foo')
         );
-    }
-
-    public function testCreateColumnCommentsSQLQueriesWithoutTableColumnsComments()
-    {
-        $columns = array(
-            new Schema\Column('foo', Type::getType(Type::STRING)),
-            new Schema\Column('bar', Type::getType(Type::STRING)),
-        );
-
-        $this->assertEmpty($this->platform->getCreateColumnCommentsSQLQueries($columns, 'foo'));
     }
 
     public function testDropDatabaseSQLQuery()
@@ -617,6 +631,16 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
         $table = new Schema\Table('foo');
 
         $this->assertSame('DROP TABLE foo', $this->platform->getDropTableSQLQuery($table));
+    }
+
+    public function testDropColumnSQLQuery()
+    {
+        $column = new Schema\Column('foo', Type::getType(Type::INTEGER));
+
+        $this->assertSame(
+            'ALTER TABLE foo DROP COLUMN foo',
+            $this->platform->getDropColumnSQLQuery($column, 'foo')
+        );
     }
 
     public function testDropConstraintSQLQueryWithPrimaryKey()

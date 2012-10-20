@@ -514,7 +514,7 @@ abstract class AbstractPlatform implements PlatformInterface
         }
 
         if (!isset($flags['index']) || $flags['index']) {
-            foreach ($this->getCreateTableIndexes($table) as $index) {
+            foreach ($table->getFilteredIndexes() as $index) {
                 $query .= ', '.$this->getIndexSQLDeclaration($index);
             }
         }
@@ -534,6 +534,22 @@ abstract class AbstractPlatform implements PlatformInterface
         $query .= ')';
 
         array_unshift($queries, $query);
+
+        return $queries;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getCreateColumnSQLQueries(Schema\Column $column, $table)
+    {
+        $queries = array('ALTER TABLE '.$table.' ADD COLUMN '.$this->getColumnSQLDeclaration($column));
+
+        if (!$this->supportInlineTableColumnComment()
+            && ($this->hasMandatoryType($column->getType()->getName())
+            || ($column->getComment() !== null))) {
+            $queries[] = $this->getCreateColumnCommentSQLQuery($column, $table);
+        }
 
         return $queries;
     }
@@ -607,25 +623,40 @@ abstract class AbstractPlatform implements PlatformInterface
     /**
      * {@inheritdoc}
      */
-    public function getCreateColumnCommentsSQLQueries(array $columns, $table)
+    public function getRenameDatabaseSQLQueries(Schema\Diff\SchemaDiff $schemaDiff)
     {
-        $queries = array();
-
-        foreach ($columns as $column) {
-            if ($this->hasMandatoryType($column->getType()->getName()) || ($column->getComment() !== null)) {
-                $queries[] = $this->getCreateColumnCommentSQLQuery($column, $table);
-            }
-        }
-
-        return $queries;
+        return array(
+            'ALTER DATABASE '.$schemaDiff->getOldAsset()->getName().
+            ' RENAME TO '.$schemaDiff->getNewAsset()->getName()
+        );
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getCreateColumnCommentSQLQuery(Schema\Column $column, $table)
+    public function getRenameTableSQLQuery(Schema\Diff\TableDiff $tableDiff)
     {
-        return 'COMMENT ON COLUMN '.$table.'.'.$column->getName().' IS '.$this->getColumnCommentSQLDeclaration($column);
+        return 'ALTER TABLE '.$tableDiff->getOldAsset()->getName().
+               ' RENAME TO '.$tableDiff->getNewAsset()->getName();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAlterColumnSQLQueries(Schema\Diff\ColumnDiff $columnDiff, $table)
+    {
+        $queries = array(
+            'ALTER TABLE '.$table.' ALTER COLUMN '.$columnDiff->getOldAsset()->getName().' '.
+            $this->getColumnSQLDeclaration($columnDiff->getNewAsset())
+        );
+
+        if (!$this->supportInlineTableColumnComment()
+            && ($this->hasMandatoryType($columnDiff->getNewAsset()->getType()->getName())
+            || ($columnDiff->getNewAsset()->getComment() !== null))) {
+            $queries[] = $this->getCreateColumnCommentSQLQuery($columnDiff->getNewAsset(), $table);
+        }
+
+        return $queries;
     }
 
     /**
@@ -666,6 +697,14 @@ abstract class AbstractPlatform implements PlatformInterface
     public function getDropTableSQLQuery(Schema\Table $table)
     {
         return 'DROP TABLE '.$table->getName();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getDropColumnSQLQuery(Schema\Column $column, $table)
+    {
+        return 'ALTER TABLE '.$table.' DROP COLUMN '.$column->getName();
     }
 
     /**
@@ -834,30 +873,6 @@ abstract class AbstractPlatform implements PlatformInterface
     }
 
     /**
-     * Gets the indexes needed for the create table SQL query.
-     *
-     * @param \Fridge\DBAL\Schema\Table $table The table.
-     *
-     * @return array The indexes needed for the created table SQL query.
-    */
-    protected function getCreateTableIndexes(Schema\Table $table)
-    {
-        if (!$table->hasPrimaryKey()) {
-            return $table->getIndexes();
-        }
-
-        $indexes = array();
-
-        foreach ($table->getIndexes() as $index) {
-            if (!$index->hasSameColumnNames($table->getPrimaryKey()->getColumnNames())) {
-                $indexes[] = $index;
-            }
-        }
-
-        return $indexes;
-    }
-
-    /**
      * Gets the columns SQL declaration.
      *
      * @param array $columns The columns.
@@ -977,6 +992,40 @@ abstract class AbstractPlatform implements PlatformInterface
         }
 
         return 'CONSTRAINT '.$check->getName().' CHECK ('.$check->getDefinition().')';
+    }
+
+    /**
+     * Gets the create column comments SQL queries.
+     *
+     * @param array  $columns The columns.
+     * @param string $table   The table name.
+     *
+     * @return array The create column comments SQL queries.
+     */
+    protected function getCreateColumnCommentsSQLQueries(array $columns, $table)
+    {
+        $queries = array();
+
+        foreach ($columns as $column) {
+            if ($this->hasMandatoryType($column->getType()->getName()) || ($column->getComment() !== null)) {
+                $queries[] = $this->getCreateColumnCommentSQLQuery($column, $table);
+            }
+        }
+
+        return $queries;
+    }
+
+    /**
+     * Gets the create column comment SQL query.
+     *
+     * @param \Fridge\DBAL\Schema\Column $column The column.
+     * @param string                     $table  The table name.
+     *
+     * @return string The create column comment SQL query.
+     */
+    protected function getCreateColumnCommentSQLQuery(Schema\Column $column, $table)
+    {
+        return 'COMMENT ON COLUMN '.$table.'.'.$column->getName().' IS '.$this->getColumnCommentSQLDeclaration($column);
     }
 
     /**

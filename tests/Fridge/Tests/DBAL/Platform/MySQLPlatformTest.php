@@ -201,16 +201,42 @@ class MySQLPlatformTest extends \PHPUnit_Framework_TestCase
 
     public function testCreateTableSQLQueries()
     {
-        $table = new Schema\Table(
-            'foo',
-            array(
-                new Schema\Column('foo', Type::getType(Type::INTEGER)),
-            )
-        );
+        $table = new Schema\Table('foo', array(new Schema\Column('foo', Type::getType(Type::INTEGER))));
 
         $sqls = $this->platform->getCreateTableSQLQueries($table);
 
         $this->assertSame('ENGINE = InnoDB', substr($sqls[0], -15));
+    }
+
+    public function testRenameDatabaseSQLQuery()
+    {
+        $oldTable = new Schema\Schema('foo', array(new Schema\Table('foo')));
+        $newTable = new Schema\Schema('bar', array(new Schema\Table('foo')));
+
+        $schemaDiff = new Schema\Diff\SchemaDiff($oldTable, $newTable);
+
+        $this->assertSame(
+            array(
+                'CREATE DATABASE bar',
+                'RENAME TABLE foo.foo TO bar.foo',
+                'DROP DATABASE foo',
+            ),
+            $this->platform->getRenameDatabaseSQLQueries($schemaDiff)
+        );
+    }
+
+    public function testAlterColumnSQLQueries()
+    {
+        $columnDiff = new Schema\Diff\ColumnDiff(
+            new Schema\Column('foo', Type::getType(Type::INTEGER)),
+            new Schema\Column('bar', Type::getType(Type::INTEGER)),
+            array()
+        );
+
+        $this->assertSame(
+            array('ALTER TABLE foo CHANGE COLUMN foo bar INT'),
+            $this->platform->getAlterColumnSQLQueries($columnDiff, 'foo')
+        );
     }
 
     /**
@@ -239,7 +265,7 @@ class MySQLPlatformTest extends \PHPUnit_Framework_TestCase
         $index = new Schema\Index('foo', array(), true);
 
         $this->assertSame(
-            'DROP INDEX foo ON bar',
+            'ALTER TABLE bar DROP INDEX foo',
             $this->platform->getDropIndexSQLQuery($index, 'bar')
         );
     }

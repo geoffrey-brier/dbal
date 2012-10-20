@@ -11,6 +11,8 @@
 
 namespace Fridge\DBAL\SchemaManager;
 
+use Fridge\DBAL\Schema\Diff\SchemaDiff;
+
 /**
  * Postgre SQL schema manager.
  *
@@ -18,6 +20,52 @@ namespace Fridge\DBAL\SchemaManager;
  */
 class PostgreSQLSchemaManager extends AbstractSchemaManager
 {
+    /**
+     * {@inheritdoc}
+     */
+    public function alterSchema(SchemaDiff $schemaDiff)
+    {
+        $sqlCollector = new SQLCollector\AlterSchemaSQLCollector($this->getConnection()->getPlatform());
+        $sqlCollector->collect($schemaDiff);
+
+        $queries = array_merge(
+            $sqlCollector->getDropSequenceQueries(),
+            $sqlCollector->getDropViewQueries(),
+            $sqlCollector->getRenameTableQueries(),
+            $sqlCollector->getDropCheckQueries(),
+            $sqlCollector->getDropForeignKeyQueries(),
+            $sqlCollector->getDropIndexQueries(),
+            $sqlCollector->getDropPrimaryKeyQueries(),
+            $sqlCollector->getDropTableQueries(),
+            $sqlCollector->getDropColumnQueries(),
+            $sqlCollector->getAlterColumnQueries(),
+            $sqlCollector->getCreateColumnQueries(),
+            $sqlCollector->getCreateTableQueries(),
+            $sqlCollector->getCreatePrimaryKeyQueries(),
+            $sqlCollector->getCreateIndexQueries(),
+            $sqlCollector->getCreateForeignKeyQueries(),
+            $sqlCollector->getCreateCheckQueries(),
+            $sqlCollector->getCreateViewQueries(),
+            $sqlCollector->getCreateSequenceQueries()
+        );
+
+        foreach ($queries as $query) {
+            $this->getConnection()->executeUpdate($query);
+        }
+
+        if ($schemaDiff->getOldAsset()->getName() !== $schemaDiff->getNewAsset()->getName()) {
+            $currentDatabase = $this->getConnection()->getDatabase();
+
+            $this->getConnection()->setDatabase(null);
+
+            foreach ($this->connection->getPlatform()->getRenameDatabaseSQLQueries($schemaDiff) as $query) {
+                $this->getConnection()->executeUpdate($query);
+            }
+
+            $this->getConnection()->setDatabase($currentDatabase);
+        }
+    }
+
     /**
      * {@inheritdoc}
      *

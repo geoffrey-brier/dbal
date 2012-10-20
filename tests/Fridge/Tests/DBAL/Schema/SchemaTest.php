@@ -107,7 +107,7 @@ class SchemaTest extends \PHPUnit_Framework_TestCase
                 array('name' => 'foo', 'local_columns' => array('foo'), 'foreign_table' => 'bar', 'foreign_columns' => array('bar')),
             ),
             array(
-                array('name' => 'foo', 'columns' => array('bar'), 'unique' => true),
+                array('name' => 'bar', 'columns' => array('bar'), 'unique' => true),
             )
         );
 
@@ -129,9 +129,9 @@ class SchemaTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('bar', $table->getForeignKey('foo')->getForeignTableName());
         $this->assertSame(array('bar'), $table->getForeignKey('foo')->getForeignColumnNames());
 
-        $this->assertTrue($table->hasIndex('foo'));
-        $this->assertSame(array('bar'), $table->getIndex('foo')->getColumnNames());
-        $this->assertTrue($table->getIndex('foo')->isUnique());
+        $this->assertTrue($table->hasIndex('bar'));
+        $this->assertSame(array('bar'), $table->getIndex('bar')->getColumnNames());
+        $this->assertTrue($table->getIndex('bar')->isUnique());
     }
 
     public function testCreateTableWithMinimalOptions()

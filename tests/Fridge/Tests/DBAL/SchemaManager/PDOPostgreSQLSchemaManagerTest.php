@@ -20,7 +20,7 @@ use Fridge\DBAL\SchemaManager\PostgreSQLSchemaManager,
  *
  * @author GeLo <geloen.eric@gmail.com>
  */
-class PDOPgSQLSchemaManagerTest extends AbstractSchemaManagerTest
+class PDOPostgreSQLSchemaManagerTest extends AbstractSchemaManagerTest
 {
     /**
      * {@inheritdoc}
