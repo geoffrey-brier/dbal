@@ -92,10 +92,20 @@ class Schema extends AbstractAsset
                 $foreignKey['name'] = null;
             }
 
+            if (!isset($foreignKey['on_delete'])) {
+                $foreignKey['on_delete'] = ForeignKey::RESTRICT;
+            }
+
+            if (!isset($foreignKey['on_update'])) {
+                $foreignKey['on_update'] = ForeignKey::RESTRICT;
+            }
+
             $table->createForeignKey(
                 $foreignKey['local_columns'],
                 $foreignKey['foreign_table'],
                 $foreignKey['foreign_columns'],
+                $foreignKey['on_delete'],
+                $foreignKey['on_update'],
                 $foreignKey['name']
             );
         }

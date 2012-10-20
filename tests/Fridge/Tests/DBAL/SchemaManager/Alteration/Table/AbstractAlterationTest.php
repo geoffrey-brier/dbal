@@ -107,7 +107,14 @@ abstract class AbstractAlterationTest extends BaseAlteration
 
         $this->oldForeignKeyTable->createColumn('foo', Type::STRING, array('length' => 50));
         $this->oldForeignKeyTable->createColumn('bar', Type::STRING, array('length' => 50));
-        $this->oldForeignKeyTable->createForeignKey(array('foo'), 'foo', array('foo'), 'fk_foo');
+        $this->oldForeignKeyTable->createForeignKey(
+            array('foo'),
+            'foo',
+            array('foo'),
+            Schema\ForeignKey::RESTRICT,
+            Schema\ForeignKey::RESTRICT,
+            'fk_foo'
+        );
 
         $this->setUpForeignKeyTable();
     }
@@ -243,7 +250,14 @@ abstract class AbstractAlterationTest extends BaseAlteration
     public function testCreateForeignKey()
     {
         $this->setUpForeignKey();
-        $this->newForeignKeyTable->createForeignKey(array('bar'), 'foo', array('foo'), 'fk_bar');
+        $this->newForeignKeyTable->createForeignKey(
+            array('bar'),
+            'foo',
+            array('foo'),
+            Schema\ForeignKey::RESTRICT,
+            Schema\ForeignKey::RESTRICT,
+            'fk_bar'
+        );
 
         $this->assertForeignKeyAlteration();
     }
@@ -255,7 +269,14 @@ abstract class AbstractAlterationTest extends BaseAlteration
         $this->newForeignKeyTable->dropForeignKey('fk_foo');
         $this->newForeignKeyTable->dropIndex('idx_fk_foo');
 
-        $this->newForeignKeyTable->createForeignKey(array('bar'), 'foo', array('foo'), 'fk_foo');
+        $this->newForeignKeyTable->createForeignKey(
+            array('bar'),
+            'foo',
+            array('foo'),
+            Schema\ForeignKey::RESTRICT,
+            Schema\ForeignKey::RESTRICT,
+            'fk_foo'
+        );
 
         $this->assertForeignKeyAlteration();
     }

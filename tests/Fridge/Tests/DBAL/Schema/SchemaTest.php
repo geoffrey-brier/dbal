@@ -11,7 +11,7 @@
 
 namespace Fridge\Tests\DBAL\Schema;
 
-use Fridge\DBAL\Schema\Schema,
+use Fridge\DBAL\Schema,
     Fridge\DBAL\Type\Type;
 
 /**
@@ -56,7 +56,7 @@ class SchemaTest extends \PHPUnit_Framework_TestCase
             ->method('getName')
             ->will($this->returnValue('foo'));
 
-        $this->schema = new Schema('foo');
+        $this->schema = new Schema\Schema('foo');
     }
 
     /**
@@ -104,7 +104,14 @@ class SchemaTest extends \PHPUnit_Framework_TestCase
             ),
             array('name' => 'foo', 'columns' => array('foo')),
             array(
-                array('name' => 'foo', 'local_columns' => array('foo'), 'foreign_table' => 'bar', 'foreign_columns' => array('bar')),
+                array(
+                    'name'            => 'foo',
+                    'local_columns'   => array('foo'),
+                    'foreign_table'   => 'bar',
+                    'foreign_columns' => array('bar'),
+                    'on_delete'       => Schema\ForeignKey::CASCADE,
+                    'on_update'       => Schema\ForeignKey::RESTRICT,
+                ),
             ),
             array(
                 array('name' => 'bar', 'columns' => array('bar'), 'unique' => true),
@@ -128,6 +135,8 @@ class SchemaTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(array('foo'), $table->getForeignKey('foo')->getLocalColumnNames());
         $this->assertSame('bar', $table->getForeignKey('foo')->getForeignTableName());
         $this->assertSame(array('bar'), $table->getForeignKey('foo')->getForeignColumnNames());
+        $this->assertSame(Schema\ForeignKey::CASCADE, $table->getForeignKey('foo')->getOnDelete());
+        $this->assertSame(Schema\ForeignKey::RESTRICT, $table->getForeignKey('foo')->getOnUpdate());
 
         $this->assertTrue($table->hasIndex('bar'));
         $this->assertSame(array('bar'), $table->getIndex('bar')->getColumnNames());

@@ -341,7 +341,14 @@ abstract class AbstractAlterationTest extends BaseAlteration
 
         $this->setUpSchema();
 
-        $this->newSchema->getTable($table2->getName())->createForeignKey(array('foo'), 'foo', array('foo'), 'fk_foo');
+        $this->newSchema->getTable($table2->getName())->createForeignKey(
+            array('foo'),
+            'foo',
+            array('foo'),
+            Schema\ForeignKey::RESTRICT,
+            Schema\ForeignKey::RESTRICT,
+            'fk_foo'
+        );
 
         $this->assertAlteration();
     }
@@ -354,7 +361,14 @@ abstract class AbstractAlterationTest extends BaseAlteration
 
         $table2 = $this->oldSchema->createTable('bar');
         $table2->createColumn('foo', Type::STRING, array('length' => 50));
-        $foreignKey = $table2->createForeignKey(array('foo'), 'foo', array('foo'), 'fk_foo');
+        $foreignKey = $table2->createForeignKey(
+            array('foo'),
+            'foo',
+            array('foo'),
+            Schema\ForeignKey::RESTRICT,
+            Schema\ForeignKey::RESTRICT,
+            'fk_foo'
+        );
 
         $this->setUpSchema();
 

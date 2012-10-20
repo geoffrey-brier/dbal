@@ -11,7 +11,8 @@
 
 namespace Fridge\Tests\DBAL\SchemaManager\Alteration\Schema;
 
-use Fridge\DBAL\Type\Type;
+use Fridge\DBAL\Schema\ForeignKey,
+    Fridge\DBAL\Type\Type;
 
 /**
  * Base MySQL schema alteration test case
@@ -126,7 +127,14 @@ abstract class AbstractMySQLAlterationTest extends AbstractAlterationTest
 
         $this->setUpSchema();
 
-        $this->newSchema->getTable($table2->getName())->createForeignKey(array('foo'), 'foo', array('foo'), 'fk_foo');
+        $this->newSchema->getTable($table2->getName())->createForeignKey(
+            array('foo'),
+            'foo',
+            array('foo'),
+            ForeignKey::RESTRICT,
+            ForeignKey::RESTRICT,
+            'fk_foo'
+        );
 
         $this->assertAlteration();
     }
@@ -139,7 +147,14 @@ abstract class AbstractMySQLAlterationTest extends AbstractAlterationTest
 
         $table2 = $this->oldSchema->createTable('bar');
         $table2->createColumn('foo', Type::STRING, array('length' => 50));
-        $foreignKey = $table2->createForeignKey(array('foo'), 'foo', array('foo'), 'fk_foo');
+        $foreignKey = $table2->createForeignKey(
+            array('foo'),
+            'foo',
+            array('foo'),
+            ForeignKey::RESTRICT,
+            ForeignKey::RESTRICT,
+            'fk_foo'
+        );
 
         $this->setUpSchema();
 

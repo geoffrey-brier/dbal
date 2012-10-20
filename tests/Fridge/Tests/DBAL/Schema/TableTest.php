@@ -11,7 +11,7 @@
 
 namespace Fridge\Tests\DBAL\Schema;
 
-use Fridge\DBAL\Schema\Table,
+use Fridge\DBAL\Schema,
     Fridge\DBAL\Type\Type;
 
 /**
@@ -99,7 +99,7 @@ class TableTest extends \PHPUnit_Framework_TestCase
             ->method('getDefinition')
             ->will($this->returnValue('bar'));
 
-        $this->table = new Table('foo');
+        $this->table = new Schema\Table('foo');
     }
 
     /**
@@ -134,7 +134,7 @@ class TableTest extends \PHPUnit_Framework_TestCase
 
     public function testInitialStateWithPrimaryKey()
     {
-        $this->table = new Table('foo', array($this->columnMock), $this->primaryKeyMock);
+        $this->table = new Schema\Table('foo', array($this->columnMock), $this->primaryKeyMock);
 
         $this->assertSame($this->primaryKeyMock, $this->table->getPrimaryKey());
     }
@@ -369,7 +369,14 @@ class TableTest extends \PHPUnit_Framework_TestCase
     {
         $this->table->addColumn($this->columnMock);
 
-        $foreignKey = $this->table->createForeignKey(array('foo'), 'bar', array('bar'), 'foo');
+        $foreignKey = $this->table->createForeignKey(
+            array('foo'),
+            'bar',
+            array('bar'),
+            Schema\ForeignKey::CASCADE,
+            Schema\ForeignKey::RESTRICT,
+            'foo'
+        );
 
         $this->assertTrue($this->table->hasForeignKey('foo'));
 
@@ -377,6 +384,8 @@ class TableTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(array('foo'), $foreignKey->getLocalColumnNames());
         $this->assertSame('bar', $foreignKey->getForeignTableName());
         $this->assertSame(array('bar'), $foreignKey->getForeignColumnNames());
+        $this->assertSame(Schema\ForeignKey::CASCADE, $foreignKey->getOnDelete());
+        $this->assertSame(Schema\ForeignKey::RESTRICT, $foreignKey->getOnUpdate());
 
         $indexes = array_values($this->table->getIndexes());
         $this->assertSame(array('foo'), $indexes[0]->getColumnNames());
@@ -386,7 +395,14 @@ class TableTest extends \PHPUnit_Framework_TestCase
     {
         $this->table->addColumn($this->columnMock);
 
-        $foreignKey = $this->table->createForeignKey(array('foo'), new Table('bar'), array('bar'), 'foo');
+        $foreignKey = $this->table->createForeignKey(
+            array('foo'),
+            new Schema\Table('bar'),
+            array('bar'),
+            Schema\ForeignKey::CASCADE,
+            Schema\ForeignKey::RESTRICT,
+            'foo'
+        );
 
         $this->assertTrue($this->table->hasForeignKey('foo'));
 
@@ -394,6 +410,8 @@ class TableTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(array('foo'), $foreignKey->getLocalColumnNames());
         $this->assertSame('bar', $foreignKey->getForeignTableName());
         $this->assertSame(array('bar'), $foreignKey->getForeignColumnNames());
+        $this->assertSame(Schema\ForeignKey::CASCADE, $foreignKey->getOnDelete());
+        $this->assertSame(Schema\ForeignKey::RESTRICT, $foreignKey->getOnUpdate());
     }
 
     public function testSetForeignKeysDropPreviousForeignKeys()
@@ -847,7 +865,14 @@ class TableTest extends \PHPUnit_Framework_TestCase
         $column2 = $this->table->createColumn('bar', Type::INTEGER);
 
         $primaryKey = $this->table->createPrimaryKey(array('foo'), 'pk');
-        $foreignKey = $this->table->createForeignKey(array('bar'), 'bar', array('bar'), 'fk');
+        $foreignKey = $this->table->createForeignKey(
+            array('bar'),
+            'bar',
+            array('bar'),
+            Schema\ForeignKey::CASCADE,
+            Schema\ForeignKey::NO_ACTION,
+            'fk'
+        );
         $index = $this->table->createIndex(array('bar'), true, 'idx');
         $check = $this->table->createCheck('foo', 'ck');
 

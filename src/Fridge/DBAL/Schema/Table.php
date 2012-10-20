@@ -319,17 +319,34 @@ class Table extends AbstractAsset
      * @param array                            $localColumnNames   The foreign key local column names.
      * @param string|\Fridge\DBAL\Schema\Table $foreignTable       The foreign key foreign table.
      * @param array                            $foreignColumnNames The foreign key foreign column names.
+     * @param string                           $onDelete           The foreign key referential on delete action.
+     * @param string                           $onUpdate           the foreign key referential on update action.
      * @param string                           $name               The foreign key name.
      *
      * @return \Fridge\DBAL\Schema\ForeignKey The new foreign key.
      */
-    public function createForeignKey(array $localColumnNames, $foreignTable, array $foreignColumnNames, $name = null)
+    public function createForeignKey(
+        array $localColumnNames,
+        $foreignTable,
+        array $foreignColumnNames,
+        $onDelete = ForeignKey::RESTRICT,
+        $onUpdate = ForeignKey::RESTRICT,
+        $name = null
+    )
     {
         if ($foreignTable instanceof Table) {
             $foreignTable = $foreignTable->getName();
         }
 
-        $foreignKey = new ForeignKey($name, $localColumnNames, $foreignTable, $foreignColumnNames);
+        $foreignKey = new ForeignKey(
+            $name,
+            $localColumnNames,
+            $foreignTable,
+            $foreignColumnNames,
+            $onDelete,
+            $onUpdate
+        );
+
         $this->addForeignKey($foreignKey);
 
         $this->createIndex($localColumnNames, false, 'idx_'.$foreignKey->getName());
