@@ -403,9 +403,9 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('SET NAMES \'foo\'', $this->platform->getSetCharsetSQLQuery('foo'));
     }
 
-    public function testCreateDatabaseSQLQuery()
+    public function testCreateDatabaseSQLQueries()
     {
-        $this->assertSame('CREATE DATABASE foo', $this->platform->getCreateDatabaseSQLQuery('foo'));
+        $this->assertSame(array('CREATE DATABASE foo'), $this->platform->getCreateDatabaseSQLQueries('foo'));
     }
 
     public function testCreateSequenceSQLQuery()

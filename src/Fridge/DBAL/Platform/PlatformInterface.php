@@ -471,13 +471,13 @@ interface PlatformInterface
     function getSelectTableCheckSQLQuery($table, $database);
 
     /**
-     * Gets the create database SQL query.
+     * Gets the create database SQL queries.
      *
      * @param string $database The database name.
      *
-     * @return string The create database SQL query.
+     * @return array The create database SQL queries.
      */
-    function getCreateDatabaseSQLQuery($database);
+    function getCreateDatabaseSQLQueries($database);
 
     /**
      * Gets the create sequence SQL query.

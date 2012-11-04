@@ -472,9 +472,9 @@ abstract class AbstractPlatform implements PlatformInterface
     /**
      * {@inheritdoc}
      */
-    public function getCreateDatabaseSQLQuery($database)
+    public function getCreateDatabaseSQLQueries($database)
     {
-        return 'CREATE DATABASE '.$database;
+        return array('CREATE DATABASE '.$database);
     }
 
     /**

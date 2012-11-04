@@ -279,7 +279,7 @@ class MySQLPlatform extends AbstractPlatform
      */
     public function getRenameDatabaseSQLQueries(Schema\Diff\SchemaDiff $schemaDiff)
     {
-        $queries = array($this->getCreateDatabaseSQLQuery($schemaDiff->getNewAsset()->getName()));
+        $queries = $this->getCreateDatabaseSQLQueries($schemaDiff->getNewAsset()->getName());
 
         foreach ($schemaDiff->getNewAsset()->getTables() as $table) {
             $queries[] = 'RENAME TABLE '.$schemaDiff->getOldAsset()->getName().'.'.$table->getName().

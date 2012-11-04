@@ -283,8 +283,8 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
 
         $this->getConnection()->setDatabase(null);
 
-        $query = $this->getConnection()->getPlatform()->getCreateDatabaseSQLQuery($database);
-        $this->getConnection()->executeUpdate($query);
+        $queries = $this->getConnection()->getPlatform()->getCreateDatabaseSQLQueries($database);
+        $this->executeUpdates($queries);
 
         $this->getConnection()->setDatabase($currentDatabase);
     }
@@ -335,9 +335,7 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
             $sqlCollector->collect($table);
         }
 
-        foreach ($sqlCollector->getQueries() as $query) {
-            $this->getConnection()->executeUpdate($query);
-        }
+        $this->executeUpdates($sqlCollector->getQueries());
     }
 
     /**
@@ -346,10 +344,7 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
     public function createTable(Schema\Table $table)
     {
         $queries = $this->getConnection()->getPlatform()->getCreateTableSQLQueries($table);
-
-        foreach ($queries as $query) {
-            $this->getConnection()->executeUpdate($query);
-        }
+        $this->executeUpdates($queries);
     }
 
     /**
@@ -358,10 +353,7 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
     public function createColumn(Schema\Column $column, $table)
     {
         $queries = $this->getConnection()->getPlatform()->getCreateColumnSQLQueries($column, $table);
-
-        foreach ($queries as $query) {
-            $this->getConnection()->executeUpdate($query);
-        }
+        $this->executeUpdates($queries);
     }
 
     /**
@@ -417,9 +409,7 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
         $sqlCollector = new SQLCollector\AlterSchemaSQLCollector($this->getConnection()->getPlatform());
         $sqlCollector->collect($schemaDiff);
 
-        foreach ($sqlCollector->getQueries() as $query) {
-            $this->getConnection()->executeUpdate($query);
-        }
+        $this->executeUpdates($sqlCollector->getQueries());
     }
 
     /**
@@ -433,9 +423,7 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
             $sqlCollector->collect($tableDiff);
         }
 
-        foreach ($sqlCollector->getQueries() as $query) {
-            $this->getConnection()->executeUpdate($query);
-        }
+        $this->executeUpdates($sqlCollector->getQueries());
     }
 
     /**
@@ -452,10 +440,7 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
     public function alterColumn(Schema\Diff\ColumnDiff $columnDiff, $table)
     {
         $queries = $this->getConnection()->getPlatform()->getAlterColumnSQLQueries($columnDiff, $table);
-
-        foreach ($queries as $query) {
-            $this->getConnection()->executeUpdate($query);
-        }
+        $this->executeUpdates($queries);
     }
 
     /**
@@ -510,9 +495,7 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
             $sqlCollector->collect($table);
         }
 
-        foreach ($sqlCollector->getQueries() as $query) {
-            $this->getConnection()->executeUpdate($query);
-        }
+        $this->executeUpdates($sqlCollector->getQueries());
     }
 
     /**
@@ -1043,6 +1026,18 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
             return true;
         } catch (Exception $e) {
             return false;
+        }
+    }
+
+    /**
+     * Executes multipes updates on the connection.
+     *
+     * @param array $queries The queries to execute.
+     */
+    protected function executeUpdates(array $queries)
+    {
+        foreach ($queries as $query) {
+            $this->getConnection()->executeUpdate($query);
         }
     }
 }
