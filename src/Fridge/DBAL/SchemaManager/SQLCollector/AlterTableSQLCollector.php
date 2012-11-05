@@ -383,9 +383,9 @@ class AlterTableSQLCollector
         }
 
         foreach ($tableDiff->getDroppedIndexes() as $index) {
-            $this->dropIndexQueries[] = $this->platform->getDropIndexSQLQuery(
-                $index,
-                $tableDiff->getNewAsset()->getName()
+            $this->dropIndexQueries = array_merge(
+                $this->dropIndexQueries,
+                $this->platform->getDropIndexSQLQueries($index, $tableDiff->getNewAsset()->getName())
             );
         }
     }

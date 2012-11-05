@@ -260,13 +260,13 @@ class MySQLPlatformTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public function testDropIndexSQLQuery()
+    public function testDropIndexSQLQueries()
     {
         $index = new Schema\Index('foo', array(), true);
 
         $this->assertSame(
-            'ALTER TABLE bar DROP INDEX foo',
-            $this->platform->getDropIndexSQLQuery($index, 'bar')
+            array('ALTER TABLE bar DROP INDEX foo'),
+            $this->platform->getDropIndexSQLQueries($index, 'bar')
         );
     }
 

@@ -319,9 +319,9 @@ class MySQLPlatform extends AbstractPlatform
     /**
      * {@inheritdoc}
      */
-    public function getDropIndexSQLQuery(Schema\Index $index, $table)
+    public function getDropIndexSQLQueries(Schema\Index $index, $table)
     {
-        return 'ALTER TABLE '.$table.' DROP INDEX '.$index->getName();
+        return array('ALTER TABLE '.$table.' DROP INDEX '.$index->getName());
     }
 
     /**

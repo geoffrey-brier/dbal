@@ -678,14 +678,14 @@ interface PlatformInterface
     function getDropForeignKeySQLQueries(Schema\ForeignKey $foreignKey, $table);
 
     /**
-     * Gets the drop index SQL query.
+     * Gets the drop index SQL queries.
      *
      * @param \Fridge\DBAL\Schema\Index $index The index.
      * @param string                    $table The table name of the index.
      *
-     * @return string The drop index SQL query.
+     * @return array The drop index SQL queries.
      */
-    function getDropIndexSQLQuery(Schema\Index $index, $table);
+    function getDropIndexSQLQueries(Schema\Index $index, $table);
 
     /**
      * Gets the drop check constraint SQL query.

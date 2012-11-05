@@ -735,7 +735,7 @@ abstract class AbstractPlatform implements PlatformInterface
         }
 
         if ($contraint instanceof Schema\Index) {
-            return array($this->getDropIndexSQLQuery($contraint, $table));
+            return $this->getDropIndexSQLQueries($contraint, $table);
         }
 
         if ($contraint instanceof Schema\Check) {
@@ -772,17 +772,17 @@ abstract class AbstractPlatform implements PlatformInterface
     /**
      * {@inheritdoc}
      */
-    public function getDropIndexSQLQuery(Schema\Index $index, $table)
+    public function getDropIndexSQLQueries(Schema\Index $index, $table)
     {
         if (!$this->supportIndex()) {
             throw Exception\PlatformException::methodNotSupported(__METHOD__);
         }
 
         if ($index->isUnique()) {
-            return 'ALTER TABLE '.$table.' DROP CONSTRAINT '.$index->getName();
+            return array('ALTER TABLE '.$table.' DROP CONSTRAINT '.$index->getName());
         }
 
-        return 'DROP INDEX '.$index->getName();
+        return array('DROP INDEX '.$index->getName());
     }
 
     /**

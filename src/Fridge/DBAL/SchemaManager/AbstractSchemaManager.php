@@ -548,8 +548,8 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
      */
     public function dropIndex(Schema\Index $index, $table)
     {
-        $query = $this->getConnection()->getPlatform()->getDropIndexSQLQuery($index, $table);
-        $this->getConnection()->executeUpdate($query);
+        $queries = $this->getConnection()->getPlatform()->getDropIndexSQLQueries($index, $table);
+        $this->executeUpdates($queries);
     }
 
     /**

@@ -122,9 +122,9 @@ class AlterTableSQLCollectorTest extends \PHPUnit_Framework_TestCase
 
         $this->platformMock
             ->expects($this->once())
-            ->method('getDropIndexSQLQuery')
+            ->method('getDropIndexSQLQueries')
             ->with($this->equalTo($droppedIndexes[0]), $this->equalTo($this->tableDiff->getNewAsset()->getName()))
-            ->will($this->returnValue('DROP INDEX'));
+            ->will($this->returnValue(array('DROP INDEX')));
 
         $this->platformMock
             ->expects($this->once())
@@ -223,6 +223,11 @@ class AlterTableSQLCollectorTest extends \PHPUnit_Framework_TestCase
         $this->platformMock
             ->expects($this->once())
             ->method('getDropForeignKeySQLQueries')
+            ->will($this->returnValue(array('foo')));
+
+        $this->platformMock
+            ->expects($this->once())
+            ->method('getDropIndexSQLQueries')
             ->will($this->returnValue(array('foo')));
 
         $this->platformMock
