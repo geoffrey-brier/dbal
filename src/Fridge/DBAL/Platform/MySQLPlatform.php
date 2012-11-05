@@ -311,9 +311,9 @@ class MySQLPlatform extends AbstractPlatform
     /**
      * {@inheritdoc}
      */
-    public function getDropForeignKeySQLQuery(Schema\ForeignKey $foreignKey, $table)
+    public function getDropForeignKeySQLQueries(Schema\ForeignKey $foreignKey, $table)
     {
-        return 'ALTER TABLE '.$table.' DROP FOREIGN KEY '.$foreignKey->getName();
+        return array('ALTER TABLE '.$table.' DROP FOREIGN KEY '.$foreignKey->getName());
     }
 
     /**

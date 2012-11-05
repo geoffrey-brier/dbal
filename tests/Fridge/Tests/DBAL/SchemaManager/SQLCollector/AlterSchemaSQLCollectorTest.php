@@ -164,8 +164,8 @@ class AlterSchemaSQLCollectorTest extends \PHPUnit_Framework_TestCase
 
         $this->platformMock
             ->expects($this->any())
-            ->method('getDropForeignKeySQLQuery')
-            ->will($this->returnValue('DROP FOREIGN KEY'));
+            ->method('getDropForeignKeySQLQueries')
+            ->will($this->returnValue(array('DROP FOREIGN KEY')));
 
         $this->platformMock
             ->expects($this->once())
@@ -326,6 +326,11 @@ class AlterSchemaSQLCollectorTest extends \PHPUnit_Framework_TestCase
         $this->platformMock
             ->expects($this->once())
             ->method('getRenameTableSQLQueries')
+            ->will($this->returnValue(array('foo')));
+
+        $this->platformMock
+            ->expects($this->any())
+            ->method('getDropForeignKeySQLQueries')
             ->will($this->returnValue(array('foo')));
 
         $this->platformMock

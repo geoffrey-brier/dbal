@@ -361,9 +361,9 @@ class AlterTableSQLCollector
         }
 
         foreach ($tableDiff->getDroppedForeignKeys() as $foreignKey) {
-            $this->dropForeignKeyQueries[] = $this->platform->getDropForeignKeySQLQuery(
-                $foreignKey,
-                $tableDiff->getNewAsset()->getName()
+            $this->dropForeignKeyQueries = array_merge(
+                $this->dropForeignKeyQueries,
+                $this->platform->getDropForeignKeySQLQueries($foreignKey, $tableDiff->getNewAsset()->getName())
             );
         }
     }

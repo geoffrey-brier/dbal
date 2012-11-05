@@ -710,13 +710,13 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public function testDropForeignKeySQLQuery()
+    public function testDropForeignKeySQLQueries()
     {
         $foreignKey = new Schema\ForeignKey('foo', array(), 'bar', array());
 
         $this->assertSame(
-            'ALTER TABLE bar DROP CONSTRAINT foo',
-            $this->platform->getDropForeignKeySQLQuery($foreignKey, 'bar')
+            array('ALTER TABLE bar DROP CONSTRAINT foo'),
+            $this->platform->getDropForeignKeySQLQueries($foreignKey, 'bar')
         );
     }
 

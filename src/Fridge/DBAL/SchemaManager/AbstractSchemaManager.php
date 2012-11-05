@@ -539,8 +539,8 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
      */
     public function dropForeignKey(Schema\ForeignKey $foreignKey, $table)
     {
-        $query = $this->getConnection()->getPlatform()->getDropForeignKeySQLQuery($foreignKey, $table);
-        $this->getConnection()->executeUpdate($query);
+        $queries = $this->getConnection()->getPlatform()->getDropForeignKeySQLQueries($foreignKey, $table);
+        $this->executeUpdates($queries);
     }
 
     /**

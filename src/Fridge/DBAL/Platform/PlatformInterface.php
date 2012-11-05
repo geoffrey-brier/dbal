@@ -668,14 +668,14 @@ interface PlatformInterface
     function getDropPrimaryKeySQLQueries(Schema\PrimaryKey $primaryKey, $table);
 
     /**
-     * Gets the drop foreign key SQL query.
+     * Gets the drop foreign key SQL queries.
      *
      * @param \Fridge\DBAL\Schema\ForeignKey $foreignKey The foreign key.
      * @param string                         $table      The table name of the foreign key.
      *
-     * @return string The drop foreign key SQL query.
+     * @return array The drop foreign key SQL queries.
      */
-    function getDropForeignKeySQLQuery(Schema\ForeignKey $foreignKey, $table);
+    function getDropForeignKeySQLQueries(Schema\ForeignKey $foreignKey, $table);
 
     /**
      * Gets the drop index SQL query.

@@ -731,7 +731,7 @@ abstract class AbstractPlatform implements PlatformInterface
         }
 
         if ($contraint instanceof Schema\ForeignKey) {
-            return array($this->getDropForeignKeySQLQuery($contraint, $table));
+            return $this->getDropForeignKeySQLQueries($contraint, $table);
         }
 
         if ($contraint instanceof Schema\Index) {
@@ -760,13 +760,13 @@ abstract class AbstractPlatform implements PlatformInterface
     /**
      * {@inheritdoc}
      */
-    public function getDropForeignKeySQLQuery(Schema\ForeignKey $foreignKey, $table)
+    public function getDropForeignKeySQLQueries(Schema\ForeignKey $foreignKey, $table)
     {
         if (!$this->supportForeignKey()) {
             throw Exception\PlatformException::methodNotSupported(__METHOD__);
         }
 
-        return 'ALTER TABLE '.$table.' DROP CONSTRAINT '.$foreignKey->getName();
+        return array('ALTER TABLE '.$table.' DROP CONSTRAINT '.$foreignKey->getName());
     }
 
     /**
