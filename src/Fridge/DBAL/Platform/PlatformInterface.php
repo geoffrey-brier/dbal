@@ -524,14 +524,14 @@ interface PlatformInterface
     function getCreateColumnSQLQueries(Schema\Column $column, $table);
 
     /**
-     * Gets the create constraint SQL query.
+     * Gets the create constraint SQL queries.
      *
      * @param \Fridge\DBAL\Schema\ConstraintInterface $constraint The constraint.
      * @param string                                  $table      The table name of the constraint.
      *
-     * @return string The create constraint SQL query.
+     * @return array The create constraint SQL queries.
      */
-    function getCreateConstraintSQLQuery(Schema\ConstraintInterface $constraint, $table);
+    function getCreateConstraintSQLQueries(Schema\ConstraintInterface $constraint, $table);
 
     /**
      * Gets the create primary key SQL query.

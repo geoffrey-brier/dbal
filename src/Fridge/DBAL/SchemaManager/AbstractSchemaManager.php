@@ -361,8 +361,8 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
      */
     public function createConstraint(Schema\ConstraintInterface $constraint, $table)
     {
-        $query = $this->getConnection()->getPlatform()->getCreateConstraintSQLQuery($constraint, $table);
-        $this->getConnection()->executeUpdate($query);
+        $queries = $this->getConnection()->getPlatform()->getCreateConstraintSQLQueries($constraint, $table);
+        $this->executeUpdates($queries);
     }
 
     /**

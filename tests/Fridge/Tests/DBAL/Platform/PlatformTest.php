@@ -435,17 +435,17 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public function testCreateConstraintSQLQueryWithPrimaryKey()
+    public function testCreateConstraintSQLQueriesWithPrimaryKey()
     {
         $primaryKey = new Schema\PrimaryKey('foo', array('bar'));
 
         $this->assertSame(
-            'ALTER TABLE foo ADD CONSTRAINT foo PRIMARY KEY (bar)',
-            $this->platform->getCreateConstraintSQLQuery($primaryKey, 'foo')
+            array('ALTER TABLE foo ADD CONSTRAINT foo PRIMARY KEY (bar)'),
+            $this->platform->getCreateConstraintSQLQueries($primaryKey, 'foo')
         );
     }
 
-    public function testCreateConstraintSQLQueryWithForeignKey()
+    public function testCreateConstraintSQLQueriesWithForeignKey()
     {
         $foreignKey = new Schema\ForeignKey(
             'foo',
@@ -457,43 +457,45 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
         );
 
         $this->assertSame(
-            'ALTER TABLE foo'.
-            ' ADD CONSTRAINT foo'.
-            ' FOREIGN KEY (foo)'.
-            ' REFERENCES bar (bar)'.
-            ' ON DELETE SET NULL'.
-            ' ON UPDATE CASCADE',
-            $this->platform->getCreateConstraintSQLQuery($foreignKey, 'foo')
+            array(
+                'ALTER TABLE foo'.
+                ' ADD CONSTRAINT foo'.
+                ' FOREIGN KEY (foo)'.
+                ' REFERENCES bar (bar)'.
+                ' ON DELETE SET NULL'.
+                ' ON UPDATE CASCADE'
+            ),
+            $this->platform->getCreateConstraintSQLQueries($foreignKey, 'foo')
         );
     }
 
-    public function testCreateConstraintSQLQueryWithUniqueIndex()
+    public function testCreateConstraintSQLQueriesWithUniqueIndex()
     {
         $index = new Schema\Index('foo', array('foo'), true);
 
         $this->assertSame(
-            'ALTER TABLE foo ADD CONSTRAINT foo UNIQUE (foo)',
-            $this->platform->getCreateConstraintSQLQuery($index, 'foo')
+            array('ALTER TABLE foo ADD CONSTRAINT foo UNIQUE (foo)'),
+            $this->platform->getCreateConstraintSQLQueries($index, 'foo')
         );
     }
 
-    public function testCreateConstraintSQLQueryWithNonUniqueIndex()
+    public function testCreateConstraintSQLQueriesWithNonUniqueIndex()
     {
         $index = new Schema\Index('foo', array('foo'));
 
         $this->assertSame(
-            'CREATE INDEX foo ON foo (foo)',
-            $this->platform->getCreateConstraintSQLQuery($index, 'foo')
+            array('CREATE INDEX foo ON foo (foo)'),
+            $this->platform->getCreateConstraintSQLQueries($index, 'foo')
         );
     }
 
-    public function testCreateConstraintSQLQueryWithCheck()
+    public function testCreateConstraintSQLQueriesWithCheck()
     {
         $check = new Schema\Check('foo', 'bar');
 
         $this->assertSame(
-            'ALTER TABLE foo ADD CONSTRAINT foo CHECK (bar)',
-            $this->platform->getCreateConstraintSQLQuery($check, 'foo')
+            array('ALTER TABLE foo ADD CONSTRAINT foo CHECK (bar)'),
+            $this->platform->getCreateConstraintSQLQueries($check, 'foo')
         );
     }
 
@@ -501,11 +503,11 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
      * @expectedException Fridge\DBAL\Exception\PlatformException
      * @expectedExceptionMessage The constraint "foo" is not supported.
      */
-    public function testCreateConstraintWithInvalidConstraint()
+    public function testCreateConstraintSQLQueriesWithInvalidConstraint()
     {
         $check = $this->getMock('Fridge\DBAL\Schema\ConstraintInterface', array(), array(), 'foo', false);
 
-        $this->platform->getCreateConstraintSQLQuery($check, 'foo');
+        $this->platform->getCreateConstraintSQLQueries($check, 'foo');
     }
 
     public function testCreatePrimaryKeySQLQuery()

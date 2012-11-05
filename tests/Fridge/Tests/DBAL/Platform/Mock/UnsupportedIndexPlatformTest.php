@@ -76,7 +76,7 @@ class UnsupportedIndexPlatformTest extends \PHPUnit_Framework_TestCase
     /**
      * @expectedException Fridge\DBAL\Exception\PlatformException
      */
-    public function testCreateConstraintSQLQueryWithUniqueIndex()
+    public function testCreateConstraintSQLQueriesWithUniqueIndex()
     {
         $indexMock = $this->getMock('Fridge\DBAL\Schema\Index', array(), array(), '', false);
         $indexMock
@@ -84,17 +84,17 @@ class UnsupportedIndexPlatformTest extends \PHPUnit_Framework_TestCase
             ->method('isUnique')
             ->will($this->returnValue(true));
 
-        $this->platform->getCreateConstraintSQLQuery($indexMock, 'foo');
+        $this->platform->getCreateConstraintSQLQueries($indexMock, 'foo');
     }
 
     /**
      * @expectedException Fridge\DBAL\Exception\PlatformException
      */
-    public function testCreateConstraintSQLQueryWithNonUniqueIndex()
+    public function testCreateConstraintSQLQueriesWithNonUniqueIndex()
     {
         $indexMock = $this->getMock('Fridge\DBAL\Schema\Index', array(), array(), '', false);
 
-        $this->platform->getCreateConstraintSQLQuery($indexMock, 'foo');
+        $this->platform->getCreateConstraintSQLQueries($indexMock, 'foo');
     }
 
     /**
