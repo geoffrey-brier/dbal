@@ -250,13 +250,13 @@ class MySQLPlatformTest extends \PHPUnit_Framework_TestCase
         $this->platform->getDropSequenceSQLQueries($sequence);
     }
 
-    public function testDropPrimaryKeySQLQuery()
+    public function testDropPrimaryKeySQLQueries()
     {
         $primaryKey = new Schema\PrimaryKey('foo');
 
         $this->assertSame(
-            'ALTER TABLE bar DROP PRIMARY KEY',
-            $this->platform->getDropPrimaryKeySQLQuery($primaryKey, 'bar')
+            array('ALTER TABLE bar DROP PRIMARY KEY'),
+            $this->platform->getDropPrimaryKeySQLQueries($primaryKey, 'bar')
         );
     }
 

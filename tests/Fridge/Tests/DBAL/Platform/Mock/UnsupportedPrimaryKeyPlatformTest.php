@@ -52,11 +52,11 @@ class UnsupportedPrimaryKeyPlatformTest extends \PHPUnit_Framework_TestCase
     /**
      * @expectedException Fridge\DBAL\Exception\PlatformException
      */
-    public function testDropPrimaryKeySQLQuery()
+    public function testDropPrimaryKeySQLQueries()
     {
         $primaryKeyMock = $this->getMock('Fridge\DBAL\Schema\PrimaryKey', array(), array(), '', false);
 
-        $this->platform->getDropPrimaryKeySQLQuery($primaryKeyMock, 'foo');
+        $this->platform->getDropPrimaryKeySQLQueries($primaryKeyMock, 'foo');
     }
 
     /**

@@ -727,7 +727,7 @@ abstract class AbstractPlatform implements PlatformInterface
     public function getDropConstraintSQLQueries(Schema\ConstraintInterface $contraint, $table)
     {
         if ($contraint instanceof Schema\PrimaryKey) {
-            return array($this->getDropPrimaryKeySQLQuery($contraint, $table));
+            return $this->getDropPrimaryKeySQLQueries($contraint, $table);
         }
 
         if ($contraint instanceof Schema\ForeignKey) {
@@ -748,13 +748,13 @@ abstract class AbstractPlatform implements PlatformInterface
     /**
      * {@inheritdoc}
      */
-    public function getDropPrimaryKeySQLQuery(Schema\PrimaryKey $primaryKey, $table)
+    public function getDropPrimaryKeySQLQueries(Schema\PrimaryKey $primaryKey, $table)
     {
         if (!$this->supportPrimaryKey()) {
             throw Exception\PlatformException::methodNotSupported(__METHOD__);
         }
 
-        return 'ALTER TABLE '.$table.' DROP CONSTRAINT '.$primaryKey->getName();
+        return array('ALTER TABLE '.$table.' DROP CONSTRAINT '.$primaryKey->getName());
     }
 
     /**

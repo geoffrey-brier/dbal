@@ -658,14 +658,14 @@ interface PlatformInterface
     function getDropConstraintSQLQueries(Schema\ConstraintInterface $constraint, $table);
 
     /**
-     * Gets the drop primary key SQL query.
+     * Gets the drop primary key SQL queries.
      *
      * @param \Fridge\DBAL\Schema\PrimaryKey $primaryKey The primary key.
      * @param string                         $table      The table name of the primary key.
      *
-     * @return string The drop primary key SQL query.
+     * @return array The drop primary key SQL queries.
      */
-    function getDropPrimaryKeySQLQuery(Schema\PrimaryKey $primaryKey, $table);
+    function getDropPrimaryKeySQLQueries(Schema\PrimaryKey $primaryKey, $table);
 
     /**
      * Gets the drop foreign key SQL query.

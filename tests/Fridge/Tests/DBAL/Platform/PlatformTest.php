@@ -700,13 +700,13 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
         $this->platform->getDropConstraintSQLQueries($check, 'foo');
     }
 
-    public function testDropPrimaryKeySQLQuery()
+    public function testDropPrimaryKeySQLQueries()
     {
         $primaryKey = new Schema\PrimaryKey('foo');
 
         $this->assertSame(
-            'ALTER TABLE bar DROP CONSTRAINT foo',
-            $this->platform->getDropPrimaryKeySQLQuery($primaryKey, 'bar')
+            array('ALTER TABLE bar DROP CONSTRAINT foo'),
+            $this->platform->getDropPrimaryKeySQLQueries($primaryKey, 'bar')
         );
     }
 

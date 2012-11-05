@@ -128,12 +128,12 @@ class AlterTableSQLCollectorTest extends \PHPUnit_Framework_TestCase
 
         $this->platformMock
             ->expects($this->once())
-            ->method('getDropPrimaryKeySQLQuery')
+            ->method('getDropPrimaryKeySQLQueries')
             ->with(
                 $this->equalTo($this->tableDiff->getDroppedPrimaryKey()),
                 $this->equalTo($this->tableDiff->getNewAsset()->getName())
             )
-            ->will($this->returnValue('DROP PRIMARY KEY'));
+            ->will($this->returnValue(array('DROP PRIMARY KEY')));
 
         $this->platformMock
             ->expects($this->once())
@@ -218,6 +218,11 @@ class AlterTableSQLCollectorTest extends \PHPUnit_Framework_TestCase
         $this->platformMock
             ->expects($this->once())
             ->method('getRenameTableSQLQueries')
+            ->will($this->returnValue(array('foo')));
+
+        $this->platformMock
+            ->expects($this->once())
+            ->method('getDropPrimaryKeySQLQueries')
             ->will($this->returnValue(array('foo')));
 
         $this->platformMock

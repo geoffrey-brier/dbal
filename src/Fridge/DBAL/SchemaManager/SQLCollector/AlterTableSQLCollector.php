@@ -336,9 +336,12 @@ class AlterTableSQLCollector
         }
 
         if ($tableDiff->getDroppedPrimaryKey() !== null) {
-            $this->dropPrimaryKeyQueries[] = $this->platform->getDropPrimaryKeySQLQuery(
-                $tableDiff->getDroppedPrimaryKey(),
-                $tableDiff->getNewAsset()->getName()
+            $this->dropPrimaryKeyQueries = array_merge(
+                $this->dropPrimaryKeyQueries,
+                $this->platform->getDropPrimaryKeySQLQueries(
+                    $tableDiff->getDroppedPrimaryKey(),
+                    $tableDiff->getNewAsset()->getName()
+                )
             );
         }
     }

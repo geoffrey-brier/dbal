@@ -530,8 +530,8 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
      */
     public function dropPrimaryKey(Schema\PrimaryKey $primaryKey, $table)
     {
-        $query = $this->getConnection()->getPlatform()->getDropPrimaryKeySQLQuery($primaryKey, $table);
-        $this->getConnection()->executeUpdate($query);
+        $queries = $this->getConnection()->getPlatform()->getDropPrimaryKeySQLQueries($primaryKey, $table);
+        $this->executeUpdates($queries);
     }
 
     /**

@@ -303,9 +303,9 @@ class MySQLPlatform extends AbstractPlatform
     /**
      * {@inheritdoc}
      */
-    public function getDropPrimaryKeySQLQuery(Schema\PrimaryKey $primaryKey, $table)
+    public function getDropPrimaryKeySQLQueries(Schema\PrimaryKey $primaryKey, $table)
     {
-        return 'ALTER TABLE '.$table.' DROP PRIMARY KEY';
+        return array('ALTER TABLE '.$table.' DROP PRIMARY KEY');
     }
 
     /**
