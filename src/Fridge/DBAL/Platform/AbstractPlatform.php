@@ -684,13 +684,13 @@ abstract class AbstractPlatform implements PlatformInterface
     /**
      * {@inheritdoc}
      */
-    public function getDropSequenceSQLQuery(Schema\Sequence $sequence)
+    public function getDropSequenceSQLQueries(Schema\Sequence $sequence)
     {
         if (!$this->supportSequence()) {
             throw Exception\PlatformException::methodNotSupported(__METHOD__);
         }
 
-        return 'DROP SEQUENCE '.$sequence->getName();
+        return array('DROP SEQUENCE '.$sequence->getName());
     }
 
     /**

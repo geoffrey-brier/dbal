@@ -471,8 +471,8 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
      */
     public function dropSequence(Schema\Sequence $sequence)
     {
-        $query = $this->getConnection()->getPlatform()->getDropSequenceSQLQuery($sequence);
-        $this->getConnection()->executeUpdate($query);
+        $queries = $this->getConnection()->getPlatform()->getDropSequenceSQLQueries($sequence);
+        $this->executeUpdates($queries);
     }
 
     /**

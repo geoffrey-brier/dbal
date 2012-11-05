@@ -424,7 +424,10 @@ class AlterSchemaSQLCollector
         }
 
         foreach ($schemaDiff->getDroppedSequences() as $sequence) {
-            $this->dropSequenceQueries[] = $this->platform->getDropSequenceSQLQuery($sequence);
+            $this->dropSequenceQueries = array_merge(
+                $this->dropSequenceQueries,
+                $this->platform->getDropSequenceSQLQueries($sequence)
+            );
         }
     }
 }

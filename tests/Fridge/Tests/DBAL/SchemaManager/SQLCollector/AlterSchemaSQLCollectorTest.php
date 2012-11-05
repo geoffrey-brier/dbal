@@ -140,9 +140,9 @@ class AlterSchemaSQLCollectorTest extends \PHPUnit_Framework_TestCase
 
         $this->platformMock
             ->expects($this->once())
-            ->method('getDropSequenceSQLQuery')
+            ->method('getDropSequenceSQLQueries')
             ->with($this->equalTo($droppedSequences[0]))
-            ->will($this->returnValue('DROP SEQUENCE'));
+            ->will($this->returnValue(array('DROP SEQUENCE')));
 
         $this->platformMock
             ->expects($this->once())
@@ -313,6 +313,11 @@ class AlterSchemaSQLCollectorTest extends \PHPUnit_Framework_TestCase
 
     public function testInit()
     {
+        $this->platformMock
+            ->expects($this->once())
+            ->method('getDropSequenceSQLQueries')
+            ->will($this->returnValue(array('foo')));
+
         $this->platformMock
             ->expects($this->once())
             ->method('getRenameTableSQLQueries')

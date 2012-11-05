@@ -243,11 +243,11 @@ class MySQLPlatformTest extends \PHPUnit_Framework_TestCase
      * @expectedException \Fridge\DBAL\Exception\PlatformException
      * @expectExceptionMessage The method "Fridge\DBAL\Platform\MySQLPlatform::getSelectDropSQLQuery" is not supported.
      */
-    public function testDropSequenceSQLQuery()
+    public function testDropSequenceSQLQueries()
     {
         $sequence = new Schema\Sequence('foo');
 
-        $this->platform->getDropSequenceSQLQuery($sequence);
+        $this->platform->getDropSequenceSQLQueries($sequence);
     }
 
     public function testDropPrimaryKeySQLQuery()

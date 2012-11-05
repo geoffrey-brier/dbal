@@ -611,13 +611,13 @@ interface PlatformInterface
     function getDropDatabaseSQLQueries($database);
 
     /**
-     * Gets the drop sequence SQL query.
+     * Gets the drop sequence SQL queries.
      *
      * @param \Fridge\DBAL\Schema\Sequence $sequence The sequence.
      *
-     * @return string The drop sequence SQL query.
+     * @return array The drop sequence SQL queries.
      */
-    function getDropSequenceSQLQuery(Schema\Sequence $sequence);
+    function getDropSequenceSQLQueries(Schema\Sequence $sequence);
 
     /**
      * Gets the drop view SQL query.
