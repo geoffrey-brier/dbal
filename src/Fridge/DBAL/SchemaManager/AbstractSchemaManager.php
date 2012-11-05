@@ -311,8 +311,8 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
      */
     public function createSequence(Schema\Sequence $sequence)
     {
-        $query = $this->getConnection()->getPlatform()->getCreateSequenceSQLQuery($sequence);
-        $this->getConnection()->executeUpdate($query);
+        $queries = $this->getConnection()->getPlatform()->getCreateSequenceSQLQueries($sequence);
+        $this->executeUpdates($queries);
     }
 
     /**

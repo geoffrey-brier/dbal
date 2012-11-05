@@ -480,16 +480,18 @@ abstract class AbstractPlatform implements PlatformInterface
     /**
      * {@inheritdoc}
      */
-    public function getCreateSequenceSQLQuery(Schema\Sequence $sequence)
+    public function getCreateSequenceSQLQueries(Schema\Sequence $sequence)
     {
         if (!$this->supportSequence()) {
             throw Exception\PlatformException::methodNotSupported(__METHOD__);
         }
 
-        return 'CREATE SEQUENCE '.$sequence->getName().
-               ' INCREMENT BY '.$sequence->getIncrementSize().
-               ' MINVALUE '.$sequence->getInitialValue().
-               ' START WITH '.$sequence->getInitialValue();
+        return array(
+            'CREATE SEQUENCE '.$sequence->getName().
+            ' INCREMENT BY '.$sequence->getIncrementSize().
+            ' MINVALUE '.$sequence->getInitialValue().
+            ' START WITH '.$sequence->getInitialValue()
+        );
     }
 
     /**

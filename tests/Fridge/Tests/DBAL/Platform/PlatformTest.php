@@ -408,13 +408,13 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(array('CREATE DATABASE foo'), $this->platform->getCreateDatabaseSQLQueries('foo'));
     }
 
-    public function testCreateSequenceSQLQuery()
+    public function testCreateSequenceSQLQueries()
     {
         $sequence = new Schema\Sequence('foo', 1, 1);
 
         $this->assertSame(
-            'CREATE SEQUENCE foo INCREMENT BY 1 MINVALUE 1 START WITH 1',
-            $this->platform->getCreateSequenceSQLQuery($sequence)
+            array('CREATE SEQUENCE foo INCREMENT BY 1 MINVALUE 1 START WITH 1'),
+            $this->platform->getCreateSequenceSQLQueries($sequence)
         );
     }
 

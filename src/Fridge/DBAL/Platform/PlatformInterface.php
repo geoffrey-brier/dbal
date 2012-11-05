@@ -480,13 +480,13 @@ interface PlatformInterface
     function getCreateDatabaseSQLQueries($database);
 
     /**
-     * Gets the create sequence SQL query.
+     * Gets the create sequence SQL queries.
      *
      * @param \Fridge\DBAL\Schema\Sequence $sequence The sequence.
      *
-     * @return string The create sequence SQL query.
+     * @return array The create sequence SQL queries.
      */
-    function getCreateSequenceSQLQuery(Schema\Sequence $sequence);
+    function getCreateSequenceSQLQueries(Schema\Sequence $sequence);
 
     /**
      * Gets the create view SQL query.

@@ -414,7 +414,10 @@ class AlterSchemaSQLCollector
     protected function collectSequences(SchemaDiff $schemaDiff)
     {
         foreach ($schemaDiff->getCreatedSequences() as $sequence) {
-            $this->createSequenceQueries[] = $this->platform->getCreateSequenceSQLQuery($sequence);
+            $this->createSequenceQueries = array_merge(
+                $this->createSequenceQueries,
+                $this->platform->getCreateSequenceSQLQueries($sequence)
+            );
         }
 
         foreach ($schemaDiff->getDroppedSequences() as $sequence) {

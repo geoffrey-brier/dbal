@@ -244,9 +244,9 @@ class AlterSchemaSQLCollectorTest extends \PHPUnit_Framework_TestCase
 
         $this->platformMock
             ->expects($this->once())
-            ->method('getCreateSequenceSQLQuery')
+            ->method('getCreateSequenceSQLQueries')
             ->with($this->equalTo($createdSequences[0]))
-            ->will($this->returnValue('CREATE SEQUENCE'));
+            ->will($this->returnValue(array('CREATE SEQUENCE')));
 
         $this->platformMock
             ->expects($this->once())
@@ -325,6 +325,11 @@ class AlterSchemaSQLCollectorTest extends \PHPUnit_Framework_TestCase
             ->expects($this->once())
             ->method('getCreateTableSQLQueries')
             ->will($this->returnValue(array('foo')));
+
+        $this->platformMock
+            ->expects($this->once())
+            ->method('getCreateSequenceSQLQueries')
+            ->will($this->returnValue(array()));
 
         $this->platformMock
             ->expects($this->once())

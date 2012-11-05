@@ -170,13 +170,13 @@ class MySQLPlatformTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @expectedException \Fridge\DBAL\Exception\PlatformException
-     * @expectExceptionMessage The method "Fridge\DBAL\Platform\MySQLPlatform::getCreateSequenceSQLQuery" is not supported.
+     * @expectExceptionMessage The method "Fridge\DBAL\Platform\MySQLPlatform::getCreateSequenceSQLQueries" is not supported.
      */
-    public function testCreateSequenceSQLQuery()
+    public function testCreateSequenceSQLQueries()
     {
         $sequence = new Schema\Sequence('foo');
 
-        $this->platform->getCreateSequenceSQLQuery($sequence);
+        $this->platform->getCreateSequenceSQLQueries($sequence);
     }
 
     public function testCreatePrimaryKeySQLQuery()
