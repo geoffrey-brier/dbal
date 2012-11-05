@@ -480,8 +480,8 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
      */
     public function dropView(Schema\View $view)
     {
-        $query = $this->getConnection()->getPlatform()->getDropViewSQLQuery($view);
-        $this->getConnection()->executeUpdate($query);
+        $queries = $this->getConnection()->getPlatform()->getDropViewSQLQueries($view);
+        $this->executeUpdates($queries);
     }
 
     /**

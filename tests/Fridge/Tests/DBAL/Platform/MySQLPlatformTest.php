@@ -208,7 +208,7 @@ class MySQLPlatformTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('ENGINE = InnoDB', substr($sqls[0], -15));
     }
 
-    public function testRenameDatabaseSQLQuery()
+    public function testRenameDatabaseSQLQueries()
     {
         $oldTable = new Schema\Schema('foo', array(new Schema\Table('foo')));
         $newTable = new Schema\Schema('bar', array(new Schema\Table('foo')));

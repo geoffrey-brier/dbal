@@ -418,7 +418,7 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public function testCreateViewSQLQuery()
+    public function testCreateViewSQLQueries()
     {
         $view = new Schema\View('foo', 'bar');
 
@@ -510,7 +510,7 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
         $this->platform->getCreateConstraintSQLQueries($check, 'foo');
     }
 
-    public function testCreatePrimaryKeySQLQuery()
+    public function testCreatePrimaryKeySQLQueries()
     {
         $primaryKey = new Schema\PrimaryKey('foo', array('foo'));
 
@@ -544,7 +544,7 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public function testCreateIndexSQLQueryWithUniqueIndex()
+    public function testCreateIndexSQLQueriesWithUniqueIndex()
     {
         $index = new Schema\Index('foo', array('foo'), true);
 
@@ -626,11 +626,11 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(array('DROP SEQUENCE foo'), $this->platform->getDropSequenceSQLQueries($sequence));
     }
 
-    public function testDropViewSQLQuery()
+    public function testDropViewSQLQueries()
     {
         $view = new Schema\View('foo');
 
-        $this->assertSame('DROP VIEW foo', $this->platform->getDropViewSQLQuery($view));
+        $this->assertSame(array('DROP VIEW foo'), $this->platform->getDropViewSQLQueries($view));
     }
 
     public function testDropTableSQLQuery()

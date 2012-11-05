@@ -405,7 +405,10 @@ class AlterSchemaSQLCollector
         }
 
         foreach ($schemaDiff->getDroppedViews() as $view) {
-            $this->dropViewQueries[] = $this->platform->getDropViewSQLQuery($view);
+            $this->dropViewQueries = array_merge(
+                $this->dropViewQueries,
+                $this->platform->getDropViewSQLQueries($view)
+            );
         }
     }
 

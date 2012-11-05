@@ -696,13 +696,13 @@ abstract class AbstractPlatform implements PlatformInterface
     /**
      * {@inheritdoc}
      */
-    public function getDropViewSQLQuery(Schema\View $view)
+    public function getDropViewSQLQueries(Schema\View $view)
     {
         if (!$this->supportView()) {
             throw Exception\PlatformException::methodNotSupported(__METHOD__);
         }
 
-        return 'DROP VIEW '.$view->getName();
+        return array('DROP VIEW '.$view->getName());
     }
 
     /**
