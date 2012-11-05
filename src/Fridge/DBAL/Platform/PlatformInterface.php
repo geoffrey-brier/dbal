@@ -602,13 +602,13 @@ interface PlatformInterface
     function getAlterColumnSQLQueries(Schema\Diff\ColumnDiff $columnDiff, $table);
 
     /**
-     * Gets the drop database SQL query.
+     * Gets the drop database SQL queries.
      *
      * @param string $database The database name.
      *
-     * @return string The drop database SQL query.
+     * @return array The drop database SQL queries.
      */
-    function getDropDatabaseSQLQuery($database);
+    function getDropDatabaseSQLQueries($database);
 
     /**
      * Gets the drop sequence SQL query.

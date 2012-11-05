@@ -452,8 +452,8 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
 
         $this->getConnection()->setDatabase(null);
 
-        $query = $this->getConnection()->getPlatform()->getDropDatabaseSQLQuery($database);
-        $this->getConnection()->executeUpdate($query);
+        $queries = $this->getConnection()->getPlatform()->getDropDatabaseSQLQueries($database);
+        $this->executeUpdates($queries);
 
         $this->getConnection()->setDatabase($currentDatabase);
     }

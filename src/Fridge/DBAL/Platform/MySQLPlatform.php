@@ -286,9 +286,7 @@ class MySQLPlatform extends AbstractPlatform
                          ' TO '.$schemaDiff->getNewAsset()->getName().'.'.$table->getName();
         }
 
-        $queries[] = $this->getDropDatabaseSQLQuery($schemaDiff->getOldAsset()->getName());
-
-        return $queries;
+        return array_merge($queries, $this->getDropDatabaseSQLQueries($schemaDiff->getOldAsset()->getName()));
     }
 
     /**
