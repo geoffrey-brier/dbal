@@ -512,8 +512,8 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
      */
     public function dropColumn(Schema\Column $column, $table)
     {
-        $query = $this->getConnection()->getPlatform()->getDropColumnSQLQuery($column, $table);
-        $this->getConnection()->executeUpdate($query);
+        $queries = $this->getConnection()->getPlatform()->getDropColumnSQLQueries($column, $table);
+        $this->executeUpdates($queries);
     }
 
     /**

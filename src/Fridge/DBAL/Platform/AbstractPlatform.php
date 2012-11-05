@@ -716,9 +716,9 @@ abstract class AbstractPlatform implements PlatformInterface
     /**
      * {@inheritdoc}
      */
-    public function getDropColumnSQLQuery(Schema\Column $column, $table)
+    public function getDropColumnSQLQueries(Schema\Column $column, $table)
     {
-        return 'ALTER TABLE '.$table.' DROP COLUMN '.$column->getName();
+        return array('ALTER TABLE '.$table.' DROP COLUMN '.$column->getName());
     }
 
     /**

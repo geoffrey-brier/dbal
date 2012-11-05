@@ -638,12 +638,14 @@ interface PlatformInterface
     function getDropTableSQLQueries(Schema\Table $table);
 
     /**
-     * Gets the drop table column SQL query.
+     * Gets the drop table column SQL queries.
      *
      * @param \Fridge\DBAL\Schema\Column $column The column.
      * @param string                     $table  The table name.
+     *
+     * @return array The drop table column SQL queries.
      */
-    function getDropColumnSQLQuery(Schema\Column $column, $table);
+    function getDropColumnSQLQueries(Schema\Column $column, $table);
 
     /**
      * Gets the drop constraint SQL query.

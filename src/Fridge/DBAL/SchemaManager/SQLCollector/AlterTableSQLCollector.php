@@ -304,9 +304,9 @@ class AlterTableSQLCollector
         }
 
         foreach ($tableDiff->getDroppedColumns() as $column) {
-            $this->dropColumnQueries[] = $this->platform->getDropColumnSQLQuery(
-                $column,
-                $tableDiff->getNewAsset()->getName()
+            $this->dropColumnQueries = array_merge(
+                $this->dropColumnQueries,
+                $this->platform->getDropColumnSQLQueries($column, $tableDiff->getNewAsset()->getName())
             );
         }
 
@@ -353,10 +353,7 @@ class AlterTableSQLCollector
         foreach ($tableDiff->getCreatedForeignKeys() as $foreignKey) {
             $this->createForeignKeyQueries = array_merge(
                 $this->createForeignKeyQueries,
-                $this->platform->getCreateForeignKeySQLQueries(
-                    $foreignKey,
-                    $tableDiff->getNewAsset()->getName()
-                )
+                $this->platform->getCreateForeignKeySQLQueries($foreignKey, $tableDiff->getNewAsset()->getName())
             );
         }
 
@@ -378,10 +375,7 @@ class AlterTableSQLCollector
         foreach ($tableDiff->getCreatedIndexes() as $index) {
             $this->createIndexQueries = array_merge(
                 $this->createIndexQueries,
-                $this->platform->getCreateIndexSQLQueries(
-                    $index,
-                    $tableDiff->getNewAsset()->getName()
-                )
+                $this->platform->getCreateIndexSQLQueries($index, $tableDiff->getNewAsset()->getName())
             );
         }
 
@@ -403,10 +397,7 @@ class AlterTableSQLCollector
         foreach ($tableDiff->getCreatedChecks() as $check) {
             $this->createCheckQueries = array_merge(
                 $this->createCheckQueries,
-                $this->platform->getCreateCheckSQLQueries(
-                    $check,
-                    $tableDiff->getNewAsset()->getName()
-                )
+                $this->platform->getCreateCheckSQLQueries($check, $tableDiff->getNewAsset()->getName())
             );
         }
 

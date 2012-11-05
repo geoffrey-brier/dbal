@@ -83,10 +83,16 @@ class DropTableSQLCollector
     public function collect(Table $table)
     {
         foreach ($table->getForeignKeys() as $foreignKey) {
-            $this->dropForeignKeyQueries[] = $this->platform->getDropForeignKeySQLQuery($foreignKey, $table->getName());
+            $this->dropForeignKeyQueries[] = $this->platform->getDropForeignKeySQLQuery(
+                $foreignKey,
+                $table->getName()
+            );
         }
 
-        $this->dropTableQueries = array_merge($this->dropTableQueries, $this->platform->getDropTableSQLQueries($table));
+        $this->dropTableQueries = array_merge(
+            $this->dropTableQueries,
+            $this->platform->getDropTableSQLQueries($table)
+        );
     }
 
     /**
