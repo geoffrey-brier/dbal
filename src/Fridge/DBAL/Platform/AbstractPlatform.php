@@ -708,9 +708,9 @@ abstract class AbstractPlatform implements PlatformInterface
     /**
      * {@inheritdoc}
      */
-    public function getDropTableSQLQuery(Schema\Table $table)
+    public function getDropTableSQLQueries(Schema\Table $table)
     {
-        return 'DROP TABLE '.$table->getName();
+        return array('DROP TABLE '.$table->getName());
     }
 
     /**

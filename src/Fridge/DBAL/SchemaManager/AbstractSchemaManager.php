@@ -503,8 +503,8 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
      */
     public function dropTable(Schema\Table $table)
     {
-        $query = $this->getConnection()->getPlatform()->getDropTableSQLQuery($table);
-        $this->getConnection()->executeUpdate($query);
+        $queries = $this->getConnection()->getPlatform()->getDropTableSQLQueries($table);
+        $this->executeUpdates($queries);
     }
 
     /**

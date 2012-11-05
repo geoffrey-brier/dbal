@@ -629,13 +629,13 @@ interface PlatformInterface
     function getDropViewSQLQueries(Schema\View $view);
 
     /**
-     * Gets the drop table SQL query.
+     * Gets the drop table SQL queries.
      *
      * @param \Fridge\DBAL\Schema\Table $table The table.
      *
-     * @return string The drop table SQL query.
+     * @return array The drop table SQL queries.
      */
-    function getDropTableSQLQuery(Schema\Table $table);
+    function getDropTableSQLQueries(Schema\Table $table);
 
     /**
      * Gets the drop table column SQL query.

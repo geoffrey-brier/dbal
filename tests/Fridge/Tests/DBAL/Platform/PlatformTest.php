@@ -633,11 +633,11 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(array('DROP VIEW foo'), $this->platform->getDropViewSQLQueries($view));
     }
 
-    public function testDropTableSQLQuery()
+    public function testDropTableSQLQueries()
     {
         $table = new Schema\Table('foo');
 
-        $this->assertSame('DROP TABLE foo', $this->platform->getDropTableSQLQuery($table));
+        $this->assertSame(array('DROP TABLE foo'), $this->platform->getDropTableSQLQueries($table));
     }
 
     public function testDropColumnSQLQuery()

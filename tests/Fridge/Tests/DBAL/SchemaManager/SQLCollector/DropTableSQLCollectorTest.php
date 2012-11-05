@@ -76,9 +76,9 @@ class DropTableSQLCollectorTest extends \PHPUnit_Framework_TestCase
     {
         $this->platformMock
             ->expects($this->once())
-            ->method('getDropTableSQLQuery')
+            ->method('getDropTableSQLQueries')
             ->with($this->equalTo($this->table))
-            ->will($this->returnValue('DROP TABLE'));
+            ->will($this->returnValue(array('DROP TABLE')));
 
         $this->platformMock
             ->expects($this->once())
@@ -95,6 +95,11 @@ class DropTableSQLCollectorTest extends \PHPUnit_Framework_TestCase
 
     public function testPlatformWithCollectedQueries()
     {
+        $this->platformMock
+            ->expects($this->once())
+            ->method('getDropTableSQLQueries')
+            ->will($this->returnValue(array('foo')));
+
         $this->sqlCollector->collect($this->table);
         $this->sqlCollector->setPlatform($this->platformMock);
 
@@ -103,6 +108,11 @@ class DropTableSQLCollectorTest extends \PHPUnit_Framework_TestCase
 
     public function testInit()
     {
+        $this->platformMock
+            ->expects($this->once())
+            ->method('getDropTableSQLQueries')
+            ->will($this->returnValue(array('foo')));
+
         $this->sqlCollector->collect($this->table);
         $this->sqlCollector->init();
 

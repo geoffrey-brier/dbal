@@ -86,7 +86,7 @@ class DropTableSQLCollector
             $this->dropForeignKeyQueries[] = $this->platform->getDropForeignKeySQLQuery($foreignKey, $table->getName());
         }
 
-        $this->dropTableQueries[] = $this->platform->getDropTableSQLQuery($table);
+        $this->dropTableQueries = array_merge($this->dropTableQueries, $this->platform->getDropTableSQLQueries($table));
     }
 
     /**
