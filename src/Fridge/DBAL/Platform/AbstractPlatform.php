@@ -570,7 +570,7 @@ abstract class AbstractPlatform implements PlatformInterface
     public function getCreateConstraintSQLQueries(Schema\ConstraintInterface $constraint, $table)
     {
         if ($constraint instanceof Schema\PrimaryKey) {
-            return array($this->getCreatePrimaryKeySQLQuery($constraint, $table));
+            return $this->getCreatePrimaryKeySQLQueries($constraint, $table);
         }
 
         if ($constraint instanceof Schema\ForeignKey) {
@@ -591,9 +591,9 @@ abstract class AbstractPlatform implements PlatformInterface
     /**
      * {@inheritdoc}
      */
-    public function getCreatePrimaryKeySQLQuery(Schema\PrimaryKey $primaryKey, $table)
+    public function getCreatePrimaryKeySQLQueries(Schema\PrimaryKey $primaryKey, $table)
     {
-        return 'ALTER TABLE '.$table.' ADD '.$this->getPrimaryKeySQLDeclaration($primaryKey);
+        return array('ALTER TABLE '.$table.' ADD '.$this->getPrimaryKeySQLDeclaration($primaryKey));
     }
 
     /**

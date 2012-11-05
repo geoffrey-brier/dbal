@@ -155,12 +155,12 @@ class AlterTableSQLCollectorTest extends \PHPUnit_Framework_TestCase
 
         $this->platformMock
             ->expects($this->once())
-            ->method('getCreatePrimaryKeySQLQuery')
+            ->method('getCreatePrimaryKeySQLQueries')
             ->with(
                 $this->equalTo($this->tableDiff->getCreatedPrimaryKey()),
                 $this->equalTo($this->tableDiff->getNewAsset()->getName())
             )
-            ->will($this->returnValue('CREATE PRIMARY KEY'));
+            ->will($this->returnValue(array('CREATE PRIMARY KEY')));
 
         $this->platformMock
             ->expects($this->once())
@@ -223,6 +223,11 @@ class AlterTableSQLCollectorTest extends \PHPUnit_Framework_TestCase
         $this->platformMock
             ->expects($this->once())
             ->method('getCreateColumnSQLQueries')
+            ->will($this->returnValue(array('foo')));
+
+        $this->platformMock
+            ->expects($this->once())
+            ->method('getCreatePrimaryKeySQLQueries')
             ->will($this->returnValue(array('foo')));
 
         $this->sqlCollector->collect($this->tableDiff);

@@ -184,8 +184,8 @@ class MySQLPlatformTest extends \PHPUnit_Framework_TestCase
         $primaryKey = new Schema\PrimaryKey('foo', array('foo'));
 
         $this->assertSame(
-            'ALTER TABLE foo ADD CONSTRAINT PRIMARY KEY (foo)',
-            $this->platform->getCreatePrimaryKeySQLQuery($primaryKey, 'foo')
+            array('ALTER TABLE foo ADD CONSTRAINT PRIMARY KEY (foo)'),
+            $this->platform->getCreatePrimaryKeySQLQueries($primaryKey, 'foo')
         );
     }
 

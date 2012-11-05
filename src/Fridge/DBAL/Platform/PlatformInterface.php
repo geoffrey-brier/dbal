@@ -534,14 +534,14 @@ interface PlatformInterface
     function getCreateConstraintSQLQueries(Schema\ConstraintInterface $constraint, $table);
 
     /**
-     * Gets the create primary key SQL query.
+     * Gets the create primary key SQL queries.
      *
      * @param \Fridge\DBAL\Schema\PrimaryKey $primaryKey The primary key.
      * @param string                         $table      The table name of the primary key.
      *
-     * @return string The create primary key SQL query.
+     * @return array The create primary key SQL queries.
      */
-    function getCreatePrimaryKeySQLQuery(Schema\PrimaryKey $primaryKey, $table);
+    function getCreatePrimaryKeySQLQueries(Schema\PrimaryKey $primaryKey, $table);
 
     /**
      * Gets the create foreign key SQL query.

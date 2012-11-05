@@ -213,12 +213,12 @@ class AlterSchemaSQLCollectorTest extends \PHPUnit_Framework_TestCase
 
         $this->platformMock
             ->expects($this->once())
-            ->method('getCreatePrimaryKeySQLQuery')
+            ->method('getCreatePrimaryKeySQLQueries')
             ->with(
                 $this->equalTo($alteredTables[0]->getCreatedPrimaryKey()),
                 $this->equalTo($alteredTables[0]->getNewAsset()->getName())
             )
-            ->will($this->returnValue('CREATE PRIMARY KEY'));
+            ->will($this->returnValue(array('CREATE PRIMARY KEY')));
 
         $this->platformMock
             ->expects($this->once())
@@ -324,6 +324,11 @@ class AlterSchemaSQLCollectorTest extends \PHPUnit_Framework_TestCase
         $this->platformMock
             ->expects($this->once())
             ->method('getCreateTableSQLQueries')
+            ->will($this->returnValue(array('foo')));
+
+        $this->platformMock
+            ->expects($this->once())
+            ->method('getCreatePrimaryKeySQLQueries')
             ->will($this->returnValue(array('foo')));
 
         $this->platformMock

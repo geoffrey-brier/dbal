@@ -370,8 +370,8 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
      */
     public function createPrimaryKey(Schema\PrimaryKey $primaryKey, $table)
     {
-        $query = $this->getConnection()->getPlatform()->getCreatePrimaryKeySQLQuery($primaryKey, $table);
-        $this->getConnection()->executeUpdate($query);
+        $queries = $this->getConnection()->getPlatform()->getCreatePrimaryKeySQLQueries($primaryKey, $table);
+        $this->executeUpdates($queries);
     }
 
     /**

@@ -323,9 +323,12 @@ class AlterTableSQLCollector
     protected function collectPrimaryKeys(TableDiff $tableDiff)
     {
         if ($tableDiff->getCreatedPrimaryKey() !== null) {
-            $this->createPrimaryKeyQueries[] = $this->platform->getCreatePrimaryKeySQLQuery(
-                $tableDiff->getCreatedPrimaryKey(),
-                $tableDiff->getNewAsset()->getName()
+            $this->createPrimaryKeyQueries = array_merge(
+                $this->createPrimaryKeyQueries,
+                $this->platform->getCreatePrimaryKeySQLQueries(
+                    $tableDiff->getCreatedPrimaryKey(),
+                    $tableDiff->getNewAsset()->getName()
+                )
             );
         }
 
