@@ -696,7 +696,7 @@ abstract class AbstractFixture implements FixtureInterface
     /**
      * Gets the SQL query used to drop the database.
      *
-     * @return strinh The SQL query used to drop the database.
+     * @return string The SQL query used to drop the database.
      */
     protected function getDropDatabaseSQLQuery()
     {
