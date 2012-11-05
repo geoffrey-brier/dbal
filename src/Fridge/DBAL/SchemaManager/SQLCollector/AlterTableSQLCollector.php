@@ -348,9 +348,12 @@ class AlterTableSQLCollector
     protected function collectForeignKeys(TableDiff $tableDiff)
     {
         foreach ($tableDiff->getCreatedForeignKeys() as $foreignKey) {
-            $this->createForeignKeyQueries[] = $this->platform->getCreateForeignKeySQLQuery(
-                $foreignKey,
-                $tableDiff->getNewAsset()->getName()
+            $this->createForeignKeyQueries = array_merge(
+                $this->createForeignKeyQueries,
+                $this->platform->getCreateForeignKeySQLQueries(
+                    $foreignKey,
+                    $tableDiff->getNewAsset()->getName()
+                )
             );
         }
 

@@ -88,7 +88,10 @@ class CreateTableSQLCollector
         );
 
         foreach ($table->getForeignKeys() as $foreignKey) {
-            $this->createForeignKeyQueries[] = $this->platform->getCreateForeignKeySQLQuery($foreignKey, $table->getName());
+            $this->createForeignKeyQueries = array_merge(
+                $this->createForeignKeyQueries,
+                $this->platform->getCreateForeignKeySQLQueries($foreignKey, $table->getName())
+            );
         }
     }
 

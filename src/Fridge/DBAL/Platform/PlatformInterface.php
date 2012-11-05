@@ -544,14 +544,14 @@ interface PlatformInterface
     function getCreatePrimaryKeySQLQueries(Schema\PrimaryKey $primaryKey, $table);
 
     /**
-     * Gets the create foreign key SQL query.
+     * Gets the create foreign key SQL queries.
      *
      * @param \Fridge\DBAL\Schema\ForeignKey $foreignKey The foreign key.
      * @param string                         $table      The table name of the foreign key.
      *
-     * @return string The create foreign key SQL query.
+     * @return array The create foreign key SQL queries.
      */
-    function getCreateForeignKeySQLQuery(Schema\ForeignKey $foreignKey, $table);
+    function getCreateForeignKeySQLQueries(Schema\ForeignKey $foreignKey, $table);
 
     /**
      * Gets the create index SQL query.

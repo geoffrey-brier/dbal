@@ -170,9 +170,9 @@ class AlterTableSQLCollectorTest extends \PHPUnit_Framework_TestCase
 
         $this->platformMock
             ->expects($this->once())
-            ->method('getCreateForeignKeySQLQuery')
+            ->method('getCreateForeignKeySQLQueries')
             ->with($this->equalTo($createdForeignKeys[0]), $this->equalTo($this->tableDiff->getNewAsset()->getName()))
-            ->will($this->returnValue('CREATE FOREIGN KEY'));
+            ->will($this->returnValue(array('CREATE FOREIGN KEY')));
 
         $this->platformMock
             ->expects($this->once())
@@ -228,6 +228,11 @@ class AlterTableSQLCollectorTest extends \PHPUnit_Framework_TestCase
         $this->platformMock
             ->expects($this->once())
             ->method('getCreatePrimaryKeySQLQueries')
+            ->will($this->returnValue(array('foo')));
+
+        $this->platformMock
+            ->expects($this->once())
+            ->method('getCreateForeignKeySQLQueries')
             ->will($this->returnValue(array('foo')));
 
         $this->sqlCollector->collect($this->tableDiff);

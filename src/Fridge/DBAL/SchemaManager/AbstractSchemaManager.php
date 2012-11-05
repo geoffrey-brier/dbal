@@ -379,8 +379,8 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
      */
     public function createForeignKey(Schema\ForeignKey $foreignKey, $table)
     {
-        $query = $this->getConnection()->getPlatform()->getCreateForeignKeySQLQuery($foreignKey, $table);
-        $this->getConnection()->executeUpdate($query);
+        $queries = $this->getConnection()->getPlatform()->getCreateForeignKeySQLQueries($foreignKey, $table);
+        $this->executeUpdates($queries);
     }
 
     /**

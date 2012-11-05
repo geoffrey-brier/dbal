@@ -574,7 +574,7 @@ abstract class AbstractPlatform implements PlatformInterface
         }
 
         if ($constraint instanceof Schema\ForeignKey) {
-            return array($this->getCreateForeignKeySQLQuery($constraint, $table));
+            return $this->getCreateForeignKeySQLQueries($constraint, $table);
         }
 
         if ($constraint instanceof Schema\Index) {
@@ -599,9 +599,9 @@ abstract class AbstractPlatform implements PlatformInterface
     /**
      * {@inheritdoc}
      */
-    public function getCreateForeignKeySQLQuery(Schema\ForeignKey $foreignKey, $table)
+    public function getCreateForeignKeySQLQueries(Schema\ForeignKey $foreignKey, $table)
     {
-        return 'ALTER TABLE '.$table.' ADD '.$this->getForeignKeySQLDeclaration($foreignKey);
+        return array('ALTER TABLE '.$table.' ADD '.$this->getForeignKeySQLDeclaration($foreignKey));
     }
 
     /**

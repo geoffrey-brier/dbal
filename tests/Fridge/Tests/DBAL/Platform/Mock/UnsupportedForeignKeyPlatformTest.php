@@ -42,11 +42,11 @@ class UnsupportedForeignKeyPlatformTest extends \PHPUnit_Framework_TestCase
     /**
      * @expectedException Fridge\DBAL\Exception\PlatformException
      */
-    public function testCreateForeignKeySQLQuery()
+    public function testCreateForeignKeySQLQueries()
     {
         $foreignKeyMock = $this->getMock('Fridge\DBAL\Schema\ForeignKey', array(), array(), '', false);
 
-        $this->platform->getCreateForeignKeySQLQuery($foreignKeyMock, 'foo');
+        $this->platform->getCreateForeignKeySQLQueries($foreignKeyMock, 'foo');
     }
 
     /**

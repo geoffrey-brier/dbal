@@ -82,9 +82,9 @@ class CreateTableSQLCollectorTest extends \PHPUnit_Framework_TestCase
 
         $this->platformMock
             ->expects($this->once())
-            ->method('getCreateForeignKeySQLQuery')
+            ->method('getCreateForeignKeySQLQueries')
             ->with($this->equalTo($this->table->getForeignKey('foo')))
-            ->will($this->returnValue('CREATE FOREIGN KEY'));
+            ->will($this->returnValue(array('CREATE FOREIGN KEY')));
 
         $this->sqlCollector->collect($this->table);
 
@@ -100,6 +100,11 @@ class CreateTableSQLCollectorTest extends \PHPUnit_Framework_TestCase
             ->method('getCreateTableSQLQueries')
             ->will($this->returnValue(array('foo')));
 
+        $this->platformMock
+            ->expects($this->once())
+            ->method('getCreateForeignKeySQLQueries')
+            ->will($this->returnValue(array('foo')));
+
         $this->sqlCollector->collect($this->table);
         $this->sqlCollector->setPlatform($this->platformMock);
 
@@ -111,6 +116,11 @@ class CreateTableSQLCollectorTest extends \PHPUnit_Framework_TestCase
         $this->platformMock
             ->expects($this->once())
             ->method('getCreateTableSQLQueries')
+            ->will($this->returnValue(array('foo')));
+
+        $this->platformMock
+            ->expects($this->once())
+            ->method('getCreateForeignKeySQLQueries')
             ->will($this->returnValue(array('foo')));
 
         $this->sqlCollector->collect($this->table);

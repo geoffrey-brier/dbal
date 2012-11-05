@@ -520,7 +520,7 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public function testCreateForeignKeySQLQuery()
+    public function testCreateForeignKeySQLQueries()
     {
         $foreignKey = new Schema\ForeignKey(
             'foo',
@@ -532,13 +532,15 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
         );
 
         $this->assertSame(
-            'ALTER TABLE foo'.
-            ' ADD CONSTRAINT foo'.
-            ' FOREIGN KEY (foo)'.
-            ' REFERENCES bar (bar)'.
-            ' ON DELETE SET NULL'.
-            ' ON UPDATE CASCADE',
-            $this->platform->getCreateForeignKeySQLQuery($foreignKey, 'foo')
+            array(
+                'ALTER TABLE foo'.
+                ' ADD CONSTRAINT foo'.
+                ' FOREIGN KEY (foo)'.
+                ' REFERENCES bar (bar)'.
+                ' ON DELETE SET NULL'.
+                ' ON UPDATE CASCADE'
+            ),
+            $this->platform->getCreateForeignKeySQLQueries($foreignKey, 'foo')
         );
     }
 
