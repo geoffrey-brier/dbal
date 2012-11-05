@@ -422,7 +422,7 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
     {
         $view = new Schema\View('foo', 'bar');
 
-        $this->assertSame('CREATE VIEW foo AS bar', $this->platform->getCreateViewSQLQuery($view));
+        $this->assertSame(array('CREATE VIEW foo AS bar'), $this->platform->getCreateViewSQLQueries($view));
     }
 
     public function testCreateColumnSQLQueries()

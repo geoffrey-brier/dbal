@@ -320,8 +320,8 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
      */
     public function createView(Schema\View $view)
     {
-        $query = $this->getConnection()->getPlatform()->getCreateViewSQLQuery($view);
-        $this->getConnection()->executeUpdate($query);
+        $queries = $this->getConnection()->getPlatform()->getCreateViewSQLQueries($view);
+        $this->executeUpdates($queries);
     }
 
     /**

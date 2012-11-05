@@ -238,9 +238,9 @@ class AlterSchemaSQLCollectorTest extends \PHPUnit_Framework_TestCase
 
         $this->platformMock
             ->expects($this->once())
-            ->method('getCreateViewSQLQuery')
+            ->method('getCreateViewSQLQueries')
             ->with($this->equalTo($createdViews[0]))
-            ->will($this->returnValue('CREATE VIEW'));
+            ->will($this->returnValue(array('CREATE VIEW')));
 
         $this->platformMock
             ->expects($this->once())
@@ -328,14 +328,19 @@ class AlterSchemaSQLCollectorTest extends \PHPUnit_Framework_TestCase
 
         $this->platformMock
             ->expects($this->once())
+            ->method('getCreateViewSQLQueries')
+            ->will($this->returnValue(array('foo')));
+
+        $this->platformMock
+            ->expects($this->once())
             ->method('getCreateSequenceSQLQueries')
-            ->will($this->returnValue(array()));
+            ->will($this->returnValue(array('foo')));
 
         $this->platformMock
             ->expects($this->once())
             ->method('getRenameDatabaseSQLQueries')
             ->with($this->equalTo($this->schemaDiff))
-            ->will($this->returnValue(array()));
+            ->will($this->returnValue(array('foo')));
 
         $this->sqlCollector->collect($this->schemaDiff);
         $this->sqlCollector->init();

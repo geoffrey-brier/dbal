@@ -46,7 +46,7 @@ class UnsupportedViewPlatformTest extends \PHPUnit_Framework_TestCase
     {
         $viewMock = $this->getMock('Fridge\DBAL\Schema\View', array(), array(), '', false);
 
-        $this->platform->getCreateViewSQLQuery($viewMock);
+        $this->platform->getCreateViewSQLQueries($viewMock);
     }
 
     /**

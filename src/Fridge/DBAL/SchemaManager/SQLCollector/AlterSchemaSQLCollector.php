@@ -398,7 +398,10 @@ class AlterSchemaSQLCollector
     protected function collectViews(SchemaDiff $schemaDiff)
     {
         foreach ($schemaDiff->getCreatedViews() as $view) {
-            $this->createViewQueries[] = $this->platform->getCreateViewSQLQuery($view);
+            $this->createViewQueries = array_merge(
+                $this->createViewQueries,
+                $this->platform->getCreateViewSQLQueries($view)
+            );
         }
 
         foreach ($schemaDiff->getDroppedViews() as $view) {

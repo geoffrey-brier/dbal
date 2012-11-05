@@ -497,13 +497,13 @@ abstract class AbstractPlatform implements PlatformInterface
     /**
      * {@inheritdoc}
      */
-    public function getCreateViewSQLQuery(Schema\View $view)
+    public function getCreateViewSQLQueries(Schema\View $view)
     {
         if (!$this->supportView()) {
             throw Exception\PlatformException::methodNotSupported(__METHOD__);
         }
 
-        return 'CREATE VIEW '.$view->getName().' AS '.$view->getSQL();
+        return array('CREATE VIEW '.$view->getName().' AS '.$view->getSQL());
     }
 
     /**
