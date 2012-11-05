@@ -564,14 +564,14 @@ interface PlatformInterface
     function getCreateIndexSQLQueries(Schema\Index $index, $table);
 
     /**
-     * Gets the create check constraint SQL query.
+     * Gets the create check constraint SQL queries.
      *
      * @param \Fridge\DBAL\Schema\Check $check The check constraint.
      * @param string                    $table The table name of the check constraint.
      *
-     * @return string The create check constraint SQL query.
+     * @return array The create check constraint SQL queries.
      */
-    function getCreateCheckSQLQuery(Schema\Check $check, $table);
+    function getCreateCheckSQLQueries(Schema\Check $check, $table);
 
     /**
      * Gets the rename database SQL queries.

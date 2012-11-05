@@ -564,13 +564,13 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public function testCreateCheckSQLQuery()
+    public function testCreateCheckSQLQueries()
     {
         $check = new Schema\Check('foo', 'bar');
 
         $this->assertSame(
-            'ALTER TABLE zaz ADD CONSTRAINT foo CHECK (bar)',
-            $this->platform->getCreateCheckSQLQuery($check, 'zaz')
+            array('ALTER TABLE zaz ADD CONSTRAINT foo CHECK (bar)'),
+            $this->platform->getCreateCheckSQLQueries($check, 'zaz')
         );
     }
 

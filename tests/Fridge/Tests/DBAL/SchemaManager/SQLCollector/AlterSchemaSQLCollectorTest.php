@@ -159,6 +159,7 @@ class AlterSchemaSQLCollectorTest extends \PHPUnit_Framework_TestCase
         $this->platformMock
             ->expects($this->once())
             ->method('getDropCheckSQLQuery')
+            ->with($this->equalTo($droppedChecks[0]), $this->equalTo($alteredTables[0]->getNewAsset()->getName()))
             ->will($this->returnValue('DROP CHECK'));
 
         $this->platformMock
@@ -233,8 +234,9 @@ class AlterSchemaSQLCollectorTest extends \PHPUnit_Framework_TestCase
 
         $this->platformMock
             ->expects($this->once())
-            ->method('getCreateCheckSQLQuery')
-            ->will($this->returnValue('CREATE CHECK'));
+            ->method('getCreateCheckSQLQueries')
+            ->with($this->equalTo($createdChecks[0]), $this->equalTo($alteredTables[0]->getNewAsset()->getName()))
+            ->will($this->returnValue(array('CREATE CHECK')));
 
         $this->platformMock
             ->expects($this->once())
@@ -339,6 +341,11 @@ class AlterSchemaSQLCollectorTest extends \PHPUnit_Framework_TestCase
         $this->platformMock
             ->expects($this->any())
             ->method('getCreateForeignKeySQLQueries')
+            ->will($this->returnValue(array('foo')));
+
+        $this->platformMock
+            ->expects($this->once())
+            ->method('getCreateCheckSQLQueries')
             ->will($this->returnValue(array('foo')));
 
         $this->platformMock

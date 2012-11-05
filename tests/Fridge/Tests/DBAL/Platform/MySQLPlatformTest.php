@@ -179,7 +179,7 @@ class MySQLPlatformTest extends \PHPUnit_Framework_TestCase
         $this->platform->getCreateSequenceSQLQueries($sequence);
     }
 
-    public function testCreatePrimaryKeySQLQuery()
+    public function testCreatePrimaryKeySQLQueries()
     {
         $primaryKey = new Schema\PrimaryKey('foo', array('foo'));
 
@@ -192,11 +192,11 @@ class MySQLPlatformTest extends \PHPUnit_Framework_TestCase
     /**
      * @expectedException \Fridge\DBAL\Exception\PlatformException
      */
-    public function testCreateCheckSQLQuery()
+    public function testCreateCheckSQLQueries()
     {
         $check = new Schema\Check('foo', 'bar');
 
-        $this->platform->getCreateCheckSQLQuery($check, 'zaz');
+        $this->platform->getCreateCheckSQLQueries($check, 'zaz');
     }
 
     public function testCreateTableSQLQueries()

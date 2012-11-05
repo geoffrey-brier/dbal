@@ -582,7 +582,7 @@ abstract class AbstractPlatform implements PlatformInterface
         }
 
         if ($constraint instanceof Schema\Check) {
-            return array($this->getCreateCheckSQLQuery($constraint, $table));
+            return $this->getCreateCheckSQLQueries($constraint, $table);
         }
 
         throw Exception\PlatformException::constraintNotSupported(get_class($constraint));
@@ -627,9 +627,9 @@ abstract class AbstractPlatform implements PlatformInterface
     /**
      * {@inheritdoc}
      */
-    public function getCreateCheckSQLQuery(Schema\Check $check, $table)
+    public function getCreateCheckSQLQueries(Schema\Check $check, $table)
     {
-        return 'ALTER TABLE '.$table.' ADD '.$this->getCheckSQLDeclaration($check);
+        return array('ALTER TABLE '.$table.' ADD '.$this->getCheckSQLDeclaration($check));
     }
 
     /**

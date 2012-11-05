@@ -398,9 +398,12 @@ class AlterTableSQLCollector
     protected function collectChecks(TableDiff $tableDiff)
     {
         foreach ($tableDiff->getCreatedChecks() as $check) {
-            $this->createCheckQueries[] = $this->platform->getCreateCheckSQLQuery(
-                $check,
-                $tableDiff->getNewAsset()->getName()
+            $this->createCheckQueries = array_merge(
+                $this->createCheckQueries,
+                $this->platform->getCreateCheckSQLQueries(
+                    $check,
+                    $tableDiff->getNewAsset()->getName()
+                )
             );
         }
 

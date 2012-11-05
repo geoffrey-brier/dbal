@@ -397,8 +397,8 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
      */
     public function createCheck(Schema\Check $check, $table)
     {
-        $query = $this->getConnection()->getPlatform()->getCreateCheckSQLQuery($check, $table);
-        $this->getConnection()->executeUpdate($query);
+        $queries = $this->getConnection()->getPlatform()->getCreateCheckSQLQueries($check, $table);
+        $this->executeUpdates($queries);
     }
 
     /**
