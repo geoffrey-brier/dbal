@@ -650,54 +650,54 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public function testDropConstraintSQLQueryWithPrimaryKey()
+    public function testDropConstraintSQLQueriesWithPrimaryKey()
     {
         $constraint = new Schema\PrimaryKey('foo');
 
         $this->assertSame(
-            'ALTER TABLE bar DROP CONSTRAINT foo',
-            $this->platform->getDropConstraintSQLQuery($constraint, 'bar')
+            array('ALTER TABLE bar DROP CONSTRAINT foo'),
+            $this->platform->getDropConstraintSQLQueries($constraint, 'bar')
         );
     }
 
-    public function testDropConstraintSQLQueryWithForeignKey()
+    public function testDropConstraintSQLQueriesWithForeignKey()
     {
         $constraint = new Schema\ForeignKey('foo', array(), 'bar', array());
 
         $this->assertSame(
-            'ALTER TABLE bar DROP CONSTRAINT foo',
-            $this->platform->getDropConstraintSQLQuery($constraint, 'bar')
+            array('ALTER TABLE bar DROP CONSTRAINT foo'),
+            $this->platform->getDropConstraintSQLQueries($constraint, 'bar')
         );
     }
 
-    public function testDropConstraintSQLQueryWithIndex()
+    public function testDropConstraintSQLQueriesWithIndex()
     {
         $constraint = new Schema\Index('foo');
 
         $this->assertSame(
-            'DROP INDEX foo',
-            $this->platform->getDropConstraintSQLQuery($constraint, 'bar')
+            array('DROP INDEX foo'),
+            $this->platform->getDropConstraintSQLQueries($constraint, 'bar')
         );
     }
 
-    public function testDropConstraintSQLQueryWithCheck()
+    public function testDropConstraintSQLQueriesWithCheck()
     {
         $check = new Schema\Check('foo', 'bar');
 
         $this->assertSame(
-            'ALTER TABLE foo DROP CONSTRAINT foo',
-            $this->platform->getDropConstraintSQLQuery($check, 'foo')
+            array('ALTER TABLE foo DROP CONSTRAINT foo'),
+            $this->platform->getDropConstraintSQLQueries($check, 'foo')
         );
     }
 
     /**
      * @expectedException Fridge\DBAL\Exception\PlatformException
      */
-    public function testDropConstraintWithInvalidConstraint()
+    public function testDropConstraintSQLQueriesWithInvalidConstraint()
     {
         $check = $this->getMock('Fridge\DBAL\Schema\ConstraintInterface', array(), array(), '', false);
 
-        $this->platform->getDropConstraintSQLQuery($check, 'foo');
+        $this->platform->getDropConstraintSQLQueries($check, 'foo');
     }
 
     public function testDropPrimaryKeySQLQuery()

@@ -724,22 +724,22 @@ abstract class AbstractPlatform implements PlatformInterface
     /**
      * {@inheritdoc}
      */
-    public function getDropConstraintSQLQuery(Schema\ConstraintInterface $contraint, $table)
+    public function getDropConstraintSQLQueries(Schema\ConstraintInterface $contraint, $table)
     {
         if ($contraint instanceof Schema\PrimaryKey) {
-            return $this->getDropPrimaryKeySQLQuery($contraint, $table);
+            return array($this->getDropPrimaryKeySQLQuery($contraint, $table));
         }
 
         if ($contraint instanceof Schema\ForeignKey) {
-            return $this->getDropForeignKeySQLQuery($contraint, $table);
+            return array($this->getDropForeignKeySQLQuery($contraint, $table));
         }
 
         if ($contraint instanceof Schema\Index) {
-            return $this->getDropIndexSQLQuery($contraint, $table);
+            return array($this->getDropIndexSQLQuery($contraint, $table));
         }
 
         if ($contraint instanceof Schema\Check) {
-            return $this->getDropCheckSQLQuery($contraint, $table);
+            return array($this->getDropCheckSQLQuery($contraint, $table));
         }
 
         throw Exception\PlatformException::constraintNotSupported(get_class($contraint));

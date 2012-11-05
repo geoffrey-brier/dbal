@@ -521,8 +521,8 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
      */
     public function dropConstraint(Schema\ConstraintInterface $constraint, $table)
     {
-        $query = $this->getConnection()->getPlatform()->getDropConstraintSQLQuery($constraint, $table);
-        $this->getConnection()->executeUpdate($query);
+        $queries = $this->getConnection()->getPlatform()->getDropConstraintSQLQueries($constraint, $table);
+        $this->executeUpdates($queries);
     }
 
     /**

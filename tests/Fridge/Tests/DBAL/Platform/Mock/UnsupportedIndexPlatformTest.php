@@ -100,11 +100,11 @@ class UnsupportedIndexPlatformTest extends \PHPUnit_Framework_TestCase
     /**
      * @expectedException Fridge\DBAL\Exception\PlatformException
      */
-    public function testDropConstraintSQLQueryWithIndex()
+    public function testDropConstraintSQLQueriesWithIndex()
     {
         $indexMock = $this->getMock('Fridge\DBAL\Schema\Index', array(), array(), '', false);
 
-        $this->platform->getDropConstraintSQLQuery($indexMock, 'foo');
+        $this->platform->getDropConstraintSQLQueries($indexMock, 'foo');
     }
 }
 
