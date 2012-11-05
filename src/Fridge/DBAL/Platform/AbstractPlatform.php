@@ -646,10 +646,12 @@ abstract class AbstractPlatform implements PlatformInterface
     /**
      * {@inheritdoc}
      */
-    public function getRenameTableSQLQuery(Schema\Diff\TableDiff $tableDiff)
+    public function getRenameTableSQLQueries(Schema\Diff\TableDiff $tableDiff)
     {
-        return 'ALTER TABLE '.$tableDiff->getOldAsset()->getName().
-               ' RENAME TO '.$tableDiff->getNewAsset()->getName();
+        return array(
+            'ALTER TABLE '.$tableDiff->getOldAsset()->getName().
+            ' RENAME TO '.$tableDiff->getNewAsset()->getName()
+        );
     }
 
     /**

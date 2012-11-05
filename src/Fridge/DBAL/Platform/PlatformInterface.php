@@ -583,13 +583,13 @@ interface PlatformInterface
     function getRenameDatabaseSQLQueries(Schema\Diff\SchemaDiff $schemaDiff);
 
     /**
-     * Gets the rename table SQL query.
+     * Gets the rename table SQL queries.
      *
      * @param \Fridge\DBAL\Schema\Diff\TableDiff $tableDiff The table diff.
      *
-     * @return string The rename table SQL quuery.
+     * @return array The rename table SQL quueries.
      */
-    function getRenameTableSQLQuery(Schema\Diff\TableDiff $tableDiff);
+    function getRenameTableSQLQueries(Schema\Diff\TableDiff $tableDiff);
 
     /**
      * Gets the alter table column SQL queries.

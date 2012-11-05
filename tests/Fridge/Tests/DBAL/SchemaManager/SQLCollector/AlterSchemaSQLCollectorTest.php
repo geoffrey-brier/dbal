@@ -152,9 +152,9 @@ class AlterSchemaSQLCollectorTest extends \PHPUnit_Framework_TestCase
 
         $this->platformMock
             ->expects($this->once())
-            ->method('getRenameTableSQLQuery')
+            ->method('getRenameTableSQLQueries')
             ->with($this->equalTo($alteredTables[0]))
-            ->will($this->returnValue('RENAME TABLE'));
+            ->will($this->returnValue(array('RENAME TABLE')));
 
         $this->platformMock
             ->expects($this->once())
@@ -313,6 +313,11 @@ class AlterSchemaSQLCollectorTest extends \PHPUnit_Framework_TestCase
 
     public function testInit()
     {
+        $this->platformMock
+            ->expects($this->once())
+            ->method('getRenameTableSQLQueries')
+            ->will($this->returnValue(array('foo')));
+
         $this->platformMock
             ->expects($this->once())
             ->method('getAlterColumnSQLQueries')

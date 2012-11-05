@@ -133,7 +133,10 @@ class AlterTableSQLCollector
     public function collect(TableDiff $tableDiff)
     {
         if ($tableDiff->getOldAsset()->getName() !== $tableDiff->getNewAsset()->getName()) {
-            $this->renameTableQueries[] = $this->platform->getRenameTableSQLQuery($tableDiff);
+            $this->renameTableQueries = array_merge(
+                $this->renameTableQueries,
+                $this->platform->getRenameTableSQLQueries($tableDiff)
+            );
         }
 
         $this->collectColumns($tableDiff);

@@ -587,14 +587,17 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public function testRenameTableSQLQuery()
+    public function testRenameTableSQLQueries()
     {
         $oldTable = new Schema\Table('foo');
         $newTable = new Schema\Table('bar');
 
         $tableDiff = new Schema\Diff\TableDiff($oldTable, $newTable);
 
-        $this->assertSame('ALTER TABLE foo RENAME TO bar', $this->platform->getRenameTableSQLQuery($tableDiff));
+        $this->assertSame(
+            array('ALTER TABLE foo RENAME TO bar'),
+            $this->platform->getRenameTableSQLQueries($tableDiff)
+        );
     }
 
     public function testAlterColumnSQLQueries()
