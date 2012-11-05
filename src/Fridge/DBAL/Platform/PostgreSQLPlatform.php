@@ -261,7 +261,7 @@ class PostgreSQLPlatform extends AbstractPlatform
 
         if (!isset($originalFlags['index']) || $originalFlags['index']) {
             foreach ($table->getFilteredIndexes() as $index) {
-                $queries[] = $this->getCreateIndexSQLQuery($index, $table->getName());
+                $queries = array_merge($queries, $this->getCreateIndexSQLQueries($index, $table->getName()));
             }
         }
 

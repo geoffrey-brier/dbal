@@ -549,8 +549,8 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
         $index = new Schema\Index('foo', array('foo'), true);
 
         $this->assertSame(
-            'ALTER TABLE foo ADD CONSTRAINT foo UNIQUE (foo)',
-            $this->platform->getCreateIndexSQLQuery($index, 'foo')
+            array('ALTER TABLE foo ADD CONSTRAINT foo UNIQUE (foo)'),
+            $this->platform->getCreateIndexSQLQueries($index, 'foo')
         );
     }
 
@@ -559,8 +559,8 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
         $index = new Schema\Index('foo', array('foo'));
 
         $this->assertSame(
-            'CREATE INDEX foo ON foo (foo)',
-            $this->platform->getCreateIndexSQLQuery($index, 'foo')
+            array('CREATE INDEX foo ON foo (foo)'),
+            $this->platform->getCreateIndexSQLQueries($index, 'foo')
         );
     }
 

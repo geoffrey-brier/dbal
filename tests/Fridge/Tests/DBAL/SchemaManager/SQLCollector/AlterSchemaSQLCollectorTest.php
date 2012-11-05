@@ -222,9 +222,9 @@ class AlterSchemaSQLCollectorTest extends \PHPUnit_Framework_TestCase
 
         $this->platformMock
             ->expects($this->once())
-            ->method('getCreateIndexSQLQuery')
+            ->method('getCreateIndexSQLQueries')
             ->with($this->equalTo($createdIndexes[0]), $this->equalTo($alteredTables[0]->getNewAsset()->getName()))
-            ->will($this->returnValue('CREATE INDEX'));
+            ->will($this->returnValue(array('CREATE INDEX')));
 
         $this->platformMock
             ->expects($this->any())
@@ -329,6 +329,11 @@ class AlterSchemaSQLCollectorTest extends \PHPUnit_Framework_TestCase
         $this->platformMock
             ->expects($this->once())
             ->method('getCreatePrimaryKeySQLQueries')
+            ->will($this->returnValue(array('foo')));
+
+        $this->platformMock
+            ->expects($this->once())
+            ->method('getCreateIndexSQLQueries')
             ->will($this->returnValue(array('foo')));
 
         $this->platformMock

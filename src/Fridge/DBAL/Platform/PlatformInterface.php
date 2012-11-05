@@ -554,14 +554,14 @@ interface PlatformInterface
     function getCreateForeignKeySQLQueries(Schema\ForeignKey $foreignKey, $table);
 
     /**
-     * Gets the create index SQL query.
+     * Gets the create index SQL queries.
      *
      * @param \Fridge\DBAL\Schema\Index $index The index.
      * @param string                    $table The table name of the index.
      *
-     * @return string The create index SQL query.
+     * @return array The create index SQL queries.
      */
-    function getCreateIndexSQLQuery(Schema\Index $index, $table);
+    function getCreateIndexSQLQueries(Schema\Index $index, $table);
 
     /**
      * Gets the create check constraint SQL query.

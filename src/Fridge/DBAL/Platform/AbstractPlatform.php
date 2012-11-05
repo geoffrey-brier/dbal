@@ -578,7 +578,7 @@ abstract class AbstractPlatform implements PlatformInterface
         }
 
         if ($constraint instanceof Schema\Index) {
-            return array($this->getCreateIndexSQLQuery($constraint, $table));
+            return $this->getCreateIndexSQLQueries($constraint, $table);
         }
 
         if ($constraint instanceof Schema\Check) {
@@ -607,19 +607,21 @@ abstract class AbstractPlatform implements PlatformInterface
     /**
      * {@inheritdoc}
      */
-    public function getCreateIndexSQLQuery(Schema\Index $index, $table)
+    public function getCreateIndexSQLQueries(Schema\Index $index, $table)
     {
         if ($index->isUnique()) {
-            return 'ALTER TABLE '.$table.' ADD '.$this->getIndexSQLDeclaration($index);
+            return array('ALTER TABLE '.$table.' ADD '.$this->getIndexSQLDeclaration($index));
         }
 
         if (!$this->supportIndex()) {
             throw Exception\PlatformException::methodNotSupported(__METHOD__);
         }
 
-        return 'CREATE INDEX '.$index->getName().
-                ' ON '.$table.
-                ' ('.implode(', ', $index->getColumnNames()).')';
+        return array(
+            'CREATE INDEX '.$index->getName().
+            ' ON '.$table.
+            ' ('.implode(', ', $index->getColumnNames()).')'
+        );
     }
 
     /**

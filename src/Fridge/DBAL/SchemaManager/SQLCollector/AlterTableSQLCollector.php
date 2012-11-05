@@ -373,9 +373,12 @@ class AlterTableSQLCollector
     protected function collectIndexes(TableDiff $tableDiff)
     {
         foreach ($tableDiff->getCreatedIndexes() as $index) {
-            $this->createIndexQueries[] = $this->platform->getCreateIndexSQLQuery(
-                $index,
-                $tableDiff->getNewAsset()->getName()
+            $this->createIndexQueries = array_merge(
+                $this->createIndexQueries,
+                $this->platform->getCreateIndexSQLQueries(
+                    $index,
+                    $tableDiff->getNewAsset()->getName()
+                )
             );
         }
 

@@ -388,8 +388,8 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
      */
     public function createIndex(Schema\Index $index, $table)
     {
-        $query = $this->getConnection()->getPlatform()->getCreateIndexSQLQuery($index, $table);
-        $this->getConnection()->executeUpdate($query);
+        $queries = $this->getConnection()->getPlatform()->getCreateIndexSQLQueries($index, $table);
+        $this->executeUpdates($queries);
     }
 
     /**
