@@ -283,11 +283,11 @@ class MySQLPlatformTest extends \PHPUnit_Framework_TestCase
     /**
      * @expectedException \Fridge\DBAL\Exception\PlatformException
      */
-    public function testDropCheckSQLQuery()
+    public function testDropCheckSQLQueries()
     {
         $check = new Schema\Check('foo', 'bar');
 
-        $this->platform->getDropCheckSQLQuery($check, 'zaz');
+        $this->platform->getDropCheckSQLQueries($check, 'zaz');
     }
 
     public function testQuoteIdentifier()

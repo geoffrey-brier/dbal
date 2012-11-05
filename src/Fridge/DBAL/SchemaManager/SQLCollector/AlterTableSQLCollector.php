@@ -405,9 +405,9 @@ class AlterTableSQLCollector
         }
 
         foreach ($tableDiff->getDroppedChecks() as $check) {
-            $this->dropCheckQueries[] = $this->platform->getDropCheckSQLQuery(
-                $check,
-                $tableDiff->getNewAsset()->getName()
+            $this->dropCheckQueries = array_merge(
+                $this->dropCheckQueries,
+                $this->platform->getDropCheckSQLQueries($check, $tableDiff->getNewAsset()->getName())
             );
         }
     }

@@ -740,13 +740,13 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public function testDropCheck()
+    public function testDropCheckSQLQueries()
     {
         $check = new Schema\Check('foo', 'bar');
 
         $this->assertSame(
-            'ALTER TABLE zaz DROP CONSTRAINT foo',
-            $this->platform->getDropCheckSQLQuery($check, 'zaz')
+            array('ALTER TABLE zaz DROP CONSTRAINT foo'),
+            $this->platform->getDropCheckSQLQueries($check, 'zaz')
         );
     }
 

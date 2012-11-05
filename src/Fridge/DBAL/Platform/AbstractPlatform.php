@@ -739,7 +739,7 @@ abstract class AbstractPlatform implements PlatformInterface
         }
 
         if ($contraint instanceof Schema\Check) {
-            return array($this->getDropCheckSQLQuery($contraint, $table));
+            return $this->getDropCheckSQLQueries($contraint, $table);
         }
 
         throw Exception\PlatformException::constraintNotSupported(get_class($contraint));
@@ -788,13 +788,13 @@ abstract class AbstractPlatform implements PlatformInterface
     /**
      * {@inheritdoc}
      */
-    public function getDropCheckSQLQuery(Schema\Check $check, $table)
+    public function getDropCheckSQLQueries(Schema\Check $check, $table)
     {
         if (!$this->supportCheck()) {
             throw Exception\PlatformException::methodNotSupported(__METHOD__);
         }
 
-        return 'ALTER TABLE '.$table.' DROP CONSTRAINT '.$check->getName();
+        return array('ALTER TABLE '.$table.' DROP CONSTRAINT '.$check->getName());
     }
 
     /**

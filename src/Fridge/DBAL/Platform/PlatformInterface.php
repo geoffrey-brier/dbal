@@ -688,14 +688,14 @@ interface PlatformInterface
     function getDropIndexSQLQueries(Schema\Index $index, $table);
 
     /**
-     * Gets the drop check constraint SQL query.
+     * Gets the drop check constraint SQL queries.
      *
      * @param \Fridge\DBAL\Schema\Check $check The check.
      * @param string                    $table The table name of the check constraint.
      *
-     * @return string The drop index SQL query.
+     * @return array The drop index SQL queries.
      */
-    function getDropCheckSQLQuery(Schema\Check $check, $table);
+    function getDropCheckSQLQueries(Schema\Check $check, $table);
 
     /**
      * Gets the quote identifier.

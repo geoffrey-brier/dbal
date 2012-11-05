@@ -557,8 +557,8 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
      */
     public function dropCheck(Schema\Check $check, $table)
     {
-        $query = $this->getConnection()->getPlatform()->getDropCheckSQLQuery($check, $table);
-        $this->getConnection()->executeUpdate($query);
+        $queries = $this->getConnection()->getPlatform()->getDropCheckSQLQueries($check, $table);
+        $this->executeUpdates($queries);
     }
 
     /**
