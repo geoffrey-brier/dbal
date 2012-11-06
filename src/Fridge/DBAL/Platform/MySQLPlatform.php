@@ -279,16 +279,14 @@ class MySQLPlatform extends AbstractPlatform
      */
     public function getRenameDatabaseSQLQueries(Schema\Diff\SchemaDiff $schemaDiff)
     {
-        $queries = array($this->getCreateDatabaseSQLQuery($schemaDiff->getNewAsset()->getName()));
+        $queries = $this->getCreateDatabaseSQLQueries($schemaDiff->getNewAsset()->getName());
 
         foreach ($schemaDiff->getNewAsset()->getTables() as $table) {
             $queries[] = 'RENAME TABLE '.$schemaDiff->getOldAsset()->getName().'.'.$table->getName().
                          ' TO '.$schemaDiff->getNewAsset()->getName().'.'.$table->getName();
         }
 
-        $queries[] = $this->getDropDatabaseSQLQuery($schemaDiff->getOldAsset()->getName());
-
-        return $queries;
+        return array_merge($queries, $this->getDropDatabaseSQLQueries($schemaDiff->getOldAsset()->getName()));
     }
 
     /**
@@ -305,25 +303,25 @@ class MySQLPlatform extends AbstractPlatform
     /**
      * {@inheritdoc}
      */
-    public function getDropPrimaryKeySQLQuery(Schema\PrimaryKey $primaryKey, $table)
+    public function getDropPrimaryKeySQLQueries(Schema\PrimaryKey $primaryKey, $table)
     {
-        return 'ALTER TABLE '.$table.' DROP PRIMARY KEY';
+        return array('ALTER TABLE '.$table.' DROP PRIMARY KEY');
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getDropForeignKeySQLQuery(Schema\ForeignKey $foreignKey, $table)
+    public function getDropForeignKeySQLQueries(Schema\ForeignKey $foreignKey, $table)
     {
-        return 'ALTER TABLE '.$table.' DROP FOREIGN KEY '.$foreignKey->getName();
+        return array('ALTER TABLE '.$table.' DROP FOREIGN KEY '.$foreignKey->getName());
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getDropIndexSQLQuery(Schema\Index $index, $table)
+    public function getDropIndexSQLQueries(Schema\Index $index, $table)
     {
-        return 'ALTER TABLE '.$table.' DROP INDEX '.$index->getName();
+        return array('ALTER TABLE '.$table.' DROP INDEX '.$index->getName());
     }
 
     /**

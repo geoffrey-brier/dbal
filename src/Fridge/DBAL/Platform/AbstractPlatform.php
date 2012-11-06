@@ -472,36 +472,38 @@ abstract class AbstractPlatform implements PlatformInterface
     /**
      * {@inheritdoc}
      */
-    public function getCreateDatabaseSQLQuery($database)
+    public function getCreateDatabaseSQLQueries($database)
     {
-        return 'CREATE DATABASE '.$database;
+        return array('CREATE DATABASE '.$database);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getCreateSequenceSQLQuery(Schema\Sequence $sequence)
+    public function getCreateSequenceSQLQueries(Schema\Sequence $sequence)
     {
         if (!$this->supportSequence()) {
             throw Exception\PlatformException::methodNotSupported(__METHOD__);
         }
 
-        return 'CREATE SEQUENCE '.$sequence->getName().
-               ' INCREMENT BY '.$sequence->getIncrementSize().
-               ' MINVALUE '.$sequence->getInitialValue().
-               ' START WITH '.$sequence->getInitialValue();
+        return array(
+            'CREATE SEQUENCE '.$sequence->getName().
+            ' INCREMENT BY '.$sequence->getIncrementSize().
+            ' MINVALUE '.$sequence->getInitialValue().
+            ' START WITH '.$sequence->getInitialValue()
+        );
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getCreateViewSQLQuery(Schema\View $view)
+    public function getCreateViewSQLQueries(Schema\View $view)
     {
         if (!$this->supportView()) {
             throw Exception\PlatformException::methodNotSupported(__METHOD__);
         }
 
-        return 'CREATE VIEW '.$view->getName().' AS '.$view->getSQL();
+        return array('CREATE VIEW '.$view->getName().' AS '.$view->getSQL());
     }
 
     /**
@@ -565,22 +567,22 @@ abstract class AbstractPlatform implements PlatformInterface
     /**
      * {@inheritdoc}
      */
-    public function getCreateConstraintSQLQuery(Schema\ConstraintInterface $constraint, $table)
+    public function getCreateConstraintSQLQueries(Schema\ConstraintInterface $constraint, $table)
     {
         if ($constraint instanceof Schema\PrimaryKey) {
-            return $this->getCreatePrimaryKeySQLQuery($constraint, $table);
+            return $this->getCreatePrimaryKeySQLQueries($constraint, $table);
         }
 
         if ($constraint instanceof Schema\ForeignKey) {
-            return $this->getCreateForeignKeySQLQuery($constraint, $table);
+            return $this->getCreateForeignKeySQLQueries($constraint, $table);
         }
 
         if ($constraint instanceof Schema\Index) {
-            return $this->getCreateIndexSQLQuery($constraint, $table);
+            return $this->getCreateIndexSQLQueries($constraint, $table);
         }
 
         if ($constraint instanceof Schema\Check) {
-            return $this->getCreateCheckSQLQuery($constraint, $table);
+            return $this->getCreateCheckSQLQueries($constraint, $table);
         }
 
         throw Exception\PlatformException::constraintNotSupported(get_class($constraint));
@@ -589,43 +591,45 @@ abstract class AbstractPlatform implements PlatformInterface
     /**
      * {@inheritdoc}
      */
-    public function getCreatePrimaryKeySQLQuery(Schema\PrimaryKey $primaryKey, $table)
+    public function getCreatePrimaryKeySQLQueries(Schema\PrimaryKey $primaryKey, $table)
     {
-        return 'ALTER TABLE '.$table.' ADD '.$this->getPrimaryKeySQLDeclaration($primaryKey);
+        return array('ALTER TABLE '.$table.' ADD '.$this->getPrimaryKeySQLDeclaration($primaryKey));
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getCreateForeignKeySQLQuery(Schema\ForeignKey $foreignKey, $table)
+    public function getCreateForeignKeySQLQueries(Schema\ForeignKey $foreignKey, $table)
     {
-        return 'ALTER TABLE '.$table.' ADD '.$this->getForeignKeySQLDeclaration($foreignKey);
+        return array('ALTER TABLE '.$table.' ADD '.$this->getForeignKeySQLDeclaration($foreignKey));
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getCreateIndexSQLQuery(Schema\Index $index, $table)
+    public function getCreateIndexSQLQueries(Schema\Index $index, $table)
     {
         if ($index->isUnique()) {
-            return 'ALTER TABLE '.$table.' ADD '.$this->getIndexSQLDeclaration($index);
+            return array('ALTER TABLE '.$table.' ADD '.$this->getIndexSQLDeclaration($index));
         }
 
         if (!$this->supportIndex()) {
             throw Exception\PlatformException::methodNotSupported(__METHOD__);
         }
 
-        return 'CREATE INDEX '.$index->getName().
-                ' ON '.$table.
-                ' ('.implode(', ', $index->getColumnNames()).')';
+        return array(
+            'CREATE INDEX '.$index->getName().
+            ' ON '.$table.
+            ' ('.implode(', ', $index->getColumnNames()).')'
+        );
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getCreateCheckSQLQuery(Schema\Check $check, $table)
+    public function getCreateCheckSQLQueries(Schema\Check $check, $table)
     {
-        return 'ALTER TABLE '.$table.' ADD '.$this->getCheckSQLDeclaration($check);
+        return array('ALTER TABLE '.$table.' ADD '.$this->getCheckSQLDeclaration($check));
     }
 
     /**
@@ -642,10 +646,12 @@ abstract class AbstractPlatform implements PlatformInterface
     /**
      * {@inheritdoc}
      */
-    public function getRenameTableSQLQuery(Schema\Diff\TableDiff $tableDiff)
+    public function getRenameTableSQLQueries(Schema\Diff\TableDiff $tableDiff)
     {
-        return 'ALTER TABLE '.$tableDiff->getOldAsset()->getName().
-               ' RENAME TO '.$tableDiff->getNewAsset()->getName();
+        return array(
+            'ALTER TABLE '.$tableDiff->getOldAsset()->getName().
+            ' RENAME TO '.$tableDiff->getNewAsset()->getName()
+        );
     }
 
     /**
@@ -670,70 +676,70 @@ abstract class AbstractPlatform implements PlatformInterface
     /**
      * {@inheritdoc}
      */
-    public function getDropDatabaseSQLQuery($database)
+    public function getDropDatabaseSQLQueries($database)
     {
-        return 'DROP DATABASE '.$database;
+        return array('DROP DATABASE '.$database);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getDropSequenceSQLQuery(Schema\Sequence $sequence)
+    public function getDropSequenceSQLQueries(Schema\Sequence $sequence)
     {
         if (!$this->supportSequence()) {
             throw Exception\PlatformException::methodNotSupported(__METHOD__);
         }
 
-        return 'DROP SEQUENCE '.$sequence->getName();
+        return array('DROP SEQUENCE '.$sequence->getName());
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getDropViewSQLQuery(Schema\View $view)
+    public function getDropViewSQLQueries(Schema\View $view)
     {
         if (!$this->supportView()) {
             throw Exception\PlatformException::methodNotSupported(__METHOD__);
         }
 
-        return 'DROP VIEW '.$view->getName();
+        return array('DROP VIEW '.$view->getName());
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getDropTableSQLQuery(Schema\Table $table)
+    public function getDropTableSQLQueries(Schema\Table $table)
     {
-        return 'DROP TABLE '.$table->getName();
+        return array('DROP TABLE '.$table->getName());
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getDropColumnSQLQuery(Schema\Column $column, $table)
+    public function getDropColumnSQLQueries(Schema\Column $column, $table)
     {
-        return 'ALTER TABLE '.$table.' DROP COLUMN '.$column->getName();
+        return array('ALTER TABLE '.$table.' DROP COLUMN '.$column->getName());
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getDropConstraintSQLQuery(Schema\ConstraintInterface $contraint, $table)
+    public function getDropConstraintSQLQueries(Schema\ConstraintInterface $contraint, $table)
     {
         if ($contraint instanceof Schema\PrimaryKey) {
-            return $this->getDropPrimaryKeySQLQuery($contraint, $table);
+            return $this->getDropPrimaryKeySQLQueries($contraint, $table);
         }
 
         if ($contraint instanceof Schema\ForeignKey) {
-            return $this->getDropForeignKeySQLQuery($contraint, $table);
+            return $this->getDropForeignKeySQLQueries($contraint, $table);
         }
 
         if ($contraint instanceof Schema\Index) {
-            return $this->getDropIndexSQLQuery($contraint, $table);
+            return $this->getDropIndexSQLQueries($contraint, $table);
         }
 
         if ($contraint instanceof Schema\Check) {
-            return $this->getDropCheckSQLQuery($contraint, $table);
+            return $this->getDropCheckSQLQueries($contraint, $table);
         }
 
         throw Exception\PlatformException::constraintNotSupported(get_class($contraint));
@@ -742,53 +748,53 @@ abstract class AbstractPlatform implements PlatformInterface
     /**
      * {@inheritdoc}
      */
-    public function getDropPrimaryKeySQLQuery(Schema\PrimaryKey $primaryKey, $table)
+    public function getDropPrimaryKeySQLQueries(Schema\PrimaryKey $primaryKey, $table)
     {
         if (!$this->supportPrimaryKey()) {
             throw Exception\PlatformException::methodNotSupported(__METHOD__);
         }
 
-        return 'ALTER TABLE '.$table.' DROP CONSTRAINT '.$primaryKey->getName();
+        return array('ALTER TABLE '.$table.' DROP CONSTRAINT '.$primaryKey->getName());
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getDropForeignKeySQLQuery(Schema\ForeignKey $foreignKey, $table)
+    public function getDropForeignKeySQLQueries(Schema\ForeignKey $foreignKey, $table)
     {
         if (!$this->supportForeignKey()) {
             throw Exception\PlatformException::methodNotSupported(__METHOD__);
         }
 
-        return 'ALTER TABLE '.$table.' DROP CONSTRAINT '.$foreignKey->getName();
+        return array('ALTER TABLE '.$table.' DROP CONSTRAINT '.$foreignKey->getName());
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getDropIndexSQLQuery(Schema\Index $index, $table)
+    public function getDropIndexSQLQueries(Schema\Index $index, $table)
     {
         if (!$this->supportIndex()) {
             throw Exception\PlatformException::methodNotSupported(__METHOD__);
         }
 
         if ($index->isUnique()) {
-            return 'ALTER TABLE '.$table.' DROP CONSTRAINT '.$index->getName();
+            return array('ALTER TABLE '.$table.' DROP CONSTRAINT '.$index->getName());
         }
 
-        return 'DROP INDEX '.$index->getName();
+        return array('DROP INDEX '.$index->getName());
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getDropCheckSQLQuery(Schema\Check $check, $table)
+    public function getDropCheckSQLQueries(Schema\Check $check, $table)
     {
         if (!$this->supportCheck()) {
             throw Exception\PlatformException::methodNotSupported(__METHOD__);
         }
 
-        return 'ALTER TABLE '.$table.' DROP CONSTRAINT '.$check->getName();
+        return array('ALTER TABLE '.$table.' DROP CONSTRAINT '.$check->getName());
     }
 
     /**

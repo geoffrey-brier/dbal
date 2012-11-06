@@ -42,41 +42,41 @@ class UnsupportedPrimaryKeyPlatformTest extends \PHPUnit_Framework_TestCase
     /**
      * @expectedException Fridge\DBAL\Exception\PlatformException
      */
-    public function testCreatePrimaryKeySQLQuery()
+    public function testCreatePrimaryKeySQLQueries()
     {
         $primaryKeyMock = $this->getMock('Fridge\DBAL\Schema\PrimaryKey', array(), array(), '', false);
 
-        $this->platform->getCreatePrimaryKeySQLQuery($primaryKeyMock, 'foo');
+        $this->platform->getCreatePrimaryKeySQLQueries($primaryKeyMock, 'foo');
     }
 
     /**
      * @expectedException Fridge\DBAL\Exception\PlatformException
      */
-    public function testDropPrimaryKeySQLQuery()
+    public function testDropPrimaryKeySQLQueries()
     {
         $primaryKeyMock = $this->getMock('Fridge\DBAL\Schema\PrimaryKey', array(), array(), '', false);
 
-        $this->platform->getDropPrimaryKeySQLQuery($primaryKeyMock, 'foo');
+        $this->platform->getDropPrimaryKeySQLQueries($primaryKeyMock, 'foo');
     }
 
     /**
      * @expectedException Fridge\DBAL\Exception\PlatformException
      */
-    public function testCreateConsraintSQLQueryWithPrimaryKey()
+    public function testCreateConsraintSQLQueriesWithPrimaryKey()
     {
         $primaryKeyMock = $this->getMock('Fridge\DBAL\Schema\PrimaryKey', array(), array(), '', false);
 
-        $this->platform->getCreateConstraintSQLQuery($primaryKeyMock, 'foo');
+        $this->platform->getCreateConstraintSQLQueries($primaryKeyMock, 'foo');
     }
 
     /**
      * @expectedException Fridge\DBAL\Exception\PlatformException
      */
-    public function testDropConstraintSQLQueryWithPrimaryKey()
+    public function testDropConstraintSQLQueriesWithPrimaryKey()
     {
         $primaryKeyMock = $this->getMock('Fridge\DBAL\Schema\PrimaryKey', array(), array(), '', false);
 
-        $this->platform->getDropConstraintSQLQuery($primaryKeyMock, 'foo');
+        $this->platform->getDropConstraintSQLQueries($primaryKeyMock, 'foo');
     }
 }
 

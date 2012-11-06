@@ -398,11 +398,17 @@ class AlterSchemaSQLCollector
     protected function collectViews(SchemaDiff $schemaDiff)
     {
         foreach ($schemaDiff->getCreatedViews() as $view) {
-            $this->createViewQueries[] = $this->platform->getCreateViewSQLQuery($view);
+            $this->createViewQueries = array_merge(
+                $this->createViewQueries,
+                $this->platform->getCreateViewSQLQueries($view)
+            );
         }
 
         foreach ($schemaDiff->getDroppedViews() as $view) {
-            $this->dropViewQueries[] = $this->platform->getDropViewSQLQuery($view);
+            $this->dropViewQueries = array_merge(
+                $this->dropViewQueries,
+                $this->platform->getDropViewSQLQueries($view)
+            );
         }
     }
 
@@ -414,11 +420,17 @@ class AlterSchemaSQLCollector
     protected function collectSequences(SchemaDiff $schemaDiff)
     {
         foreach ($schemaDiff->getCreatedSequences() as $sequence) {
-            $this->createSequenceQueries[] = $this->platform->getCreateSequenceSQLQuery($sequence);
+            $this->createSequenceQueries = array_merge(
+                $this->createSequenceQueries,
+                $this->platform->getCreateSequenceSQLQueries($sequence)
+            );
         }
 
         foreach ($schemaDiff->getDroppedSequences() as $sequence) {
-            $this->dropSequenceQueries[] = $this->platform->getDropSequenceSQLQuery($sequence);
+            $this->dropSequenceQueries = array_merge(
+                $this->dropSequenceQueries,
+                $this->platform->getDropSequenceSQLQueries($sequence)
+            );
         }
     }
 }

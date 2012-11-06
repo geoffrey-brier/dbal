@@ -42,7 +42,7 @@ class UnsupportedIndexPlatformTest extends \PHPUnit_Framework_TestCase
     /**
      * @expectedException Fridge\DBAL\Exception\PlatformException
      */
-    public function testCreateIndexSQLQueryWithUniqueIndex()
+    public function testCreateIndexSQLQueriesWithUniqueIndex()
     {
         $indexMock = $this->getMock('Fridge\DBAL\Schema\Index', array(), array(), '', false);
         $indexMock
@@ -50,33 +50,33 @@ class UnsupportedIndexPlatformTest extends \PHPUnit_Framework_TestCase
             ->method('isUnique')
             ->will($this->returnValue(true));
 
-        $this->platform->getCreateIndexSQLQuery($indexMock, 'foo');
+        $this->platform->getCreateIndexSQLQueries($indexMock, 'foo');
     }
 
     /**
      * @expectedException Fridge\DBAL\Exception\PlatformException
      */
-    public function testCreateIndexSQLQueryWithNonUniqueIndex()
+    public function testCreateIndexSQLQueriesWithNonUniqueIndex()
     {
         $indexMock = $this->getMock('Fridge\DBAL\Schema\Index', array(), array(), '', false);
 
-        $this->platform->getCreateIndexSQLQuery($indexMock, 'foo');
+        $this->platform->getCreateIndexSQLQueries($indexMock, 'foo');
     }
 
     /**
      * @expectedException Fridge\DBAL\Exception\PlatformException
      */
-    public function testDropIndexSQLQuery()
+    public function testDropIndexSQLQueries()
     {
         $indexMock = $this->getMock('Fridge\DBAL\Schema\Index', array(), array(), '', false);
 
-        $this->platform->getDropIndexSQLQuery($indexMock, 'foo');
+        $this->platform->getDropIndexSQLQueries($indexMock, 'foo');
     }
 
     /**
      * @expectedException Fridge\DBAL\Exception\PlatformException
      */
-    public function testCreateConstraintSQLQueryWithUniqueIndex()
+    public function testCreateConstraintSQLQueriesWithUniqueIndex()
     {
         $indexMock = $this->getMock('Fridge\DBAL\Schema\Index', array(), array(), '', false);
         $indexMock
@@ -84,27 +84,27 @@ class UnsupportedIndexPlatformTest extends \PHPUnit_Framework_TestCase
             ->method('isUnique')
             ->will($this->returnValue(true));
 
-        $this->platform->getCreateConstraintSQLQuery($indexMock, 'foo');
+        $this->platform->getCreateConstraintSQLQueries($indexMock, 'foo');
     }
 
     /**
      * @expectedException Fridge\DBAL\Exception\PlatformException
      */
-    public function testCreateConstraintSQLQueryWithNonUniqueIndex()
+    public function testCreateConstraintSQLQueriesWithNonUniqueIndex()
     {
         $indexMock = $this->getMock('Fridge\DBAL\Schema\Index', array(), array(), '', false);
 
-        $this->platform->getCreateConstraintSQLQuery($indexMock, 'foo');
+        $this->platform->getCreateConstraintSQLQueries($indexMock, 'foo');
     }
 
     /**
      * @expectedException Fridge\DBAL\Exception\PlatformException
      */
-    public function testDropConstraintSQLQueryWithIndex()
+    public function testDropConstraintSQLQueriesWithIndex()
     {
         $indexMock = $this->getMock('Fridge\DBAL\Schema\Index', array(), array(), '', false);
 
-        $this->platform->getDropConstraintSQLQuery($indexMock, 'foo');
+        $this->platform->getDropConstraintSQLQueries($indexMock, 'foo');
     }
 }
 

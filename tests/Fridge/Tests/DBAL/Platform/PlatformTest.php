@@ -403,26 +403,26 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('SET NAMES \'foo\'', $this->platform->getSetCharsetSQLQuery('foo'));
     }
 
-    public function testCreateDatabaseSQLQuery()
+    public function testCreateDatabaseSQLQueries()
     {
-        $this->assertSame('CREATE DATABASE foo', $this->platform->getCreateDatabaseSQLQuery('foo'));
+        $this->assertSame(array('CREATE DATABASE foo'), $this->platform->getCreateDatabaseSQLQueries('foo'));
     }
 
-    public function testCreateSequenceSQLQuery()
+    public function testCreateSequenceSQLQueries()
     {
         $sequence = new Schema\Sequence('foo', 1, 1);
 
         $this->assertSame(
-            'CREATE SEQUENCE foo INCREMENT BY 1 MINVALUE 1 START WITH 1',
-            $this->platform->getCreateSequenceSQLQuery($sequence)
+            array('CREATE SEQUENCE foo INCREMENT BY 1 MINVALUE 1 START WITH 1'),
+            $this->platform->getCreateSequenceSQLQueries($sequence)
         );
     }
 
-    public function testCreateViewSQLQuery()
+    public function testCreateViewSQLQueries()
     {
         $view = new Schema\View('foo', 'bar');
 
-        $this->assertSame('CREATE VIEW foo AS bar', $this->platform->getCreateViewSQLQuery($view));
+        $this->assertSame(array('CREATE VIEW foo AS bar'), $this->platform->getCreateViewSQLQueries($view));
     }
 
     public function testCreateColumnSQLQueries()
@@ -435,17 +435,17 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public function testCreateConstraintSQLQueryWithPrimaryKey()
+    public function testCreateConstraintSQLQueriesWithPrimaryKey()
     {
         $primaryKey = new Schema\PrimaryKey('foo', array('bar'));
 
         $this->assertSame(
-            'ALTER TABLE foo ADD CONSTRAINT foo PRIMARY KEY (bar)',
-            $this->platform->getCreateConstraintSQLQuery($primaryKey, 'foo')
+            array('ALTER TABLE foo ADD CONSTRAINT foo PRIMARY KEY (bar)'),
+            $this->platform->getCreateConstraintSQLQueries($primaryKey, 'foo')
         );
     }
 
-    public function testCreateConstraintSQLQueryWithForeignKey()
+    public function testCreateConstraintSQLQueriesWithForeignKey()
     {
         $foreignKey = new Schema\ForeignKey(
             'foo',
@@ -457,43 +457,45 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
         );
 
         $this->assertSame(
-            'ALTER TABLE foo'.
-            ' ADD CONSTRAINT foo'.
-            ' FOREIGN KEY (foo)'.
-            ' REFERENCES bar (bar)'.
-            ' ON DELETE SET NULL'.
-            ' ON UPDATE CASCADE',
-            $this->platform->getCreateConstraintSQLQuery($foreignKey, 'foo')
+            array(
+                'ALTER TABLE foo'.
+                ' ADD CONSTRAINT foo'.
+                ' FOREIGN KEY (foo)'.
+                ' REFERENCES bar (bar)'.
+                ' ON DELETE SET NULL'.
+                ' ON UPDATE CASCADE'
+            ),
+            $this->platform->getCreateConstraintSQLQueries($foreignKey, 'foo')
         );
     }
 
-    public function testCreateConstraintSQLQueryWithUniqueIndex()
+    public function testCreateConstraintSQLQueriesWithUniqueIndex()
     {
         $index = new Schema\Index('foo', array('foo'), true);
 
         $this->assertSame(
-            'ALTER TABLE foo ADD CONSTRAINT foo UNIQUE (foo)',
-            $this->platform->getCreateConstraintSQLQuery($index, 'foo')
+            array('ALTER TABLE foo ADD CONSTRAINT foo UNIQUE (foo)'),
+            $this->platform->getCreateConstraintSQLQueries($index, 'foo')
         );
     }
 
-    public function testCreateConstraintSQLQueryWithNonUniqueIndex()
+    public function testCreateConstraintSQLQueriesWithNonUniqueIndex()
     {
         $index = new Schema\Index('foo', array('foo'));
 
         $this->assertSame(
-            'CREATE INDEX foo ON foo (foo)',
-            $this->platform->getCreateConstraintSQLQuery($index, 'foo')
+            array('CREATE INDEX foo ON foo (foo)'),
+            $this->platform->getCreateConstraintSQLQueries($index, 'foo')
         );
     }
 
-    public function testCreateConstraintSQLQueryWithCheck()
+    public function testCreateConstraintSQLQueriesWithCheck()
     {
         $check = new Schema\Check('foo', 'bar');
 
         $this->assertSame(
-            'ALTER TABLE foo ADD CONSTRAINT foo CHECK (bar)',
-            $this->platform->getCreateConstraintSQLQuery($check, 'foo')
+            array('ALTER TABLE foo ADD CONSTRAINT foo CHECK (bar)'),
+            $this->platform->getCreateConstraintSQLQueries($check, 'foo')
         );
     }
 
@@ -501,24 +503,24 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
      * @expectedException Fridge\DBAL\Exception\PlatformException
      * @expectedExceptionMessage The constraint "foo" is not supported.
      */
-    public function testCreateConstraintWithInvalidConstraint()
+    public function testCreateConstraintSQLQueriesWithInvalidConstraint()
     {
         $check = $this->getMock('Fridge\DBAL\Schema\ConstraintInterface', array(), array(), 'foo', false);
 
-        $this->platform->getCreateConstraintSQLQuery($check, 'foo');
+        $this->platform->getCreateConstraintSQLQueries($check, 'foo');
     }
 
-    public function testCreatePrimaryKeySQLQuery()
+    public function testCreatePrimaryKeySQLQueries()
     {
         $primaryKey = new Schema\PrimaryKey('foo', array('foo'));
 
         $this->assertSame(
-            'ALTER TABLE foo ADD CONSTRAINT foo PRIMARY KEY (foo)',
-            $this->platform->getCreatePrimaryKeySQLQuery($primaryKey, 'foo')
+            array('ALTER TABLE foo ADD CONSTRAINT foo PRIMARY KEY (foo)'),
+            $this->platform->getCreatePrimaryKeySQLQueries($primaryKey, 'foo')
         );
     }
 
-    public function testCreateForeignKeySQLQuery()
+    public function testCreateForeignKeySQLQueries()
     {
         $foreignKey = new Schema\ForeignKey(
             'foo',
@@ -530,23 +532,25 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
         );
 
         $this->assertSame(
-            'ALTER TABLE foo'.
-            ' ADD CONSTRAINT foo'.
-            ' FOREIGN KEY (foo)'.
-            ' REFERENCES bar (bar)'.
-            ' ON DELETE SET NULL'.
-            ' ON UPDATE CASCADE',
-            $this->platform->getCreateForeignKeySQLQuery($foreignKey, 'foo')
+            array(
+                'ALTER TABLE foo'.
+                ' ADD CONSTRAINT foo'.
+                ' FOREIGN KEY (foo)'.
+                ' REFERENCES bar (bar)'.
+                ' ON DELETE SET NULL'.
+                ' ON UPDATE CASCADE'
+            ),
+            $this->platform->getCreateForeignKeySQLQueries($foreignKey, 'foo')
         );
     }
 
-    public function testCreateIndexSQLQueryWithUniqueIndex()
+    public function testCreateIndexSQLQueriesWithUniqueIndex()
     {
         $index = new Schema\Index('foo', array('foo'), true);
 
         $this->assertSame(
-            'ALTER TABLE foo ADD CONSTRAINT foo UNIQUE (foo)',
-            $this->platform->getCreateIndexSQLQuery($index, 'foo')
+            array('ALTER TABLE foo ADD CONSTRAINT foo UNIQUE (foo)'),
+            $this->platform->getCreateIndexSQLQueries($index, 'foo')
         );
     }
 
@@ -555,18 +559,18 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
         $index = new Schema\Index('foo', array('foo'));
 
         $this->assertSame(
-            'CREATE INDEX foo ON foo (foo)',
-            $this->platform->getCreateIndexSQLQuery($index, 'foo')
+            array('CREATE INDEX foo ON foo (foo)'),
+            $this->platform->getCreateIndexSQLQueries($index, 'foo')
         );
     }
 
-    public function testCreateCheckSQLQuery()
+    public function testCreateCheckSQLQueries()
     {
         $check = new Schema\Check('foo', 'bar');
 
         $this->assertSame(
-            'ALTER TABLE zaz ADD CONSTRAINT foo CHECK (bar)',
-            $this->platform->getCreateCheckSQLQuery($check, 'zaz')
+            array('ALTER TABLE zaz ADD CONSTRAINT foo CHECK (bar)'),
+            $this->platform->getCreateCheckSQLQueries($check, 'zaz')
         );
     }
 
@@ -583,14 +587,17 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public function testRenameTableSQLQuery()
+    public function testRenameTableSQLQueries()
     {
         $oldTable = new Schema\Table('foo');
         $newTable = new Schema\Table('bar');
 
         $tableDiff = new Schema\Diff\TableDiff($oldTable, $newTable);
 
-        $this->assertSame('ALTER TABLE foo RENAME TO bar', $this->platform->getRenameTableSQLQuery($tableDiff));
+        $this->assertSame(
+            array('ALTER TABLE foo RENAME TO bar'),
+            $this->platform->getRenameTableSQLQueries($tableDiff)
+        );
     }
 
     public function testAlterColumnSQLQueries()
@@ -607,139 +614,139 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public function testDropDatabaseSQLQuery()
+    public function testDropDatabaseSQLQueries()
     {
-        $this->assertSame('DROP DATABASE foo', $this->platform->getDropDatabaseSQLQuery('foo'));
+        $this->assertSame(array('DROP DATABASE foo'), $this->platform->getDropDatabaseSQLQueries('foo'));
     }
 
-    public function testDropSequenceSQLQuery()
+    public function testDropSequenceSQLQueries()
     {
         $sequence = new Schema\Sequence('foo');
 
-        $this->assertSame('DROP SEQUENCE foo', $this->platform->getDropSequenceSQLQuery($sequence));
+        $this->assertSame(array('DROP SEQUENCE foo'), $this->platform->getDropSequenceSQLQueries($sequence));
     }
 
-    public function testDropViewSQLQuery()
+    public function testDropViewSQLQueries()
     {
         $view = new Schema\View('foo');
 
-        $this->assertSame('DROP VIEW foo', $this->platform->getDropViewSQLQuery($view));
+        $this->assertSame(array('DROP VIEW foo'), $this->platform->getDropViewSQLQueries($view));
     }
 
-    public function testDropTableSQLQuery()
+    public function testDropTableSQLQueries()
     {
         $table = new Schema\Table('foo');
 
-        $this->assertSame('DROP TABLE foo', $this->platform->getDropTableSQLQuery($table));
+        $this->assertSame(array('DROP TABLE foo'), $this->platform->getDropTableSQLQueries($table));
     }
 
-    public function testDropColumnSQLQuery()
+    public function testDropColumnSQLQueries()
     {
         $column = new Schema\Column('foo', Type::getType(Type::INTEGER));
 
         $this->assertSame(
-            'ALTER TABLE foo DROP COLUMN foo',
-            $this->platform->getDropColumnSQLQuery($column, 'foo')
+            array('ALTER TABLE foo DROP COLUMN foo'),
+            $this->platform->getDropColumnSQLQueries($column, 'foo')
         );
     }
 
-    public function testDropConstraintSQLQueryWithPrimaryKey()
+    public function testDropConstraintSQLQueriesWithPrimaryKey()
     {
         $constraint = new Schema\PrimaryKey('foo');
 
         $this->assertSame(
-            'ALTER TABLE bar DROP CONSTRAINT foo',
-            $this->platform->getDropConstraintSQLQuery($constraint, 'bar')
+            array('ALTER TABLE bar DROP CONSTRAINT foo'),
+            $this->platform->getDropConstraintSQLQueries($constraint, 'bar')
         );
     }
 
-    public function testDropConstraintSQLQueryWithForeignKey()
+    public function testDropConstraintSQLQueriesWithForeignKey()
     {
         $constraint = new Schema\ForeignKey('foo', array(), 'bar', array());
 
         $this->assertSame(
-            'ALTER TABLE bar DROP CONSTRAINT foo',
-            $this->platform->getDropConstraintSQLQuery($constraint, 'bar')
+            array('ALTER TABLE bar DROP CONSTRAINT foo'),
+            $this->platform->getDropConstraintSQLQueries($constraint, 'bar')
         );
     }
 
-    public function testDropConstraintSQLQueryWithIndex()
+    public function testDropConstraintSQLQueriesWithIndex()
     {
         $constraint = new Schema\Index('foo');
 
         $this->assertSame(
-            'DROP INDEX foo',
-            $this->platform->getDropConstraintSQLQuery($constraint, 'bar')
+            array('DROP INDEX foo'),
+            $this->platform->getDropConstraintSQLQueries($constraint, 'bar')
         );
     }
 
-    public function testDropConstraintSQLQueryWithCheck()
+    public function testDropConstraintSQLQueriesWithCheck()
     {
         $check = new Schema\Check('foo', 'bar');
 
         $this->assertSame(
-            'ALTER TABLE foo DROP CONSTRAINT foo',
-            $this->platform->getDropConstraintSQLQuery($check, 'foo')
+            array('ALTER TABLE foo DROP CONSTRAINT foo'),
+            $this->platform->getDropConstraintSQLQueries($check, 'foo')
         );
     }
 
     /**
      * @expectedException Fridge\DBAL\Exception\PlatformException
      */
-    public function testDropConstraintWithInvalidConstraint()
+    public function testDropConstraintSQLQueriesWithInvalidConstraint()
     {
         $check = $this->getMock('Fridge\DBAL\Schema\ConstraintInterface', array(), array(), '', false);
 
-        $this->platform->getDropConstraintSQLQuery($check, 'foo');
+        $this->platform->getDropConstraintSQLQueries($check, 'foo');
     }
 
-    public function testDropPrimaryKeySQLQuery()
+    public function testDropPrimaryKeySQLQueries()
     {
         $primaryKey = new Schema\PrimaryKey('foo');
 
         $this->assertSame(
-            'ALTER TABLE bar DROP CONSTRAINT foo',
-            $this->platform->getDropPrimaryKeySQLQuery($primaryKey, 'bar')
+            array('ALTER TABLE bar DROP CONSTRAINT foo'),
+            $this->platform->getDropPrimaryKeySQLQueries($primaryKey, 'bar')
         );
     }
 
-    public function testDropForeignKeySQLQuery()
+    public function testDropForeignKeySQLQueries()
     {
         $foreignKey = new Schema\ForeignKey('foo', array(), 'bar', array());
 
         $this->assertSame(
-            'ALTER TABLE bar DROP CONSTRAINT foo',
-            $this->platform->getDropForeignKeySQLQuery($foreignKey, 'bar')
+            array('ALTER TABLE bar DROP CONSTRAINT foo'),
+            $this->platform->getDropForeignKeySQLQueries($foreignKey, 'bar')
         );
     }
 
-    public function testDropIndexSQLQueryWithUniqueIndex()
+    public function testDropIndexSQLQueriesWithUniqueIndex()
     {
         $index = new Schema\Index('foo', array(), true);
 
         $this->assertSame(
-            'ALTER TABLE bar DROP CONSTRAINT foo',
-            $this->platform->getDropIndexSQLQuery($index, 'bar')
+            array('ALTER TABLE bar DROP CONSTRAINT foo'),
+            $this->platform->getDropIndexSQLQueries($index, 'bar')
         );
     }
 
-    public function testDropIndexSQLQueryWithNonUniqueIndex()
+    public function testDropIndexSQLQueriesWithNonUniqueIndex()
     {
         $index = new Schema\Index('foo');
 
         $this->assertSame(
-            'DROP INDEX foo',
-            $this->platform->getDropIndexSQLQuery($index, 'bar')
+            array('DROP INDEX foo'),
+            $this->platform->getDropIndexSQLQueries($index, 'bar')
         );
     }
 
-    public function testDropCheck()
+    public function testDropCheckSQLQueries()
     {
         $check = new Schema\Check('foo', 'bar');
 
         $this->assertSame(
-            'ALTER TABLE zaz DROP CONSTRAINT foo',
-            $this->platform->getDropCheckSQLQuery($check, 'zaz')
+            array('ALTER TABLE zaz DROP CONSTRAINT foo'),
+            $this->platform->getDropCheckSQLQueries($check, 'zaz')
         );
     }
 

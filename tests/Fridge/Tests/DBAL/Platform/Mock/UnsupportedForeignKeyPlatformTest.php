@@ -42,41 +42,41 @@ class UnsupportedForeignKeyPlatformTest extends \PHPUnit_Framework_TestCase
     /**
      * @expectedException Fridge\DBAL\Exception\PlatformException
      */
-    public function testCreateForeignKeySQLQuery()
+    public function testCreateForeignKeySQLQueries()
     {
         $foreignKeyMock = $this->getMock('Fridge\DBAL\Schema\ForeignKey', array(), array(), '', false);
 
-        $this->platform->getCreateForeignKeySQLQuery($foreignKeyMock, 'foo');
+        $this->platform->getCreateForeignKeySQLQueries($foreignKeyMock, 'foo');
     }
 
     /**
      * @expectedException Fridge\DBAL\Exception\PlatformException
      */
-    public function testDropForeignKeySQLQuery()
+    public function testDropForeignKeySQLQueries()
     {
         $foreignKeyMock = $this->getMock('Fridge\DBAL\Schema\ForeignKey', array(), array(), '', false);
 
-        $this->platform->getDropForeignKeySQLQuery($foreignKeyMock, 'foo');
+        $this->platform->getDropForeignKeySQLQueries($foreignKeyMock, 'foo');
     }
 
     /**
      * @expectedException Fridge\DBAL\Exception\PlatformException
      */
-    public function testCreateConstraintSQLQueryWithForeignKey()
+    public function testCreateConstraintSQLQueriesWithForeignKey()
     {
         $foreignKeyMock = $this->getMock('Fridge\DBAL\Schema\ForeignKey', array(), array(), '', false);
 
-        $this->platform->getCreateConstraintSQLQuery($foreignKeyMock, 'foo');
+        $this->platform->getCreateConstraintSQLQueries($foreignKeyMock, 'foo');
     }
 
     /**
      * @expectedException Fridge\DBAL\Exception\PlatformException
      */
-    public function testDropConstraintSQLQueryWithForeignKey()
+    public function testDropConstraintSQLQueriesWithForeignKey()
     {
         $foreignKeyMock = $this->getMock('Fridge\DBAL\Schema\ForeignKey', array(), array(), '', false);
 
-        $this->platform->getDropConstraintSQLQuery($foreignKeyMock, 'foo');
+        $this->platform->getDropConstraintSQLQueries($foreignKeyMock, 'foo');
     }
 }
 

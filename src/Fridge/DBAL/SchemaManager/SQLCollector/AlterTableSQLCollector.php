@@ -133,7 +133,10 @@ class AlterTableSQLCollector
     public function collect(TableDiff $tableDiff)
     {
         if ($tableDiff->getOldAsset()->getName() !== $tableDiff->getNewAsset()->getName()) {
-            $this->renameTableQueries[] = $this->platform->getRenameTableSQLQuery($tableDiff);
+            $this->renameTableQueries = array_merge(
+                $this->renameTableQueries,
+                $this->platform->getRenameTableSQLQueries($tableDiff)
+            );
         }
 
         $this->collectColumns($tableDiff);
@@ -301,9 +304,9 @@ class AlterTableSQLCollector
         }
 
         foreach ($tableDiff->getDroppedColumns() as $column) {
-            $this->dropColumnQueries[] = $this->platform->getDropColumnSQLQuery(
-                $column,
-                $tableDiff->getNewAsset()->getName()
+            $this->dropColumnQueries = array_merge(
+                $this->dropColumnQueries,
+                $this->platform->getDropColumnSQLQueries($column, $tableDiff->getNewAsset()->getName())
             );
         }
 
@@ -323,16 +326,22 @@ class AlterTableSQLCollector
     protected function collectPrimaryKeys(TableDiff $tableDiff)
     {
         if ($tableDiff->getCreatedPrimaryKey() !== null) {
-            $this->createPrimaryKeyQueries[] = $this->platform->getCreatePrimaryKeySQLQuery(
-                $tableDiff->getCreatedPrimaryKey(),
-                $tableDiff->getNewAsset()->getName()
+            $this->createPrimaryKeyQueries = array_merge(
+                $this->createPrimaryKeyQueries,
+                $this->platform->getCreatePrimaryKeySQLQueries(
+                    $tableDiff->getCreatedPrimaryKey(),
+                    $tableDiff->getNewAsset()->getName()
+                )
             );
         }
 
         if ($tableDiff->getDroppedPrimaryKey() !== null) {
-            $this->dropPrimaryKeyQueries[] = $this->platform->getDropPrimaryKeySQLQuery(
-                $tableDiff->getDroppedPrimaryKey(),
-                $tableDiff->getNewAsset()->getName()
+            $this->dropPrimaryKeyQueries = array_merge(
+                $this->dropPrimaryKeyQueries,
+                $this->platform->getDropPrimaryKeySQLQueries(
+                    $tableDiff->getDroppedPrimaryKey(),
+                    $tableDiff->getNewAsset()->getName()
+                )
             );
         }
     }
@@ -345,16 +354,16 @@ class AlterTableSQLCollector
     protected function collectForeignKeys(TableDiff $tableDiff)
     {
         foreach ($tableDiff->getCreatedForeignKeys() as $foreignKey) {
-            $this->createForeignKeyQueries[] = $this->platform->getCreateForeignKeySQLQuery(
-                $foreignKey,
-                $tableDiff->getNewAsset()->getName()
+            $this->createForeignKeyQueries = array_merge(
+                $this->createForeignKeyQueries,
+                $this->platform->getCreateForeignKeySQLQueries($foreignKey, $tableDiff->getNewAsset()->getName())
             );
         }
 
         foreach ($tableDiff->getDroppedForeignKeys() as $foreignKey) {
-            $this->dropForeignKeyQueries[] = $this->platform->getDropForeignKeySQLQuery(
-                $foreignKey,
-                $tableDiff->getNewAsset()->getName()
+            $this->dropForeignKeyQueries = array_merge(
+                $this->dropForeignKeyQueries,
+                $this->platform->getDropForeignKeySQLQueries($foreignKey, $tableDiff->getNewAsset()->getName())
             );
         }
     }
@@ -367,16 +376,16 @@ class AlterTableSQLCollector
     protected function collectIndexes(TableDiff $tableDiff)
     {
         foreach ($tableDiff->getCreatedIndexes() as $index) {
-            $this->createIndexQueries[] = $this->platform->getCreateIndexSQLQuery(
-                $index,
-                $tableDiff->getNewAsset()->getName()
+            $this->createIndexQueries = array_merge(
+                $this->createIndexQueries,
+                $this->platform->getCreateIndexSQLQueries($index, $tableDiff->getNewAsset()->getName())
             );
         }
 
         foreach ($tableDiff->getDroppedIndexes() as $index) {
-            $this->dropIndexQueries[] = $this->platform->getDropIndexSQLQuery(
-                $index,
-                $tableDiff->getNewAsset()->getName()
+            $this->dropIndexQueries = array_merge(
+                $this->dropIndexQueries,
+                $this->platform->getDropIndexSQLQueries($index, $tableDiff->getNewAsset()->getName())
             );
         }
     }
@@ -389,16 +398,16 @@ class AlterTableSQLCollector
     protected function collectChecks(TableDiff $tableDiff)
     {
         foreach ($tableDiff->getCreatedChecks() as $check) {
-            $this->createCheckQueries[] = $this->platform->getCreateCheckSQLQuery(
-                $check,
-                $tableDiff->getNewAsset()->getName()
+            $this->createCheckQueries = array_merge(
+                $this->createCheckQueries,
+                $this->platform->getCreateCheckSQLQueries($check, $tableDiff->getNewAsset()->getName())
             );
         }
 
         foreach ($tableDiff->getDroppedChecks() as $check) {
-            $this->dropCheckQueries[] = $this->platform->getDropCheckSQLQuery(
-                $check,
-                $tableDiff->getNewAsset()->getName()
+            $this->dropCheckQueries = array_merge(
+                $this->dropCheckQueries,
+                $this->platform->getDropCheckSQLQueries($check, $tableDiff->getNewAsset()->getName())
             );
         }
     }

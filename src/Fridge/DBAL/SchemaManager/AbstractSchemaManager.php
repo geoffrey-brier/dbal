@@ -283,8 +283,8 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
 
         $this->getConnection()->setDatabase(null);
 
-        $query = $this->getConnection()->getPlatform()->getCreateDatabaseSQLQuery($database);
-        $this->getConnection()->executeUpdate($query);
+        $queries = $this->getConnection()->getPlatform()->getCreateDatabaseSQLQueries($database);
+        $this->executeUpdates($queries);
 
         $this->getConnection()->setDatabase($currentDatabase);
     }
@@ -311,8 +311,8 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
      */
     public function createSequence(Schema\Sequence $sequence)
     {
-        $query = $this->getConnection()->getPlatform()->getCreateSequenceSQLQuery($sequence);
-        $this->getConnection()->executeUpdate($query);
+        $queries = $this->getConnection()->getPlatform()->getCreateSequenceSQLQueries($sequence);
+        $this->executeUpdates($queries);
     }
 
     /**
@@ -320,8 +320,8 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
      */
     public function createView(Schema\View $view)
     {
-        $query = $this->getConnection()->getPlatform()->getCreateViewSQLQuery($view);
-        $this->getConnection()->executeUpdate($query);
+        $queries = $this->getConnection()->getPlatform()->getCreateViewSQLQueries($view);
+        $this->executeUpdates($queries);
     }
 
     /**
@@ -335,9 +335,7 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
             $sqlCollector->collect($table);
         }
 
-        foreach ($sqlCollector->getQueries() as $query) {
-            $this->getConnection()->executeUpdate($query);
-        }
+        $this->executeUpdates($sqlCollector->getQueries());
     }
 
     /**
@@ -346,10 +344,7 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
     public function createTable(Schema\Table $table)
     {
         $queries = $this->getConnection()->getPlatform()->getCreateTableSQLQueries($table);
-
-        foreach ($queries as $query) {
-            $this->getConnection()->executeUpdate($query);
-        }
+        $this->executeUpdates($queries);
     }
 
     /**
@@ -358,10 +353,7 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
     public function createColumn(Schema\Column $column, $table)
     {
         $queries = $this->getConnection()->getPlatform()->getCreateColumnSQLQueries($column, $table);
-
-        foreach ($queries as $query) {
-            $this->getConnection()->executeUpdate($query);
-        }
+        $this->executeUpdates($queries);
     }
 
     /**
@@ -369,8 +361,8 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
      */
     public function createConstraint(Schema\ConstraintInterface $constraint, $table)
     {
-        $query = $this->getConnection()->getPlatform()->getCreateConstraintSQLQuery($constraint, $table);
-        $this->getConnection()->executeUpdate($query);
+        $queries = $this->getConnection()->getPlatform()->getCreateConstraintSQLQueries($constraint, $table);
+        $this->executeUpdates($queries);
     }
 
     /**
@@ -378,8 +370,8 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
      */
     public function createPrimaryKey(Schema\PrimaryKey $primaryKey, $table)
     {
-        $query = $this->getConnection()->getPlatform()->getCreatePrimaryKeySQLQuery($primaryKey, $table);
-        $this->getConnection()->executeUpdate($query);
+        $queries = $this->getConnection()->getPlatform()->getCreatePrimaryKeySQLQueries($primaryKey, $table);
+        $this->executeUpdates($queries);
     }
 
     /**
@@ -387,8 +379,8 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
      */
     public function createForeignKey(Schema\ForeignKey $foreignKey, $table)
     {
-        $query = $this->getConnection()->getPlatform()->getCreateForeignKeySQLQuery($foreignKey, $table);
-        $this->getConnection()->executeUpdate($query);
+        $queries = $this->getConnection()->getPlatform()->getCreateForeignKeySQLQueries($foreignKey, $table);
+        $this->executeUpdates($queries);
     }
 
     /**
@@ -396,8 +388,8 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
      */
     public function createIndex(Schema\Index $index, $table)
     {
-        $query = $this->getConnection()->getPlatform()->getCreateIndexSQLQuery($index, $table);
-        $this->getConnection()->executeUpdate($query);
+        $queries = $this->getConnection()->getPlatform()->getCreateIndexSQLQueries($index, $table);
+        $this->executeUpdates($queries);
     }
 
     /**
@@ -405,8 +397,8 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
      */
     public function createCheck(Schema\Check $check, $table)
     {
-        $query = $this->getConnection()->getPlatform()->getCreateCheckSQLQuery($check, $table);
-        $this->getConnection()->executeUpdate($query);
+        $queries = $this->getConnection()->getPlatform()->getCreateCheckSQLQueries($check, $table);
+        $this->executeUpdates($queries);
     }
 
     /**
@@ -417,9 +409,7 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
         $sqlCollector = new SQLCollector\AlterSchemaSQLCollector($this->getConnection()->getPlatform());
         $sqlCollector->collect($schemaDiff);
 
-        foreach ($sqlCollector->getQueries() as $query) {
-            $this->getConnection()->executeUpdate($query);
-        }
+        $this->executeUpdates($sqlCollector->getQueries());
     }
 
     /**
@@ -433,9 +423,7 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
             $sqlCollector->collect($tableDiff);
         }
 
-        foreach ($sqlCollector->getQueries() as $query) {
-            $this->getConnection()->executeUpdate($query);
-        }
+        $this->executeUpdates($sqlCollector->getQueries());
     }
 
     /**
@@ -452,10 +440,7 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
     public function alterColumn(Schema\Diff\ColumnDiff $columnDiff, $table)
     {
         $queries = $this->getConnection()->getPlatform()->getAlterColumnSQLQueries($columnDiff, $table);
-
-        foreach ($queries as $query) {
-            $this->getConnection()->executeUpdate($query);
-        }
+        $this->executeUpdates($queries);
     }
 
     /**
@@ -467,8 +452,8 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
 
         $this->getConnection()->setDatabase(null);
 
-        $query = $this->getConnection()->getPlatform()->getDropDatabaseSQLQuery($database);
-        $this->getConnection()->executeUpdate($query);
+        $queries = $this->getConnection()->getPlatform()->getDropDatabaseSQLQueries($database);
+        $this->executeUpdates($queries);
 
         $this->getConnection()->setDatabase($currentDatabase);
     }
@@ -486,8 +471,8 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
      */
     public function dropSequence(Schema\Sequence $sequence)
     {
-        $query = $this->getConnection()->getPlatform()->getDropSequenceSQLQuery($sequence);
-        $this->getConnection()->executeUpdate($query);
+        $queries = $this->getConnection()->getPlatform()->getDropSequenceSQLQueries($sequence);
+        $this->executeUpdates($queries);
     }
 
     /**
@@ -495,8 +480,8 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
      */
     public function dropView(Schema\View $view)
     {
-        $query = $this->getConnection()->getPlatform()->getDropViewSQLQuery($view);
-        $this->getConnection()->executeUpdate($query);
+        $queries = $this->getConnection()->getPlatform()->getDropViewSQLQueries($view);
+        $this->executeUpdates($queries);
     }
 
     /**
@@ -510,9 +495,7 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
             $sqlCollector->collect($table);
         }
 
-        foreach ($sqlCollector->getQueries() as $query) {
-            $this->getConnection()->executeUpdate($query);
-        }
+        $this->executeUpdates($sqlCollector->getQueries());
     }
 
     /**
@@ -520,8 +503,8 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
      */
     public function dropTable(Schema\Table $table)
     {
-        $query = $this->getConnection()->getPlatform()->getDropTableSQLQuery($table);
-        $this->getConnection()->executeUpdate($query);
+        $queries = $this->getConnection()->getPlatform()->getDropTableSQLQueries($table);
+        $this->executeUpdates($queries);
     }
 
     /**
@@ -529,8 +512,8 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
      */
     public function dropColumn(Schema\Column $column, $table)
     {
-        $query = $this->getConnection()->getPlatform()->getDropColumnSQLQuery($column, $table);
-        $this->getConnection()->executeUpdate($query);
+        $queries = $this->getConnection()->getPlatform()->getDropColumnSQLQueries($column, $table);
+        $this->executeUpdates($queries);
     }
 
     /**
@@ -538,8 +521,8 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
      */
     public function dropConstraint(Schema\ConstraintInterface $constraint, $table)
     {
-        $query = $this->getConnection()->getPlatform()->getDropConstraintSQLQuery($constraint, $table);
-        $this->getConnection()->executeUpdate($query);
+        $queries = $this->getConnection()->getPlatform()->getDropConstraintSQLQueries($constraint, $table);
+        $this->executeUpdates($queries);
     }
 
     /**
@@ -547,8 +530,8 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
      */
     public function dropPrimaryKey(Schema\PrimaryKey $primaryKey, $table)
     {
-        $query = $this->getConnection()->getPlatform()->getDropPrimaryKeySQLQuery($primaryKey, $table);
-        $this->getConnection()->executeUpdate($query);
+        $queries = $this->getConnection()->getPlatform()->getDropPrimaryKeySQLQueries($primaryKey, $table);
+        $this->executeUpdates($queries);
     }
 
     /**
@@ -556,8 +539,8 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
      */
     public function dropForeignKey(Schema\ForeignKey $foreignKey, $table)
     {
-        $query = $this->getConnection()->getPlatform()->getDropForeignKeySQLQuery($foreignKey, $table);
-        $this->getConnection()->executeUpdate($query);
+        $queries = $this->getConnection()->getPlatform()->getDropForeignKeySQLQueries($foreignKey, $table);
+        $this->executeUpdates($queries);
     }
 
     /**
@@ -565,8 +548,8 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
      */
     public function dropIndex(Schema\Index $index, $table)
     {
-        $query = $this->getConnection()->getPlatform()->getDropIndexSQLQuery($index, $table);
-        $this->getConnection()->executeUpdate($query);
+        $queries = $this->getConnection()->getPlatform()->getDropIndexSQLQueries($index, $table);
+        $this->executeUpdates($queries);
     }
 
     /**
@@ -574,8 +557,8 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
      */
     public function dropCheck(Schema\Check $check, $table)
     {
-        $query = $this->getConnection()->getPlatform()->getDropCheckSQLQuery($check, $table);
-        $this->getConnection()->executeUpdate($query);
+        $queries = $this->getConnection()->getPlatform()->getDropCheckSQLQueries($check, $table);
+        $this->executeUpdates($queries);
     }
 
     /**
@@ -1043,6 +1026,18 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
             return true;
         } catch (Exception $e) {
             return false;
+        }
+    }
+
+    /**
+     * Executes multipes updates on the connection.
+     *
+     * @param array $queries The queries to execute.
+     */
+    protected function executeUpdates(array $queries)
+    {
+        foreach ($queries as $query) {
+            $this->getConnection()->executeUpdate($query);
         }
     }
 }

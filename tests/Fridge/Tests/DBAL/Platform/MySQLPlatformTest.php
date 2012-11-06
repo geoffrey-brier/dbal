@@ -170,33 +170,33 @@ class MySQLPlatformTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @expectedException \Fridge\DBAL\Exception\PlatformException
-     * @expectExceptionMessage The method "Fridge\DBAL\Platform\MySQLPlatform::getCreateSequenceSQLQuery" is not supported.
+     * @expectExceptionMessage The method "Fridge\DBAL\Platform\MySQLPlatform::getCreateSequenceSQLQueries" is not supported.
      */
-    public function testCreateSequenceSQLQuery()
+    public function testCreateSequenceSQLQueries()
     {
         $sequence = new Schema\Sequence('foo');
 
-        $this->platform->getCreateSequenceSQLQuery($sequence);
+        $this->platform->getCreateSequenceSQLQueries($sequence);
     }
 
-    public function testCreatePrimaryKeySQLQuery()
+    public function testCreatePrimaryKeySQLQueries()
     {
         $primaryKey = new Schema\PrimaryKey('foo', array('foo'));
 
         $this->assertSame(
-            'ALTER TABLE foo ADD CONSTRAINT PRIMARY KEY (foo)',
-            $this->platform->getCreatePrimaryKeySQLQuery($primaryKey, 'foo')
+            array('ALTER TABLE foo ADD CONSTRAINT PRIMARY KEY (foo)'),
+            $this->platform->getCreatePrimaryKeySQLQueries($primaryKey, 'foo')
         );
     }
 
     /**
      * @expectedException \Fridge\DBAL\Exception\PlatformException
      */
-    public function testCreateCheckSQLQuery()
+    public function testCreateCheckSQLQueries()
     {
         $check = new Schema\Check('foo', 'bar');
 
-        $this->platform->getCreateCheckSQLQuery($check, 'zaz');
+        $this->platform->getCreateCheckSQLQueries($check, 'zaz');
     }
 
     public function testCreateTableSQLQueries()
@@ -208,7 +208,7 @@ class MySQLPlatformTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('ENGINE = InnoDB', substr($sqls[0], -15));
     }
 
-    public function testRenameDatabaseSQLQuery()
+    public function testRenameDatabaseSQLQueries()
     {
         $oldTable = new Schema\Schema('foo', array(new Schema\Table('foo')));
         $newTable = new Schema\Schema('bar', array(new Schema\Table('foo')));
@@ -243,51 +243,51 @@ class MySQLPlatformTest extends \PHPUnit_Framework_TestCase
      * @expectedException \Fridge\DBAL\Exception\PlatformException
      * @expectExceptionMessage The method "Fridge\DBAL\Platform\MySQLPlatform::getSelectDropSQLQuery" is not supported.
      */
-    public function testDropSequenceSQLQuery()
+    public function testDropSequenceSQLQueries()
     {
         $sequence = new Schema\Sequence('foo');
 
-        $this->platform->getDropSequenceSQLQuery($sequence);
+        $this->platform->getDropSequenceSQLQueries($sequence);
     }
 
-    public function testDropPrimaryKeySQLQuery()
+    public function testDropPrimaryKeySQLQueries()
     {
         $primaryKey = new Schema\PrimaryKey('foo');
 
         $this->assertSame(
-            'ALTER TABLE bar DROP PRIMARY KEY',
-            $this->platform->getDropPrimaryKeySQLQuery($primaryKey, 'bar')
+            array('ALTER TABLE bar DROP PRIMARY KEY'),
+            $this->platform->getDropPrimaryKeySQLQueries($primaryKey, 'bar')
         );
     }
 
-    public function testDropIndexSQLQuery()
+    public function testDropIndexSQLQueries()
     {
         $index = new Schema\Index('foo', array(), true);
 
         $this->assertSame(
-            'ALTER TABLE bar DROP INDEX foo',
-            $this->platform->getDropIndexSQLQuery($index, 'bar')
+            array('ALTER TABLE bar DROP INDEX foo'),
+            $this->platform->getDropIndexSQLQueries($index, 'bar')
         );
     }
 
-    public function testDropForeignKeySQLQuery()
+    public function testDropForeignKeySQLQueries()
     {
         $foreignKey = new Schema\ForeignKey('foo', array(), 'bar', array());
 
         $this->assertSame(
-            'ALTER TABLE bar DROP FOREIGN KEY foo',
-            $this->platform->getDropForeignKeySQLQuery($foreignKey, 'bar')
+            array('ALTER TABLE bar DROP FOREIGN KEY foo'),
+            $this->platform->getDropForeignKeySQLQueries($foreignKey, 'bar')
         );
     }
 
     /**
      * @expectedException \Fridge\DBAL\Exception\PlatformException
      */
-    public function testDropCheckSQLQuery()
+    public function testDropCheckSQLQueries()
     {
         $check = new Schema\Check('foo', 'bar');
 
-        $this->platform->getDropCheckSQLQuery($check, 'zaz');
+        $this->platform->getDropCheckSQLQueries($check, 'zaz');
     }
 
     public function testQuoteIdentifier()

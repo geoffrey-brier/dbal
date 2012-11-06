@@ -471,31 +471,31 @@ interface PlatformInterface
     function getSelectTableCheckSQLQuery($table, $database);
 
     /**
-     * Gets the create database SQL query.
+     * Gets the create database SQL queries.
      *
      * @param string $database The database name.
      *
-     * @return string The create database SQL query.
+     * @return array The create database SQL queries.
      */
-    function getCreateDatabaseSQLQuery($database);
+    function getCreateDatabaseSQLQueries($database);
 
     /**
-     * Gets the create sequence SQL query.
+     * Gets the create sequence SQL queries.
      *
      * @param \Fridge\DBAL\Schema\Sequence $sequence The sequence.
      *
-     * @return string The create sequence SQL query.
+     * @return array The create sequence SQL queries.
      */
-    function getCreateSequenceSQLQuery(Schema\Sequence $sequence);
+    function getCreateSequenceSQLQueries(Schema\Sequence $sequence);
 
     /**
-     * Gets the create view SQL query.
+     * Gets the create view SQL queries.
      *
      * @param \Fridge\DBAL\Schema\View $view The view.
      *
-     * @return string The create view SQL query.
+     * @return array The create view SQL queries.
      */
-    function getCreateViewSQLQuery(Schema\View $view);
+    function getCreateViewSQLQueries(Schema\View $view);
 
     /**
      * Gets the create table SQL queries.
@@ -524,54 +524,54 @@ interface PlatformInterface
     function getCreateColumnSQLQueries(Schema\Column $column, $table);
 
     /**
-     * Gets the create constraint SQL query.
+     * Gets the create constraint SQL queries.
      *
      * @param \Fridge\DBAL\Schema\ConstraintInterface $constraint The constraint.
      * @param string                                  $table      The table name of the constraint.
      *
-     * @return string The create constraint SQL query.
+     * @return array The create constraint SQL queries.
      */
-    function getCreateConstraintSQLQuery(Schema\ConstraintInterface $constraint, $table);
+    function getCreateConstraintSQLQueries(Schema\ConstraintInterface $constraint, $table);
 
     /**
-     * Gets the create primary key SQL query.
+     * Gets the create primary key SQL queries.
      *
      * @param \Fridge\DBAL\Schema\PrimaryKey $primaryKey The primary key.
      * @param string                         $table      The table name of the primary key.
      *
-     * @return string The create primary key SQL query.
+     * @return array The create primary key SQL queries.
      */
-    function getCreatePrimaryKeySQLQuery(Schema\PrimaryKey $primaryKey, $table);
+    function getCreatePrimaryKeySQLQueries(Schema\PrimaryKey $primaryKey, $table);
 
     /**
-     * Gets the create foreign key SQL query.
+     * Gets the create foreign key SQL queries.
      *
      * @param \Fridge\DBAL\Schema\ForeignKey $foreignKey The foreign key.
      * @param string                         $table      The table name of the foreign key.
      *
-     * @return string The create foreign key SQL query.
+     * @return array The create foreign key SQL queries.
      */
-    function getCreateForeignKeySQLQuery(Schema\ForeignKey $foreignKey, $table);
+    function getCreateForeignKeySQLQueries(Schema\ForeignKey $foreignKey, $table);
 
     /**
-     * Gets the create index SQL query.
+     * Gets the create index SQL queries.
      *
      * @param \Fridge\DBAL\Schema\Index $index The index.
      * @param string                    $table The table name of the index.
      *
-     * @return string The create index SQL query.
+     * @return array The create index SQL queries.
      */
-    function getCreateIndexSQLQuery(Schema\Index $index, $table);
+    function getCreateIndexSQLQueries(Schema\Index $index, $table);
 
     /**
-     * Gets the create check constraint SQL query.
+     * Gets the create check constraint SQL queries.
      *
      * @param \Fridge\DBAL\Schema\Check $check The check constraint.
      * @param string                    $table The table name of the check constraint.
      *
-     * @return string The create check constraint SQL query.
+     * @return array The create check constraint SQL queries.
      */
-    function getCreateCheckSQLQuery(Schema\Check $check, $table);
+    function getCreateCheckSQLQueries(Schema\Check $check, $table);
 
     /**
      * Gets the rename database SQL queries.
@@ -583,13 +583,13 @@ interface PlatformInterface
     function getRenameDatabaseSQLQueries(Schema\Diff\SchemaDiff $schemaDiff);
 
     /**
-     * Gets the rename table SQL query.
+     * Gets the rename table SQL queries.
      *
      * @param \Fridge\DBAL\Schema\Diff\TableDiff $tableDiff The table diff.
      *
-     * @return string The rename table SQL quuery.
+     * @return array The rename table SQL quueries.
      */
-    function getRenameTableSQLQuery(Schema\Diff\TableDiff $tableDiff);
+    function getRenameTableSQLQueries(Schema\Diff\TableDiff $tableDiff);
 
     /**
      * Gets the alter table column SQL queries.
@@ -602,98 +602,100 @@ interface PlatformInterface
     function getAlterColumnSQLQueries(Schema\Diff\ColumnDiff $columnDiff, $table);
 
     /**
-     * Gets the drop database SQL query.
+     * Gets the drop database SQL queries.
      *
      * @param string $database The database name.
      *
-     * @return string The drop database SQL query.
+     * @return array The drop database SQL queries.
      */
-    function getDropDatabaseSQLQuery($database);
+    function getDropDatabaseSQLQueries($database);
 
     /**
-     * Gets the drop sequence SQL query.
+     * Gets the drop sequence SQL queries.
      *
      * @param \Fridge\DBAL\Schema\Sequence $sequence The sequence.
      *
-     * @return string The drop sequence SQL query.
+     * @return array The drop sequence SQL queries.
      */
-    function getDropSequenceSQLQuery(Schema\Sequence $sequence);
+    function getDropSequenceSQLQueries(Schema\Sequence $sequence);
 
     /**
-     * Gets the drop view SQL query.
+     * Gets the drop view SQL queries.
      *
      * @param \Fridge\DBAL\Schema\View $view The view.
      *
-     * @return string The drop view SQL query.
+     * @return array The drop view SQL queries.
      */
-    function getDropViewSQLQuery(Schema\View $view);
+    function getDropViewSQLQueries(Schema\View $view);
 
     /**
-     * Gets the drop table SQL query.
+     * Gets the drop table SQL queries.
      *
      * @param \Fridge\DBAL\Schema\Table $table The table.
      *
-     * @return string The drop table SQL query.
+     * @return array The drop table SQL queries.
      */
-    function getDropTableSQLQuery(Schema\Table $table);
+    function getDropTableSQLQueries(Schema\Table $table);
 
     /**
-     * Gets the drop table column SQL query.
+     * Gets the drop table column SQL queries.
      *
      * @param \Fridge\DBAL\Schema\Column $column The column.
      * @param string                     $table  The table name.
+     *
+     * @return array The drop table column SQL queries.
      */
-    function getDropColumnSQLQuery(Schema\Column $column, $table);
+    function getDropColumnSQLQueries(Schema\Column $column, $table);
 
     /**
-     * Gets the drop constraint SQL query.
+     * Gets the drop constraint SQL queries.
      *
      * @param \Fridge\DBAL\Schema\ConstraintInterface $constraint The constraint.
      * @param string                                  $table      The table name of the constraint.
      *
-     * @return string The drop constraint SQL query.
+     * @return array The drop constraint SQL queries.
      */
-    function getDropConstraintSQLQuery(Schema\ConstraintInterface $constraint, $table);
+    function getDropConstraintSQLQueries(Schema\ConstraintInterface $constraint, $table);
 
     /**
-     * Gets the drop primary key SQL query.
+     * Gets the drop primary key SQL queries.
      *
      * @param \Fridge\DBAL\Schema\PrimaryKey $primaryKey The primary key.
      * @param string                         $table      The table name of the primary key.
      *
-     * @return string The drop primary key SQL query.
+     * @return array The drop primary key SQL queries.
      */
-    function getDropPrimaryKeySQLQuery(Schema\PrimaryKey $primaryKey, $table);
+    function getDropPrimaryKeySQLQueries(Schema\PrimaryKey $primaryKey, $table);
 
     /**
-     * Gets the drop foreign key SQL query.
+     * Gets the drop foreign key SQL queries.
      *
      * @param \Fridge\DBAL\Schema\ForeignKey $foreignKey The foreign key.
      * @param string                         $table      The table name of the foreign key.
      *
-     * @return string The drop foreign key SQL query.
+     * @return array The drop foreign key SQL queries.
      */
-    function getDropForeignKeySQLQuery(Schema\ForeignKey $foreignKey, $table);
+    function getDropForeignKeySQLQueries(Schema\ForeignKey $foreignKey, $table);
 
     /**
-     * Gets the drop index SQL query.
+     * Gets the drop index SQL queries.
      *
      * @param \Fridge\DBAL\Schema\Index $index The index.
      * @param string                    $table The table name of the index.
      *
-     * @return string The drop index SQL query.
+     * @return array The drop index SQL queries.
      */
-    function getDropIndexSQLQuery(Schema\Index $index, $table);
+    function getDropIndexSQLQueries(Schema\Index $index, $table);
 
     /**
-     * Gets the drop check constraint SQL query.
+     * Gets the drop check constraint SQL queries.
      *
      * @param \Fridge\DBAL\Schema\Check $check The check.
      * @param string                    $table The table name of the check constraint.
      *
-     * @return string The drop index SQL query.
+     * @return array The drop index SQL queries.
      */
-    function getDropCheckSQLQuery(Schema\Check $check, $table);
+    function getDropCheckSQLQueries(Schema\Check $check, $table);
 
     /**
      * Gets the quote identifier.
