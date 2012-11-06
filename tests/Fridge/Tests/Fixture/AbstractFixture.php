@@ -299,6 +299,7 @@ abstract class AbstractFixture implements FixtureInterface
                     new Schema\Column('c1', Type::getType(Type::INTEGER), array(
                         'length'         => 11,
                         'not_null'       => true,
+                        'auto_increment' => true,
                     )),
                     new Schema\Column('c2', Type::getType(Type::STRING), array(
                         'length'   => 20,
@@ -310,8 +311,8 @@ abstract class AbstractFixture implements FixtureInterface
             case 'tprimarykeyunlock':
                 $columns = array(
                     new Schema\Column('c1', Type::getType(Type::INTEGER), array(
-                        'length'         => 11,
-                        'not_null'       => true,
+                        'length'   => 11,
+                        'not_null' => true,
                     )),
                 );
                 break;

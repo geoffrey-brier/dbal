@@ -106,7 +106,7 @@ EOT;
         $queries[] = <<<EOT
 CREATE TABLE tprimarykeylock
 (
-    c1 INT(11) NOT NULL,
+    c1 INT(11) NOT NULL AUTO_INCREMENT,
     c2 VARCHAR(20) NOT NULL,
     CONSTRAINT PRIMARY KEY(c1, c2)
 ) ENGINE = InnoDB
