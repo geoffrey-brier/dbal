@@ -321,13 +321,6 @@ interface PlatformInterface
     function supportCheck();
 
     /**
-     * Checks if the platform supports auto increment.
-     *
-     * @return boolean TRUE if the platform supports auto increment else FALSE.
-     */
-    function supportAutoIncrement();
-
-    /**
      * Checks if the platform supports inline table column comment.
      *
      * @return boolean TRUE if the platform supports inline table column comment else FALSE.

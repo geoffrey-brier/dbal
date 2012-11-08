@@ -412,14 +412,6 @@ abstract class AbstractPlatform implements PlatformInterface
     /**
      * {@inheritdoc}
      */
-    public function supportAutoIncrement()
-    {
-        return true;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function supportInlineTableColumnComment()
     {
         return true;
@@ -913,10 +905,6 @@ abstract class AbstractPlatform implements PlatformInterface
      */
     protected function getColumnSQLDeclaration(Schema\Column $column)
     {
-        if ($column->isAutoIncrement() && !$this->supportAutoIncrement()) {
-            throw Exception\PlatformException::methodNotSupported(__METHOD__);
-        }
-
         $columnDeclaration = $column->getName().' '.$column->getType()->getSQLDeclaration($this, $column->toArray());
 
         if ($column->isNotNull()) {
