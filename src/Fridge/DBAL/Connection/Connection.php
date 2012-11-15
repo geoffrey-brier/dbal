@@ -172,9 +172,27 @@ class Connection implements ConnectionInterface
     /**
      * {@inheritdoc}
      */
+    public function getParameter($parameter)
+    {
+        return isset($this->parameters[$parameter]) ? $this->parameters[$parameter] : null;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setParameter($parameter, $value)
+    {
+        $this->close();
+
+        $this->parameters[$parameter] = $value;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getUsername()
     {
-        return isset($this->parameters['username']) ? $this->parameters['username'] : null;
+        return $this->getParameter('username');
     }
 
     /**
@@ -182,9 +200,7 @@ class Connection implements ConnectionInterface
      */
     public function setUsername($username)
     {
-        $this->close();
-
-        $this->parameters['username'] = $username;
+        $this->setParameter('username', $username);
     }
 
     /**
@@ -192,7 +208,7 @@ class Connection implements ConnectionInterface
      */
     public function getPassword()
     {
-        return isset($this->parameters['password']) ? $this->parameters['password'] : null;
+        return $this->getParameter('password');
     }
 
     /**
@@ -200,9 +216,7 @@ class Connection implements ConnectionInterface
      */
     public function setPassword($password)
     {
-        $this->close();
-
-        $this->parameters['password'] = $password;
+        $this->setParameter('password', $password);
     }
 
     /**
@@ -218,9 +232,7 @@ class Connection implements ConnectionInterface
      */
     public function setDatabase($database)
     {
-        $this->close();
-
-        $this->parameters['dbname'] = $database;
+        $this->setParameter('dbname', $database);
     }
 
     /**
@@ -228,7 +240,7 @@ class Connection implements ConnectionInterface
      */
     public function getHost()
     {
-        return isset($this->parameters['host']) ? $this->parameters['host'] : null;
+        return $this->getParameter('host');
     }
 
     /**
@@ -236,9 +248,7 @@ class Connection implements ConnectionInterface
      */
     public function setHost($host)
     {
-        $this->close();
-
-        $this->parameters['host'] = $host;
+        $this->setParameter('host', $host);
     }
 
     /**
@@ -246,7 +256,7 @@ class Connection implements ConnectionInterface
      */
     public function getPort()
     {
-        return isset($this->parameters['port']) ? $this->parameters['port'] : null;
+        return $this->getParameter('port');
     }
 
     /**
@@ -254,9 +264,7 @@ class Connection implements ConnectionInterface
      */
     public function setPort($port)
     {
-        $this->close();
-
-        $this->parameters['port'] = $port;
+        $this->setParameter('port', $port);
     }
 
     /**
@@ -272,9 +280,7 @@ class Connection implements ConnectionInterface
      */
     public function setDriverOptions(array $options)
     {
-        $this->close();
-
-        $this->parameters['driver_options'] = $options;
+        $this->setParameter('driver_options', $options);
     }
 
     /**

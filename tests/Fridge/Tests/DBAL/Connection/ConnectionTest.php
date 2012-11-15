@@ -111,6 +111,21 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('Fridge\DBAL\Query\Expression\ExpressionBuilder', $expressionBuilder);
     }
 
+    public function testParameter()
+    {
+        $connection = new Connection(array('foo' => 'bar'), $this->driverMock);
+
+        $this->assertSame('bar', $connection->getParameter('foo'));
+    }
+
+    public function testSetParameter()
+    {
+        $connection = new Connection(array(), $this->driverMock);
+        $connection->setParameter('foo', 'bar');
+
+        $this->assertSame('bar', $connection->getParameter('foo'));
+    }
+
     public function testUsername()
     {
         $connection = new Connection(array('username' => 'foo'), $this->driverMock);

@@ -87,6 +87,23 @@ interface ConnectionInterface extends AdapterConnection
     function setParameters(array $parameters);
 
     /**
+     * Gets a connection parameter.
+     *
+     * @param string $parameter The connection parameter name.
+     *
+     * @return mixed The connection parameter value.
+     */
+    function getParameter($parameter);
+
+    /**
+     * Sets a connection parameter.
+     *
+     * @param string $parameter The connection parameter name.
+     * @param mixed  $value     The connection parameter value.
+     */
+    function setParameter($parameter, $value);
+
+    /**
      * Gets the database username.
      *
      * @return string The connection username if it is defined else NULL.
