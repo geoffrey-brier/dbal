@@ -464,7 +464,7 @@ abstract class AbstractPlatform implements PlatformInterface
     /**
      * {@inheritdoc}
      */
-    function getSelectDatabaseSQLQuery()
+    public function getSelectDatabaseSQLQuery()
     {
         throw Exception\PlatformException::methodNotSupported(__METHOD__);
     }
@@ -472,7 +472,7 @@ abstract class AbstractPlatform implements PlatformInterface
     /**
      * {@inheritdoc}
      */
-    function getSelectDatabasesSQLQuery()
+    public function getSelectDatabasesSQLQuery()
     {
         throw Exception\PlatformException::methodNotSupported(__METHOD__);
     }
@@ -480,7 +480,7 @@ abstract class AbstractPlatform implements PlatformInterface
     /**
      * {@inheritdoc}
      */
-    function getSelectSequencesSQLQuery($database)
+    public function getSelectSequencesSQLQuery($database)
     {
         throw Exception\PlatformException::methodNotSupported(__METHOD__);
     }
@@ -488,7 +488,7 @@ abstract class AbstractPlatform implements PlatformInterface
     /**
      * {@inheritdoc}
      */
-    function getSelectViewsSQLQuery($database)
+    public function getSelectViewsSQLQuery($database)
     {
         throw Exception\PlatformException::methodNotSupported(__METHOD__);
     }
@@ -496,7 +496,7 @@ abstract class AbstractPlatform implements PlatformInterface
     /**
      * {@inheritdoc}
      */
-    function getSelectTableNamesSQLQuery($database)
+    public function getSelectTableNamesSQLQuery($database)
     {
         throw Exception\PlatformException::methodNotSupported(__METHOD__);
     }
@@ -504,7 +504,7 @@ abstract class AbstractPlatform implements PlatformInterface
     /**
      * {@inheritdoc}
      */
-    function getSelectTableColumnsSQLQuery($table, $database)
+    public function getSelectTableColumnsSQLQuery($table, $database)
     {
         throw Exception\PlatformException::methodNotSupported(__METHOD__);
     }
@@ -512,7 +512,7 @@ abstract class AbstractPlatform implements PlatformInterface
     /**
      * {@inheritdoc}
      */
-    function getSelectTablePrimaryKeySQLQuery($table, $database)
+    public function getSelectTablePrimaryKeySQLQuery($table, $database)
     {
         throw Exception\PlatformException::methodNotSupported(__METHOD__);
     }
@@ -520,7 +520,7 @@ abstract class AbstractPlatform implements PlatformInterface
     /**
      * {@inheritdoc}
      */
-    function getSelectTableForeignKeysSQLQuery($table, $database)
+    public function getSelectTableForeignKeysSQLQuery($table, $database)
     {
         throw Exception\PlatformException::methodNotSupported(__METHOD__);
     }
@@ -528,7 +528,7 @@ abstract class AbstractPlatform implements PlatformInterface
     /**
      * {@inheritdoc}
      */
-    function getSelectTableIndexesSQLQuery($table, $database)
+    public function getSelectTableIndexesSQLQuery($table, $database)
     {
         throw Exception\PlatformException::methodNotSupported(__METHOD__);
     }
