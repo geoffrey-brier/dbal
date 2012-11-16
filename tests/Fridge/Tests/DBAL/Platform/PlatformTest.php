@@ -403,6 +403,86 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('SET NAMES \'foo\'', $this->platform->getSetCharsetSQLQuery('foo'));
     }
 
+    /**
+     * @expectedException \Fridge\DBAL\Exception\PlatformException
+     */
+    public function testSelectDatabaseSQLQuery()
+    {
+        $this->platform->getSelectDatabaseSQLQuery();
+    }
+
+    /**
+     * @expectedException \Fridge\DBAL\Exception\PlatformException
+     */
+    public function testSelectDatabasesSQLQuery()
+    {
+        $this->platform->getSelectDatabasesSQLQuery();
+    }
+
+    /**
+     * @expectedException \Fridge\DBAL\Exception\PlatformException
+     */
+    public function testSelectSequencesSQLQuery()
+    {
+        $this->platform->getSelectSequencesSQLQuery('foo');
+    }
+
+    /**
+     * @expectedException \Fridge\DBAL\Exception\PlatformException
+     */
+    public function testSelectViewsSQLQuery()
+    {
+        $this->platform->getSelectViewsSQLQuery('foo');
+    }
+
+    /**
+     * @expectedException \Fridge\DBAL\Exception\PlatformException
+     */
+    public function testSelectTableNamesSQLQuery()
+    {
+        $this->platform->getSelectTableNamesSQLQuery('foo');
+    }
+
+    /**
+     * @expectedException \Fridge\DBAL\Exception\PlatformException
+     */
+    public function testSelectTableColumnsSQLQuery()
+    {
+        $this->platform->getSelectTableColumnsSQLQuery('foo', 'bar');
+    }
+
+    /**
+     * @expectedException \Fridge\DBAL\Exception\PlatformException
+     */
+    public function testSelectTablePrimaryKeySQLQuery()
+    {
+        $this->platform->getSelectTablePrimaryKeySQLQuery('foo', 'bar');
+    }
+
+    /**
+     * @expectedException \Fridge\DBAL\Exception\PlatformException
+     */
+    public function testSelectTableForeignKeysSQLQuery()
+    {
+        $this->platform->getSelectTableForeignKeysSQLQuery('foo', 'bar');
+    }
+
+    /**
+     * @expectedException \Fridge\DBAL\Exception\PlatformException
+     */
+    public function testSelectTableIndexesSQLQuery()
+    {
+        $this->platform->getSelectTableIndexesSQLQuery('foo', 'bar');
+    }
+
+    /**
+     * @expectedException \Fridge\DBAL\Exception\PlatformException
+     */
+    public function testSelectTableChecksSQLQuery()
+    {
+        $this->platform->getSelectTableCheckSQLQuery('foo', 'bar');
+    }
+
     public function testCreateDatabaseSQLQueries()
     {
         $this->assertSame(array('CREATE DATABASE foo'), $this->platform->getCreateDatabaseSQLQueries('foo'));

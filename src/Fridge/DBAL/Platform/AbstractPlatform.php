@@ -464,6 +464,86 @@ abstract class AbstractPlatform implements PlatformInterface
     /**
      * {@inheritdoc}
      */
+    function getSelectDatabaseSQLQuery()
+    {
+        throw Exception\PlatformException::methodNotSupported(__METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    function getSelectDatabasesSQLQuery()
+    {
+        throw Exception\PlatformException::methodNotSupported(__METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    function getSelectSequencesSQLQuery($database)
+    {
+        throw Exception\PlatformException::methodNotSupported(__METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    function getSelectViewsSQLQuery($database)
+    {
+        throw Exception\PlatformException::methodNotSupported(__METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    function getSelectTableNamesSQLQuery($database)
+    {
+        throw Exception\PlatformException::methodNotSupported(__METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    function getSelectTableColumnsSQLQuery($table, $database)
+    {
+        throw Exception\PlatformException::methodNotSupported(__METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    function getSelectTablePrimaryKeySQLQuery($table, $database)
+    {
+        throw Exception\PlatformException::methodNotSupported(__METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    function getSelectTableForeignKeysSQLQuery($table, $database)
+    {
+        throw Exception\PlatformException::methodNotSupported(__METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    function getSelectTableIndexesSQLQuery($table, $database)
+    {
+        throw Exception\PlatformException::methodNotSupported(__METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getSelectTableCheckSQLQuery($table, $database)
+    {
+        throw Exception\PlatformException::methodNotSupported(__METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getCreateDatabaseSQLQueries($database)
     {
         return array('CREATE DATABASE '.$database);
