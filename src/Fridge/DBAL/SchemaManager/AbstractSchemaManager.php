@@ -85,19 +85,12 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
             $database = $this->getDatabase();
         }
 
-        $tables = $this->getTables($database);
-
-        $sequences = array();
-        if ($this->getConnection()->getPlatform()->supportSequence()) {
-            $sequences = $this->getSequences($database);
-        }
-
-        $views = array();
-        if ($this->getConnection()->getPlatform()->supportView()) {
-            $views = $this->getViews($database);
-        }
-
-        return new Schema\Schema($database, $tables, $sequences, $views);
+        return new Schema\Schema(
+            $database,
+            $this->getTables($database),
+            $this->getSequences($database),
+            $this->getViews($database)
+        );
     }
 
     /**
@@ -105,6 +98,10 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
      */
     public function getSequences($database = null)
     {
+        if (!$this->getConnection()->getPlatform()->supportSequence()) {
+            return array();
+        }
+
         if ($database === null) {
             $database = $this->getDatabase();
         }
@@ -120,6 +117,10 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
      */
     public function getViews($database = null)
     {
+        if (!$this->getConnection()->getPlatform()->supportView()) {
+            return array();
+        }
+
         if ($database === null) {
             $database = $this->getDatabase();
         }
@@ -172,29 +173,14 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
             $database = $this->getDatabase();
         }
 
-        $columns = $this->getTableColumns($table, $database);
-
-        $primaryKey = null;
-        if ($this->getConnection()->getPlatform()->supportPrimaryKey()) {
-            $primaryKey = $this->getTablePrimaryKey($table, $database);
-        }
-
-        $foreignKeys = array();
-        if ($this->getConnection()->getPlatform()->supportForeignKey()) {
-            $foreignKeys = $this->getTableForeignKeys($table, $database);
-        }
-
-        $indexes = array();
-        if ($this->getConnection()->getPlatform()->supportIndex()) {
-            $indexes = $this->getTableIndexes($table, $database);
-        }
-
-        $checks = array();
-        if ($this->getConnection()->getPlatform()->supportCheck()) {
-            $checks = $this->getTableChecks($table, $database);
-        }
-
-        return new Schema\Table($table, $columns, $primaryKey, $foreignKeys, $indexes, $checks);
+        return new Schema\Table(
+            $table,
+            $this->getTableColumns($table, $database),
+            $this->getTablePrimaryKey($table, $database),
+            $this->getTableForeignKeys($table, $database),
+            $this->getTableIndexes($table, $database),
+            $this->getTableChecks($table, $database)
+        );
     }
 
     /**
@@ -217,6 +203,10 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
      */
     public function getTablePrimaryKey($table, $database = null)
     {
+        if (!$this->getConnection()->getPlatform()->supportPrimaryKey()) {
+            return;
+        }
+
         if ($database === null) {
             $database = $this->getDatabase();
         }
@@ -234,6 +224,10 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
      */
     public function getTableForeignKeys($table, $database = null)
     {
+        if (!$this->getConnection()->getPlatform()->supportForeignKey()) {
+            return array();
+        }
+
         if ($database === null) {
             $database = $this->getDatabase();
         }
@@ -249,6 +243,10 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
      */
     public function getTableIndexes($table, $database = null)
     {
+        if (!$this->getConnection()->getPlatform()->supportIndex()) {
+            return array();
+        }
+
         if ($database === null) {
             $database = $this->getDatabase();
         }
@@ -264,6 +262,10 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
      */
     public function getTableChecks($table, $database = null)
     {
+        if (!$this->getConnection()->getPlatform()->supportCheck()) {
+            return array();
+        }
+
         if ($database === null) {
             $database = $this->getDatabase();
         }
