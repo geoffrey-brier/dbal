@@ -59,9 +59,7 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
     }
 
     /**
-     * Gets the current database name.
-     *
-     * @return string The current database name
+     * {@inheritdoc}
      */
     public function getDatabase()
     {
