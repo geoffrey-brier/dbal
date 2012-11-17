@@ -12,6 +12,7 @@
 namespace Fridge\Tests\Fixture;
 
 use \DateTime,
+    \Exception,
     \stdClass;
 
 use Fridge\DBAL\Schema,
@@ -718,7 +719,7 @@ abstract class AbstractFixture implements FixtureInterface
             'DROP TABLE IF EXISTS tprimarykeyunlock',
             'DROP TABLE IF EXISTS tprimarykeylock',
             'DROP TABLE IF EXISTS tindex',
-            'DROP TABLE IF EXISTS tcompound',
+            'DROP TABLE IF EXISTS tcheck',
             'DROP TABLE IF EXISTS tcolumns',
         );
     }
@@ -777,7 +778,7 @@ EOT;
      */
     protected function getDropDatasSQLQueries()
     {
-        return array('TRUNCATE tcolumns');
+        return array('DELETE FROM tcolumns');
     }
 
     /**
@@ -790,7 +791,13 @@ EOT;
         $connection = $this->getConnection();
 
         foreach ($queries as $query) {
-            $connection->exec($query);
+            $result = $connection->exec($query);
+
+            if ($result === false) {
+                $errors = $connection->errorInfo();
+
+                throw new Exception($errors[2]);
+            }
         }
 
         unset($connection);
