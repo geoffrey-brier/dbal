@@ -37,7 +37,7 @@ abstract class AbstractConnectionTest extends \PHPUnit_Framework_TestCase
     static public function setUpBeforeClass()
     {
         if (self::$fixture !== null) {
-            self::$fixture->createSchema();
+            self::$fixture->create();
         }
     }
 

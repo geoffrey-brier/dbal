@@ -46,6 +46,7 @@ abstract class AbstractFixture implements FixtureInterface
      */
     public function create()
     {
+        $this->createDatabase();
         $this->createSchema();
         $this->createDatas();
     }
@@ -63,6 +64,8 @@ abstract class AbstractFixture implements FixtureInterface
      */
     public function createDatabase()
     {
+        $this->dropDatabase();
+
         if ($this->settings !== null) {
             $connection = $this->getConnection(false);
             $connection->exec($this->getCreateDatabaseSQLQuery());
@@ -87,8 +90,7 @@ abstract class AbstractFixture implements FixtureInterface
      */
     public function createSchema()
     {
-        $this->dropDatabase();
-        $this->createDatabase();
+        $this->dropSchema();
 
         if ($this->settings !== null) {
             $this->executeQueries($this->getCreateSchemaSQLQueries());

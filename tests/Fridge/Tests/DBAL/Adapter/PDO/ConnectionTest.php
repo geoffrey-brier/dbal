@@ -37,7 +37,7 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
     {
         if (PHPUnitUtility::hasSettings(PHPUnitUtility::PDO_MYSQL)) {
             self::$fixture = new MySQLFixture(PHPUnitUtility::PDO_MYSQL);
-            self::$fixture->createSchema();
+            self::$fixture->create();
         }
     }
 
