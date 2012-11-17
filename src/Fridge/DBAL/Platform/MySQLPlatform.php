@@ -127,7 +127,7 @@ class MySQLPlatform extends AbstractPlatform
      */
     public function getSelectDatabasesSQLQuery()
     {
-        return 'SELECT schema_name AS `database`'.
+        return 'SELECT schema_name AS '.$this->quoteIdentifier('database').
                ' FROM information_schema.schemata'.
                ' ORDER BY `database` ASC';
     }
@@ -149,7 +149,7 @@ class MySQLPlatform extends AbstractPlatform
                '  table_name AS name,'.
                '  view_definition AS `sql`'.
                ' FROM information_schema.views'.
-               ' WHERE table_schema = \''.$database.'\''.
+               ' WHERE table_schema = '.$this->quote($database).
                ' ORDER BY name ASC';
     }
 
@@ -161,8 +161,8 @@ class MySQLPlatform extends AbstractPlatform
         return 'SELECT'.
                '  table_name AS name'.
                ' FROM information_schema.tables'.
-               ' WHERE table_schema = \''.$database.'\''.
-               ' AND table_type = \'BASE TABLE\''.
+               ' WHERE table_schema = '.$this->quote($database).
+               ' AND table_type = '.$this->quote('BASE TABLE').
                ' ORDER BY name ASC';
     }
 
@@ -174,14 +174,14 @@ class MySQLPlatform extends AbstractPlatform
         return 'SELECT'.
                '  column_name AS name,'.
                '  column_type AS type,'.
-               '  IF (column_type REGEXP \'.*unsigned.*\', true, NULL) AS `unsigned`,'.
-               '  IF (is_nullable = \'NO\', TRUE, FALSE) AS not_null,'.
-               '  column_default AS `default`,'.
-               '  IF (extra = \'auto_increment\', TRUE, NULL) AS auto_increment,'.
+               '  IF (column_type REGEXP '.$this->quote('.*unsigned.*').', true, NULL) AS '.$this->quoteIdentifier('unsigned').','.
+               '  IF (is_nullable = '.$this->quote('NO').', TRUE, FALSE) AS not_null,'.
+               '  column_default AS '.$this->quoteIdentifier('default').','.
+               '  IF (extra = '.$this->quote('auto_increment').', TRUE, NULL) AS auto_increment,'.
                '  column_comment AS comment'.
                ' FROM information_schema.columns'.
-               ' WHERE table_schema = \''.$database.'\''.
-               ' AND table_name = \''.$table.'\''.
+               ' WHERE table_schema = '.$this->quote($database).
+               ' AND table_name = '.$this->quote($table).
                ' ORDER BY ordinal_position ASC';
     }
 
@@ -201,9 +201,9 @@ class MySQLPlatform extends AbstractPlatform
                '  AND c.table_schema = k.table_schema'.
                '  AND c.constraint_name = k.constraint_name'.
                ' )'.
-               ' WHERE c.constraint_type = \'PRIMARY KEY\''.
-               ' AND c.table_schema = \''.$database.'\''.
-               ' AND c.table_name = \''.$table.'\''.
+               ' WHERE c.constraint_type = '.$this->quote('PRIMARY KEY').
+               ' AND c.table_schema = '.$this->quote($database).
+               ' AND c.table_name = '.$this->quote($table).
                ' ORDER BY k.ordinal_position ASC';
     }
 
@@ -233,9 +233,9 @@ class MySQLPlatform extends AbstractPlatform
                '  rc.table_name = c.table_name'.
                '  AND rc.constraint_name = c.constraint_name'.
                ' )'.
-               ' WHERE c.constraint_type = \'FOREIGN KEY\''.
-               ' AND c.table_schema = \''.$database.'\''.
-               ' AND c.table_name = \''.$table.'\''.
+               ' WHERE c.constraint_type = '.$this->quote('FOREIGN KEY').
+               ' AND c.table_schema = '.$this->quote($database).
+               ' AND c.table_name = '.$this->quote($table).
                ' ORDER BY c.constraint_name ASC, k.ordinal_position ASC';
     }
 
@@ -247,10 +247,10 @@ class MySQLPlatform extends AbstractPlatform
         return 'SELECT'.
                '  s.index_name AS name,'.
                '  s.column_name,'.
-               '  !s.non_unique AS `unique`'.
+               '  !s.non_unique AS '.$this->quoteIdentifier('unique').
                ' FROM information_schema.statistics s'.
-               ' WHERE s.table_schema = \''.$database.'\''.
-               ' AND s.table_name = \''.$table.'\''.
+               ' WHERE s.table_schema = '.$this->quote($database).
+               ' AND s.table_name = '.$this->quote($table).
                ' ORDER BY s.index_name ASC, s.seq_in_index ASC';
     }
 

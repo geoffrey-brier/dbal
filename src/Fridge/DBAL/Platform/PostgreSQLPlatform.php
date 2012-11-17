@@ -105,7 +105,7 @@ class PostgreSQLPlatform extends AbstractPlatform
         return 'SELECT'.
                '  c.relname AS name'.
                ' FROM pg_class c'.
-               ' WHERE c.relkind = \'S\''.
+               ' WHERE c.relkind = '.$this->quote('S').
                ' ORDER BY name ASC';
     }
 
@@ -118,7 +118,7 @@ class PostgreSQLPlatform extends AbstractPlatform
                '  viewname AS name,'.
                '  definition AS sql'.
                ' FROM pg_views'.
-               ' WHERE schemaname NOT IN (\'pg_catalog\', \'information_schema\')'.
+               ' WHERE schemaname NOT IN ('.$this->quote('pg_catalog').', '.$this->quote('information_schema').')'.
                ' ORDER BY name ASC';
     }
 
@@ -130,8 +130,8 @@ class PostgreSQLPlatform extends AbstractPlatform
         return 'SELECT'.
                '  tablename AS name'.
                ' FROM pg_tables'.
-               ' WHERE tablename NOT LIKE \'pg_%\''.
-               ' AND tablename NOT LIKE \'sql_%\''.
+               ' WHERE tablename NOT LIKE '.$this->quote('pg_%').
+               ' AND tablename NOT LIKE '.$this->quote('sql_%').
                ' ORDER BY name ASC';
     }
 
@@ -148,7 +148,7 @@ class PostgreSQLPlatform extends AbstractPlatform
                '  ad.adsrc AS default,'.
                '  d.description AS comment'.
                ' FROM pg_attribute a'.
-               ' INNER JOIN pg_class c ON (a.attrelid = c.oid AND c.relname = \''.$table.'\')'.
+               ' INNER JOIN pg_class c ON (a.attrelid = c.oid AND c.relname = '.$this->quote($table).')'.
                ' INNER JOIN pg_type t ON a.atttypid = t.oid'.
                ' LEFT JOIN pg_attrdef ad ON (a.attnum = ad.adnum AND c.oid = ad.adrelid)'.
                ' LEFT JOIN pg_description d ON (a.attnum = d.objsubid AND c.oid = d.objoid)'.
@@ -165,9 +165,9 @@ class PostgreSQLPlatform extends AbstractPlatform
                '  co.conname AS name,'.
                '  a.attname AS column_name'.
                ' FROM pg_constraint co'.
-               ' INNER JOIN pg_class c ON (co.conrelid = c.oid AND c.relname = \''.$table.'\')'.
+               ' INNER JOIN pg_class c ON (co.conrelid = c.oid AND c.relname = '.$this->quote($table).')'.
                ' INNER JOIN pg_attribute a ON (c.oid = a.attrelid AND a.attnum > 0)'.
-               ' INNER JOIN pg_index i ON (c.oid = i.indrelid AND a.attnum = any(i.indkey) AND i.indisprimary = \'t\')';
+               ' INNER JOIN pg_index i ON (c.oid = i.indrelid AND a.attnum = any(i.indkey) AND i.indisprimary = '.$this->quote('t').')';
     }
 
     /**
@@ -175,11 +175,11 @@ class PostgreSQLPlatform extends AbstractPlatform
      */
     public function getSelectTableForeignKeysSQLQuery($table, $database)
     {
-        $actions =  'WHEN \'a\' THEN \'NO ACTION\''.
-                    ' WHEN \'r\' THEN \'RESTRICT\''.
-                    ' WHEN \'c\' THEN \'CASCADE\''.
-                    ' WHEN \'n\' THEN \'SET NULL\''.
-                    ' WHEN \'d\' THEN \'SET DEFAULT\'';
+        $actions =  'WHEN '.$this->quote('a').' THEN '.$this->quote('NO ACTION').
+                    ' WHEN '.$this->quote('r').' THEN '.$this->quote('RESTRICT').
+                    ' WHEN '.$this->quote('c').' THEN '.$this->quote('CASCADE').
+                    ' WHEN '.$this->quote('n').' THEN '.$this->quote('SET NULL').
+                    ' WHEN '.$this->quote('d').' THEN '.$this->quote('SET DEFAULT');
 
         return 'SELECT'.
                '  sq.conname AS name,'.
@@ -211,8 +211,8 @@ class PostgreSQLPlatform extends AbstractPlatform
                '    CASE co.confdeltype '.$actions.' END AS on_delete,'.
                '    CASE co.confupdtype '.$actions.' END AS on_update'.
                '   FROM pg_constraint co'.
-               '   INNER JOIN pg_class c ON (co.conrelid = c.oid AND c.relname = \''.$table.'\')'.
-               '   WHERE co.contype = \'f\''.
+               '   INNER JOIN pg_class c ON (co.conrelid = c.oid AND c.relname = '.$this->quote($table).')'.
+               '   WHERE co.contype = '.$this->quote('f').
                '  ) AS ssq'.
                ' ) AS sq'.
                ' INNER JOIN pg_attribute a ON (sq.conrelid = a.attrelid AND sq.conkey = a.attnum)'.
@@ -230,7 +230,7 @@ class PostgreSQLPlatform extends AbstractPlatform
                '  a.attname AS column_name,'.
                '  i.indisunique AS unique'.
                ' FROM pg_index i'.
-               ' INNER JOIN pg_class c1 ON (i.indrelid = c1.oid AND c1.relname = \''.$table.'\')'.
+               ' INNER JOIN pg_class c1 ON (i.indrelid = c1.oid AND c1.relname = '.$this->quote($table).')'.
                ' INNER JOIN pg_class c2 ON (i.indexrelid = c2.oid)'.
                ' INNER JOIN pg_attribute a ON (c1.oid = a.attrelid AND a.attnum = any(i.indkey) AND a.attnum > 0)'.
                ' ORDER BY name ASC';
@@ -245,8 +245,8 @@ class PostgreSQLPlatform extends AbstractPlatform
                '  co.conname AS name,'.
                '  co.consrc AS definition'.
                ' FROM pg_constraint co'.
-               ' INNER JOIN pg_class c ON (co.conrelid = c.oid AND c.relname = \''.$table.'\')'.
-               ' WHERE co.contype = \'c\'';
+               ' INNER JOIN pg_class c ON (co.conrelid = c.oid AND c.relname = '.$this->quote($table).')'.
+               ' WHERE co.contype = '.$this->quote('c');
     }
 
     /**
@@ -307,7 +307,7 @@ class PostgreSQLPlatform extends AbstractPlatform
 
         if (in_array('default', $columnDiff->getDifferences())) {
             if ($columnDiff->getNewAsset()->getDefault() !== null) {
-                $defaultDeclaration = ' SET DEFAULT \''.$columnDiff->getNewAsset()->getDefault().'\'';
+                $defaultDeclaration = ' SET DEFAULT '.$this->quote($columnDiff->getNewAsset()->getDefault());
             } else {
                 $defaultDeclaration = ' DROP DEFAULT';
             }

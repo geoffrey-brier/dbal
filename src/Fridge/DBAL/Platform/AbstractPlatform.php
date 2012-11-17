@@ -458,7 +458,7 @@ abstract class AbstractPlatform implements PlatformInterface
      */
     public function getSetCharsetSQLQuery($charset)
     {
-        return 'SET NAMES \''.$charset.'\'';
+        return 'SET NAMES '.$this->quote($charset);
     }
 
     /**
@@ -993,7 +993,7 @@ abstract class AbstractPlatform implements PlatformInterface
 
         if ($column->getDefault() !== null) {
             $default = $column->getType()->convertToDatabaseValue($column->getDefault(), $this);
-            $columnDeclaration .= ' DEFAULT \''.$default.'\'';
+            $columnDeclaration .= ' DEFAULT '.$this->quote($default);
         }
 
         if ($this->supportInlineTableColumnComment()
@@ -1123,15 +1123,34 @@ abstract class AbstractPlatform implements PlatformInterface
      */
     protected function getColumnCommentSQLDeclaration(Schema\Column $column)
     {
-        $comment = '\'';
-        $comment .= $column->getComment();
+        $comment = $column->getComment();
 
         if ($this->hasMandatoryType($column->getType()->getName())) {
             $comment .= '(FridgeType::'.strtoupper($column->getType()->getName()).')';
         }
 
-        $comment .= '\'';
+        return $this->quote($comment);
+    }
 
-        return $comment;
+    /**
+     * Gets the quote.
+     *
+     * @return string The quote.
+     */
+    protected function getQuote()
+    {
+        return '\'';
+    }
+
+    /**
+     * Quotes a value.
+     *
+     * @param string $value The value to quote.
+     *
+     * @return string The quoted value.
+     */
+    protected function quote($value)
+    {
+        return $this->getQuote().$value.$this->getQuote();
     }
 }
