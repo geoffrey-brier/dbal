@@ -512,7 +512,7 @@ abstract class AbstractFixture implements FixtureInterface
      */
     public function getUpdateQuery()
     {
-        return 'TRUNCATE tcolumns';
+        return 'DELETE FROM tcolumns';
     }
 
     /**

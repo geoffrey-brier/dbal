@@ -312,7 +312,7 @@ class StatementTest extends \PHPUnit_Framework_TestCase
         $this->statement = new Statement(self::$fixture->getUpdateQuery(), $this->mysqli);
         $this->statement->execute();
 
-        $this->assertSame(0, $this->statement->rowCount());
+        $this->assertSame(1, $this->statement->rowCount());
     }
 
     public function testSetFetchMode()

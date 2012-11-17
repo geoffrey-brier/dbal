@@ -225,7 +225,7 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
     {
         $this->setUpConnection();
 
-        $this->assertSame(0, $this->connection->exec(self::$fixture->getUpdateQuery()));
+        $this->assertSame(1, $this->connection->exec(self::$fixture->getUpdateQuery()));
     }
 
     public function testLastInsertId()

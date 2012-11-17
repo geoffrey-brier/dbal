@@ -228,7 +228,7 @@ abstract class AbstractConnectionTest extends \PHPUnit_Framework_TestCase
 
     public function testExecuteUpdateWithoutParameters()
     {
-        $this->assertSame(0, $this->connection->executeUpdate(self::$fixture->getUpdateQuery()));
+        $this->assertSame(1, $this->connection->executeUpdate(self::$fixture->getUpdateQuery()));
     }
 
     public function testExecuteUpdateWithNamedParameters()
@@ -559,7 +559,7 @@ abstract class AbstractConnectionTest extends \PHPUnit_Framework_TestCase
 
     public function testExec()
     {
-        $this->assertSame(0, $this->connection->exec(self::$fixture->getUpdateQuery()));
+        $this->assertSame(1, $this->connection->exec(self::$fixture->getUpdateQuery()));
     }
 
     public function testLastInsertId()
