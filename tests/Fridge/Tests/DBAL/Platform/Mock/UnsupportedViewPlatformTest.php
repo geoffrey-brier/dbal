@@ -44,7 +44,9 @@ class UnsupportedViewPlatformTest extends \PHPUnit_Framework_TestCase
      */
     public function testCreateViewSQLQueries()
     {
-        $viewMock = $this->getMock('Fridge\DBAL\Schema\View', array(), array(), '', false);
+        $viewMock = $this->getMockBuilder('Fridge\DBAL\Schema\View')
+            ->disableOriginalConstructor()
+            ->getMock();
 
         $this->platform->getCreateViewSQLQueries($viewMock);
     }
@@ -54,7 +56,9 @@ class UnsupportedViewPlatformTest extends \PHPUnit_Framework_TestCase
      */
     public function testDropViewSQLQueries()
     {
-        $viewMock = $this->getMock('Fridge\DBAL\Schema\View', array(), array(), '', false);
+        $viewMock = $this->getMockBuilder('Fridge\DBAL\Schema\View')
+            ->disableOriginalConstructor()
+            ->getMock();
 
         $this->platform->getDropViewSQLQueries($viewMock);
     }

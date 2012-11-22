@@ -44,7 +44,9 @@ class UnsupportedForeignKeyPlatformTest extends \PHPUnit_Framework_TestCase
      */
     public function testCreateForeignKeySQLQueries()
     {
-        $foreignKeyMock = $this->getMock('Fridge\DBAL\Schema\ForeignKey', array(), array(), '', false);
+        $foreignKeyMock = $this->getMockBuilder('Fridge\DBAL\Schema\ForeignKey')
+            ->disableOriginalConstructor()
+            ->getMock();
 
         $this->platform->getCreateForeignKeySQLQueries($foreignKeyMock, 'foo');
     }
@@ -54,7 +56,9 @@ class UnsupportedForeignKeyPlatformTest extends \PHPUnit_Framework_TestCase
      */
     public function testDropForeignKeySQLQueries()
     {
-        $foreignKeyMock = $this->getMock('Fridge\DBAL\Schema\ForeignKey', array(), array(), '', false);
+        $foreignKeyMock = $this->getMockBuilder('Fridge\DBAL\Schema\ForeignKey')
+            ->disableOriginalConstructor()
+            ->getMock();
 
         $this->platform->getDropForeignKeySQLQueries($foreignKeyMock, 'foo');
     }
@@ -64,7 +68,9 @@ class UnsupportedForeignKeyPlatformTest extends \PHPUnit_Framework_TestCase
      */
     public function testCreateConstraintSQLQueriesWithForeignKey()
     {
-        $foreignKeyMock = $this->getMock('Fridge\DBAL\Schema\ForeignKey', array(), array(), '', false);
+        $foreignKeyMock = $this->getMockBuilder('Fridge\DBAL\Schema\ForeignKey')
+            ->disableOriginalConstructor()
+            ->getMock();
 
         $this->platform->getCreateConstraintSQLQueries($foreignKeyMock, 'foo');
     }
@@ -74,7 +80,9 @@ class UnsupportedForeignKeyPlatformTest extends \PHPUnit_Framework_TestCase
      */
     public function testDropConstraintSQLQueriesWithForeignKey()
     {
-        $foreignKeyMock = $this->getMock('Fridge\DBAL\Schema\ForeignKey', array(), array(), '', false);
+        $foreignKeyMock = $this->getMockBuilder('Fridge\DBAL\Schema\ForeignKey')
+            ->disableOriginalConstructor()
+            ->getMock();
 
         $this->platform->getDropConstraintSQLQueries($foreignKeyMock, 'foo');
     }

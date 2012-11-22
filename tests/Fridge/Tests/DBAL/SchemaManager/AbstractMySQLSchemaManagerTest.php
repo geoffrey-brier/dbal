@@ -23,7 +23,9 @@ abstract class AbstractMySQLSchemaManagerTest extends AbstractSchemaManagerTest
      */
     public function testCreateSequence()
     {
-        $sequenceMock = $this->getMock('Fridge\DBAL\Schema\Sequence', array(), array('foo'));
+        $sequenceMock = $this->getMockBuilder('Fridge\DBAL\Schema\Sequence')
+            ->setConstructorArgs(array('foo'))
+            ->getMock();
 
         $this->schemaManager->createSequence($sequenceMock);
     }
@@ -33,7 +35,9 @@ abstract class AbstractMySQLSchemaManagerTest extends AbstractSchemaManagerTest
      */
     public function testDropSequence()
     {
-        $sequenceMock = $this->getMock('Fridge\DBAL\Schema\Sequence', array(), array('foo'));
+        $sequenceMock = $this->getMockBuilder('Fridge\DBAL\Schema\Sequence')
+            ->setConstructorArgs(array('foo'))
+            ->getMock();
 
         $this->schemaManager->dropSequence($sequenceMock);
     }
@@ -43,7 +47,9 @@ abstract class AbstractMySQLSchemaManagerTest extends AbstractSchemaManagerTest
      */
     public function testDropAndCreateSequence()
     {
-        $sequenceMock = $this->getMock('Fridge\DBAL\Schema\Sequence', array(), array('foo'));
+        $sequenceMock = $this->getMockBuilder('Fridge\DBAL\Schema\Sequence')
+            ->setConstructorArgs(array('foo'))
+            ->getMock();
 
         $this->schemaManager->dropAndCreateSequence($sequenceMock);
     }
@@ -53,7 +59,9 @@ abstract class AbstractMySQLSchemaManagerTest extends AbstractSchemaManagerTest
      */
     public function testDropCheck()
     {
-        $checkMock = $this->getMock('Fridge\DBAL\Schema\Check', array(), array('foo', 'bar'));
+        $checkMock = $this->getMockBuilder('Fridge\DBAL\Schema\Check')
+            ->setConstructorArgs(array('foo', 'bar'))
+            ->getMock();
 
         $this->schemaManager->dropCheck($checkMock, 'foo');
     }
@@ -63,7 +71,9 @@ abstract class AbstractMySQLSchemaManagerTest extends AbstractSchemaManagerTest
      */
     public function testCreateCheck()
     {
-        $checkMock = $this->getMock('Fridge\DBAL\Schema\Check', array(), array('foo', 'bar'));
+        $checkMock = $this->getMockBuilder('Fridge\DBAL\Schema\Check')
+            ->setConstructorArgs(array('foo', 'bar'))
+            ->getMock();
 
         $this->schemaManager->createCheck($checkMock, 'foo');
     }
@@ -73,7 +83,9 @@ abstract class AbstractMySQLSchemaManagerTest extends AbstractSchemaManagerTest
      */
     public function testDropAndCreateCheck()
     {
-        $checkMock = $this->getMock('Fridge\DBAL\Schema\Check', array(), array('foo', 'bar'));
+        $checkMock = $this->getMockBuilder('Fridge\DBAL\Schema\Check')
+            ->setConstructorArgs(array('foo', 'bar'))
+            ->getMock();
 
         $this->schemaManager->dropAndCreateCheck($checkMock, 'foo');
     }
@@ -83,7 +95,9 @@ abstract class AbstractMySQLSchemaManagerTest extends AbstractSchemaManagerTest
      */
     public function testDropConstraintWithCheck()
     {
-        $checkMock = $this->getMock('Fridge\DBAL\Schema\Check', array(), array('foo', 'bar'));
+        $checkMock = $this->getMockBuilder('Fridge\DBAL\Schema\Check')
+            ->setConstructorArgs(array('foo', 'bar'))
+            ->getMock();
 
         $this->schemaManager->dropConstraint($checkMock, 'foo');
     }
@@ -93,7 +107,9 @@ abstract class AbstractMySQLSchemaManagerTest extends AbstractSchemaManagerTest
      */
     public function testCreateConstraintWithCheck()
     {
-        $checkMock = $this->getMock('Fridge\DBAL\Schema\Check', array(), array('foo', 'bar'));
+        $checkMock = $this->getMockBuilder('Fridge\DBAL\Schema\Check')
+            ->setConstructorArgs(array('foo', 'bar'))
+            ->getMock();
 
         $this->schemaManager->createConstraint($checkMock, 'foo');
     }
@@ -103,7 +119,9 @@ abstract class AbstractMySQLSchemaManagerTest extends AbstractSchemaManagerTest
      */
     public function testDropAndCreateConstraintWithCheck()
     {
-        $checkMock = $this->getMock('Fridge\DBAL\Schema\Check', array(), array('foo', 'bar'));
+        $checkMock = $this->getMockBuilder('Fridge\DBAL\Schema\Check')
+            ->setConstructorArgs(array('foo', 'bar'))
+            ->getMock();
 
         $this->schemaManager->dropAndCreateConstraint($checkMock, 'foo');
     }

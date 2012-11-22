@@ -32,13 +32,19 @@ class ColumnDiffTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->oldColumnMock = $this->getMock('Fridge\DBAL\Schema\Column', array(), array(), '', false);
+        $this->oldColumnMock = $this->getMockBuilder('Fridge\DBAL\Schema\Column')
+            ->disableOriginalConstructor()
+            ->getMock();
+
         $this->oldColumnMock
             ->expects($this->any())
             ->method('getName')
             ->will($this->returnValue('foo'));
 
-        $this->newColumnMock = $this->getMock('Fridge\DBAL\Schema\Column', array(), array(), '', false);
+        $this->newColumnMock = $this->getMockBuilder('Fridge\DBAL\Schema\Column')
+            ->disableOriginalConstructor()
+            ->getMock();
+
         $this->newColumnMock
             ->expects($this->any())
             ->method('getName')
@@ -75,7 +81,10 @@ class ColumnDiffTest extends \PHPUnit_Framework_TestCase
 
     public function testDifferenceWithNameDifference()
     {
-        $this->newColumnMock = $this->getMock('Fridge\DBAL\Schema\Column', array(), array(), '', false);
+        $this->newColumnMock = $this->getMockBuilder('Fridge\DBAL\Schema\Column')
+            ->disableOriginalConstructor()
+            ->getMock();
+
         $this->newColumnMock
             ->expects($this->any())
             ->method('getName')
@@ -90,7 +99,10 @@ class ColumnDiffTest extends \PHPUnit_Framework_TestCase
 
     public function testDifferenceWithoutNameDifferenceOnly()
     {
-        $this->newColumnMock = $this->getMock('Fridge\DBAL\Schema\Column', array(), array(), '', false);
+        $this->newColumnMock = $this->getMockBuilder('Fridge\DBAL\Schema\Column')
+            ->disableOriginalConstructor()
+            ->getMock();
+
         $this->newColumnMock
             ->expects($this->any())
             ->method('getName')

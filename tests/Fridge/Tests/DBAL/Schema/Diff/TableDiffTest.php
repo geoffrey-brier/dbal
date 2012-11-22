@@ -31,13 +31,19 @@ class TableDiffTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->oldTableMock = $this->getMock('Fridge\DBAL\Schema\Table', array(), array(), '', false);
+        $this->oldTableMock = $this->getMockBuilder('Fridge\DBAL\Schema\Table')
+            ->disableOriginalConstructor()
+            ->getMock();
+
         $this->oldTableMock
             ->expects($this->any())
             ->method('getName')
             ->will($this->returnValue('foo'));
 
-        $this->newTableMock = $this->getMock('Fridge\DBAL\Schema\Table', array(), array(), '', false);
+        $this->newTableMock = $this->getMockBuilder('Fridge\DBAL\Schema\Table')
+            ->disableOriginalConstructor()
+            ->getMock();
+
         $this->newTableMock
             ->expects($this->any())
             ->method('getName')
@@ -55,8 +61,13 @@ class TableDiffTest extends \PHPUnit_Framework_TestCase
 
     public function testInitialState()
     {
-        $createdPrimaryKey = $this->getMock('Fridge\DBAL\Schema\PrimaryKey', array(), array(), '', false);
-        $droppedPrimaryKey = $this->getMock('Fridge\DBAL\Schema\PrimaryKey', array(), array(), '', false);
+        $createdPrimaryKey = $this->getMockBuilder('Fridge\DBAL\Schema\PrimaryKey')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $droppedPrimaryKey = $this->getMockBuilder('Fridge\DBAL\Schema\PrimaryKey')
+            ->disableOriginalConstructor()
+            ->getMock();
 
         $tableDiff = new TableDiff(
             $this->oldTableMock,
@@ -105,7 +116,10 @@ class TableDiffTest extends \PHPUnit_Framework_TestCase
 
     public function testDifferenceWithNameDifference()
     {
-        $this->newTableMock = $this->getMock('Fridge\DBAL\Schema\Table', array(), array(), '', false);
+        $this->newTableMock = $this->getMockBuilder('Fridge\DBAL\Schema\Table')
+            ->disableOriginalConstructor()
+            ->getMock();
+
         $this->newTableMock
             ->expects($this->any())
             ->method('getName')
@@ -120,7 +134,10 @@ class TableDiffTest extends \PHPUnit_Framework_TestCase
 
     public function testDifferenceWithoutNameDifferenceOnly()
     {
-        $this->newTableMock = $this->getMock('Fridge\DBAL\Schema\Table', array(), array(), '', false);
+        $this->newTableMock = $this->getMockBuilder('Fridge\DBAL\Schema\Table')
+            ->disableOriginalConstructor()
+            ->getMock();
+
         $this->newTableMock
             ->expects($this->any())
             ->method('getName')
@@ -154,7 +171,9 @@ class TableDiffTest extends \PHPUnit_Framework_TestCase
 
     public function testDifferenceWithCreatedPrimaryKey()
     {
-        $primaryKey = $this->getMock('Fridge\DBAL\Schema\PrimaryKey', array(), array(), '', false);
+        $primaryKey = $this->getMockBuilder('Fridge\DBAL\Schema\PrimaryKey')
+            ->disableOriginalConstructor()
+            ->getMock();
 
         $tableDiff = new TableDiff($this->oldTableMock, $this->newTableMock, array(), array(), array(), $primaryKey);
 
@@ -163,7 +182,9 @@ class TableDiffTest extends \PHPUnit_Framework_TestCase
 
     public function testDifferenceWithDroppedPrimaryKey()
     {
-        $primaryKey = $this->getMock('Fridge\DBAL\Schema\PrimaryKey', array(), array(), '', false);
+        $primaryKey = $this->getMockBuilder('Fridge\DBAL\Schema\PrimaryKey')
+            ->disableOriginalConstructor()
+            ->getMock();
 
         $tableDiff = new TableDiff(
             $this->oldTableMock,

@@ -28,7 +28,9 @@ class AbstractAssetTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->asset = $this->getMockForAbstractClass('Fridge\DBAL\Schema\AbstractAsset', array('foo'));
+        $this->asset = $this->getMockBuilder('Fridge\DBAL\Schema\AbstractAsset')
+            ->setConstructorArgs(array('foo'))
+            ->getMockForAbstractClass();
     }
 
     /**
@@ -57,9 +59,12 @@ class AbstractAssetTest extends \PHPUnit_Framework_TestCase
      */
     public function testNameWithInvalidValue()
     {
-        $asset = $this->getMockForAbstractClass('Fridge\DBAL\Schema\AbstractAsset', array('foo'), 'FooBar');
+        $assetMock = $this->getMockBuilder('Fridge\DBAL\Schema\AbstractAsset')
+            ->setMockClassName('FooBar')
+            ->setConstructorArgs(array('foo'))
+            ->getMockForAbstractClass();
 
-        $asset->setName(true);
+        $assetMock->setName(true);
     }
 
     public function testGenerateIdentifier()

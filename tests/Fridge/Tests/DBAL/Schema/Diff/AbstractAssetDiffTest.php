@@ -30,8 +30,13 @@ class AbstractAssetDiffTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->oldAsset = $this->getMockForAbstractClass('Fridge\DBAL\Schema\AbstractAsset', array('foo'));
-        $this->newAsset = $this->getMockForAbstractClass('Fridge\DBAL\Schema\AbstractAsset', array('bar'));
+        $this->oldAsset = $this->getMockBuilder('Fridge\DBAL\Schema\AbstractAsset')
+            ->setConstructorArgs(array('foo'))
+            ->getMockForAbstractClass();
+
+        $this->newAsset = $this->getMockBuilder('Fridge\DBAL\Schema\AbstractAsset')
+            ->setConstructorArgs(array('bar'))
+            ->getMockForAbstractClass();
     }
 
     /**
@@ -45,10 +50,9 @@ class AbstractAssetDiffTest extends \PHPUnit_Framework_TestCase
 
     public function testInitialState()
     {
-        $assetDiff = $this->getMockForAbstractClass(
-            'Fridge\DBAL\Schema\Diff\AbstractAssetDiff',
-            array($this->oldAsset, $this->newAsset)
-        );
+        $assetDiff = $this->getMockBuilder('Fridge\DBAL\Schema\Diff\AbstractAssetDiff')
+            ->setConstructorArgs(array($this->oldAsset, $this->newAsset))
+            ->getMockForAbstractClass();
 
         $this->assertSame($this->oldAsset, $assetDiff->getOldAsset());
         $this->assertSame($this->newAsset, $assetDiff->getNewAsset());
@@ -56,13 +60,17 @@ class AbstractAssetDiffTest extends \PHPUnit_Framework_TestCase
 
     public function testDifferenceWithoutDifference()
     {
-        $oldAsset = $this->getMockForAbstractClass('Fridge\DBAL\Schema\AbstractAsset', array('foo'));
-        $newAsset = $this->getMockForAbstractClass('Fridge\DBAL\Schema\AbstractAsset', array('foo'));
+        $oldAsset = $this->getMockBuilder('Fridge\DBAL\Schema\AbstractAsset')
+            ->setConstructorArgs(array('foo'))
+            ->getMockForAbstractClass();
 
-        $assetDiff = $this->getMockForAbstractClass(
-            'Fridge\DBAL\Schema\Diff\AbstractAssetDiff',
-            array($oldAsset, $newAsset)
-        );
+        $newAsset = $this->getMockBuilder('Fridge\DBAL\Schema\AbstractAsset')
+            ->setConstructorArgs(array('foo'))
+            ->getMockForAbstractClass();
+
+        $assetDiff = $this->getMockBuilder('Fridge\DBAL\Schema\Diff\AbstractAssetDiff')
+            ->setConstructorArgs(array($oldAsset, $newAsset))
+            ->getMockForAbstractClass();
 
         $this->assertFalse($assetDiff->hasDifference());
         $this->assertFalse($assetDiff->hasNameDifference());
@@ -71,13 +79,13 @@ class AbstractAssetDiffTest extends \PHPUnit_Framework_TestCase
 
     public function testDifferenceWithDifference()
     {
-        $assetDiff = $this->getMockForAbstractClass(
-            'Fridge\DBAL\Schema\Diff\AbstractAssetDiff',
-            array($this->oldAsset, $this->newAsset)
-        );
+        $assetDiff = $this->getMockBuilder('Fridge\DBAL\Schema\Diff\AbstractAssetDiff')
+            ->setConstructorArgs(array($this->oldAsset, $this->newAsset))
+            ->getMockForAbstractClass();
 
         $this->assertTrue($assetDiff->hasDifference());
         $this->assertTrue($assetDiff->hasNameDifference());
         $this->assertTrue($assetDiff->hasNameDifferenceOnly());
     }
 }
+

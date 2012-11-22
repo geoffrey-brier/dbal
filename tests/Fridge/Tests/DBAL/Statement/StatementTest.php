@@ -102,7 +102,7 @@ class StatementTest extends \PHPUnit_Framework_TestCase
 
     public function testBindValueWithoutType()
     {
-        $platformMock = $this->getMock('\Fridge\DBAL\Platform\PlatformInterface', array(), array(), '', false);
+        $platformMock = $this->getMock('\Fridge\DBAL\Platform\PlatformInterface');
 
         $this->connectionMock
             ->expects($this->once())
@@ -124,7 +124,7 @@ class StatementTest extends \PHPUnit_Framework_TestCase
 
     public function testBindValueWithPDOType()
     {
-        $platformMock = $this->getMock('\Fridge\DBAL\Platform\PlatformInterface', array(), array(), '', false);
+        $platformMock = $this->getMock('\Fridge\DBAL\Platform\PlatformInterface');
 
         $this->connectionMock
             ->expects($this->once())
@@ -146,7 +146,7 @@ class StatementTest extends \PHPUnit_Framework_TestCase
 
     public function testBindValueWithFridgeType()
     {
-        $platformMock = $this->getMock('\Fridge\DBAL\Platform\PlatformInterface', array(), array(), '', false);
+        $platformMock = $this->getMock('\Fridge\DBAL\Platform\PlatformInterface');
 
         $this->connectionMock
             ->expects($this->once())

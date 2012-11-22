@@ -31,16 +31,18 @@ class SchemaManagerTest extends \PHPUnit_Framework_TestCase
     {
         $this->platformMock = $this->getMock('Fridge\DBAL\Platform\PlatformInterface');
 
-        $connection = $this->getMock('Fridge\DBAL\Connection\ConnectionInterface', array(), array(), '', false);
+        $connection = $this->getMockBuilder('Fridge\DBAL\Connection\ConnectionInterface')
+            ->disableOriginalConstructor()
+            ->getMock();
+
         $connection
             ->expects($this->any())
             ->method('getPlatform')
             ->will($this->returnValue($this->platformMock));
 
-        $this->schemaManager = $this->getMockForAbstractClass(
-            'Fridge\DBAL\SchemaManager\AbstractSchemaManager',
-            array($connection)
-        );
+        $this->schemaManager = $this->getMockBuilder('Fridge\DBAL\SchemaManager\AbstractSchemaManager')
+            ->setConstructorArgs(array($connection))
+            ->getMockForAbstractClass();
     }
 
     /**

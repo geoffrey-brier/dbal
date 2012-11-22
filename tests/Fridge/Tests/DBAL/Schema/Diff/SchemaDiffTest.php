@@ -28,13 +28,19 @@ class SchemaDiffTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->oldSchemaMock = $this->getMock('Fridge\DBAL\Schema\Schema', array(), array(), '', false);
+        $this->oldSchemaMock = $this->getMockBuilder('Fridge\DBAL\Schema\Schema')
+            ->disableOriginalConstructor()
+            ->getMock();
+
         $this->oldSchemaMock
             ->expects($this->any())
             ->method('getName')
             ->will($this->returnValue('foo'));
 
-        $this->newSchemaMock = $this->getMock('Fridge\DBAL\Schema\Schema', array(), array(), '', false);
+        $this->newSchemaMock = $this->getMockBuilder('Fridge\DBAL\Schema\Schema')
+            ->disableOriginalConstructor()
+            ->getMock();
+
         $this->newSchemaMock
             ->expects($this->any())
             ->method('getName')
@@ -86,7 +92,10 @@ class SchemaDiffTest extends \PHPUnit_Framework_TestCase
 
     public function testDifferenceWithNameDifference()
     {
-        $this->newSchemaMock = $this->getMock('Fridge\DBAL\Schema\Schema', array(), array(), '', false);
+        $this->newSchemaMock = $this->getMockBuilder('Fridge\DBAL\Schema\Schema')
+            ->disableOriginalConstructor()
+            ->getMock();
+
         $this->newSchemaMock
             ->expects($this->any())
             ->method('getName')
@@ -101,7 +110,10 @@ class SchemaDiffTest extends \PHPUnit_Framework_TestCase
 
     public function testDifferenceWithoutNameDifferenceOnly()
     {
-        $this->newSchemaMock = $this->getMock('Fridge\DBAL\Schema\Schema', array(), array(), '', false);
+        $this->newSchemaMock = $this->getMockBuilder('Fridge\DBAL\Schema\Schema')
+            ->disableOriginalConstructor()
+            ->getMock();
+
         $this->newSchemaMock
             ->expects($this->any())
             ->method('getName')

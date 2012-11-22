@@ -38,19 +38,28 @@ class SchemaTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->tableMock = $this->getMock('Fridge\DBAL\Schema\Table', array(), array(), '', false);
+        $this->tableMock = $this->getMockBuilder('Fridge\DBAL\Schema\Table')
+            ->disableOriginalConstructor()
+            ->getMock();
+
         $this->tableMock
             ->expects($this->any())
             ->method('getName')
             ->will($this->returnValue('foo'));
 
-        $this->sequenceMock = $this->getMock('Fridge\DBAL\Schema\Sequence', array(), array(), '', false);
+        $this->sequenceMock = $this->getMockBuilder('Fridge\DBAL\Schema\Sequence')
+            ->disableOriginalConstructor()
+            ->getMock();
+
         $this->sequenceMock
             ->expects($this->any())
             ->method('getName')
             ->will($this->returnValue('foo'));
 
-        $this->viewMock = $this->getMock('Fridge\DBAL\Schema\View', array(), array(), '', false);
+        $this->viewMock = $this->getMockBuilder('Fridge\DBAL\Schema\View')
+            ->disableOriginalConstructor()
+            ->getMock();
+
         $this->viewMock
             ->expects($this->any())
             ->method('getName')
@@ -191,7 +200,10 @@ class SchemaTest extends \PHPUnit_Framework_TestCase
 
     public function testSetTablesDropPreviousTables()
     {
-        $tableMock = $this->getMock('Fridge\DBAL\Schema\Table', array(), array(), '', false);
+        $tableMock = $this->getMockBuilder('Fridge\DBAL\Schema\Table')
+            ->disableOriginalConstructor()
+            ->getMock();
+
         $tableMock
             ->expects($this->any())
             ->method('getName')
@@ -253,7 +265,10 @@ class SchemaTest extends \PHPUnit_Framework_TestCase
      */
     public function testRenameTableWithInvalidNewName()
     {
-        $tableMock = $this->getMock('Fridge\DBAL\Schema\Table', array(), array(), '', false);
+        $tableMock = $this->getMockBuilder('Fridge\DBAL\Schema\Table')
+            ->disableOriginalConstructor()
+            ->getMock();
+
         $tableMock
             ->expects($this->any())
             ->method('getName')
@@ -295,7 +310,10 @@ class SchemaTest extends \PHPUnit_Framework_TestCase
 
     public function testSetSequencesDropPreviousSequences()
     {
-        $sequenceMock = $this->getMock('Fridge\DBAL\Schema\Sequence', array(), array(), '', false);
+        $sequenceMock = $this->getMockBuilder('Fridge\DBAL\Schema\Sequence')
+            ->disableOriginalConstructor()
+            ->getMock();
+
         $sequenceMock
             ->expects($this->any())
             ->method('getName')
@@ -357,7 +375,10 @@ class SchemaTest extends \PHPUnit_Framework_TestCase
      */
     public function testRenameSequenceWithInvalidNewName()
     {
-        $sequenceMock = $this->getMock('Fridge\DBAL\Schema\Sequence', array(), array(), '', false);
+        $sequenceMock = $this->getMockBuilder('Fridge\DBAL\Schema\Sequence')
+            ->disableOriginalConstructor()
+            ->getMock();
+
         $sequenceMock
             ->expects($this->any())
             ->method('getName')
@@ -397,7 +418,10 @@ class SchemaTest extends \PHPUnit_Framework_TestCase
 
     public function testSetViewsDropPreviousViews()
     {
-        $viewMock = $this->getMock('Fridge\DBAL\Schema\View', array(), array(), '', false);
+        $viewMock = $this->getMockBuilder('Fridge\DBAL\Schema\View')
+            ->disableOriginalConstructor()
+            ->getMock();
+
         $viewMock
             ->expects($this->any())
             ->method('getName')
@@ -459,7 +483,10 @@ class SchemaTest extends \PHPUnit_Framework_TestCase
      */
     public function testRenameViewWithInvalidNewName()
     {
-        $viewMock = $this->getMock('Fridge\DBAL\Schema\View', array(), array(), '', false);
+        $viewMock = $this->getMockBuilder('Fridge\DBAL\Schema\View')
+            ->disableOriginalConstructor()
+            ->getMock();
+
         $viewMock
             ->expects($this->any())
             ->method('getName')

@@ -585,9 +585,12 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
      */
     public function testCreateConstraintSQLQueriesWithInvalidConstraint()
     {
-        $check = $this->getMock('Fridge\DBAL\Schema\ConstraintInterface', array(), array(), 'foo', false);
+        $constraintMock = $this->getMockBuilder('Fridge\DBAL\Schema\ConstraintInterface')
+            ->setMockClassName('foo')
+            ->disableOriginalConstructor()
+            ->getMock();
 
-        $this->platform->getCreateConstraintSQLQueries($check, 'foo');
+        $this->platform->getCreateConstraintSQLQueries($constraintMock, 'foo');
     }
 
     public function testCreatePrimaryKeySQLQueries()
@@ -775,9 +778,11 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
      */
     public function testDropConstraintSQLQueriesWithInvalidConstraint()
     {
-        $check = $this->getMock('Fridge\DBAL\Schema\ConstraintInterface', array(), array(), '', false);
+        $constraintMock = $this->getMockBuilder('Fridge\DBAL\Schema\ConstraintInterface')
+            ->disableOriginalConstructor()
+            ->getMock();
 
-        $this->platform->getDropConstraintSQLQueries($check, 'foo');
+        $this->platform->getDropConstraintSQLQueries($constraintMock, 'foo');
     }
 
     public function testDropPrimaryKeySQLQueries()

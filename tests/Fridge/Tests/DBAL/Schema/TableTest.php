@@ -47,53 +47,75 @@ class TableTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->columnMock = $columnMock = $this->getMock('Fridge\DBAL\Schema\Column', array(), array(), '', false);
+        $this->columnMock = $columnMock = $this->getMockBuilder('Fridge\DBAL\Schema\Column')
+            ->disableOriginalConstructor()
+            ->getMock();
+
         $this->columnMock
             ->expects($this->any())
             ->method('getName')
             ->will($this->returnValue('foo'));
 
-        $this->primaryKeyMock = $this->getMock('Fridge\DBAL\Schema\PrimaryKey', array(), array(), '', false);
+        $this->primaryKeyMock = $this->getMockBuilder('Fridge\DBAL\Schema\PrimaryKey')
+            ->disableOriginalConstructor()
+            ->getMock();
+
         $this->primaryKeyMock
             ->expects($this->any())
             ->method('getColumnNames')
             ->will($this->returnValue(array('foo')));
 
-        $this->foreignKeyMock = $this->getMock('Fridge\DBAL\Schema\ForeignKey', array(), array(), '', false);
+        $this->foreignKeyMock = $this->getMockBuilder('Fridge\DBAL\Schema\ForeignKey')
+            ->disableOriginalConstructor()
+            ->getMock();
+
         $this->foreignKeyMock
             ->expects($this->any())
             ->method('getName')
             ->will($this->returnValue('foo'));
+
         $this->foreignKeyMock
             ->expects($this->any())
             ->method('getLocalColumnNames')
             ->will($this->returnValue(array('foo')));
+
         $this->foreignKeyMock
             ->expects($this->any())
             ->method('getForeignTableName')
             ->will($this->returnValue('bar'));
+
         $this->foreignKeyMock
             ->expects($this->any())
             ->method('getForeignColumnNames')
             ->will($this->returnValue(array('bar')));
 
-        $this->indexMock = $this->getMock('Fridge\DBAL\Schema\Index', array(), array(), '', false);
+        $this->indexMock = $this->getMockBuilder('Fridge\DBAL\Schema\Index')
+            ->disableOriginalConstructor()
+            ->getMock();
+
         $this->indexMock
             ->expects($this->any())
             ->method('getName')
             ->will($this->returnValue('foo'));
+
         $this->indexMock
             ->expects($this->any())
             ->method('getColumnNames')
             ->will($this->returnValue(array('foo')));
 
-        $this->schemaMock = $this->getMock('Fridge\DBAL\Schema\Schema', array(), array(), '', false);
+        $this->schemaMock = $this->getMockBuilder('Fridge\DBAL\Schema\Schema')
+            ->disableOriginalConstructor()
+            ->getMock();
 
-        $this->checkMock = $this->getMock('Fridge\DBAL\Schema\Check', array(), array(), '', false);
+        $this->checkMock = $this->getMockBuilder('Fridge\DBAL\Schema\Check')
+            ->disableOriginalConstructor()
+            ->getMock();
+
         $this->checkMock
             ->expects($this->any())
             ->method('getName')
             ->will($this->returnValue('foo'));
+
         $this->checkMock
             ->expects($this->any())
             ->method('getDefinition')
@@ -185,7 +207,10 @@ class TableTest extends \PHPUnit_Framework_TestCase
 
     public function testSetColumnsDropPreviousColumns()
     {
-        $columnMock = $columnMock = $this->getMock('Fridge\DBAL\Schema\Column', array(), array(), '', false);
+        $columnMock = $columnMock = $this->getMockBuilder('Fridge\DBAL\Schema\Column')
+            ->disableOriginalConstructor()
+            ->getMock();
+
         $columnMock
             ->expects($this->any())
             ->method('getName')
@@ -343,7 +368,10 @@ class TableTest extends \PHPUnit_Framework_TestCase
 
     public function testForeignKeyWithSchema()
     {
-        $foreignTableMock = $this->getMock('Fridge\DBAL\Schema\Table', array(), array('bar', array()));
+        $foreignTableMock = $this->getMockBuilder('Fridge\DBAL\Schema\Table')
+            ->setConstructorArgs(array('bar', array()))
+            ->getMock();
+
         $foreignTableMock
             ->expects($this->atLeastOnce())
             ->method('hasColumn')
@@ -416,17 +444,24 @@ class TableTest extends \PHPUnit_Framework_TestCase
 
     public function testSetForeignKeysDropPreviousForeignKeys()
     {
-        $columnMock = $this->getMock('Fridge\DBAL\Schema\Column', array(), array(), '', false);
+        $columnMock = $this->getMockBuilder('Fridge\DBAL\Schema\Column')
+            ->disableOriginalConstructor()
+            ->getMock();
+
         $columnMock
             ->expects($this->any())
             ->method('getName')
             ->will($this->returnValue('bar'));
 
-        $foreignKeyMock = $this->getMock('Fridge\DBAL\Schema\ForeignKey', array(), array(), '', false);
+        $foreignKeyMock = $this->getMockBuilder('Fridge\DBAL\Schema\ForeignKey')
+            ->disableOriginalConstructor()
+            ->getMock();
+
         $foreignKeyMock
             ->expects($this->any())
             ->method('getName')
             ->will($this->returnValue('bar'));
+
         $foreignKeyMock
             ->expects($this->any())
             ->method('getLocalColumnNames')
@@ -488,7 +523,10 @@ class TableTest extends \PHPUnit_Framework_TestCase
      */
     public function testAddForeignKeyWithInvalidForeignColumn()
     {
-        $foreignTableMock = $this->getMock('Fridge\DBAL\Schema\Table', array(), array('bar', array()));
+        $foreignTableMock = $this->getMockBuilder('Fridge\DBAL\Schema\Table')
+            ->setConstructorArgs(array('bar', array()))
+            ->getMock();
+
         $foreignTableMock
             ->expects($this->atLeastOnce())
             ->method('hasColumn')
@@ -508,7 +546,10 @@ class TableTest extends \PHPUnit_Framework_TestCase
 
     public function testRenameForeignKey()
     {
-        $foreignKeyMock = $this->getMock('Fridge\DBAL\Schema\ForeignKey', array(), array(), '', false);
+        $foreignKeyMock = $this->getMockBuilder('Fridge\DBAL\Schema\ForeignKey')
+            ->disableOriginalConstructor()
+            ->getMock();
+
         $foreignKeyMock
             ->expects($this->any())
             ->method('getName')
@@ -539,17 +580,24 @@ class TableTest extends \PHPUnit_Framework_TestCase
      */
     public function testRenameForeignKeyWithInvalidNewName()
     {
-        $columnMock = $this->getMock('Fridge\DBAL\Schema\Column', array(), array(), '', false);
+        $columnMock = $this->getMockBuilder('Fridge\DBAL\Schema\Column')
+            ->disableOriginalConstructor()
+            ->getMock();
+
         $columnMock
             ->expects($this->any())
             ->method('getName')
             ->will($this->returnValue('bar'));
 
-        $foreignKeyMock = $this->getMock('Fridge\DBAL\Schema\ForeignKey', array(), array(), '', false);
+        $foreignKeyMock = $this->getMockBuilder('Fridge\DBAL\Schema\ForeignKey')
+            ->disableOriginalConstructor()
+            ->getMock();
+
         $foreignKeyMock
             ->expects($this->any())
             ->method('getName')
             ->will($this->returnValue('bar'));
+
         $foreignKeyMock
             ->expects($this->any())
             ->method('getLocalColumnNames')
@@ -605,11 +653,15 @@ class TableTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($this->table->hasIndex('bar'));
         $this->assertSame($this->indexMock, $this->table->getIndex('foo'));
 
-        $indexMock = $this->getMock('Fridge\DBAL\Schema\Index', array(), array(), '', false);
+        $indexMock = $this->getMockBuilder('Fridge\DBAL\Schema\Index')
+            ->disableOriginalConstructor()
+            ->getMock();
+
         $indexMock
             ->expects($this->any())
             ->method('getName')
             ->will($this->returnValue('bar'));
+
         $indexMock
             ->expects($this->any())
             ->method('getColumnNames')
@@ -671,15 +723,20 @@ class TableTest extends \PHPUnit_Framework_TestCase
 
     public function testAddIndexDontAddIndexDueToBetterIndex()
     {
-        $indexMock = $this->getMock('Fridge\DBAL\Schema\Index', array(), array(), '', false, false);
+        $indexMock = $this->getMockBuilder('Fridge\DBAL\Schema\Index')
+            ->disableOriginalConstructor()
+            ->getMock();
+
         $indexMock
             ->expects($this->any())
             ->method('getName')
             ->will($this->returnValue('bar'));
+
         $indexMock
             ->expects($this->any())
             ->method('getColumnNames')
             ->will($this->returnValue(array('foo')));
+
         $indexMock
             ->expects($this->any())
             ->method('isBetterThan')
@@ -696,15 +753,20 @@ class TableTest extends \PHPUnit_Framework_TestCase
 
     public function testAddIndexDropUselessIndex()
     {
-        $indexMock = $this->getMock('Fridge\DBAL\Schema\Index', array(), array(), '', false, false);
+        $indexMock = $this->getMockBuilder('Fridge\DBAL\Schema\Index')
+            ->disableOriginalConstructor()
+            ->getMock();
+
         $indexMock
             ->expects($this->any())
             ->method('getName')
             ->will($this->returnValue('bar'));
+
         $indexMock
             ->expects($this->any())
             ->method('getColumnNames')
             ->will($this->returnValue(array('foo')));
+
         $indexMock
             ->expects($this->any())
             ->method('isBetterThan')
@@ -745,11 +807,15 @@ class TableTest extends \PHPUnit_Framework_TestCase
      */
     public function testRenameIndexWithInvalidNewName()
     {
-        $indexMock = $this->getMock('Fridge\DBAL\Schema\Index', array(), array(), '', false, false);
+        $indexMock = $this->getMockBuilder('Fridge\DBAL\Schema\Index')
+            ->disableOriginalConstructor()
+            ->getMock();
+
         $indexMock
             ->expects($this->any())
             ->method('getName')
             ->will($this->returnValue('bar'));
+
         $indexMock
             ->expects($this->any())
             ->method('getColumnNames')
@@ -835,11 +901,15 @@ class TableTest extends \PHPUnit_Framework_TestCase
      */
     public function testRenameCheckWithInvalidNewName()
     {
-        $checkMock = $this->getMock('Fridge\DBAL\Schema\Check', array(), array(), '', false, false);
+        $checkMock = $this->getMockBuilder('Fridge\DBAL\Schema\Check')
+            ->disableOriginalConstructor()
+            ->getMock();
+
         $checkMock
             ->expects($this->any())
             ->method('getName')
             ->will($this->returnValue('bar'));
+
         $checkMock
             ->expects($this->any())
             ->method('getDefinition')

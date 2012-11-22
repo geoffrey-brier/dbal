@@ -44,7 +44,10 @@ class UnsupportedIndexPlatformTest extends \PHPUnit_Framework_TestCase
      */
     public function testCreateIndexSQLQueriesWithUniqueIndex()
     {
-        $indexMock = $this->getMock('Fridge\DBAL\Schema\Index', array(), array(), '', false);
+        $indexMock = $this->getMockBuilder('Fridge\DBAL\Schema\Index')
+            ->disableOriginalConstructor()
+            ->getMock();
+
         $indexMock
             ->expects($this->any())
             ->method('isUnique')
@@ -58,7 +61,9 @@ class UnsupportedIndexPlatformTest extends \PHPUnit_Framework_TestCase
      */
     public function testCreateIndexSQLQueriesWithNonUniqueIndex()
     {
-        $indexMock = $this->getMock('Fridge\DBAL\Schema\Index', array(), array(), '', false);
+        $indexMock = $this->getMockBuilder('Fridge\DBAL\Schema\Index')
+            ->disableOriginalConstructor()
+            ->getMock();
 
         $this->platform->getCreateIndexSQLQueries($indexMock, 'foo');
     }
@@ -68,7 +73,9 @@ class UnsupportedIndexPlatformTest extends \PHPUnit_Framework_TestCase
      */
     public function testDropIndexSQLQueries()
     {
-        $indexMock = $this->getMock('Fridge\DBAL\Schema\Index', array(), array(), '', false);
+        $indexMock = $this->getMockBuilder('Fridge\DBAL\Schema\Index')
+            ->disableOriginalConstructor()
+            ->getMock();
 
         $this->platform->getDropIndexSQLQueries($indexMock, 'foo');
     }
@@ -78,7 +85,10 @@ class UnsupportedIndexPlatformTest extends \PHPUnit_Framework_TestCase
      */
     public function testCreateConstraintSQLQueriesWithUniqueIndex()
     {
-        $indexMock = $this->getMock('Fridge\DBAL\Schema\Index', array(), array(), '', false);
+        $indexMock = $this->getMockBuilder('Fridge\DBAL\Schema\Index')
+            ->disableOriginalConstructor()
+            ->getMock();
+
         $indexMock
             ->expects($this->any())
             ->method('isUnique')
@@ -92,7 +102,9 @@ class UnsupportedIndexPlatformTest extends \PHPUnit_Framework_TestCase
      */
     public function testCreateConstraintSQLQueriesWithNonUniqueIndex()
     {
-        $indexMock = $this->getMock('Fridge\DBAL\Schema\Index', array(), array(), '', false);
+        $indexMock = $this->getMockBuilder('Fridge\DBAL\Schema\Index')
+            ->disableOriginalConstructor()
+            ->getMock();
 
         $this->platform->getCreateConstraintSQLQueries($indexMock, 'foo');
     }
@@ -102,7 +114,9 @@ class UnsupportedIndexPlatformTest extends \PHPUnit_Framework_TestCase
      */
     public function testDropConstraintSQLQueriesWithIndex()
     {
-        $indexMock = $this->getMock('Fridge\DBAL\Schema\Index', array(), array(), '', false);
+        $indexMock = $this->getMockBuilder('Fridge\DBAL\Schema\Index')
+            ->disableOriginalConstructor()
+            ->getMock();
 
         $this->platform->getDropConstraintSQLQueries($indexMock, 'foo');
     }
