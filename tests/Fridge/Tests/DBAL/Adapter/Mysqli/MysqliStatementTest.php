@@ -85,7 +85,7 @@ class MysqliStatementTest extends \PHPUnit_Framework_TestCase
     {
         $this->statement = new Mysqli\MysqliStatement(self::$fixture->getQuery(), $this->mysqli);
 
-        $this->assertInstanceOf('\mysqli_stmt', $this->statement->getBase());
+        $this->assertInstanceOf('\mysqli_stmt', $this->statement->getMysqli());
     }
 
     /**

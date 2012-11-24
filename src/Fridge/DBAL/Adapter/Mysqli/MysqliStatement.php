@@ -36,7 +36,7 @@ class MysqliStatement implements StatementInterface, IteratorAggregate
     );
 
     /** @var \mysqli_stmt */
-    protected $base;
+    protected $mysqli;
 
     /** @var \Fridge\DBAL\Adapter\Mysqli\StatementRewriter */
     protected $statementRewriter;
@@ -69,9 +69,9 @@ class MysqliStatement implements StatementInterface, IteratorAggregate
     {
         $this->statementRewriter = new StatementRewriter($statement);
 
-        $this->base = $connection->prepare($this->statementRewriter->getRewritedStatement());
+        $this->mysqli = $connection->prepare($this->statementRewriter->getRewritedStatement());
 
-        if ($this->base === false) {
+        if ($this->mysqli === false) {
             throw new MysqliException($connection->error, $connection->errno);
         }
 
@@ -87,9 +87,9 @@ class MysqliStatement implements StatementInterface, IteratorAggregate
      *
      * @return \mysqli_stmt The mysqli low-level statement.
      */
-    public function getBase()
+    public function getMysqli()
     {
-        return $this->base;
+        return $this->mysqli;
     }
 
     /**
@@ -150,11 +150,11 @@ class MysqliStatement implements StatementInterface, IteratorAggregate
             $this->bindParameters();
         }
 
-        if ($this->base->execute() === false) {
-            throw new MysqliException($this->base->error, $this->base->errno);
+        if ($this->mysqli->execute() === false) {
+            throw new MysqliException($this->mysqli->error, $this->mysqli->errno);
         }
 
-        $this->base->store_result();
+        $this->mysqli->store_result();
 
         if (empty($this->resultFields)) {
             $this->bindResultFields();
@@ -173,10 +173,10 @@ class MysqliStatement implements StatementInterface, IteratorAggregate
     public function rowCount()
     {
         if (!empty($this->resultFields)) {
-            return $this->base->num_rows;
+            return $this->mysqli->num_rows;
         }
 
-        return $this->base->affected_rows;
+        return $this->mysqli->affected_rows;
     }
 
     /**
@@ -198,10 +198,10 @@ class MysqliStatement implements StatementInterface, IteratorAggregate
      */
     public function fetch($fetchMode = PDO::FETCH_BOTH)
     {
-        $fetchResult = $this->base->fetch();
+        $fetchResult = $this->mysqli->fetch();
 
         if ($fetchResult === false) {
-            throw new MysqliException($this->base->error, $this->base->errno);
+            throw new MysqliException($this->mysqli->error, $this->mysqli->errno);
         }
 
         if ($fetchResult === null) {
@@ -268,7 +268,7 @@ class MysqliStatement implements StatementInterface, IteratorAggregate
      */
     public function columnCount()
     {
-        return $this->base->field_count;
+        return $this->mysqli->field_count;
     }
 
     /**
@@ -276,7 +276,7 @@ class MysqliStatement implements StatementInterface, IteratorAggregate
      */
     public function closeCursor()
     {
-        $this->base->free_result();
+        $this->mysqli->free_result();
 
         return true;
     }
@@ -286,7 +286,7 @@ class MysqliStatement implements StatementInterface, IteratorAggregate
      */
     public function errorCode()
     {
-        return $this->base->errno;
+        return $this->mysqli->errno;
     }
 
     /**
@@ -294,7 +294,7 @@ class MysqliStatement implements StatementInterface, IteratorAggregate
      */
     public function errorInfo()
     {
-        return array($this->base->errno, $this->base->errno, $this->base->error);
+        return array($this->mysqli->errno, $this->mysqli->errno, $this->mysqli->error);
     }
 
     /**
@@ -346,7 +346,7 @@ class MysqliStatement implements StatementInterface, IteratorAggregate
             $bindedParameterReferences[$key] = &$parameter;
         }
 
-        call_user_func_array(array($this->base, 'bind_param'), $bindedParameterReferences);
+        call_user_func_array(array($this->mysqli, 'bind_param'), $bindedParameterReferences);
     }
 
     /**
@@ -354,7 +354,7 @@ class MysqliStatement implements StatementInterface, IteratorAggregate
      */
     protected function bindResultFields()
     {
-        $resultMetadata = $this->base->result_metadata();
+        $resultMetadata = $this->mysqli->result_metadata();
 
         if ($resultMetadata !== false) {
             $this->resultFields = array();
@@ -379,7 +379,7 @@ class MysqliStatement implements StatementInterface, IteratorAggregate
             $resultReferences[$key] = &$result;
         }
 
-        call_user_func_array(array($this->base, 'bind_result'), $resultReferences);
+        call_user_func_array(array($this->mysqli, 'bind_result'), $resultReferences);
 
         $this->result = $resultReferences;
     }
