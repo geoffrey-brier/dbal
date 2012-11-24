@@ -129,6 +129,9 @@ class MysqliStatement implements StatementInterface, IteratorAggregate
 
     /**
      * {@inheritdoc}
+     *
+     * To bind a value (by copy), the wapper will copy the value in the bindedValues property & then, bind the copied
+     * value as parameter (by reference).
      */
     public function bindValue($parameter, $value, $type = null)
     {
@@ -139,6 +142,9 @@ class MysqliStatement implements StatementInterface, IteratorAggregate
 
     /**
      * {@inheritdoc}
+     *
+     * To retrive the field name fetched, the wrapper will bind the result fields on the resultFields property and then,
+     * bind the result on the result property according to the binded result fields.
      */
     public function execute($parameters = array())
     {
