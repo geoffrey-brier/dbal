@@ -11,14 +11,14 @@
 
 namespace Fridge\Tests\DBAL;
 
-use Fridge\DBAL\Factory;
+use Fridge\DBAL\ConnectionFactory;
 
 /**
- * Factory test.
+ * Connection Factory test.
  *
  * @author GeLo <geloen.eric@gmail.com>
  */
-class FactoryTest extends \PHPUnit_Framework_TestCase
+class ConnectionFactoryTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * Gets a list of valid drivers.
@@ -150,7 +150,7 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
             'mysqli',
         );
 
-        $this->assertSame($expected, Factory::getAvailableDrivers());
+        $this->assertSame($expected, ConnectionFactory::getAvailableDrivers());
     }
 
     /**
@@ -162,7 +162,7 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertInstanceOf(
             'Fridge\DBAL\Connection\ConnectionInterface',
-            Factory::getConnection(array('driver' => $driver))
+            ConnectionFactory::create(array('driver' => $driver))
         );
     }
 
@@ -175,7 +175,7 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
      */
     public function testConnectionWithInvalidDriver($driver)
     {
-        Factory::getConnection(array('driver' => $driver));
+        ConnectionFactory::create(array('driver' => $driver));
     }
 
     /**
@@ -187,7 +187,7 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertInstanceOf(
             'Fridge\DBAL\Connection\ConnectionInterface',
-            Factory::getConnection(array('driver_class' => $driverClass))
+            ConnectionFactory::create(array('driver_class' => $driverClass))
         );
     }
 
@@ -200,7 +200,7 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
      */
     public function testConnectionWithInvalidDriverClass($driverClass)
     {
-        Factory::getConnection(array('driver_class' => $driverClass));
+        ConnectionFactory::create(array('driver_class' => $driverClass));
     }
 
     /**
@@ -213,7 +213,7 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertInstanceOf(
             $driverClass,
-            Factory::getConnection(array('driver' => $driver, 'driver_class' => $driverClass))->getDriver()
+            ConnectionFactory::create(array('driver' => $driver, 'driver_class' => $driverClass))->getDriver()
         );
     }
 
@@ -222,7 +222,7 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
      */
     public function testConnectionWithoutDriverAndDriverClass()
     {
-        Factory::getConnection(array());
+        ConnectionFactory::create(array());
     }
 
     /**
@@ -235,7 +235,7 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertInstanceOf(
             $connectionClass,
-            Factory::getConnection(array('driver' => $driver, 'connection_class' => $connectionClass))
+            ConnectionFactory::create(array('driver' => $driver, 'connection_class' => $connectionClass))
         );
     }
 
@@ -251,7 +251,7 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertInstanceOf(
             $connectionClass,
-            Factory::getConnection(array('driver' => $driver, 'connection_class' => $connectionClass))
+            ConnectionFactory::create(array('driver' => $driver, 'connection_class' => $connectionClass))
         );
     }
 }

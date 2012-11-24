@@ -19,7 +19,7 @@ use Fridge\DBAL\Exception\FactoryException;
  *
  * @author GeLo <geloen.eric@gmail.com>
  */
-class Factory
+class ConnectionFactory
 {
     /** @const The Fridge DBAL version */
     const VERSION = '1.0.0-dev';
@@ -73,7 +73,7 @@ class Factory
      *
      * @return \Fridge\DBAL\Connection\ConnectionInterface The DBAL Connection.
      */
-    static public function getConnection(array $parameters, Configuration $configuration = null)
+    static public function create(array $parameters, Configuration $configuration = null)
     {
         if (isset($parameters['driver_class'])) {
             if (!in_array('Fridge\DBAL\Driver\DriverInterface', class_implements($parameters['driver_class']))) {

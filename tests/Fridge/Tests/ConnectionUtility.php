@@ -11,7 +11,7 @@
 
 namespace Fridge\Tests;
 
-use Fridge\DBAL\Factory;
+use Fridge\DBAL\ConnectionFactory;
 
 /**
  * Builds a connection according to the PHPUnit XML configuration.
@@ -54,7 +54,7 @@ class ConnectionUtility
             return null;
         }
 
-        return Factory::getConnection(PHPUnitUtility::getSettings($driver));
+        return ConnectionFactory::create(PHPUnitUtility::getSettings($driver));
     }
 
     /**
