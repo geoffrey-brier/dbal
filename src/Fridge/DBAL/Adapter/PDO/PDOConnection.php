@@ -20,7 +20,7 @@ use Fridge\DBAL\Adapter\ConnectionInterface;
  *
  * @author GeLo <geloen.eric@gmail.com>
  */
-class Connection extends PDO implements ConnectionInterface
+class PDOConnection extends PDO implements ConnectionInterface
 {
     /**
      * Creates a PDO connection.
@@ -35,6 +35,6 @@ class Connection extends PDO implements ConnectionInterface
         parent::__construct($dsn, $username, $password, $driverOptions);
 
         $this->setAttribute(self::ATTR_ERRMODE, self::ERRMODE_EXCEPTION);
-        $this->setAttribute(self::ATTR_STATEMENT_CLASS, array('Fridge\DBAL\Adapter\PDO\Statement', array()));
+        $this->setAttribute(self::ATTR_STATEMENT_CLASS, array('Fridge\DBAL\Adapter\PDO\PDOStatement', array()));
     }
 }

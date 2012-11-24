@@ -11,7 +11,7 @@
 
 namespace Fridge\DBAL\Adapter\PDO;
 
-use \PDOStatement;
+use \PDOStatement as BaseStatement;
 
 use Fridge\DBAL\Adapter\StatementInterface;
 
@@ -20,7 +20,7 @@ use Fridge\DBAL\Adapter\StatementInterface;
  *
  * @author GeLo <geloen.eric@gmail.com>
  */
-class Statement extends PDOStatement implements StatementInterface
+class PDOStatement extends BaseStatement implements StatementInterface
 {
     /**
      * Disabeld constructor.

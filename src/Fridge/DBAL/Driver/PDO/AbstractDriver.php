@@ -11,7 +11,7 @@
 
 namespace Fridge\DBAL\Driver\PDO;
 
-use Fridge\DBAL\Adapter\PDO\Connection,
+use Fridge\DBAL\Adapter\PDO\PDOConnection,
     Fridge\DBAL\Driver\AbstractDriver as BaseDriver;
 
 /**
@@ -28,7 +28,7 @@ abstract class AbstractDriver extends BaseDriver
      */
     public function connect(array $parameters, $username = null, $password = null, array $driverOptions = array())
     {
-        return new Connection($this->generateDSN($parameters), $username, $password, $driverOptions);
+        return new PDOConnection($this->generateDSN($parameters), $username, $password, $driverOptions);
     }
 
     /**

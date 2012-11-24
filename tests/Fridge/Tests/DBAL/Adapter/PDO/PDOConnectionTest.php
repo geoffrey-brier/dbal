@@ -13,7 +13,7 @@ namespace Fridge\Tests\DBAL\Adapter\PDO;
 
 use \PDO;
 
-use Fridge\DBAL\Adapter\PDO\Connection,
+use Fridge\DBAL\Adapter\PDO\PDOConnection,
     Fridge\Tests\PHPUnitUtility,
     Fridge\Tests\Fixture\MySQLFixture;
 
@@ -22,7 +22,7 @@ use Fridge\DBAL\Adapter\PDO\Connection,
  *
  * @author GeLo <geloen.eric@gmail.com>
  */
-class ConnectionTest extends \PHPUnit_Framework_TestCase
+class PDOConnectionTest extends \PHPUnit_Framework_TestCase
 {
     /** @var \Fridge\Tests\Fixture\FixtureInterface */
     static protected $fixture;
@@ -74,7 +74,7 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
         $username = $setting['username'];
         $password = $setting['password'];
 
-        $this->connection = new Connection($dsn, $username, $password);
+        $this->connection = new PDOConnection($dsn, $username, $password);
     }
 
     /**
@@ -90,7 +90,7 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(PDO::ERRMODE_EXCEPTION, $this->connection->getAttribute(PDO::ATTR_ERRMODE));
 
         $this->assertSame(
-            array('Fridge\DBAL\Adapter\PDO\Statement', array()),
+            array('Fridge\DBAL\Adapter\PDO\PDOStatement', array()),
             $this->connection->getAttribute(PDO::ATTR_STATEMENT_CLASS)
         );
     }
