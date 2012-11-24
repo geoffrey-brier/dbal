@@ -51,9 +51,7 @@ class MysqliConnection implements ConnectionInterface
         $port = isset($parameters['post']) ? $parameters['port'] : ini_get('mysqli.default_port');
         $unixSocket = isset($parameters['unix_socket']) ? $parameters['unix_socket'] : ini_get('mysqli.default_socket');
 
-        $errorReporting = error_reporting(~E_ALL);
-        $this->mysqli = new mysqli($host, $username, $password, $database, $port, $unixSocket);
-        error_reporting($errorReporting);
+        $this->mysqli = @new mysqli($host, $username, $password, $database, $port, $unixSocket);
 
         if ($this->mysqli->connect_error !== null) {
             throw new MysqliException($this->mysqli->connect_error, $this->mysqli->connect_errno);
