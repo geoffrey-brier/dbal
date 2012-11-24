@@ -25,7 +25,7 @@ use Fridge\DBAL\Adapter\ConnectionInterface,
 class MysqliConnection implements ConnectionInterface
 {
     /** @var \mysqli */
-    protected $base;
+    protected $mysqli;
 
     /** @var boolean */
     protected $inTransaction;
@@ -52,15 +52,15 @@ class MysqliConnection implements ConnectionInterface
         $unixSocket = isset($parameters['unix_socket']) ? $parameters['unix_socket'] : ini_get('mysqli.default_socket');
 
         $errorReporting = error_reporting(~E_ALL);
-        $this->base = new mysqli($host, $username, $password, $database, $port, $unixSocket);
+        $this->mysqli = new mysqli($host, $username, $password, $database, $port, $unixSocket);
         error_reporting($errorReporting);
 
-        if ($this->base->connect_error !== null) {
-            throw new MysqliException($this->base->connect_error, $this->base->connect_errno);
+        if ($this->mysqli->connect_error !== null) {
+            throw new MysqliException($this->mysqli->connect_error, $this->mysqli->connect_errno);
         }
 
-        if (isset($parameters['charset']) && ($this->base->set_charset($parameters['charset']) === false)) {
-            throw new MysqliException($this->base->error, $this->base->errno);
+        if (isset($parameters['charset']) && ($this->mysqli->set_charset($parameters['charset']) === false)) {
+            throw new MysqliException($this->mysqli->error, $this->mysqli->errno);
         }
 
         $this->inTransaction = false;
@@ -71,9 +71,9 @@ class MysqliConnection implements ConnectionInterface
      *
      * @return \mysqli The mysqli low-level connection.
      */
-    public function getBase()
+    public function getMysqli()
     {
-        return $this->base;
+        return $this->mysqli;
     }
 
     /**
@@ -81,7 +81,7 @@ class MysqliConnection implements ConnectionInterface
      */
     public function beginTransaction()
     {
-        $result = $this->base->query('START TRANSACTION');
+        $result = $this->mysqli->query('START TRANSACTION');
 
         if ($result) {
             $this->inTransaction = true;
@@ -97,7 +97,7 @@ class MysqliConnection implements ConnectionInterface
     {
         $this->inTransaction = false;
 
-        return $this->base->commit();
+        return $this->mysqli->commit();
     }
 
     /**
@@ -107,7 +107,7 @@ class MysqliConnection implements ConnectionInterface
     {
         $this->inTransaction = false;
 
-        return $this->base->rollback();
+        return $this->mysqli->rollback();
     }
 
     /**
@@ -123,7 +123,7 @@ class MysqliConnection implements ConnectionInterface
      */
     public function quote($string, $type = PDO::PARAM_STR)
     {
-        return '\''.$this->base->real_escape_string($string).'\'';
+        return '\''.$this->mysqli->real_escape_string($string).'\'';
     }
 
     /**
@@ -144,7 +144,7 @@ class MysqliConnection implements ConnectionInterface
      */
     public function prepare($statement)
     {
-        return new MysqliStatement($statement, $this->base);
+        return new MysqliStatement($statement, $this->mysqli);
     }
 
     /**
@@ -152,13 +152,13 @@ class MysqliConnection implements ConnectionInterface
      */
     public function exec($statement)
     {
-        $result = $this->base->query($statement);
+        $result = $this->mysqli->query($statement);
 
         if ($result === false) {
-            throw new MysqliException($this->base->error, $this->base->errno);
+            throw new MysqliException($this->mysqli->error, $this->mysqli->errno);
         }
 
-        return $this->base->affected_rows;
+        return $this->mysqli->affected_rows;
     }
 
     /**
@@ -166,7 +166,7 @@ class MysqliConnection implements ConnectionInterface
      */
     public function lastInsertId($name = null)
     {
-        return $this->base->insert_id;
+        return $this->mysqli->insert_id;
     }
 
     /**
@@ -174,7 +174,7 @@ class MysqliConnection implements ConnectionInterface
      */
     public function errorCode()
     {
-        return $this->base->errno;
+        return $this->mysqli->errno;
     }
 
     /**
@@ -182,6 +182,6 @@ class MysqliConnection implements ConnectionInterface
      */
     public function errorInfo()
     {
-        return array($this->base->errno, $this->base->errno, $this->base->error);
+        return array($this->mysqli->errno, $this->mysqli->errno, $this->mysqli->error);
     }
 }

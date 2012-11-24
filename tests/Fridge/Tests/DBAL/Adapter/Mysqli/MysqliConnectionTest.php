@@ -84,7 +84,7 @@ class MysqliConnectionTest extends \PHPUnit_Framework_TestCase
 
         $this->connection = new MysqliConnection(array(), $settings['username'], $settings['password']);
 
-        $this->assertInstanceOf('\mysqli', $this->connection->getBase());
+        $this->assertInstanceOf('\mysqli', $this->connection->getMysqli());
     }
 
     public function testConnectionWithHost()
@@ -97,7 +97,7 @@ class MysqliConnectionTest extends \PHPUnit_Framework_TestCase
             $settings['password']
         );
 
-        $this->assertInstanceOf('\mysqli', $this->connection->getBase());
+        $this->assertInstanceOf('\mysqli', $this->connection->getMysqli());
     }
 
     public function testConnectionWithDatabase()
@@ -110,7 +110,7 @@ class MysqliConnectionTest extends \PHPUnit_Framework_TestCase
             $settings['password']
         );
 
-        $this->assertInstanceOf('\mysqli', $this->connection->getBase());
+        $this->assertInstanceOf('\mysqli', $this->connection->getMysqli());
     }
 
     public function testConnectionWithPort()
@@ -123,7 +123,7 @@ class MysqliConnectionTest extends \PHPUnit_Framework_TestCase
             $settings['password']
         );
 
-        $this->assertInstanceOf('\mysqli', $this->connection->getBase());
+        $this->assertInstanceOf('\mysqli', $this->connection->getMysqli());
     }
 
     public function testConnectionWithUnixSocket()
@@ -136,7 +136,7 @@ class MysqliConnectionTest extends \PHPUnit_Framework_TestCase
             $settings['password']
         );
 
-        $this->assertInstanceOf('\mysqli', $this->connection->getBase());
+        $this->assertInstanceOf('\mysqli', $this->connection->getMysqli());
     }
 
     public function testConnectionWithValidCharset()
@@ -145,7 +145,7 @@ class MysqliConnectionTest extends \PHPUnit_Framework_TestCase
 
         $this->connection = new MysqliConnection(array('charset' => 'utf8'), $settings['username'], $settings['password']);
 
-        $this->assertInstanceOf('\mysqli', $this->connection->getBase());
+        $this->assertInstanceOf('\mysqli', $this->connection->getMysqli());
     }
 
     /**

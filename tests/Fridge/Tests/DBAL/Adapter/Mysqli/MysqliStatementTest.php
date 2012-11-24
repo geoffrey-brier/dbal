@@ -69,7 +69,7 @@ class MysqliStatementTest extends \PHPUnit_Framework_TestCase
         $settings = self::$fixture->getSettings();
         $connection = new Mysqli\MysqliConnection($settings, $settings['username'], $settings['password']);
 
-        $this->mysqli = $connection->getBase();
+        $this->mysqli = $connection->getMysqli();
     }
 
     /**
