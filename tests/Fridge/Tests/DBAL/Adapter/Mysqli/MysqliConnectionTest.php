@@ -13,7 +13,7 @@ namespace Fridge\Tests\DBAL\Adapter\Mysqli;
 
 use \Exception;
 
-use Fridge\DBAL\Adapter\Mysqli\Connection,
+use Fridge\DBAL\Adapter\Mysqli\MysqliConnection,
     Fridge\Tests\PHPUnitUtility,
     Fridge\Tests\Fixture\MySQLFixture;
 
@@ -22,7 +22,7 @@ use Fridge\DBAL\Adapter\Mysqli\Connection,
  *
  * @author GeLo <geloen.eric@gmail.com>
  */
-class ConnectionTest extends \PHPUnit_Framework_TestCase
+class MysqliConnectionTest extends \PHPUnit_Framework_TestCase
 {
     /** @var \Fridge\Tests\Fixture\FixtureInterface */
     static protected $fixture;
@@ -75,14 +75,14 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
     protected function setUpConnection()
     {
         $settings = self::$fixture->getSettings();
-        $this->connection = new Connection($settings, $settings['username'], $settings['password']);
+        $this->connection = new MysqliConnection($settings, $settings['username'], $settings['password']);
     }
 
     public function testConnectionWithUsernameAndPassword()
     {
         $settings = self::$fixture->getSettings();
 
-        $this->connection = new Connection(array(), $settings['username'], $settings['password']);
+        $this->connection = new MysqliConnection(array(), $settings['username'], $settings['password']);
 
         $this->assertInstanceOf('\mysqli', $this->connection->getBase());
     }
@@ -91,7 +91,7 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
     {
         $settings = self::$fixture->getSettings();
 
-        $this->connection = new Connection(
+        $this->connection = new MysqliConnection(
             array('host' => $settings['host']),
             $settings['username'],
             $settings['password']
@@ -104,7 +104,7 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
     {
         $settings = self::$fixture->getSettings();
 
-        $this->connection = new Connection(
+        $this->connection = new MysqliConnection(
             array('dbname' => $settings['dbname']),
             $settings['username'],
             $settings['password']
@@ -117,7 +117,7 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
     {
         $settings = self::$fixture->getSettings();
 
-        $this->connection = new Connection(
+        $this->connection = new MysqliConnection(
             array('port' => $settings['port']),
             $settings['username'],
             $settings['password']
@@ -130,7 +130,7 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
     {
         $settings = self::$fixture->getSettings();
 
-        $this->connection = new Connection(
+        $this->connection = new MysqliConnection(
             array('unix_socket' => ini_get('mysqli.default_socket')),
             $settings['username'],
             $settings['password']
@@ -143,7 +143,7 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
     {
         $settings = self::$fixture->getSettings();
 
-        $this->connection = new Connection(array('charset' => 'utf8'), $settings['username'], $settings['password']);
+        $this->connection = new MysqliConnection(array('charset' => 'utf8'), $settings['username'], $settings['password']);
 
         $this->assertInstanceOf('\mysqli', $this->connection->getBase());
     }
@@ -155,7 +155,7 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
     {
         $settings = self::$fixture->getSettings();
 
-        $this->connection = new Connection(array('charset' => 'foo'), $settings['username'], $settings['password']);
+        $this->connection = new MysqliConnection(array('charset' => 'foo'), $settings['username'], $settings['password']);
     }
 
     /**
@@ -163,7 +163,7 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
      */
     public function testConnectionWithInvalidParameters()
     {
-        $this->connection = new Connection(array(), 'foo', 'bar');
+        $this->connection = new MysqliConnection(array(), 'foo', 'bar');
     }
 
     public function testBeginTransaction()
@@ -206,7 +206,7 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
         $this->setUpConnection();
 
         $this->assertInstanceOf(
-            '\Fridge\DBAL\Adapter\Mysqli\Statement',
+            '\Fridge\DBAL\Adapter\Mysqli\MysqliStatement',
             $this->connection->query(self::$fixture->getQuery())
         );
     }
@@ -216,7 +216,7 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
         $this->setUpConnection();
 
         $this->assertInstanceOf(
-            '\Fridge\DBAL\Adapter\Mysqli\Statement',
+            '\Fridge\DBAL\Adapter\Mysqli\MysqliStatement',
             $this->connection->query(self::$fixture->getQuery())
         );
     }

@@ -22,7 +22,7 @@ use Fridge\DBAL\Adapter\ConnectionInterface,
  *
  * @author GeLo <geloen.eric@gmail.com>
  */
-class Connection implements ConnectionInterface
+class MysqliConnection implements ConnectionInterface
 {
     /** @var \mysqli */
     protected $base;
@@ -144,7 +144,7 @@ class Connection implements ConnectionInterface
      */
     public function prepare($statement)
     {
-        return new Statement($statement, $this->base);
+        return new MysqliStatement($statement, $this->base);
     }
 
     /**

@@ -24,7 +24,7 @@ use Fridge\DBAL\Adapter\StatementInterface,
  *
  * @author GeLo <geloen.eric@gmail.com>
  */
-class Statement implements StatementInterface, IteratorAggregate
+class MysqliStatement implements StatementInterface, IteratorAggregate
 {
     /** @var array */
     static protected $mappedTypes = array(

@@ -11,7 +11,7 @@
 
 namespace Fridge\DBAL\Driver;
 
-use Fridge\DBAL\Adapter\Mysqli\Connection,
+use Fridge\DBAL\Adapter\Mysqli\MysqliConnection,
     Fridge\DBAL\Connection\ConnectionInterface,
     Fridge\DBAL\Platform\MySQLPlatform,
     Fridge\DBAL\SchemaManager\MySQLSchemaManager;
@@ -28,7 +28,7 @@ class MysqliDriver extends AbstractDriver
      */
     public function connect(array $parameters, $username = null, $password = null, array $driverOptions = array())
     {
-        return new Connection($parameters, $username, $password);
+        return new MysqliConnection($parameters, $username, $password);
     }
 
     /**
