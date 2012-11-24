@@ -26,6 +26,9 @@ use Fridge\DBAL\Exception\Adapter\StatementRewriterException;
  */
 class StatementRewriter
 {
+    /** @var array */
+    protected $delimiters;
+
     /** @var string */
     protected $statement;
 
@@ -35,14 +38,37 @@ class StatementRewriter
     /**
      * Statement rewriter constructor.
      *
-     * @param string $statement The statement to rewrite.
+     * @param string $statement   The statement to rewrite.
+     * @param array  $delimitters The delimiters.
      */
-    public function __construct($statement)
+    public function __construct($statement, array $delimiters = array('\'', '"'))
     {
+        $this->setDelimiters($delimiters);
+
         $this->statement = $statement;
         $this->parameters = array();
 
         $this->rewrite();
+    }
+
+    /**
+     * Gets the delimiters.
+     *
+     * @return array The delimiters.
+     */
+    public function getDelimiters()
+    {
+        return $this->delimiters;
+    }
+
+    /**
+     * Sets the delimiters.
+     *
+     * @param array $delimiters The delimiters.
+     */
+    public function setDelimiters(array $delimiters)
+    {
+        $this->delimiters = $delimiters;
     }
 
     /**
@@ -93,34 +119,52 @@ class StatementRewriter
         // Current positional parameter.
         $positionalParameter = 1;
 
-        // Find each named placeholder position.
-        $placeholderPosition = 0;
-        while (($placeholderPosition = strpos($this->statement, ':', $placeholderPosition)) !== false) {
+        // TRUE if we are in a literal section else FALSE.
+        $literal = false;
 
-            // Determine placeholder length.
-            $placeholderLength = 1;
-            while (isset($this->statement[$placeholderPosition + $placeholderLength])
-                && $this->isValidPlaceholderCharacter($this->statement[$placeholderPosition + $placeholderLength])) {
-                $placeholderLength++;
+        // The statement length.
+        $statementLength = strlen($this->statement);
+
+        // Iterate each statement char.
+        for ($placeholderPosition = 0 ; $placeholderPosition < $statementLength ; $placeholderPosition++) {
+
+            // Switch the literal flag if the current statement char is a literal delimiter.
+            if (in_array($this->statement[$placeholderPosition], $this->delimiters)) {
+                $literal = !$literal;
             }
 
-            // Extract placeholder from the statement.
-            $placeholder = substr($this->statement, $placeholderPosition, $placeholderLength);
+            // Check if we are not in a literal section & the current statement char is a double colon.
+            if (!$literal && $this->statement[$placeholderPosition] === ':') {
 
-            // Initialize rewrites parameters.
-            if (!isset($this->parameters[$placeholder])) {
-                $this->parameters[$placeholder] = array();
+                // Determine placeholder length.
+                $placeholderLength = 1;
+                while (isset($this->statement[$placeholderPosition + $placeholderLength])
+                    && $this->isValidPlaceholderCharacter($this->statement[$placeholderPosition + $placeholderLength])) {
+                    $placeholderLength++;
+                }
+
+                // Extract placeholder from the statement.
+                $placeholder = substr($this->statement, $placeholderPosition, $placeholderLength);
+
+                // Initialize rewrites parameters.
+                if (!isset($this->parameters[$placeholder])) {
+                    $this->parameters[$placeholder] = array();
+                }
+
+                // Rewrites parameter.
+                $this->parameters[$placeholder][] = $positionalParameter;
+
+                // Rewrite statement.
+                $this->statement = substr($this->statement, 0, $placeholderPosition).
+                    '?'.
+                    substr($this->statement, $placeholderPosition + $placeholderLength);
+
+                // Decrement statement length.
+                $statementLength = $statementLength - $placeholderLength + 1;
+
+                // Increment position parameter.
+                $positionalParameter++;
             }
-
-            // Rewrites parameter.
-            $this->parameters[$placeholder][] = $positionalParameter;
-
-            // Rewrite statement.
-            $this->statement = substr($this->statement, 0, $placeholderPosition).
-                '?'.
-                substr($this->statement, $placeholderPosition + $placeholderLength);
-
-            $positionalParameter++;
         }
     }
 

@@ -31,6 +31,16 @@ class StatementRewriterTest extends \PHPUnit_Framework_TestCase
         unset($this->statementRewriter);
     }
 
+    public function testDelimiters()
+    {
+        $this->statementRewriter = new StatementRewriter('SELECT * FROM foo');
+
+        $this->assertSame(array('\'', '"'), $this->statementRewriter->getDelimiters());
+
+        $this->statementRewriter->setDelimiters(array('\'\''));
+        $this->assertSame(array('\'\''), $this->statementRewriter->getDelimiters());
+    }
+
     /**
      * @expectedException \Fridge\DBAL\Exception\Adapter\StatementRewriterException
      * @expectedExceptionMessage The parameter "foo" does not exist.
@@ -79,5 +89,43 @@ class StatementRewriterTest extends \PHPUnit_Framework_TestCase
 
         $this->assertSame(array(1, 3), $this->statementRewriter->getRewritedParameters(':foo'));
         $this->assertSame(array(2), $this->statementRewriter->getRewritedParameters(':bar'));
+    }
+
+    public function testRewriteWithPositionalStatement()
+    {
+        $this->statementRewriter = new StatementRewriter('SELECT * FROM foo WHERE foo = ?');
+
+        $this->assertSame('SELECT * FROM foo WHERE foo = ?', $this->statementRewriter->getRewritedStatement());
+        $this->assertSame(array(1), $this->statementRewriter->getRewritedParameters(1));
+    }
+
+    public function testRewriteWithSimpleQuoteLiteralDelimiter()
+    {
+        $this->statementRewriter = new StatementRewriter(
+            'SELECT * FROM foo WHERE foo = :foo AND bar = \':bar\' AND baz = :baz'
+        );
+
+        $this->assertSame(
+            'SELECT * FROM foo WHERE foo = ? AND bar = \':bar\' AND baz = ?',
+            $this->statementRewriter->getRewritedStatement()
+        );
+
+        $this->assertSame(array(1), $this->statementRewriter->getRewritedParameters(':foo'));
+        $this->assertSame(array(2), $this->statementRewriter->getRewritedParameters(':baz'));
+    }
+
+    public function testRewriteWithDoubleQuoteLiteralDelimiter()
+    {
+        $this->statementRewriter = new StatementRewriter(
+            'SELECT * FROM foo WHERE foo = :foo AND bar = ":bar" AND baz = :baz'
+        );
+
+        $this->assertSame(
+            'SELECT * FROM foo WHERE foo = ? AND bar = ":bar" AND baz = ?',
+            $this->statementRewriter->getRewritedStatement()
+        );
+
+        $this->assertSame(array(1), $this->statementRewriter->getRewritedParameters(':foo'));
+        $this->assertSame(array(2), $this->statementRewriter->getRewritedParameters(':baz'));
     }
 }
