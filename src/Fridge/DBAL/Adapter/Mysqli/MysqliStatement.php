@@ -17,6 +17,7 @@ use \ArrayIterator,
     \PDO;
 
 use Fridge\DBAL\Adapter\StatementInterface,
+    Fridge\DBAL\Adapter\StatementRewriter,
     Fridge\DBAL\Exception\Adapter\MysqliException;
 
 /**

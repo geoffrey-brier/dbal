@@ -9,12 +9,12 @@
  * file that was distributed with this source code.
  */
 
-namespace Fridge\Tests\DBAL\Adapter\Mysqli;
+namespace Fridge\Tests\DBAL\Adapter;
 
-use Fridge\DBAL\Adapter\Mysqli\StatementRewriter;
+use Fridge\DBAL\Adapter\StatementRewriter;
 
 /**
- * Mysqli statement rewriter adapter tests.
+ * Statement rewriter adapter tests.
  *
  * @author GeLo <geloen.eric@gmail.com>
  */
@@ -32,7 +32,7 @@ class StatementRewriterTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \Fridge\DBAL\Exception\Adapter\MysqliException
+     * @expectedException \Fridge\DBAL\Exception\Adapter\StatementRewriterException
      * @expectedExceptionMessage The parameter "foo" does not exist.
      */
     public function testRewriteWithoutParameter()

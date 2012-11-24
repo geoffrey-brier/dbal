@@ -29,16 +29,4 @@ class MysqliException extends AbstractAdapterException
     {
         return new static(sprintf('The mapped type "%s" does not exist.', $type));
     }
-
-    /**
-     * Gets the "PARAMETER DOES NOT EXIST" exception.
-     *
-     * @param string $parameter The parameter.
-     *
-     * @return \Fridge\DBAL\Exception\Adapter\MysqliException The "PARAMETER DOES NOT EXIST" exception.
-     */
-    static public function parameterDoesNotExist($parameter)
-    {
-        return new static(sprintf('The parameter "%s" does not exist.', $parameter));
-    }
 }

@@ -9,12 +9,12 @@
  * file that was distributed with this source code.
  */
 
-namespace Fridge\DBAL\Adapter\Mysqli;
+namespace Fridge\DBAL\Adapter;
 
-use Fridge\DBAL\Exception\Adapter\MysqliException;
+use Fridge\DBAL\Exception\Adapter\StatementRewriterException;
 
 /**
- * A mysqli statement rewriter allows to deal with named placeholder.
+ * A statement rewriter allows to deal with named placeholder.
  *
  * It rewrites named query to positional query and rewrites each named parameter
  * to his corresponding positional parameters.
@@ -71,7 +71,7 @@ class StatementRewriter
         }
 
         if (!isset($this->parameters[$parameter])) {
-            throw MysqliException::parameterDoesNotExist($parameter);
+            throw StatementRewriterException::parameterDoesNotExist($parameter);
         }
 
         return $this->parameters[$parameter];
