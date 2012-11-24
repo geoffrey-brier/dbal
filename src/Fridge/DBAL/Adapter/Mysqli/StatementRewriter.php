@@ -42,7 +42,7 @@ class StatementRewriter
         $this->statement = $statement;
         $this->parameters = array();
 
-        $this->rewriteStatement();
+        $this->rewrite();
     }
 
     /**
@@ -57,6 +57,8 @@ class StatementRewriter
 
     /**
      * Gets the rewrited positional statement parameters according to the named parameter.
+     *
+     * The metod returns an array because a named parameter can be used multiple times in the statement.
      *
      * @param string $parameter The named parameter.
      *
@@ -76,7 +78,7 @@ class StatementRewriter
     }
 
     /**
-     * Rewrite the a named statement & parameters to positional.
+     * Rewrite the named statement & parameters to positional.
      *
      * Example:
      *  - before:
@@ -84,9 +86,9 @@ class StatementRewriter
      *    - parameters: array()
      *  - after:
      *    - statement: SELECT * FROM foo WHERE bar = ?
-     *    - parameters: array(':bar' => 1)
+     *    - parameters: array(':bar' => array(1))
      */
-    protected function rewriteStatement()
+    protected function rewrite()
     {
         // Current positional parameter.
         $positionalParameter = 1;
