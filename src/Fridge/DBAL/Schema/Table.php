@@ -108,19 +108,19 @@ class Table extends AbstractAsset
     /**
      * Creates & adds a new column.
      *
-     * @param string                                 $name    The column name.
-     * @param string|\Fridge\DBAL\Type\TypeInterface $type    The column type.
-     * @param array                                  $options The column options.
+     * @param string                                 $name       The column name.
+     * @param string|\Fridge\DBAL\Type\TypeInterface $type       The column type.
+     * @param array                                  $properties The column properties.
      *
      * @return \Fridge\DBAL\Schema\Column The new column.
      */
-    public function createColumn($name, $type, array $options = array())
+    public function createColumn($name, $type, array $properties = array())
     {
         if (is_string($type)) {
             $type = Type::getType($type);
         }
 
-        $column = new Column($name, $type, $options);
+        $column = new Column($name, $type, $properties);
         $this->addColumn($column);
 
         return $column;

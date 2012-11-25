@@ -91,16 +91,16 @@ class SchemaException extends Exception
     }
 
     /**
-     * Gets the "INVALID COLUMN OPTION" exception.
+     * Gets the "INVALID COLUMN PROPERTY" exception.
      *
-     * @param string $column The column concerned by the exception.
-     * @param string $option The column option.
+     * @param string $column   The column concerned by the exception.
+     * @param string $property The column property.
      *
-     * @return \Fridge\DBAL\Exception\SchemaException The "INVALID COLUMN OPTION" exception.
+     * @return \Fridge\DBAL\Exception\SchemaException The "INVALID COLUMN PROPERTY" exception.
      */
-    static public function invalidColumnOption($column, $option)
+    static public function invalidColumnProperty($column, $property)
     {
-        return new static(sprintf('The option "%s" of the column "%s" does not exist.', $option, $column));
+        return new static(sprintf('The property "%s" of the column "%s" does not exist.', $property, $column));
     }
 
     /**

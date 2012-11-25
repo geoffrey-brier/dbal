@@ -235,9 +235,9 @@ class ColumnTest extends \PHPUnit_Framework_TestCase
         $this->column->setComment(true);
     }
 
-    public function testOptionsWithValidOptions()
+    public function testPropertiesWithValidProperties()
     {
-        $options = array(
+        $properties = array(
             'name'           => 'foo',
             'type'           => Type::getType(Type::BOOLEAN),
             'length'         => 100,
@@ -251,7 +251,7 @@ class ColumnTest extends \PHPUnit_Framework_TestCase
             'comment'        => 'foo',
         );
 
-        $this->column->setOptions($options);
+        $this->column->setProperties($properties);
 
         $this->assertSame('foo', $this->column->getName());
         $this->assertSame(Type::BOOLEAN, $this->column->getType()->getName());
@@ -268,16 +268,16 @@ class ColumnTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @expectedException Fridge\DBAL\Exception\SchemaException
-     * @expectedExceptionMessage The option "foo" of the column "foo" does not exist.
+     * @expectedExceptionMessage The property "foo" of the column "foo" does not exist.
      */
-    public function testOptionsWithInvalidOptions()
+    public function testPropertiesWithInvalidProperties()
     {
-        $this->column->setOptions(array('foo' => 'bar'));
+        $this->column->setProperties(array('foo' => 'bar'));
     }
 
     public function testToArray()
     {
-        $options = array(
+        $properties = array(
             'name'           => 'foo',
             'type'           => Type::getType(Type::BOOLEAN),
             'length'         => 100,
@@ -291,10 +291,10 @@ class ColumnTest extends \PHPUnit_Framework_TestCase
             'comment'        => 'foo',
         );
 
-        $expected = $options;
+        $expected = $properties;
         $expected['type'] = $expected['type']->getName();
 
-        $this->column->setOptions($options);
+        $this->column->setProperties($properties);
         $this->assertSame($expected, $this->column->toArray());
     }
 }

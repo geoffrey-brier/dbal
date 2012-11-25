@@ -65,18 +65,18 @@ class Column extends AbstractAsset
      *  - auto_increment (boolean)
      *  - comment (string)
      *
-     * @param string                          $name    The column name.
-     * @param \Fridge\DBAL\Type\TypeInterface $type    The column type.
-     * @param array                           $options Associative array that describes property => value pairs.
+     * @param string                          $name       The column name.
+     * @param \Fridge\DBAL\Type\TypeInterface $type       The column type.
+     * @param array                           $properties Associative array that describes property => value pairs.
      */
-    public function __construct($name, TypeInterface $type, array $options = array())
+    public function __construct($name, TypeInterface $type, array $properties = array())
     {
         parent::__construct($name);
 
         $this->notNull = false;
 
         $this->setType($type);
-        $this->setOptions($options);
+        $this->setProperties($properties);
     }
 
     /**
@@ -314,15 +314,15 @@ class Column extends AbstractAsset
     /**
      * Sets the column options.
      *
-     * @param array $options Associative array that describes property => value pairs.
+     * @param array $properties Associative array that describes property => value pairs.
      */
-    public function setOptions(array $options)
+    public function setProperties(array $properties)
     {
-        foreach ($options as $option => $value) {
-            $method = sprintf('set%s', str_replace('_', '', $option));
+        foreach ($properties as $property => $value) {
+            $method = sprintf('set%s', str_replace('_', '', $property));
 
             if (!method_exists($this, $method)) {
-                 throw SchemaException::invalidColumnOption($this->getName(), $option);
+                 throw SchemaException::invalidColumnProperty($this->getName(), $property);
             }
 
             $this->$method($value);
