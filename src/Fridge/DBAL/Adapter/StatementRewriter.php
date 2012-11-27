@@ -88,6 +88,8 @@ class StatementRewriter
      *
      * @param string $parameter The named parameter.
      *
+     * @throws \Fridge\DBAL\Exception\Adapter\StatementRewriterException If the parameter does not exist.
+     *
      * @return array The rewrited positional parameters.
      */
     public function getRewritedParameters($parameter)

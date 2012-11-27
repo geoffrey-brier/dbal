@@ -43,6 +43,9 @@ class MysqliConnection implements ConnectionInterface
      * @param array  $parameters The database parameters.
      * @param string $username   The database username.
      * @param string $password   The database password.
+     *
+     * @throws \Fridge\DBAL\Exception\Adapter\MysqliException If the connection can not be established or if the
+     *                                                        charset can not be setted.
      */
     public function __construct(array $parameters, $username, $password)
     {
@@ -147,6 +150,8 @@ class MysqliConnection implements ConnectionInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @throws \Fridge\DBAL\Exception\Adapter\MysqliException If the statement can not be executed.
      */
     public function exec($statement)
     {
