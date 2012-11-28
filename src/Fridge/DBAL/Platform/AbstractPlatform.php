@@ -83,6 +83,10 @@ abstract class AbstractPlatform implements PlatformInterface
             throw Exception\PlatformException::mappedTypeAlreadyExists($databaseType);
         }
 
+        if (!Type::hasType($fridgeType)) {
+            throw Exception\TypeException::typeDoesNotExist($fridgeType);
+        }
+
         $this->mappedTypes[$databaseType] = $fridgeType;
     }
 
@@ -93,6 +97,10 @@ abstract class AbstractPlatform implements PlatformInterface
     {
         if (!$this->hasMappedType($databaseType)) {
             throw Exception\PlatformException::mappedTypeDoesNotExist($databaseType);
+        }
+
+        if (!Type::hasType($fridgeType)) {
+            throw Exception\TypeException::typeDoesNotExist($fridgeType);
         }
 
         $this->mappedTypes[$databaseType] = $fridgeType;
@@ -157,6 +165,10 @@ abstract class AbstractPlatform implements PlatformInterface
     {
         if ($this->hasMandatoryType($type)) {
             throw Exception\PlatformException::mandatoryTypeAlreadyExists($type);
+        }
+
+        if (!Type::hasType($type)) {
+            throw Exception\TypeException::typeDoesNotExist($type);
         }
 
         $this->mandatoryTypes[] = $type;

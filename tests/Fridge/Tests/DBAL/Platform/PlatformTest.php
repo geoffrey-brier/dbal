@@ -67,7 +67,7 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
         $property = new \ReflectionProperty('Fridge\DBAL\Platform\AbstractPlatform', 'mappedTypes');
         $property->setAccessible(true);
 
-        $property->setValue($this->platform, array('foo' => 'bar'));
+        $property->setValue($this->platform, array('foo' => Type::INTEGER));
     }
 
     /**
@@ -78,7 +78,7 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
         $property = new \ReflectionProperty('Fridge\DBAL\Platform\AbstractPlatform', 'mandatoryTypes');
         $property->setAccessible(true);
 
-        $property->setValue($this->platform, array('foo'));
+        $property->setValue($this->platform, array(Type::INTEGER));
     }
 
     public function testInitialState()
@@ -99,7 +99,7 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
     {
         $this->initializeMappedTypes();
 
-        $this->assertSame('bar', $this->platform->getMappedType('foo'));
+        $this->assertSame(Type::INTEGER, $this->platform->getMappedType('foo'));
     }
 
     /**
@@ -125,7 +125,7 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
     {
         $this->initializeMappedTypes();
 
-        $this->platform->addMappedType('bar', 'foo');
+        $this->platform->addMappedType('bar', Type::INTEGER);
 
         $this->assertTrue($this->platform->hasMappedType('bar'));
     }
@@ -138,6 +138,14 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
     {
         $this->initializeMappedTypes();
 
+        $this->platform->addMappedType('foo', Type::INTEGER);
+    }
+
+    /**
+     * @expectedException Fridge\DBAL\Exception\TypeException
+     */
+    public function testAddMappedTypeWithInvalidType()
+    {
         $this->platform->addMappedType('foo', 'bar');
     }
 
@@ -145,9 +153,9 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
     {
         $this->initializeMappedTypes();
 
-        $this->platform->overrideMappedType('foo', 'foo');
+        $this->platform->overrideMappedType('foo', Type::SMALLINTEGER);
 
-        $this->assertSame('foo', $this->platform->getMappedType('foo'));
+        $this->assertSame(Type::SMALLINTEGER, $this->platform->getMappedType('foo'));
     }
 
     /**
@@ -157,7 +165,17 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
     {
         $this->initializeMappedTypes();
 
-        $this->platform->overrideMappedType('bar', 'foo');
+        $this->platform->overrideMappedType('bar', Type::INTEGER);
+    }
+
+    /**
+     * @expectedException Fridge\DBAL\Exception\TypeException
+     */
+    public function testOverrideMappedTypeWithInvalidType()
+    {
+        $this->initializeMappedTypes();
+
+        $this->platform->overrideMappedType('foo', 'bar');
     }
 
     public function testRemoveMappedTypeWithValidValue()
@@ -203,27 +221,35 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
     {
         $this->initializeMandatoryTypes();
 
-        $this->assertTrue($this->platform->hasMandatoryType('foo'));
-        $this->assertFalse($this->platform->hasMandatoryType('bar'));
+        $this->assertTrue($this->platform->hasMandatoryType(Type::INTEGER));
+        $this->assertFalse($this->platform->hasMandatoryType('foo'));
     }
 
     public function testAddMandatoryTypeWithValidValue()
     {
         $this->initializeMandatoryTypes();
 
-        $this->platform->addMandatoryType('bar');
+        $this->platform->addMandatoryType(Type::SMALLINTEGER);
 
-        $this->assertTrue($this->platform->hasMandatoryType('bar'));
+        $this->assertTrue($this->platform->hasMandatoryType(Type::SMALLINTEGER));
     }
 
     /**
      * @expectedException Fridge\DBAL\Exception\PlatformException
-     * @expectedExceptionMessage The mandatory type "foo" already exists.
+     * @expectedExceptionMessage The mandatory type "integer" already exists.
      */
     public function testAddMandatoryTypeWithInvalidValue()
     {
         $this->initializeMandatoryTypes();
 
+        $this->platform->addMandatoryType(Type::INTEGER);
+    }
+
+    /**
+     * @expectedException Fridge\DBAL\Exception\TypeException
+     */
+    public function testAddMandatoryTypeWithInvalidType()
+    {
         $this->platform->addMandatoryType('foo');
     }
 
@@ -231,20 +257,20 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
     {
         $this->initializeMandatoryTypes();
 
-        $this->platform->removeMandatoryType('foo');
+        $this->platform->removeMandatoryType(Type::INTEGER);
 
-        $this->assertFalse($this->platform->hasMandatoryType('foo'));
+        $this->assertFalse($this->platform->hasMandatoryType(Type::INTEGER));
     }
 
     /**
      * @expectedException \Fridge\DBAL\Exception\PlatformException
-     * @expectedExceptionMessage The mandatory type "bar" does not exist.
+     * @expectedExceptionMessage The mandatory type "foo" does not exist.
      */
     public function testRemoveMandatoryTypeWithInvalidValue()
     {
         $this->initializeMandatoryTypes();
 
-        $this->platform->removeMandatoryType('bar');
+        $this->platform->removeMandatoryType('foo');
     }
 
     public function testBigIntegerSQLDeclaration()
