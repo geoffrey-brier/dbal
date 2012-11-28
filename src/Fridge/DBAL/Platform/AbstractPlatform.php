@@ -72,6 +72,8 @@ abstract class AbstractPlatform implements PlatformInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @throws \Fridge\DBAL\Exception\PlatformException If te mapped type does not exist.
      */
     public function getMappedType($type)
     {
@@ -88,6 +90,9 @@ abstract class AbstractPlatform implements PlatformInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @throws \Fridge\DBAL\Exception\PlatformException If the mapped type already exists.
+     * @throws \Fridge\DBAL\Exception\TypeException     If the type does not exist.
      */
     public function addMappedType($databaseType, $fridgeType)
     {
@@ -104,6 +109,9 @@ abstract class AbstractPlatform implements PlatformInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @throws \Fridge\DBAL\Exception\PlatformException If the mapped type does not exist.
+     * @throws \Fridge\DBAL\Exception\TypeException     If the type does not exist.
      */
     public function overrideMappedType($databaseType, $fridgeType)
     {
@@ -120,6 +128,8 @@ abstract class AbstractPlatform implements PlatformInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @throws \Fridge\DBAL\Exception\PlatformException If the mapped type does not exist.
      */
     public function removeMappedType($type)
     {
@@ -152,6 +162,8 @@ abstract class AbstractPlatform implements PlatformInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @throws \Fridge\DBAL\Exception\TypeException If the type does not exist.
      */
     public function setFallbackMappedType($fallbackMappedType)
     {
@@ -172,6 +184,9 @@ abstract class AbstractPlatform implements PlatformInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @throws \Fridge\DBAL\Exception\PlatformException If the mandatory type already exists.
+     * @throws \Fridge\DBAL\Exception\TypeException     If the type does not exist.
      */
     public function addMandatoryType($type)
     {
@@ -188,6 +203,8 @@ abstract class AbstractPlatform implements PlatformInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @throws \Fridge\DBAL\Exception\PlatformException If the mandatory type does not exist.
      */
     public function removeMandatoryType($type)
     {
@@ -443,6 +460,8 @@ abstract class AbstractPlatform implements PlatformInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @throws \Fridge\DBAL\Exception\PlatformException If the platform does not support savepoint.
      */
     public function getCreateSavepointSQLQuery($savepoint)
     {
@@ -455,6 +474,8 @@ abstract class AbstractPlatform implements PlatformInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @throws \Fridge\DBAL\Exception\PlatformException If the platform does not support savepoint.
      */
     public function getReleaseSavepointSQLQuery($savepoint)
     {
@@ -467,6 +488,8 @@ abstract class AbstractPlatform implements PlatformInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @throws \Fridge\DBAL\Exception\PlatformException If the platform does not support savepoint.
      */
     public function getRollbackSavepointSQLQuery($savepoint)
     {
@@ -487,6 +510,8 @@ abstract class AbstractPlatform implements PlatformInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @throws \Fridge\DBAL\Exception\PlatformException If the platform does not allow to select current database name.
      */
     public function getSelectDatabaseSQLQuery()
     {
@@ -495,6 +520,8 @@ abstract class AbstractPlatform implements PlatformInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @throws \Fridge\DBAL\Exception\PlatformException If the platform does not allow to select databases names.
      */
     public function getSelectDatabasesSQLQuery()
     {
@@ -503,6 +530,8 @@ abstract class AbstractPlatform implements PlatformInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @throws \Fridge\DBAL\Exception\PlatformException If the platform does not allow to select sequences.
      */
     public function getSelectSequencesSQLQuery($database)
     {
@@ -511,6 +540,8 @@ abstract class AbstractPlatform implements PlatformInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @throws \Fridge\DBAL\Exception\PlatformException If the platform does not allow to select views.
      */
     public function getSelectViewsSQLQuery($database)
     {
@@ -519,6 +550,8 @@ abstract class AbstractPlatform implements PlatformInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @throws \Fridge\DBAL\Exception\PlatformException If the platform does not allow to select table names.
      */
     public function getSelectTableNamesSQLQuery($database)
     {
@@ -527,6 +560,8 @@ abstract class AbstractPlatform implements PlatformInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @throws \Fridge\DBAL\Exception\PlatformException If the platform does not allow to select table columns.
      */
     public function getSelectTableColumnsSQLQuery($table, $database)
     {
@@ -535,6 +570,8 @@ abstract class AbstractPlatform implements PlatformInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @throws \Fridge\DBAL\Exception\PlatformException If the platform does not allow to select table primary key.
      */
     public function getSelectTablePrimaryKeySQLQuery($table, $database)
     {
@@ -543,6 +580,8 @@ abstract class AbstractPlatform implements PlatformInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @throws \Fridge\DBAL\Exception\PlatformException If the platform does not allow to select table foreign keys.
      */
     public function getSelectTableForeignKeysSQLQuery($table, $database)
     {
@@ -551,6 +590,8 @@ abstract class AbstractPlatform implements PlatformInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @throws \Fridge\DBAL\Exception\PlatformException If the platform does not allow to select table indexes.
      */
     public function getSelectTableIndexesSQLQuery($table, $database)
     {
@@ -559,6 +600,8 @@ abstract class AbstractPlatform implements PlatformInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @throws \Fridge\DBAL\Exception\PlatformException If the platform does not allow to select table checks.
      */
     public function getSelectTableCheckSQLQuery($table, $database)
     {
@@ -575,6 +618,8 @@ abstract class AbstractPlatform implements PlatformInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @throws \Fridge\DBAL\Exception\PlatformException If the platform does not support sequence.
      */
     public function getCreateSequenceSQLQueries(Sequence $sequence)
     {
@@ -592,6 +637,8 @@ abstract class AbstractPlatform implements PlatformInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @throws \Fridge\DBAL\Exception\PlatformException If the platform does not support view.
      */
     public function getCreateViewSQLQueries(View $view)
     {
@@ -662,6 +709,8 @@ abstract class AbstractPlatform implements PlatformInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @throws \Fridge\DBAL\Exception\PlatformException If the platform does not support the constraint.
      */
     public function getCreateConstraintSQLQueries(ConstraintInterface $constraint, $table)
     {
@@ -702,6 +751,8 @@ abstract class AbstractPlatform implements PlatformInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @throws \Fridge\DBAL\Exception\PlatformException If the platform does not support index.
      */
     public function getCreateIndexSQLQueries(Index $index, $table)
     {
@@ -779,6 +830,8 @@ abstract class AbstractPlatform implements PlatformInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @throws \Fridge\DBAL\Exception\PlatformException If the platform does not support sequence.
      */
     public function getDropSequenceSQLQueries(Sequence $sequence)
     {
@@ -791,6 +844,8 @@ abstract class AbstractPlatform implements PlatformInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @throws \Fridge\DBAL\Exception\PlatformException If the platform does not support view.
      */
     public function getDropViewSQLQueries(View $view)
     {
@@ -819,6 +874,8 @@ abstract class AbstractPlatform implements PlatformInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @throws \Fridge\DBAL\Exception\PlatformException If the platform does not support the constraint.
      */
     public function getDropConstraintSQLQueries(ConstraintInterface $contraint, $table)
     {
@@ -843,6 +900,8 @@ abstract class AbstractPlatform implements PlatformInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @throws \Fridge\DBAL\Exception\PlatformException If the platform does not support primary key.
      */
     public function getDropPrimaryKeySQLQueries(PrimaryKey $primaryKey, $table)
     {
@@ -855,6 +914,8 @@ abstract class AbstractPlatform implements PlatformInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @throws \Fridge\DBAL\Exception\PlatformException If the platform does not support foreign key.
      */
     public function getDropForeignKeySQLQueries(ForeignKey $foreignKey, $table)
     {
@@ -867,6 +928,8 @@ abstract class AbstractPlatform implements PlatformInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @throws \Fridge\DBAL\Exception\PlatformException If the platform does not support index.
      */
     public function getDropIndexSQLQueries(Index $index, $table)
     {
@@ -883,6 +946,8 @@ abstract class AbstractPlatform implements PlatformInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @throws \Fridge\DBAL\Exception\PlatformException If the platform does not support check.
      */
     public function getDropCheckSQLQueries(Check $check, $table)
     {
@@ -940,6 +1005,9 @@ abstract class AbstractPlatform implements PlatformInterface
      * @param integer $length The varchar length.
      * @param boolean $fixed  TRUE if the varchar is fixed else FALSE.
      *
+     * @throws \Fridge\DBAL\Exception\PlatformException If the length is not a positive integer or if the fixed flag
+     *                                                  is not a boolean.
+     *
      * @return string The varchar SQL declaration snippet.
      */
     protected function getVarcharSQLDeclarationSnippet($length, $fixed)
@@ -963,6 +1031,8 @@ abstract class AbstractPlatform implements PlatformInterface
      * Gets the transaction isolation SQL declaration.
      *
      * @param string $isolation The transaction isolation.
+     *
+     * @throws \Fridge\DBAL\Exception\PlatformException If the isolation does not exist.
      *
      * @return string The transaction isolation SQL declaration.
      */
@@ -1035,6 +1105,8 @@ abstract class AbstractPlatform implements PlatformInterface
      *
      * @param \Fridge\DBAL\Schema\PrimaryKey $primaryKey The primary key.
      *
+     * @throws \Fridge\DBAL\Exception\PlatformException If the platform does not support primary key.
+     *
      * @return string The primary key SQL declaration.
      */
     protected function getPrimaryKeySQLDeclaration(PrimaryKey $primaryKey)
@@ -1050,6 +1122,8 @@ abstract class AbstractPlatform implements PlatformInterface
      * Gets the foreign key SQL declaration.
      *
      * @param \Fridge\DBAL\Schema\ForeignKey $foreignKey The foreign key.
+     *
+     * @throws \Fridge\DBAL\Exception\PlatformException If the platform does not support foreign key.
      *
      * @return string The foreign key SQL declaration.
      */
@@ -1073,6 +1147,8 @@ abstract class AbstractPlatform implements PlatformInterface
      *
      * @param \Fridge\DBAl\Schema\Index $index The index.
      *
+     * @throws \Fridge\DBAL\Exception\PlatformException If the platform does not support index.
+     *
      * @return string The index SQL declaration.
      */
     protected function getIndexSQLDeclaration(Index $index)
@@ -1092,6 +1168,8 @@ abstract class AbstractPlatform implements PlatformInterface
      * Gets the check constraint SQL declaration.
      *
      * @param \Fridge\DBAL\Schema\Check $check The check constraint.
+     *
+     * @throws \Fridge\DBAL\Exception\PlatformException If the platform does not support check.
      *
      * @return string The check constraint SQL declaration.
      */
