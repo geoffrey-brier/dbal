@@ -241,7 +241,7 @@ class MysqliStatement implements StatementInterface, IteratorAggregate
                 break;
 
             default:
-                throw new MysqliException(sprintf('The fetch mode "%s" is not supported.', $fetchMode));
+                throw MysqliException::fetchModeNotSupported($fetchMode);
                 break;
         }
     }

@@ -29,4 +29,16 @@ class MysqliException extends AbstractAdapterException
     {
         return new static(sprintf('The mapped type "%s" does not exist.', $type));
     }
+
+    /**
+     * Gets the "FETCH MODE NOT SUPPORTED" exception.
+     *
+     * @param string $fetchMode The fetch mode.
+     *
+     * @return \Fridge\DBAL\Exception\Adapter\MysqliException The "FETCH MODE NOT SUPPORTED" exception.
+     */
+    static public function fetchModeNotSupported($fetchMode)
+    {
+        return new static(sprintf('The fetch mode "%s" is not supported.', $fetchMode));
+    }
 }
