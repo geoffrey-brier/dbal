@@ -11,8 +11,7 @@
 
 namespace Fridge\DBAL\Platform;
 
-use Fridge\DBAL\Exception\PlatformException,
-    Fridge\DBAL\Schema,
+use Fridge\DBAL\Schema,
     Fridge\DBAL\Type\Type;
 
 /**
@@ -135,14 +134,6 @@ class MySQLPlatform extends AbstractPlatform
     /**
      * {@inheritdoc}
      */
-    public function getSelectSequencesSQLQuery($database)
-    {
-        throw PlatformException::methodNotSupported(__METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getSelectViewsSQLQuery($database)
     {
         return 'SELECT'.
@@ -252,14 +243,6 @@ class MySQLPlatform extends AbstractPlatform
                ' WHERE s.table_schema = '.$this->quote($database).
                ' AND s.table_name = '.$this->quote($table).
                ' ORDER BY s.index_name ASC, s.seq_in_index ASC';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getSelectTableCheckSQLQuery($table, $database)
-    {
-        throw PlatformException::methodNotSupported(__METHOD__);
     }
 
     /**
