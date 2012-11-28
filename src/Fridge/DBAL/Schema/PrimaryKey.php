@@ -66,6 +66,8 @@ class PrimaryKey extends AbstractAsset implements ConstraintInterface
      * Adds a column name to the primary key.
      *
      * @param string $columnName The column name to add.
+     *
+     * @throws \Fridge\DBAL\Exception\SchemaException If the column name is not a valid string.
      */
     public function addColumnName($columnName)
     {

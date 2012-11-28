@@ -50,6 +50,8 @@ class View extends AbstractAsset
      * Sets the SQL query.
      *
      * @param string $sql The SQL query.
+     *
+     * @throws \Fridge\DBAL\Exception\SchemaException If the sql is not a valid string.
      */
     public function setSQL($sql)
     {

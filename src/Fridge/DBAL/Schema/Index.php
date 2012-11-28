@@ -71,6 +71,8 @@ class Index extends AbstractAsset implements ConstraintInterface
      * Adds a column name to the index.
      *
      * @param string $columnName The column name to add.
+     *
+     * @throws \Fridge\DBAL\Exception\SchemaException If the column name is not a valid string.
      */
     public function addColumnName($columnName)
     {
@@ -95,6 +97,8 @@ class Index extends AbstractAsset implements ConstraintInterface
      * Sets the unique index flag.
      *
      * @param boolean $unique TRUE if the index is unique else FALSE.
+     *
+     * @throws \Fridge\DBAL\Exception\SchemaException If the unique flag is not a boolean.
      */
     public function setUnique($unique)
     {

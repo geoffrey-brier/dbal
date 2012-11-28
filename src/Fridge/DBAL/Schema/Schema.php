@@ -190,6 +190,8 @@ class Schema extends AbstractAsset
      *
      * @param string $name The table name.
      *
+     * @throws \Fridge\DBAL\Exception\SchemaException If the table does not exist.
+     *
      * @return \Fridge\DBAL\Schema\Table The table.
      */
     public function getTable($name)
@@ -205,6 +207,8 @@ class Schema extends AbstractAsset
      * Adds a table to the schema.
      *
      * @param \Fridge\DBAL\Schema\Table $table The table to add.
+     *
+     * @throws \Fridge\DBAL\Exception\SchemaException If the table already exists.
      */
     public function addTable(Table $table)
     {
@@ -224,6 +228,9 @@ class Schema extends AbstractAsset
      *
      * @param string $oldName The old table name.
      * @param string $newName The new table name.
+     *
+     * @throws \Fridge\DBAL\Exception\SchemaException If the old table does not exist or if the new table already
+     *                                                exists.
      */
     public function renameTable($oldName, $newName)
     {
@@ -245,6 +252,8 @@ class Schema extends AbstractAsset
      * Drops a table.
      *
      * @param string $name The table name.
+     *
+     * @throws \Fridge\DBAL\Exception\SchemaException If the table does not exist.
      */
     public function dropTable($name)
     {
@@ -326,6 +335,8 @@ class Schema extends AbstractAsset
      * @param string $name The sequence name.
      *
      * @return \Fridge\DBAL\Schema\Sequence The sequence.
+     *
+     * @throws \Fridge\DBAL\Exception\SchemaException If the sequence does not exist.
      */
     public function getSequence($name)
     {
@@ -340,6 +351,8 @@ class Schema extends AbstractAsset
      * Adds a sequence to the schema.
      *
      * @param Fridge\DBAL\Schema\Sequence $sequence The sequence to add.
+     *
+     * @throws \Fridge\DBAL\Exception\SchemaException If the sequence already exists.
      */
     public function addSequence(Sequence $sequence)
     {
@@ -355,6 +368,9 @@ class Schema extends AbstractAsset
      *
      * @param string $oldName The old sequence name.
      * @param string $newName The new sequence name.
+     *
+     * @throws \Fridge\DBAL\Exception\SchemaException If the old sequence does not exist or if the new sequence
+     *                                                already exists.
      */
     public function renameSequence($oldName, $newName)
     {
@@ -376,6 +392,8 @@ class Schema extends AbstractAsset
      * Drops a sequence.
      *
      * @param string $name The sequence name.
+     *
+     * @throws \Fridge\DBAL\Exception\SchemaException If the sequence does not exist.
      */
     public function dropSequence($name)
     {
@@ -456,6 +474,8 @@ class Schema extends AbstractAsset
      * @param string $name The view name.
      *
      * @return \Fridge\DBAL\Schema\View The view.
+     *
+     * @throws \Fridge\DBAL\Exception\SchemaException If the view does not exist.
      */
     public function getView($name)
     {
@@ -470,6 +490,8 @@ class Schema extends AbstractAsset
      * Adds a view to the schema.
      *
      * @param \Fridge\DBAL\Schema\View $view The view to add.
+     *
+     * @throws \Fridge\DBAL\Exception\SchemaException If the view already exists.
      */
     public function addView(View $view)
     {
@@ -485,6 +507,8 @@ class Schema extends AbstractAsset
      *
      * @param string $oldName The old view name.
      * @param string $newName The new view name.
+     *
+     * @throws \Fridge\DBAL\Exception\SchemaException If the old view does not exist or if the new view already exists.
      */
     public function renameView($oldName, $newName)
     {
@@ -506,6 +530,8 @@ class Schema extends AbstractAsset
      * Drops a view.
      *
      * @param string $name The view name.
+     *
+     * @throws \Fridge\DBAL\Exception\SchemaException If the view does not exist.
      */
     public function dropView($name)
     {

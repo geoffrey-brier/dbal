@@ -107,6 +107,8 @@ class ForeignKey extends AbstractAsset implements ConstraintInterface
      * Adds a local column name to the foreign key.
      *
      * @param string $localColumnName The local column name to add.
+     *
+     * @throws \Fridge\DBAL\Exception\SchemaException If the local column name is not a valid string.
      */
     public function addLocalColumnName($localColumnName)
     {
@@ -131,6 +133,8 @@ class ForeignKey extends AbstractAsset implements ConstraintInterface
      * Sets the foreign table name.
      *
      * @param string $foreignTableName The foreign table name.
+     *
+     * @throws \Fridge\DBAL\Exception\SchemaException If the foreign table name is not a valid string.
      */
     public function setForeignTableName($foreignTableName)
     {
@@ -167,6 +171,8 @@ class ForeignKey extends AbstractAsset implements ConstraintInterface
      * Adds a foreign column name to the foreign key.
      *
      * @param string $foreignColumnName The foreign column name to add.
+     *
+     * @throws \Fridge\DBAL\Exception\SchemaException If the foreign column name is not a valid string.
      */
     public function addForeignColumnName($foreignColumnName)
     {

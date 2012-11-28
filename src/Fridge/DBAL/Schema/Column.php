@@ -113,6 +113,8 @@ class Column extends AbstractAsset
      * Sets the column length.
      *
      * @param integer|null $length The column length.
+     *
+     * @throws \Fridge\DBAL\Exception\SchemaException If the length is not a positive integer.
      */
     public function setLength($length)
     {
@@ -137,6 +139,8 @@ class Column extends AbstractAsset
      * Sets the column precision.
      *
      * @param integer|null $precision The column precision.
+     *
+     * @throws \Fridge\DBAL\Exception\SchemaException If the precision is not a positive integer.
      */
     public function setPrecision($precision)
     {
@@ -161,6 +165,8 @@ class Column extends AbstractAsset
      * Sets the column scale.
      *
      * @param integer|null $scale The column scale.
+     *
+     * @throws \Fridge\DBAL\Exception\SchemaException If the scale is not a positive integer.
      */
     public function setScale($scale)
     {
@@ -185,6 +191,8 @@ class Column extends AbstractAsset
      * Sets the column unsigned flag.
      *
      * @param boolean|null $unsigned The column unsigned flag.
+     *
+     * @throws \Fridge\DBAL\Exception\SchemaException If the unsigned flag is not a boolean.
      */
     public function setUnsigned($unsigned)
     {
@@ -209,6 +217,8 @@ class Column extends AbstractAsset
      * Sets the column fixed flag.
      *
      * @param boolean $fixed The column fixed flag.
+     *
+     * @throws \Fridge\DBAL\Exception\SchemaException If the fixed flag is not a boolean.
      */
     public function setFixed($fixed)
     {
@@ -233,6 +243,8 @@ class Column extends AbstractAsset
      * Sets the column not null flag.
      *
      * @param boolean|null $notNull The column not null flag.
+     *
+     * @throws \Fridge\DBAL\Exception\SchemaException If the not null flag is not a boolean.
      */
     public function setNotNull($notNull)
     {
@@ -277,6 +289,8 @@ class Column extends AbstractAsset
      * Sets the column auto increment flag.
      *
      * @param boolean|null $autoIncrement The column auto increment flag.
+     *
+     * @throws \Fridge\DBAL\Exception\SchemaException If the auto increment flag is not a boolean.
      */
     public function setAutoIncrement($autoIncrement)
     {
@@ -301,6 +315,8 @@ class Column extends AbstractAsset
      * Sets the column comment.
      *
      * @param string|null $comment The column comment.
+     *
+     * @throws \Fridge\DBAL\Exception\SchemaException If the comment is not a string.
      */
     public function setComment($comment)
     {
@@ -315,6 +331,8 @@ class Column extends AbstractAsset
      * Sets the column options.
      *
      * @param array $properties Associative array that describes property => value pairs.
+     *
+     * @throws \Fridge\DBAL\Exception\SchemaException If the property does not exist.
      */
     public function setProperties(array $properties)
     {

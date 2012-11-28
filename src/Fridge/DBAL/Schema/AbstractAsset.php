@@ -49,6 +49,8 @@ abstract class AbstractAsset
      * Sets the asset name.
      *
      * @param string $name The asset name.
+     *
+     * @throws \Fridge\DBAL\Exception\SchemaException If the name is not a valid string.
      */
     public function setName($name)
     {
