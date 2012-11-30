@@ -11,7 +11,18 @@
 
 namespace Fridge\Tests\DBAL\SchemaManager\SQLCollector;
 
-use Fridge\DBAL\Schema,
+use Fridge\DBAL\Schema\Check,
+    Fridge\DBAL\Schema\Column,
+    Fridge\DBAL\Schema\Diff\ColumnDiff,
+    Fridge\DBAL\Schema\Diff\SchemaDiff,
+    Fridge\DBAL\Schema\Diff\TableDiff,
+    Fridge\DBAL\Schema\ForeignKey,
+    Fridge\DBAL\Schema\Index,
+    Fridge\DBAL\Schema\PrimaryKey,
+    Fridge\DBAL\Schema\Sequence,
+    Fridge\DBAL\Schema\Schema,
+    Fridge\DBAL\Schema\Table,
+    Fridge\DBAL\Schema\View,
     Fridge\DBAL\SchemaManager\SQLCollector\AlterSchemaSQLCollector,
     Fridge\DBAL\Type\Type;
 
@@ -39,52 +50,52 @@ class AlterSchemaSQLCollectorTest extends \PHPUnit_Framework_TestCase
         $this->platformMock = $this->getMock('Fridge\DBAL\Platform\PlatformInterface');
         $this->sqlCollector = new AlterSchemaSQLCollector($this->platformMock);
 
-        $this->schemaDiff = new Schema\Diff\SchemaDiff(
-            new Schema\Schema('foo'),
-            new Schema\Schema('bar'),
+        $this->schemaDiff = new SchemaDiff(
+            new Schema('foo'),
+            new Schema('bar'),
             array(
-                new Schema\Table(
+                new Table(
                     'created',
-                    array(new Schema\Column('foo', Type::getType(Type::INTEGER))),
+                    array(new Column('foo', Type::getType(Type::INTEGER))),
                     null,
-                    array(new Schema\ForeignKey('foo', array('foo'), 'bar', array('bar')))
+                    array(new ForeignKey('foo', array('foo'), 'bar', array('bar')))
                 ),
             ),
             array(
-                new Schema\Diff\TableDiff(
-                    new Schema\Table('foo'),
-                    new Schema\Table('bar'),
-                    array(new Schema\Column('created', Type::getType(Type::INTEGER))),
+                new TableDiff(
+                    new Table('foo'),
+                    new Table('bar'),
+                    array(new Column('created', Type::getType(Type::INTEGER))),
                     array(
-                        new Schema\Diff\ColumnDiff(
-                            new Schema\Column('foo', Type::getType(Type::INTEGER)),
-                            new Schema\Column('altered', Type::getType(Type::INTEGER)),
+                        new ColumnDiff(
+                            new Column('foo', Type::getType(Type::INTEGER)),
+                            new Column('altered', Type::getType(Type::INTEGER)),
                             array()
                         ),
                     ),
-                    array(new Schema\Column('dropped', Type::getType(Type::INTEGER))),
-                    new Schema\PrimaryKey('created', array('bar')),
-                    new Schema\PrimaryKey('dropped', array('foo')),
-                    array(new Schema\ForeignKey('created', array('bar'), 'bar', array('bar'))),
-                    array(new Schema\ForeignKey('dropped', array('foo'), 'bar', array('bar'))),
-                    array(new Schema\Index('created', array('baz'))),
-                    array(new Schema\Index('dropped', array('baz'), true)),
-                    array(new Schema\Check('created', 'foo')),
-                    array(new Schema\Check('dropped', 'bar'))
+                    array(new Column('dropped', Type::getType(Type::INTEGER))),
+                    new PrimaryKey('created', array('bar')),
+                    new PrimaryKey('dropped', array('foo')),
+                    array(new ForeignKey('created', array('bar'), 'bar', array('bar'))),
+                    array(new ForeignKey('dropped', array('foo'), 'bar', array('bar'))),
+                    array(new Index('created', array('baz'))),
+                    array(new Index('dropped', array('baz'), true)),
+                    array(new Check('created', 'foo')),
+                    array(new Check('dropped', 'bar'))
                 ),
             ),
             array(
-                new Schema\Table(
+                new Table(
                     'dropped',
-                    array(new Schema\Column('bar', Type::getType(Type::INTEGER))),
+                    array(new Column('bar', Type::getType(Type::INTEGER))),
                     null,
-                    array(new Schema\ForeignKey('bar', array('bar'), 'bar', array('bar')))
+                    array(new ForeignKey('bar', array('bar'), 'bar', array('bar')))
                 ),
             ),
-            array(new Schema\Sequence('foo', 1, 1)),
-            array(new Schema\Sequence('foo', 1, 2)),
-            array(new Schema\View('foo', 'SELECT * FROM foo')),
-            array(new Schema\View('foo', 'SELECT foo FROM foo'))
+            array(new Sequence('foo', 1, 1)),
+            array(new Sequence('foo', 1, 2)),
+            array(new View('foo', 'SELECT * FROM foo')),
+            array(new View('foo', 'SELECT foo FROM foo'))
         );
     }
 

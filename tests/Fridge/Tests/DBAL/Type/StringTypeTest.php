@@ -13,7 +13,8 @@ namespace Fridge\Tests\DBAL\Type;
 
 use \PDO;
 
-use Fridge\DBAL\Type;
+use Fridge\DBAL\Type\StringType,
+    Fridge\DBAL\Type\Type;
 
 /**
  * String type test.
@@ -29,7 +30,7 @@ class StringTypeTest extends AbstractTypeTest
     {
         parent::setUp();
 
-        $this->type = new Type\StringType();
+        $this->type = new StringType();
     }
 
     public function testSQLDeclaration()
@@ -68,6 +69,6 @@ class StringTypeTest extends AbstractTypeTest
 
     public function testName()
     {
-        $this->assertSame(Type\Type::STRING, $this->type->getName());
+        $this->assertSame(Type::STRING, $this->type->getName());
     }
 }

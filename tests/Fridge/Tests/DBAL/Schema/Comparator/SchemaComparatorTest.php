@@ -11,7 +11,12 @@
 
 namespace Fridge\Tests\DBAL\Schema\Comparator;
 
-use Fridge\DBAL\Schema,
+use Fridge\DBAL\Schema\Column,
+    Fridge\DBAL\Schema\Comparator\SchemaComparator,
+    Fridge\DBAL\Schema\Schema,
+    Fridge\DBAL\Schema\Sequence,
+    Fridge\DBAL\Schema\Table,
+    Fridge\DBAL\Schema\View,
     Fridge\DBAL\Type\Type;
 
 /**
@@ -56,21 +61,21 @@ class SchemaComparatorTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->schemaComparator = new Schema\Comparator\SchemaComparator();
+        $this->schemaComparator = new SchemaComparator();
 
-        $this->oldSchema = new Schema\Schema('foo');
+        $this->oldSchema = new Schema('foo');
         $this->newSchema = clone $this->oldSchema;
 
-        $this->oldTable = new Schema\Table('foo');
+        $this->oldTable = new Table('foo');
         $this->newTable = clone $this->oldTable;
 
-        $this->oldSequence = new Schema\Sequence('foo');
+        $this->oldSequence = new Sequence('foo');
         $this->newSequence = clone $this->oldSequence;
 
-        $this->oldView = new Schema\View('foo');
+        $this->oldView = new View('foo');
         $this->newView = clone $this->oldView;
 
-        $this->column = new Schema\Column('foo', Type::getType(Type::INTEGER));
+        $this->column = new Column('foo', Type::getType(Type::INTEGER));
     }
 
     /**
@@ -168,9 +173,9 @@ class SchemaComparatorTest extends \PHPUnit_Framework_TestCase
 
     public function testCompareWithRenamedTablesDifference()
     {
-        $fooColumn = new Schema\Column('foo', Type::getType(Type::INTEGER));
-        $barColumn = new Schema\Column('bar', Type::getType(Type::INTEGER));
-        $bazColumn = new Schema\Column('baz', Type::getType(Type::INTEGER));
+        $fooColumn = new Column('foo', Type::getType(Type::INTEGER));
+        $barColumn = new Column('bar', Type::getType(Type::INTEGER));
+        $bazColumn = new Column('baz', Type::getType(Type::INTEGER));
 
         $this->newTable->setName('foo1');
         $this->oldTable->addColumn($fooColumn);

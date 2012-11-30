@@ -13,7 +13,8 @@ namespace Fridge\Tests\DBAL\Type;
 
 use \PDO;
 
-use Fridge\DBAL\Type;
+use Fridge\DBAL\Type\SmallIntegerType,
+    Fridge\DBAL\Type\Type;
 
 /**
  * Small Integer type test.
@@ -29,7 +30,7 @@ class SmallIntegerTypeTest extends AbstractTypeTest
     {
         parent::setUp();
 
-        $this->type = new Type\SmallIntegerType();
+        $this->type = new SmallIntegerType();
     }
 
     public function testSQLDeclaration()
@@ -68,6 +69,6 @@ class SmallIntegerTypeTest extends AbstractTypeTest
 
     public function testName()
     {
-        $this->assertSame(Type\Type::SMALLINTEGER, $this->type->getName());
+        $this->assertSame(Type::SMALLINTEGER, $this->type->getName());
     }
 }

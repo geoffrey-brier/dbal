@@ -11,7 +11,9 @@
 
 namespace Fridge\Tests\DBAL\SchemaManager\Alteration\Schema;
 
-use Fridge\DBAL\Schema,
+use Fridge\DBAL\Schema\Comparator\SchemaComparator,
+    Fridge\DBAL\Schema\ForeignKey,
+    Fridge\DBAL\Schema\Schema,
     Fridge\DBAL\Type\Type,
     Fridge\Tests\DBAL\SchemaManager\Alteration\AbstractAlterationTest as BaseAlteration;
 
@@ -40,10 +42,10 @@ abstract class AbstractAlterationTest extends BaseAlteration
     {
         parent::setUp();
 
-        $this->schemaComparator = new Schema\Comparator\SchemaComparator();
+        $this->schemaComparator = new SchemaComparator();
 
         $settings = self::$fixture->getSettings();
-        $this->oldSchema = new Schema\Schema($settings['dbname']);
+        $this->oldSchema = new Schema($settings['dbname']);
     }
 
     /**
@@ -345,8 +347,8 @@ abstract class AbstractAlterationTest extends BaseAlteration
             array('foo'),
             'foo',
             array('foo'),
-            Schema\ForeignKey::RESTRICT,
-            Schema\ForeignKey::RESTRICT,
+            ForeignKey::RESTRICT,
+            ForeignKey::RESTRICT,
             'fk_foo'
         );
 
@@ -365,8 +367,8 @@ abstract class AbstractAlterationTest extends BaseAlteration
             array('foo'),
             'foo',
             array('foo'),
-            Schema\ForeignKey::RESTRICT,
-            Schema\ForeignKey::RESTRICT,
+            ForeignKey::RESTRICT,
+            ForeignKey::RESTRICT,
             'fk_foo'
         );
 

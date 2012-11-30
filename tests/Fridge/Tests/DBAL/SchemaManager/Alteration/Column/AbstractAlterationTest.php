@@ -11,7 +11,9 @@
 
 namespace Fridge\Tests\DBAL\SchemaManager\Alteration\Column;
 
-use Fridge\DBAL\Schema,
+use Fridge\DBAL\Schema\Column,
+    Fridge\DBAL\Schema\Comparator\ColumnComparator,
+    Fridge\DBAL\Schema\Table,
     Fridge\DBAL\Type\Type,
     Fridge\Tests\DBAL\SchemaManager\Alteration\AbstractAlterationTest as BaseAlteration;
 
@@ -63,10 +65,10 @@ abstract class AbstractAlterationTest extends BaseAlteration
     {
         parent::setUp();
 
-        $this->columnComparator = new Schema\Comparator\ColumnComparator();
+        $this->columnComparator = new ColumnComparator();
 
-        $this->oldColumn = new Schema\Column('foo', Type::getType(Type::STRING));
-        $this->table = new Schema\Table('foo', array($this->oldColumn));
+        $this->oldColumn = new Column('foo', Type::getType(Type::STRING));
+        $this->table = new Table('foo', array($this->oldColumn));
     }
 
     /**

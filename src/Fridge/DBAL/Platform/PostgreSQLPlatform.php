@@ -11,7 +11,8 @@
 
 namespace Fridge\DBAL\Platform;
 
-use Fridge\DBAL\Schema,
+use Fridge\DBAL\Schema\Diff\ColumnDiff,
+    Fridge\DBAL\Schema\Table,
     Fridge\DBAL\Type\Type;
 
 /**
@@ -252,7 +253,7 @@ class PostgreSQLPlatform extends AbstractPlatform
     /**
      * {@inheritdoc}
      */
-    public function getCreateTableSQLQueries(Schema\Table $table, array $flags = array())
+    public function getCreateTableSQLQueries(Table $table, array $flags = array())
     {
         $originalFlags = $flags;
 
@@ -271,7 +272,7 @@ class PostgreSQLPlatform extends AbstractPlatform
     /**
      * {@inheritdoc}
      */
-    public function getAlterColumnSQLQueries(Schema\Diff\ColumnDiff $columnDiff, $table)
+    public function getAlterColumnSQLQueries(ColumnDiff $columnDiff, $table)
     {
         $queries = array();
 

@@ -11,7 +11,9 @@
 
 namespace Fridge\Tests\DBAL\Event\Subscriber;
 
-use Fridge\DBAL\Event;
+use Fridge\DBAL\Event\Events,
+    Fridge\DBAL\Event\PostConnectEvent,
+    Fridge\DBAL\Event\Subscriber\SetCharsetSubscriber;
 
 /**
  * MySQLSessionInit test.
@@ -28,7 +30,7 @@ class SetCharsetSubscriberTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->subscriber = new Event\Subscriber\SetCharsetSubscriber();
+        $this->subscriber = new SetCharsetSubscriber();
     }
 
     /**
@@ -41,10 +43,10 @@ class SetCharsetSubscriberTest extends \PHPUnit_Framework_TestCase
 
     public function testSubscribedEvents()
     {
-        $subscribedEvents = Event\Subscriber\SetCharsetSubscriber::getSubscribedEvents();
+        $subscribedEvents = SetCharsetSubscriber::getSubscribedEvents();
 
-        $this->assertTrue(in_array(Event\Events::POST_CONNECT, array_keys($subscribedEvents)));
-        $this->assertTrue(method_exists($this->subscriber, $subscribedEvents[Event\Events::POST_CONNECT]));
+        $this->assertTrue(in_array(Events::POST_CONNECT, array_keys($subscribedEvents)));
+        $this->assertTrue(method_exists($this->subscriber, $subscribedEvents[Events::POST_CONNECT]));
     }
 
     public function testCharset()
@@ -60,7 +62,7 @@ class SetCharsetSubscriberTest extends \PHPUnit_Framework_TestCase
             ->method('setCharset')
             ->with($this->equalTo('utf8'));
 
-        $event = new Event\PostConnectEvent($connectionMock);
+        $event = new PostConnectEvent($connectionMock);
 
         $this->subscriber->postConnect($event);
     }

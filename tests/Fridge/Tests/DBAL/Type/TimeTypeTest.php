@@ -14,7 +14,8 @@ namespace Fridge\Tests\DBAL\Type;
 use \DateTime,
     \PDO;
 
-use Fridge\DBAL\Type;
+use Fridge\DBAL\Type\TimeType,
+    Fridge\DBAL\Type\Type;
 
 /**
  * Time type test.
@@ -30,7 +31,7 @@ class TimeTypeTest extends AbstractTypeTest
     {
         parent::setUp();
 
-        $this->type = new Type\TimeType();
+        $this->type = new TimeType();
 
         $this->platformMock
             ->expects($this->any())
@@ -83,6 +84,6 @@ class TimeTypeTest extends AbstractTypeTest
 
     public function testName()
     {
-        $this->assertSame(Type\Type::TIME, $this->type->getName());
+        $this->assertSame(Type::TIME, $this->type->getName());
     }
 }

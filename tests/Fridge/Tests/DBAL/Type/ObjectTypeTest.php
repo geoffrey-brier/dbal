@@ -13,7 +13,8 @@ namespace Fridge\Tests\DBAL\Type;
 
 use \PDO;
 
-use Fridge\DBAL\Type;
+use Fridge\DBAL\Type\ObjectType,
+    Fridge\DBAL\Type\Type;
 
 /**
  * Object type test.
@@ -29,7 +30,7 @@ class ObjectTypeTest extends AbstractTypeTest
     {
         parent::setUp();
 
-        $this->type = new Type\ObjectType();
+        $this->type = new ObjectType();
     }
 
     public function testSQLDeclaration()
@@ -76,6 +77,6 @@ class ObjectTypeTest extends AbstractTypeTest
 
     public function testName()
     {
-        $this->assertSame(Type\Type::OBJECT, $this->type->getName());
+        $this->assertSame(Type::OBJECT, $this->type->getName());
     }
 }

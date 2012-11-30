@@ -11,7 +11,18 @@
 
 namespace Fridge\DBAL\Platform;
 
-use Fridge\DBAL\Schema;
+use Fridge\DBAL\Schema\Check,
+    Fridge\DBAL\Schema\Column,
+    Fridge\DBAL\Schema\ConstraintInterface,
+    Fridge\DBAL\Schema\Diff\ColumnDiff,
+    Fridge\DBAL\Schema\Diff\SchemaDiff,
+    Fridge\DBAL\Schema\Diff\TableDiff,
+    Fridge\DBAL\Schema\ForeignKey,
+    Fridge\DBAL\Schema\Index,
+    Fridge\DBAL\Schema\PrimaryKey,
+    Fridge\DBAL\Schema\Sequence,
+    Fridge\DBAL\Schema\Table,
+    Fridge\DBAL\Schema\View;
 
 /**
  * A platform allows to know each specific database behaviors.
@@ -479,7 +490,7 @@ interface PlatformInterface
      *
      * @return array The create sequence SQL queries.
      */
-    function getCreateSequenceSQLQueries(Schema\Sequence $sequence);
+    function getCreateSequenceSQLQueries(Sequence $sequence);
 
     /**
      * Gets the create view SQL queries.
@@ -488,7 +499,7 @@ interface PlatformInterface
      *
      * @return array The create view SQL queries.
      */
-    function getCreateViewSQLQueries(Schema\View $view);
+    function getCreateViewSQLQueries(View $view);
 
     /**
      * Gets the create table SQL queries.
@@ -504,7 +515,7 @@ interface PlatformInterface
      *
      * @return array The create table SQL queries.
      */
-    function getCreateTableSQLQueries(Schema\Table $table, array $flags = array());
+    function getCreateTableSQLQueries(Table $table, array $flags = array());
 
     /**
      * Gets the create table column SQL queries.
@@ -514,7 +525,7 @@ interface PlatformInterface
      *
      * @return array The create table column SQL queries.
      */
-    function getCreateColumnSQLQueries(Schema\Column $column, $table);
+    function getCreateColumnSQLQueries(Column $column, $table);
 
     /**
      * Gets the create constraint SQL queries.
@@ -524,7 +535,7 @@ interface PlatformInterface
      *
      * @return array The create constraint SQL queries.
      */
-    function getCreateConstraintSQLQueries(Schema\ConstraintInterface $constraint, $table);
+    function getCreateConstraintSQLQueries(ConstraintInterface $constraint, $table);
 
     /**
      * Gets the create primary key SQL queries.
@@ -534,7 +545,7 @@ interface PlatformInterface
      *
      * @return array The create primary key SQL queries.
      */
-    function getCreatePrimaryKeySQLQueries(Schema\PrimaryKey $primaryKey, $table);
+    function getCreatePrimaryKeySQLQueries(PrimaryKey $primaryKey, $table);
 
     /**
      * Gets the create foreign key SQL queries.
@@ -544,7 +555,7 @@ interface PlatformInterface
      *
      * @return array The create foreign key SQL queries.
      */
-    function getCreateForeignKeySQLQueries(Schema\ForeignKey $foreignKey, $table);
+    function getCreateForeignKeySQLQueries(ForeignKey $foreignKey, $table);
 
     /**
      * Gets the create index SQL queries.
@@ -554,7 +565,7 @@ interface PlatformInterface
      *
      * @return array The create index SQL queries.
      */
-    function getCreateIndexSQLQueries(Schema\Index $index, $table);
+    function getCreateIndexSQLQueries(Index $index, $table);
 
     /**
      * Gets the create check constraint SQL queries.
@@ -564,7 +575,7 @@ interface PlatformInterface
      *
      * @return array The create check constraint SQL queries.
      */
-    function getCreateCheckSQLQueries(Schema\Check $check, $table);
+    function getCreateCheckSQLQueries(Check $check, $table);
 
     /**
      * Gets the rename database SQL queries.
@@ -573,7 +584,7 @@ interface PlatformInterface
      *
      * @return array The rename database SQL queries.
      */
-    function getRenameDatabaseSQLQueries(Schema\Diff\SchemaDiff $schemaDiff);
+    function getRenameDatabaseSQLQueries(SchemaDiff $schemaDiff);
 
     /**
      * Gets the rename table SQL queries.
@@ -582,7 +593,7 @@ interface PlatformInterface
      *
      * @return array The rename table SQL quueries.
      */
-    function getRenameTableSQLQueries(Schema\Diff\TableDiff $tableDiff);
+    function getRenameTableSQLQueries(TableDiff $tableDiff);
 
     /**
      * Gets the alter table column SQL queries.
@@ -592,7 +603,7 @@ interface PlatformInterface
      *
      * @return array The alter table column SQL queries.
      */
-    function getAlterColumnSQLQueries(Schema\Diff\ColumnDiff $columnDiff, $table);
+    function getAlterColumnSQLQueries(ColumnDiff $columnDiff, $table);
 
     /**
      * Gets the drop database SQL queries.
@@ -610,7 +621,7 @@ interface PlatformInterface
      *
      * @return array The drop sequence SQL queries.
      */
-    function getDropSequenceSQLQueries(Schema\Sequence $sequence);
+    function getDropSequenceSQLQueries(Sequence $sequence);
 
     /**
      * Gets the drop view SQL queries.
@@ -619,7 +630,7 @@ interface PlatformInterface
      *
      * @return array The drop view SQL queries.
      */
-    function getDropViewSQLQueries(Schema\View $view);
+    function getDropViewSQLQueries(View $view);
 
     /**
      * Gets the drop table SQL queries.
@@ -628,7 +639,7 @@ interface PlatformInterface
      *
      * @return array The drop table SQL queries.
      */
-    function getDropTableSQLQueries(Schema\Table $table);
+    function getDropTableSQLQueries(Table $table);
 
     /**
      * Gets the drop table column SQL queries.
@@ -638,7 +649,7 @@ interface PlatformInterface
      *
      * @return array The drop table column SQL queries.
      */
-    function getDropColumnSQLQueries(Schema\Column $column, $table);
+    function getDropColumnSQLQueries(Column $column, $table);
 
     /**
      * Gets the drop constraint SQL queries.
@@ -648,7 +659,7 @@ interface PlatformInterface
      *
      * @return array The drop constraint SQL queries.
      */
-    function getDropConstraintSQLQueries(Schema\ConstraintInterface $constraint, $table);
+    function getDropConstraintSQLQueries(ConstraintInterface $constraint, $table);
 
     /**
      * Gets the drop primary key SQL queries.
@@ -658,7 +669,7 @@ interface PlatformInterface
      *
      * @return array The drop primary key SQL queries.
      */
-    function getDropPrimaryKeySQLQueries(Schema\PrimaryKey $primaryKey, $table);
+    function getDropPrimaryKeySQLQueries(PrimaryKey $primaryKey, $table);
 
     /**
      * Gets the drop foreign key SQL queries.
@@ -668,7 +679,7 @@ interface PlatformInterface
      *
      * @return array The drop foreign key SQL queries.
      */
-    function getDropForeignKeySQLQueries(Schema\ForeignKey $foreignKey, $table);
+    function getDropForeignKeySQLQueries(ForeignKey $foreignKey, $table);
 
     /**
      * Gets the drop index SQL queries.
@@ -678,7 +689,7 @@ interface PlatformInterface
      *
      * @return array The drop index SQL queries.
      */
-    function getDropIndexSQLQueries(Schema\Index $index, $table);
+    function getDropIndexSQLQueries(Index $index, $table);
 
     /**
      * Gets the drop check constraint SQL queries.
@@ -688,7 +699,7 @@ interface PlatformInterface
      *
      * @return array The drop index SQL queries.
      */
-    function getDropCheckSQLQueries(Schema\Check $check, $table);
+    function getDropCheckSQLQueries(Check $check, $table);
 
     /**
      * Gets the quote identifier.

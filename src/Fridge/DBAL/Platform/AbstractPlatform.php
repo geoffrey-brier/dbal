@@ -12,8 +12,20 @@
 namespace Fridge\DBAL\Platform;
 
 use Fridge\DBAL\Connection\Connection,
-    Fridge\DBAL\Exception,
-    Fridge\DBAL\Schema,
+    Fridge\DBAL\Exception\PlatformException,
+    Fridge\DBAL\Exception\TypeException,
+    Fridge\DBAL\Schema\Check,
+    Fridge\DBAL\Schema\Column,
+    Fridge\DBAL\Schema\ConstraintInterface,
+    Fridge\DBAL\Schema\Diff\ColumnDiff,
+    Fridge\DBAL\Schema\Diff\SchemaDiff,
+    Fridge\DBAL\Schema\Diff\TableDiff,
+    Fridge\DBAL\Schema\ForeignKey,
+    Fridge\DBAL\Schema\Index,
+    Fridge\DBAL\Schema\PrimaryKey,
+    Fridge\DBAL\Schema\Sequence,
+    Fridge\DBAL\Schema\Table,
+    Fridge\DBAL\Schema\View,
     Fridge\DBAL\Type\Type;
 
 /**
@@ -68,7 +80,7 @@ abstract class AbstractPlatform implements PlatformInterface
         }
 
         if ($this->strictMappedType) {
-            throw Exception\PlatformException::mappedTypeDoesNotExist($type);
+            throw PlatformException::mappedTypeDoesNotExist($type);
         }
 
         return $this->fallbackMappedType;
@@ -80,11 +92,11 @@ abstract class AbstractPlatform implements PlatformInterface
     public function addMappedType($databaseType, $fridgeType)
     {
         if ($this->hasMappedType($databaseType)) {
-            throw Exception\PlatformException::mappedTypeAlreadyExists($databaseType);
+            throw PlatformException::mappedTypeAlreadyExists($databaseType);
         }
 
         if (!Type::hasType($fridgeType)) {
-            throw Exception\TypeException::typeDoesNotExist($fridgeType);
+            throw TypeException::typeDoesNotExist($fridgeType);
         }
 
         $this->mappedTypes[$databaseType] = $fridgeType;
@@ -96,11 +108,11 @@ abstract class AbstractPlatform implements PlatformInterface
     public function overrideMappedType($databaseType, $fridgeType)
     {
         if (!$this->hasMappedType($databaseType)) {
-            throw Exception\PlatformException::mappedTypeDoesNotExist($databaseType);
+            throw PlatformException::mappedTypeDoesNotExist($databaseType);
         }
 
         if (!Type::hasType($fridgeType)) {
-            throw Exception\TypeException::typeDoesNotExist($fridgeType);
+            throw TypeException::typeDoesNotExist($fridgeType);
         }
 
         $this->mappedTypes[$databaseType] = $fridgeType;
@@ -112,7 +124,7 @@ abstract class AbstractPlatform implements PlatformInterface
     public function removeMappedType($type)
     {
         if (!$this->hasMappedType($type)) {
-            throw Exception\PlatformException::mappedTypeDoesNotExist($type);
+            throw PlatformException::mappedTypeDoesNotExist($type);
         }
 
         unset($this->mappedTypes[$type]);
@@ -144,7 +156,7 @@ abstract class AbstractPlatform implements PlatformInterface
     public function setFallbackMappedType($fallbackMappedType)
     {
         if (!Type::hasType($fallbackMappedType)) {
-            throw Exception\TypeException::typeDoesNotExist($fallbackMappedType);
+            throw TypeException::typeDoesNotExist($fallbackMappedType);
         }
 
         $this->fallbackMappedType = $fallbackMappedType;
@@ -164,11 +176,11 @@ abstract class AbstractPlatform implements PlatformInterface
     public function addMandatoryType($type)
     {
         if ($this->hasMandatoryType($type)) {
-            throw Exception\PlatformException::mandatoryTypeAlreadyExists($type);
+            throw PlatformException::mandatoryTypeAlreadyExists($type);
         }
 
         if (!Type::hasType($type)) {
-            throw Exception\TypeException::typeDoesNotExist($type);
+            throw TypeException::typeDoesNotExist($type);
         }
 
         $this->mandatoryTypes[] = $type;
@@ -180,7 +192,7 @@ abstract class AbstractPlatform implements PlatformInterface
     public function removeMandatoryType($type)
     {
         if (!$this->hasMandatoryType($type)) {
-            throw Exception\PlatformException::mandatoryTypeDoesNotExist($type);
+            throw PlatformException::mandatoryTypeDoesNotExist($type);
         }
 
         $index = array_search($type, $this->mandatoryTypes);
@@ -435,7 +447,7 @@ abstract class AbstractPlatform implements PlatformInterface
     public function getCreateSavepointSQLQuery($savepoint)
     {
         if (!$this->supportSavepoint()) {
-            throw Exception\PlatformException::methodNotSupported(__METHOD__);
+            throw PlatformException::methodNotSupported(__METHOD__);
         }
 
         return 'SAVEPOINT '.$savepoint;
@@ -447,7 +459,7 @@ abstract class AbstractPlatform implements PlatformInterface
     public function getReleaseSavepointSQLQuery($savepoint)
     {
         if (!$this->supportSavepoint()) {
-            throw Exception\PlatformException::methodNotSupported(__METHOD__);
+            throw PlatformException::methodNotSupported(__METHOD__);
         }
 
         return 'RELEASE SAVEPOINT '.$savepoint;
@@ -459,7 +471,7 @@ abstract class AbstractPlatform implements PlatformInterface
     public function getRollbackSavepointSQLQuery($savepoint)
     {
         if (!$this->supportSavepoint()) {
-            throw Exception\PlatformException::methodNotSupported(__METHOD__);
+            throw PlatformException::methodNotSupported(__METHOD__);
         }
 
         return 'ROLLBACK TO SAVEPOINT '.$savepoint;
@@ -478,7 +490,7 @@ abstract class AbstractPlatform implements PlatformInterface
      */
     public function getSelectDatabaseSQLQuery()
     {
-        throw Exception\PlatformException::methodNotSupported(__METHOD__);
+        throw PlatformException::methodNotSupported(__METHOD__);
     }
 
     /**
@@ -486,7 +498,7 @@ abstract class AbstractPlatform implements PlatformInterface
      */
     public function getSelectDatabasesSQLQuery()
     {
-        throw Exception\PlatformException::methodNotSupported(__METHOD__);
+        throw PlatformException::methodNotSupported(__METHOD__);
     }
 
     /**
@@ -494,7 +506,7 @@ abstract class AbstractPlatform implements PlatformInterface
      */
     public function getSelectSequencesSQLQuery($database)
     {
-        throw Exception\PlatformException::methodNotSupported(__METHOD__);
+        throw PlatformException::methodNotSupported(__METHOD__);
     }
 
     /**
@@ -502,7 +514,7 @@ abstract class AbstractPlatform implements PlatformInterface
      */
     public function getSelectViewsSQLQuery($database)
     {
-        throw Exception\PlatformException::methodNotSupported(__METHOD__);
+        throw PlatformException::methodNotSupported(__METHOD__);
     }
 
     /**
@@ -510,7 +522,7 @@ abstract class AbstractPlatform implements PlatformInterface
      */
     public function getSelectTableNamesSQLQuery($database)
     {
-        throw Exception\PlatformException::methodNotSupported(__METHOD__);
+        throw PlatformException::methodNotSupported(__METHOD__);
     }
 
     /**
@@ -518,7 +530,7 @@ abstract class AbstractPlatform implements PlatformInterface
      */
     public function getSelectTableColumnsSQLQuery($table, $database)
     {
-        throw Exception\PlatformException::methodNotSupported(__METHOD__);
+        throw PlatformException::methodNotSupported(__METHOD__);
     }
 
     /**
@@ -526,7 +538,7 @@ abstract class AbstractPlatform implements PlatformInterface
      */
     public function getSelectTablePrimaryKeySQLQuery($table, $database)
     {
-        throw Exception\PlatformException::methodNotSupported(__METHOD__);
+        throw PlatformException::methodNotSupported(__METHOD__);
     }
 
     /**
@@ -534,7 +546,7 @@ abstract class AbstractPlatform implements PlatformInterface
      */
     public function getSelectTableForeignKeysSQLQuery($table, $database)
     {
-        throw Exception\PlatformException::methodNotSupported(__METHOD__);
+        throw PlatformException::methodNotSupported(__METHOD__);
     }
 
     /**
@@ -542,7 +554,7 @@ abstract class AbstractPlatform implements PlatformInterface
      */
     public function getSelectTableIndexesSQLQuery($table, $database)
     {
-        throw Exception\PlatformException::methodNotSupported(__METHOD__);
+        throw PlatformException::methodNotSupported(__METHOD__);
     }
 
     /**
@@ -550,7 +562,7 @@ abstract class AbstractPlatform implements PlatformInterface
      */
     public function getSelectTableCheckSQLQuery($table, $database)
     {
-        throw Exception\PlatformException::methodNotSupported(__METHOD__);
+        throw PlatformException::methodNotSupported(__METHOD__);
     }
 
     /**
@@ -564,10 +576,10 @@ abstract class AbstractPlatform implements PlatformInterface
     /**
      * {@inheritdoc}
      */
-    public function getCreateSequenceSQLQueries(Schema\Sequence $sequence)
+    public function getCreateSequenceSQLQueries(Sequence $sequence)
     {
         if (!$this->supportSequence()) {
-            throw Exception\PlatformException::methodNotSupported(__METHOD__);
+            throw PlatformException::methodNotSupported(__METHOD__);
         }
 
         return array(
@@ -581,10 +593,10 @@ abstract class AbstractPlatform implements PlatformInterface
     /**
      * {@inheritdoc}
      */
-    public function getCreateViewSQLQueries(Schema\View $view)
+    public function getCreateViewSQLQueries(View $view)
     {
         if (!$this->supportView()) {
-            throw Exception\PlatformException::methodNotSupported(__METHOD__);
+            throw PlatformException::methodNotSupported(__METHOD__);
         }
 
         return array('CREATE VIEW '.$view->getName().' AS '.$view->getSQL());
@@ -593,7 +605,7 @@ abstract class AbstractPlatform implements PlatformInterface
     /**
      * {@inheritdoc}
      */
-    public function getCreateTableSQLQueries(Schema\Table $table, array $flags = array())
+    public function getCreateTableSQLQueries(Table $table, array $flags = array())
     {
         $queries = array();
 
@@ -635,7 +647,7 @@ abstract class AbstractPlatform implements PlatformInterface
     /**
      * {@inheritdoc}
      */
-    public function getCreateColumnSQLQueries(Schema\Column $column, $table)
+    public function getCreateColumnSQLQueries(Column $column, $table)
     {
         $queries = array('ALTER TABLE '.$table.' ADD COLUMN '.$this->getColumnSQLDeclaration($column));
 
@@ -651,31 +663,31 @@ abstract class AbstractPlatform implements PlatformInterface
     /**
      * {@inheritdoc}
      */
-    public function getCreateConstraintSQLQueries(Schema\ConstraintInterface $constraint, $table)
+    public function getCreateConstraintSQLQueries(ConstraintInterface $constraint, $table)
     {
-        if ($constraint instanceof Schema\PrimaryKey) {
+        if ($constraint instanceof PrimaryKey) {
             return $this->getCreatePrimaryKeySQLQueries($constraint, $table);
         }
 
-        if ($constraint instanceof Schema\ForeignKey) {
+        if ($constraint instanceof ForeignKey) {
             return $this->getCreateForeignKeySQLQueries($constraint, $table);
         }
 
-        if ($constraint instanceof Schema\Index) {
+        if ($constraint instanceof Index) {
             return $this->getCreateIndexSQLQueries($constraint, $table);
         }
 
-        if ($constraint instanceof Schema\Check) {
+        if ($constraint instanceof Check) {
             return $this->getCreateCheckSQLQueries($constraint, $table);
         }
 
-        throw Exception\PlatformException::constraintNotSupported(get_class($constraint));
+        throw PlatformException::constraintNotSupported(get_class($constraint));
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getCreatePrimaryKeySQLQueries(Schema\PrimaryKey $primaryKey, $table)
+    public function getCreatePrimaryKeySQLQueries(PrimaryKey $primaryKey, $table)
     {
         return array('ALTER TABLE '.$table.' ADD '.$this->getPrimaryKeySQLDeclaration($primaryKey));
     }
@@ -683,7 +695,7 @@ abstract class AbstractPlatform implements PlatformInterface
     /**
      * {@inheritdoc}
      */
-    public function getCreateForeignKeySQLQueries(Schema\ForeignKey $foreignKey, $table)
+    public function getCreateForeignKeySQLQueries(ForeignKey $foreignKey, $table)
     {
         return array('ALTER TABLE '.$table.' ADD '.$this->getForeignKeySQLDeclaration($foreignKey));
     }
@@ -691,14 +703,14 @@ abstract class AbstractPlatform implements PlatformInterface
     /**
      * {@inheritdoc}
      */
-    public function getCreateIndexSQLQueries(Schema\Index $index, $table)
+    public function getCreateIndexSQLQueries(Index $index, $table)
     {
         if ($index->isUnique()) {
             return array('ALTER TABLE '.$table.' ADD '.$this->getIndexSQLDeclaration($index));
         }
 
         if (!$this->supportIndex()) {
-            throw Exception\PlatformException::methodNotSupported(__METHOD__);
+            throw PlatformException::methodNotSupported(__METHOD__);
         }
 
         return array(
@@ -711,7 +723,7 @@ abstract class AbstractPlatform implements PlatformInterface
     /**
      * {@inheritdoc}
      */
-    public function getCreateCheckSQLQueries(Schema\Check $check, $table)
+    public function getCreateCheckSQLQueries(Check $check, $table)
     {
         return array('ALTER TABLE '.$table.' ADD '.$this->getCheckSQLDeclaration($check));
     }
@@ -719,7 +731,7 @@ abstract class AbstractPlatform implements PlatformInterface
     /**
      * {@inheritdoc}
      */
-    public function getRenameDatabaseSQLQueries(Schema\Diff\SchemaDiff $schemaDiff)
+    public function getRenameDatabaseSQLQueries(SchemaDiff $schemaDiff)
     {
         return array(
             'ALTER DATABASE '.$schemaDiff->getOldAsset()->getName().
@@ -730,7 +742,7 @@ abstract class AbstractPlatform implements PlatformInterface
     /**
      * {@inheritdoc}
      */
-    public function getRenameTableSQLQueries(Schema\Diff\TableDiff $tableDiff)
+    public function getRenameTableSQLQueries(TableDiff $tableDiff)
     {
         return array(
             'ALTER TABLE '.$tableDiff->getOldAsset()->getName().
@@ -741,7 +753,7 @@ abstract class AbstractPlatform implements PlatformInterface
     /**
      * {@inheritdoc}
      */
-    public function getAlterColumnSQLQueries(Schema\Diff\ColumnDiff $columnDiff, $table)
+    public function getAlterColumnSQLQueries(ColumnDiff $columnDiff, $table)
     {
         $queries = array(
             'ALTER TABLE '.$table.' ALTER COLUMN '.$columnDiff->getOldAsset()->getName().' '.
@@ -768,10 +780,10 @@ abstract class AbstractPlatform implements PlatformInterface
     /**
      * {@inheritdoc}
      */
-    public function getDropSequenceSQLQueries(Schema\Sequence $sequence)
+    public function getDropSequenceSQLQueries(Sequence $sequence)
     {
         if (!$this->supportSequence()) {
-            throw Exception\PlatformException::methodNotSupported(__METHOD__);
+            throw PlatformException::methodNotSupported(__METHOD__);
         }
 
         return array('DROP SEQUENCE '.$sequence->getName());
@@ -780,10 +792,10 @@ abstract class AbstractPlatform implements PlatformInterface
     /**
      * {@inheritdoc}
      */
-    public function getDropViewSQLQueries(Schema\View $view)
+    public function getDropViewSQLQueries(View $view)
     {
         if (!$this->supportView()) {
-            throw Exception\PlatformException::methodNotSupported(__METHOD__);
+            throw PlatformException::methodNotSupported(__METHOD__);
         }
 
         return array('DROP VIEW '.$view->getName());
@@ -792,7 +804,7 @@ abstract class AbstractPlatform implements PlatformInterface
     /**
      * {@inheritdoc}
      */
-    public function getDropTableSQLQueries(Schema\Table $table)
+    public function getDropTableSQLQueries(Table $table)
     {
         return array('DROP TABLE '.$table->getName());
     }
@@ -800,7 +812,7 @@ abstract class AbstractPlatform implements PlatformInterface
     /**
      * {@inheritdoc}
      */
-    public function getDropColumnSQLQueries(Schema\Column $column, $table)
+    public function getDropColumnSQLQueries(Column $column, $table)
     {
         return array('ALTER TABLE '.$table.' DROP COLUMN '.$column->getName());
     }
@@ -808,34 +820,34 @@ abstract class AbstractPlatform implements PlatformInterface
     /**
      * {@inheritdoc}
      */
-    public function getDropConstraintSQLQueries(Schema\ConstraintInterface $contraint, $table)
+    public function getDropConstraintSQLQueries(ConstraintInterface $contraint, $table)
     {
-        if ($contraint instanceof Schema\PrimaryKey) {
+        if ($contraint instanceof PrimaryKey) {
             return $this->getDropPrimaryKeySQLQueries($contraint, $table);
         }
 
-        if ($contraint instanceof Schema\ForeignKey) {
+        if ($contraint instanceof ForeignKey) {
             return $this->getDropForeignKeySQLQueries($contraint, $table);
         }
 
-        if ($contraint instanceof Schema\Index) {
+        if ($contraint instanceof Index) {
             return $this->getDropIndexSQLQueries($contraint, $table);
         }
 
-        if ($contraint instanceof Schema\Check) {
+        if ($contraint instanceof Check) {
             return $this->getDropCheckSQLQueries($contraint, $table);
         }
 
-        throw Exception\PlatformException::constraintNotSupported(get_class($contraint));
+        throw PlatformException::constraintNotSupported(get_class($contraint));
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getDropPrimaryKeySQLQueries(Schema\PrimaryKey $primaryKey, $table)
+    public function getDropPrimaryKeySQLQueries(PrimaryKey $primaryKey, $table)
     {
         if (!$this->supportPrimaryKey()) {
-            throw Exception\PlatformException::methodNotSupported(__METHOD__);
+            throw PlatformException::methodNotSupported(__METHOD__);
         }
 
         return array('ALTER TABLE '.$table.' DROP CONSTRAINT '.$primaryKey->getName());
@@ -844,10 +856,10 @@ abstract class AbstractPlatform implements PlatformInterface
     /**
      * {@inheritdoc}
      */
-    public function getDropForeignKeySQLQueries(Schema\ForeignKey $foreignKey, $table)
+    public function getDropForeignKeySQLQueries(ForeignKey $foreignKey, $table)
     {
         if (!$this->supportForeignKey()) {
-            throw Exception\PlatformException::methodNotSupported(__METHOD__);
+            throw PlatformException::methodNotSupported(__METHOD__);
         }
 
         return array('ALTER TABLE '.$table.' DROP CONSTRAINT '.$foreignKey->getName());
@@ -856,10 +868,10 @@ abstract class AbstractPlatform implements PlatformInterface
     /**
      * {@inheritdoc}
      */
-    public function getDropIndexSQLQueries(Schema\Index $index, $table)
+    public function getDropIndexSQLQueries(Index $index, $table)
     {
         if (!$this->supportIndex()) {
-            throw Exception\PlatformException::methodNotSupported(__METHOD__);
+            throw PlatformException::methodNotSupported(__METHOD__);
         }
 
         if ($index->isUnique()) {
@@ -872,10 +884,10 @@ abstract class AbstractPlatform implements PlatformInterface
     /**
      * {@inheritdoc}
      */
-    public function getDropCheckSQLQueries(Schema\Check $check, $table)
+    public function getDropCheckSQLQueries(Check $check, $table)
     {
         if (!$this->supportCheck()) {
-            throw Exception\PlatformException::methodNotSupported(__METHOD__);
+            throw PlatformException::methodNotSupported(__METHOD__);
         }
 
         return array('ALTER TABLE '.$table.' DROP CONSTRAINT '.$check->getName());
@@ -933,11 +945,11 @@ abstract class AbstractPlatform implements PlatformInterface
     protected function getVarcharSQLDeclarationSnippet($length, $fixed)
     {
         if (!is_int($length) || (is_int($length) && ($length <= 0))) {
-            throw Exception\PlatformException::invalidVarcharLength();
+            throw PlatformException::invalidVarcharLength();
         }
 
         if (!is_bool($fixed)) {
-            throw Exception\PlatformException::invalidVarcharFixedFlag();
+            throw PlatformException::invalidVarcharFixedFlag();
         }
 
         if ($fixed) {
@@ -964,7 +976,7 @@ abstract class AbstractPlatform implements PlatformInterface
         );
 
         if (!in_array($isolation, $availableIsolations)) {
-            throw Exception\PlatformException::transactionIsolationDoesNotExist($isolation);
+            throw PlatformException::transactionIsolationDoesNotExist($isolation);
         }
 
         return $isolation;
@@ -995,7 +1007,7 @@ abstract class AbstractPlatform implements PlatformInterface
      *
      * @return string The column SQL declaration.
      */
-    protected function getColumnSQLDeclaration(Schema\Column $column)
+    protected function getColumnSQLDeclaration(Column $column)
     {
         $columnDeclaration = $column->getName().' '.$column->getType()->getSQLDeclaration($this, $column->toArray());
 
@@ -1025,10 +1037,10 @@ abstract class AbstractPlatform implements PlatformInterface
      *
      * @return string The primary key SQL declaration.
      */
-    protected function getPrimaryKeySQLDeclaration(Schema\PrimaryKey $primaryKey)
+    protected function getPrimaryKeySQLDeclaration(PrimaryKey $primaryKey)
     {
         if (!$this->supportPrimaryKey()) {
-            throw Exception\PlatformException::methodNotSupported(__METHOD__);
+            throw PlatformException::methodNotSupported(__METHOD__);
         }
 
         return 'CONSTRAINT '.$primaryKey->getName().' PRIMARY KEY ('.implode(', ', $primaryKey->getColumnNames()).')';
@@ -1041,10 +1053,10 @@ abstract class AbstractPlatform implements PlatformInterface
      *
      * @return string The foreign key SQL declaration.
      */
-    protected function getForeignKeySQLDeclaration(Schema\ForeignKey $foreignKey)
+    protected function getForeignKeySQLDeclaration(ForeignKey $foreignKey)
     {
         if (!$this->supportForeignKey()) {
-            throw Exception\PlatformException::methodNotSupported(__METHOD__);
+            throw PlatformException::methodNotSupported(__METHOD__);
         }
 
         return 'CONSTRAINT '.$foreignKey->getName().
@@ -1063,10 +1075,10 @@ abstract class AbstractPlatform implements PlatformInterface
      *
      * @return string The index SQL declaration.
      */
-    protected function getIndexSQLDeclaration(Schema\Index $index)
+    protected function getIndexSQLDeclaration(Index $index)
     {
         if (!$this->supportIndex()) {
-            throw Exception\PlatformException::methodNotSupported(__METHOD__);
+            throw PlatformException::methodNotSupported(__METHOD__);
         }
 
         if (!$index->isUnique()) {
@@ -1083,10 +1095,10 @@ abstract class AbstractPlatform implements PlatformInterface
      *
      * @return string The check constraint SQL declaration.
      */
-    protected function getCheckSQLDeclaration(Schema\Check $check)
+    protected function getCheckSQLDeclaration(Check $check)
     {
         if (!$this->supportCheck()) {
-            throw Exception\PlatformException::methodNotSupported(__METHOD__);
+            throw PlatformException::methodNotSupported(__METHOD__);
         }
 
         return 'CONSTRAINT '.$check->getName().' CHECK ('.$check->getDefinition().')';
@@ -1121,7 +1133,7 @@ abstract class AbstractPlatform implements PlatformInterface
      *
      * @return string The create column comment SQL query.
      */
-    protected function getCreateColumnCommentSQLQuery(Schema\Column $column, $table)
+    protected function getCreateColumnCommentSQLQuery(Column $column, $table)
     {
         return 'COMMENT ON COLUMN '.$table.'.'.$column->getName().' IS '.$this->getColumnCommentSQLDeclaration($column);
     }
@@ -1133,7 +1145,7 @@ abstract class AbstractPlatform implements PlatformInterface
      *
      * @return string The column comment SQL declaration.
      */
-    protected function getColumnCommentSQLDeclaration(Schema\Column $column)
+    protected function getColumnCommentSQLDeclaration(Column $column)
     {
         $comment = $column->getComment();
 

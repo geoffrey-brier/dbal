@@ -11,7 +11,7 @@
 
 namespace Fridge\Tests\DBAL\Schema;
 
-use Fridge\DBAL\Schema;
+use Fridge\DBAL\Schema\ForeignKey;
 
 /**
  * Foreign key test.
@@ -28,7 +28,7 @@ class ForeignKeyTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->foreignKey = new Schema\ForeignKey('foo', array(), 'bar', array());
+        $this->foreignKey = new ForeignKey('foo', array(), 'bar', array());
     }
 
     /**
@@ -45,13 +45,13 @@ class ForeignKeyTest extends \PHPUnit_Framework_TestCase
         $this->assertEmpty($this->foreignKey->getLocalColumnNames());
         $this->assertSame('bar', $this->foreignKey->getForeignTableName());
         $this->assertEmpty($this->foreignKey->getForeignColumnNames());
-        $this->assertSame(Schema\ForeignKey::RESTRICT, $this->foreignKey->getOnDelete());
-        $this->assertSame(Schema\ForeignKey::RESTRICT, $this->foreignKey->getOnUpdate());
+        $this->assertSame(ForeignKey::RESTRICT, $this->foreignKey->getOnDelete());
+        $this->assertSame(ForeignKey::RESTRICT, $this->foreignKey->getOnUpdate());
     }
 
     public function testGeneratedName()
     {
-        $foreignKey = new Schema\ForeignKey(null, array(), 'bar', array());
+        $foreignKey = new ForeignKey(null, array(), 'bar', array());
         $this->assertRegExp('/^fk_[a-z0-9]{17}$/', $foreignKey->getName());
     }
 
@@ -106,15 +106,15 @@ class ForeignKeyTest extends \PHPUnit_Framework_TestCase
 
     public function testOnDelete()
     {
-        $this->foreignKey->setOnDelete(Schema\ForeignKey::SET_NULL);
+        $this->foreignKey->setOnDelete(ForeignKey::SET_NULL);
 
-        $this->assertSame(Schema\ForeignKey::SET_NULL, $this->foreignKey->getOnDelete());
+        $this->assertSame(ForeignKey::SET_NULL, $this->foreignKey->getOnDelete());
     }
 
     public function testOnUpdate()
     {
-        $this->foreignKey->setOnUpdate(Schema\ForeignKey::CASCADE);
+        $this->foreignKey->setOnUpdate(ForeignKey::CASCADE);
 
-        $this->assertSame(Schema\ForeignKey::CASCADE, $this->foreignKey->getOnUpdate());
+        $this->assertSame(ForeignKey::CASCADE, $this->foreignKey->getOnUpdate());
     }
 }

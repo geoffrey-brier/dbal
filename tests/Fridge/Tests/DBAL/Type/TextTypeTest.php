@@ -13,7 +13,8 @@ namespace Fridge\Tests\DBAL\Type;
 
 use \PDO;
 
-use Fridge\DBAL\Type;
+use Fridge\DBAL\Type\TextType,
+    Fridge\DBAL\Type\Type;
 
 /**
  * Text type test.
@@ -29,7 +30,7 @@ class TextTypeTest extends AbstractTypeTest
     {
         parent::setUp();
 
-        $this->type = new Type\TextType();
+        $this->type = new TextType();
     }
 
     public function testSQLDeclaration()
@@ -68,6 +69,6 @@ class TextTypeTest extends AbstractTypeTest
 
     public function testName()
     {
-        $this->assertSame(Type\Type::TEXT, $this->type->getName());
+        $this->assertSame(Type::TEXT, $this->type->getName());
     }
 }

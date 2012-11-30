@@ -13,7 +13,8 @@ namespace Fridge\Tests\DBAL\Type;
 
 use \PDO;
 
-use Fridge\DBAL\Type;
+use Fridge\DBAL\Type\DecimalType,
+    Fridge\DBAL\Type\Type;
 
 /**
  * Decimal type test.
@@ -29,7 +30,7 @@ class DecimalTypeTest extends AbstractTypeTest
     {
         parent::setUp();
 
-        $this->type = new Type\DecimalType();
+        $this->type = new DecimalType();
     }
 
     public function testSQLDeclaration()
@@ -68,6 +69,6 @@ class DecimalTypeTest extends AbstractTypeTest
 
     public function testName()
     {
-        $this->assertSame(Type\Type::DECIMAL, $this->type->getName());
+        $this->assertSame(Type::DECIMAL, $this->type->getName());
     }
 }

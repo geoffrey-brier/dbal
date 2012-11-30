@@ -11,7 +11,9 @@
 
 namespace Fridge\Tests\DBAL\SchemaManager\SQLCollector;
 
-use Fridge\DBAL\Schema,
+use Fridge\DBAL\Schema\Column,
+    Fridge\DBAL\Schema\ForeignKey,
+    Fridge\DBAL\Schema\Table,
     Fridge\DBAL\SchemaManager\SQLCollector\CreateTableSQLCollector,
     Fridge\DBAL\Type\Type;
 
@@ -39,11 +41,11 @@ class CreateTableSQLCollectorTest extends \PHPUnit_Framework_TestCase
         $this->platformMock = $this->getMock('Fridge\DBAL\Platform\PlatformInterface');
         $this->sqlCollector = new CreateTableSQLCollector($this->platformMock);
 
-        $this->table = new Schema\Table(
+        $this->table = new Table(
             'foo',
-            array(new Schema\Column('foo', Type::getType(Type::INTEGER))),
+            array(new Column('foo', Type::getType(Type::INTEGER))),
             null,
-            array(new Schema\ForeignKey('foo', array('foo'), 'bar', array('bar')))
+            array(new ForeignKey('foo', array('foo'), 'bar', array('bar')))
         );
     }
 

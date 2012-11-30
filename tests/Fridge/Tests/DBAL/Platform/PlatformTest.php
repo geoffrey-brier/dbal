@@ -15,7 +15,18 @@ use \DateTime,
     \ReflectionMethod;
 
 use Fridge\DBAL\Connection\Connection,
-    Fridge\DBAL\Schema,
+    Fridge\DBAL\Schema\Check,
+    Fridge\DBAL\Schema\Column,
+    Fridge\DBAL\Schema\Diff\ColumnDiff,
+    Fridge\DBAL\Schema\Diff\SchemaDiff,
+    Fridge\DBAL\Schema\Diff\TableDiff,
+    Fridge\DBAL\Schema\ForeignKey,
+    Fridge\DBAL\Schema\Index,
+    Fridge\DBAL\Schema\PrimaryKey,
+    Fridge\DBAL\Schema\Schema,
+    Fridge\DBAL\Schema\Sequence,
+    Fridge\DBAL\Schema\Table,
+    Fridge\DBAL\Schema\View,
     Fridge\DBAL\Type\Type;
 
 /**
@@ -516,7 +527,7 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
 
     public function testCreateSequenceSQLQueries()
     {
-        $sequence = new Schema\Sequence('foo', 1, 1);
+        $sequence = new Sequence('foo', 1, 1);
 
         $this->assertSame(
             array('CREATE SEQUENCE foo INCREMENT BY 1 MINVALUE 1 START WITH 1'),
@@ -526,14 +537,14 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
 
     public function testCreateViewSQLQueries()
     {
-        $view = new Schema\View('foo', 'bar');
+        $view = new View('foo', 'bar');
 
         $this->assertSame(array('CREATE VIEW foo AS bar'), $this->platform->getCreateViewSQLQueries($view));
     }
 
     public function testCreateColumnSQLQueries()
     {
-        $column = new Schema\Column('foo', Type::getType(Type::INTEGER), array('comment' => 'foo'));
+        $column = new Column('foo', Type::getType(Type::INTEGER), array('comment' => 'foo'));
 
         $this->assertSame(
             array('ALTER TABLE foo ADD COLUMN foo INT COMMENT \'foo\''),
@@ -543,7 +554,7 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
 
     public function testCreateConstraintSQLQueriesWithPrimaryKey()
     {
-        $primaryKey = new Schema\PrimaryKey('foo', array('bar'));
+        $primaryKey = new PrimaryKey('foo', array('bar'));
 
         $this->assertSame(
             array('ALTER TABLE foo ADD CONSTRAINT foo PRIMARY KEY (bar)'),
@@ -553,13 +564,13 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
 
     public function testCreateConstraintSQLQueriesWithForeignKey()
     {
-        $foreignKey = new Schema\ForeignKey(
+        $foreignKey = new ForeignKey(
             'foo',
             array('foo'),
             'bar',
             array('bar'),
-            Schema\ForeignKey::SET_NULL,
-            Schema\ForeignKey::CASCADE
+            ForeignKey::SET_NULL,
+            ForeignKey::CASCADE
         );
 
         $this->assertSame(
@@ -577,7 +588,7 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
 
     public function testCreateConstraintSQLQueriesWithUniqueIndex()
     {
-        $index = new Schema\Index('foo', array('foo'), true);
+        $index = new Index('foo', array('foo'), true);
 
         $this->assertSame(
             array('ALTER TABLE foo ADD CONSTRAINT foo UNIQUE (foo)'),
@@ -587,7 +598,7 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
 
     public function testCreateConstraintSQLQueriesWithNonUniqueIndex()
     {
-        $index = new Schema\Index('foo', array('foo'));
+        $index = new Index('foo', array('foo'));
 
         $this->assertSame(
             array('CREATE INDEX foo ON foo (foo)'),
@@ -597,7 +608,7 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
 
     public function testCreateConstraintSQLQueriesWithCheck()
     {
-        $check = new Schema\Check('foo', 'bar');
+        $check = new Check('foo', 'bar');
 
         $this->assertSame(
             array('ALTER TABLE foo ADD CONSTRAINT foo CHECK (bar)'),
@@ -621,7 +632,7 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
 
     public function testCreatePrimaryKeySQLQueries()
     {
-        $primaryKey = new Schema\PrimaryKey('foo', array('foo'));
+        $primaryKey = new PrimaryKey('foo', array('foo'));
 
         $this->assertSame(
             array('ALTER TABLE foo ADD CONSTRAINT foo PRIMARY KEY (foo)'),
@@ -631,13 +642,13 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
 
     public function testCreateForeignKeySQLQueries()
     {
-        $foreignKey = new Schema\ForeignKey(
+        $foreignKey = new ForeignKey(
             'foo',
             array('foo'),
             'bar',
             array('bar'),
-            Schema\ForeignKey::SET_NULL,
-            Schema\ForeignKey::CASCADE
+            ForeignKey::SET_NULL,
+            ForeignKey::CASCADE
         );
 
         $this->assertSame(
@@ -655,7 +666,7 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
 
     public function testCreateIndexSQLQueriesWithUniqueIndex()
     {
-        $index = new Schema\Index('foo', array('foo'), true);
+        $index = new Index('foo', array('foo'), true);
 
         $this->assertSame(
             array('ALTER TABLE foo ADD CONSTRAINT foo UNIQUE (foo)'),
@@ -665,7 +676,7 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
 
     public function testCreateIndexSQLQueriesWithNonUniqueIndex()
     {
-        $index = new Schema\Index('foo', array('foo'));
+        $index = new Index('foo', array('foo'));
 
         $this->assertSame(
             array('CREATE INDEX foo ON foo (foo)'),
@@ -675,7 +686,7 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
 
     public function testCreateCheckSQLQueries()
     {
-        $check = new Schema\Check('foo', 'bar');
+        $check = new Check('foo', 'bar');
 
         $this->assertSame(
             array('ALTER TABLE zaz ADD CONSTRAINT foo CHECK (bar)'),
@@ -685,10 +696,10 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
 
     public function testRenameDatabaseSQLQueries()
     {
-        $oldSchema = new Schema\Schema('foo');
-        $newSchema = new Schema\Schema('bar');
+        $oldSchema = new Schema('foo');
+        $newSchema = new Schema('bar');
 
-        $schemaDiff = new Schema\Diff\SchemaDiff($oldSchema, $newSchema);
+        $schemaDiff = new SchemaDiff($oldSchema, $newSchema);
 
         $this->assertSame(
             array('ALTER DATABASE foo RENAME TO bar'),
@@ -698,10 +709,10 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
 
     public function testRenameTableSQLQueries()
     {
-        $oldTable = new Schema\Table('foo');
-        $newTable = new Schema\Table('bar');
+        $oldTable = new Table('foo');
+        $newTable = new Table('bar');
 
-        $tableDiff = new Schema\Diff\TableDiff($oldTable, $newTable);
+        $tableDiff = new TableDiff($oldTable, $newTable);
 
         $this->assertSame(
             array('ALTER TABLE foo RENAME TO bar'),
@@ -711,9 +722,9 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
 
     public function testAlterColumnSQLQueries()
     {
-        $columnDiff = new Schema\Diff\ColumnDiff(
-            new Schema\Column('foo', Type::getType(Type::INTEGER)),
-            new Schema\Column('bar', Type::getType(Type::INTEGER), array('comment' => 'foo')),
+        $columnDiff = new ColumnDiff(
+            new Column('foo', Type::getType(Type::INTEGER)),
+            new Column('bar', Type::getType(Type::INTEGER), array('comment' => 'foo')),
             array()
         );
 
@@ -730,28 +741,28 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
 
     public function testDropSequenceSQLQueries()
     {
-        $sequence = new Schema\Sequence('foo');
+        $sequence = new Sequence('foo');
 
         $this->assertSame(array('DROP SEQUENCE foo'), $this->platform->getDropSequenceSQLQueries($sequence));
     }
 
     public function testDropViewSQLQueries()
     {
-        $view = new Schema\View('foo');
+        $view = new View('foo');
 
         $this->assertSame(array('DROP VIEW foo'), $this->platform->getDropViewSQLQueries($view));
     }
 
     public function testDropTableSQLQueries()
     {
-        $table = new Schema\Table('foo');
+        $table = new Table('foo');
 
         $this->assertSame(array('DROP TABLE foo'), $this->platform->getDropTableSQLQueries($table));
     }
 
     public function testDropColumnSQLQueries()
     {
-        $column = new Schema\Column('foo', Type::getType(Type::INTEGER));
+        $column = new Column('foo', Type::getType(Type::INTEGER));
 
         $this->assertSame(
             array('ALTER TABLE foo DROP COLUMN foo'),
@@ -761,7 +772,7 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
 
     public function testDropConstraintSQLQueriesWithPrimaryKey()
     {
-        $constraint = new Schema\PrimaryKey('foo');
+        $constraint = new PrimaryKey('foo');
 
         $this->assertSame(
             array('ALTER TABLE bar DROP CONSTRAINT foo'),
@@ -771,7 +782,7 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
 
     public function testDropConstraintSQLQueriesWithForeignKey()
     {
-        $constraint = new Schema\ForeignKey('foo', array(), 'bar', array());
+        $constraint = new ForeignKey('foo', array(), 'bar', array());
 
         $this->assertSame(
             array('ALTER TABLE bar DROP CONSTRAINT foo'),
@@ -781,7 +792,7 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
 
     public function testDropConstraintSQLQueriesWithIndex()
     {
-        $constraint = new Schema\Index('foo');
+        $constraint = new Index('foo');
 
         $this->assertSame(
             array('DROP INDEX foo'),
@@ -791,7 +802,7 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
 
     public function testDropConstraintSQLQueriesWithCheck()
     {
-        $check = new Schema\Check('foo', 'bar');
+        $check = new Check('foo', 'bar');
 
         $this->assertSame(
             array('ALTER TABLE foo DROP CONSTRAINT foo'),
@@ -813,7 +824,7 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
 
     public function testDropPrimaryKeySQLQueries()
     {
-        $primaryKey = new Schema\PrimaryKey('foo');
+        $primaryKey = new PrimaryKey('foo');
 
         $this->assertSame(
             array('ALTER TABLE bar DROP CONSTRAINT foo'),
@@ -823,7 +834,7 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
 
     public function testDropForeignKeySQLQueries()
     {
-        $foreignKey = new Schema\ForeignKey('foo', array(), 'bar', array());
+        $foreignKey = new ForeignKey('foo', array(), 'bar', array());
 
         $this->assertSame(
             array('ALTER TABLE bar DROP CONSTRAINT foo'),
@@ -833,7 +844,7 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
 
     public function testDropIndexSQLQueriesWithUniqueIndex()
     {
-        $index = new Schema\Index('foo', array(), true);
+        $index = new Index('foo', array(), true);
 
         $this->assertSame(
             array('ALTER TABLE bar DROP CONSTRAINT foo'),
@@ -843,7 +854,7 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
 
     public function testDropIndexSQLQueriesWithNonUniqueIndex()
     {
-        $index = new Schema\Index('foo');
+        $index = new Index('foo');
 
         $this->assertSame(
             array('DROP INDEX foo'),
@@ -853,7 +864,7 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
 
     public function testDropCheckSQLQueries()
     {
-        $check = new Schema\Check('foo', 'bar');
+        $check = new Check('foo', 'bar');
 
         $this->assertSame(
             array('ALTER TABLE zaz DROP CONSTRAINT foo'),
@@ -888,7 +899,7 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
 
     public function testColumnSQLDeclarationWithAllOptions()
     {
-        $column = new Schema\Column(
+        $column = new Column(
             'foo',
             Type::getType(Type::STRING),
             array(
@@ -910,7 +921,7 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
 
     public function testColumnSQLDeclarationWithTypedDefaultValue()
     {
-        $column = new Schema\Column(
+        $column = new Column(
             'foo',
             Type::getType(Type::DATETIME),
             array('default' => new DateTime('2012-01-01 12:12:12'))
@@ -924,7 +935,7 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
 
     public function testColumnSQLDeclarationWithMandatoryType()
     {
-        $column = new Schema\Column('foo', Type::getType(Type::TARRAY));
+        $column = new Column('foo', Type::getType(Type::TARRAY));
 
         $method = new ReflectionMethod($this->platform, 'getColumnSQLDeclaration');
         $method->setAccessible(true);
@@ -935,8 +946,8 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
     public function testColumnsSQLDeclaration()
     {
         $columns = array(
-            new Schema\Column('foo', Type::getType(Type::INTEGER)),
-            new Schema\Column('bar', Type::getType(Type::INTEGER)),
+            new Column('foo', Type::getType(Type::INTEGER)),
+            new Column('bar', Type::getType(Type::INTEGER)),
         );
 
         $method = new ReflectionMethod($this->platform, 'getColumnsSQLDeclaration');
@@ -947,31 +958,31 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
 
     public function testCreateTableSQLQueries()
     {
-        $table = new Schema\Table(
+        $table = new Table(
             'foo',
             array(
-                new Schema\Column('foo', Type::getType(Type::INTEGER)),
-                new Schema\Column('bar', Type::getType(Type::INTEGER)),
-                new Schema\Column('foo_bar', Type::getType(Type::INTEGER)),
-                new Schema\Column('bar_foo', Type::getType(Type::INTEGER)),
+                new Column('foo', Type::getType(Type::INTEGER)),
+                new Column('bar', Type::getType(Type::INTEGER)),
+                new Column('foo_bar', Type::getType(Type::INTEGER)),
+                new Column('bar_foo', Type::getType(Type::INTEGER)),
             ),
-            new Schema\PrimaryKey('pk1', array('foo')),
+            new PrimaryKey('pk1', array('foo')),
             array(
-                new Schema\ForeignKey(
+                new ForeignKey(
                     'fk1',
                     array('bar'),
                     'bar',
                     array('bar'),
-                    Schema\ForeignKey::CASCADE,
-                    Schema\ForeignKey::CASCADE
+                    ForeignKey::CASCADE,
+                    ForeignKey::CASCADE
                 )
             ),
             array(
-                new Schema\Index('idx1', array('foo_bar')),
-                new Schema\Index('uniq1', array('bar_foo'), true),
+                new Index('idx1', array('foo_bar')),
+                new Index('uniq1', array('bar_foo'), true),
             ),
             array(
-                new Schema\Check('ck1', 'foo > 0'),
+                new Check('ck1', 'foo > 0'),
             )
         );
 
@@ -995,12 +1006,12 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
 
     public function testCreateTableSQLQueriesWithIndexOnly()
     {
-        $table = new Schema\Table(
+        $table = new Table(
             'foo',
-            array(new Schema\Column('foo', Type::getType(Type::INTEGER))),
+            array(new Column('foo', Type::getType(Type::INTEGER))),
             null,
             array(),
-            array(new Schema\Index('idx1', array('foo')))
+            array(new Index('idx1', array('foo')))
         );
 
         $this->assertSame(
@@ -1011,10 +1022,10 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
 
     public function testCreateTableSQLQueriesWithPrimaryKeyDisabled()
     {
-        $table = new Schema\Table(
+        $table = new Table(
             'foo',
-            array(new Schema\Column('foo', Type::getType(Type::INTEGER))),
-            new Schema\PrimaryKey('pk1', array('foo'))
+            array(new Column('foo', Type::getType(Type::INTEGER))),
+            new PrimaryKey('pk1', array('foo'))
         );
 
         $this->assertSame(
@@ -1025,11 +1036,11 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
 
     public function testCreateTableSQLQueriesWithForeignKeyDisabled()
     {
-        $table = new Schema\Table(
+        $table = new Table(
             'foo',
-            array(new Schema\Column('foo', Type::getType(Type::INTEGER))),
+            array(new Column('foo', Type::getType(Type::INTEGER))),
             null,
-            array(new Schema\ForeignKey('fk1', array('foo'), 'bar', array('bar')))
+            array(new ForeignKey('fk1', array('foo'), 'bar', array('bar')))
         );
 
         $this->assertSame(
@@ -1040,12 +1051,12 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
 
     public function testCreateTableSQLQueriesWithIndexDisabled()
     {
-        $table = new Schema\Table(
+        $table = new Table(
             'foo',
-            array(new Schema\Column('foo', Type::getType(Type::INTEGER))),
+            array(new Column('foo', Type::getType(Type::INTEGER))),
             null,
             array(),
-            array(new Schema\Index('idx1', array('foo')))
+            array(new Index('idx1', array('foo')))
         );
 
         $this->assertSame(
@@ -1056,13 +1067,13 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
 
     public function testCreateTableSQLQueriesWithCheckDisabled()
     {
-        $table = new Schema\Table(
+        $table = new Table(
             'foo',
-            array(new Schema\Column('foo', Type::getType(Type::INTEGER))),
+            array(new Column('foo', Type::getType(Type::INTEGER))),
             null,
             array(),
             array(),
-            array(new Schema\Check('ck1', array('foo > 0')))
+            array(new Check('ck1', array('foo > 0')))
         );
 
         $this->assertSame(

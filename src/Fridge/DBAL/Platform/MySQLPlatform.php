@@ -11,7 +11,12 @@
 
 namespace Fridge\DBAL\Platform;
 
-use Fridge\DBAL\Schema,
+use Fridge\DBAL\Schema\Diff\ColumnDiff,
+    Fridge\DBAL\Schema\Diff\SchemaDiff,
+    Fridge\DBAL\Schema\ForeignKey,
+    Fridge\DBAL\Schema\Index,
+    Fridge\DBAL\Schema\PrimaryKey,
+    Fridge\DBAL\Schema\Table,
     Fridge\DBAL\Type\Type;
 
 /**
@@ -248,7 +253,7 @@ class MySQLPlatform extends AbstractPlatform
     /**
      * {@inheritdoc}
      */
-    public function getCreateTableSQLQueries(Schema\Table $table, array $flags = array())
+    public function getCreateTableSQLQueries(Table $table, array $flags = array())
     {
         $queries = parent::getCreateTableSQLQueries($table, $flags);
 
@@ -260,7 +265,7 @@ class MySQLPlatform extends AbstractPlatform
     /**
      * {@inheritdoc}
      */
-    public function getRenameDatabaseSQLQueries(Schema\Diff\SchemaDiff $schemaDiff)
+    public function getRenameDatabaseSQLQueries(SchemaDiff $schemaDiff)
     {
         $queries = $this->getCreateDatabaseSQLQueries($schemaDiff->getNewAsset()->getName());
 
@@ -275,7 +280,7 @@ class MySQLPlatform extends AbstractPlatform
     /**
      * {@inheritdoc}
      */
-    public function getAlterColumnSQLQueries(Schema\Diff\ColumnDiff $columnDiff, $table)
+    public function getAlterColumnSQLQueries(ColumnDiff $columnDiff, $table)
     {
         return array(
             'ALTER TABLE '.$table.' CHANGE COLUMN '.$columnDiff->getOldAsset()->getName().' '.
@@ -286,7 +291,7 @@ class MySQLPlatform extends AbstractPlatform
     /**
      * {@inheritdoc}
      */
-    public function getDropPrimaryKeySQLQueries(Schema\PrimaryKey $primaryKey, $table)
+    public function getDropPrimaryKeySQLQueries(PrimaryKey $primaryKey, $table)
     {
         return array('ALTER TABLE '.$table.' DROP PRIMARY KEY');
     }
@@ -294,7 +299,7 @@ class MySQLPlatform extends AbstractPlatform
     /**
      * {@inheritdoc}
      */
-    public function getDropForeignKeySQLQueries(Schema\ForeignKey $foreignKey, $table)
+    public function getDropForeignKeySQLQueries(ForeignKey $foreignKey, $table)
     {
         return array('ALTER TABLE '.$table.' DROP FOREIGN KEY '.$foreignKey->getName());
     }
@@ -302,7 +307,7 @@ class MySQLPlatform extends AbstractPlatform
     /**
      * {@inheritdoc}
      */
-    public function getDropIndexSQLQueries(Schema\Index $index, $table)
+    public function getDropIndexSQLQueries(Index $index, $table)
     {
         return array('ALTER TABLE '.$table.' DROP INDEX '.$index->getName());
     }
@@ -350,7 +355,7 @@ class MySQLPlatform extends AbstractPlatform
     /**
      * {@inheritdoc}
      */
-    protected function getPrimaryKeySQLDeclaration(Schema\PrimaryKey $primaryKey)
+    protected function getPrimaryKeySQLDeclaration(PrimaryKey $primaryKey)
     {
         return 'CONSTRAINT PRIMARY KEY ('.implode(', ', $primaryKey->getColumnNames()).')';
     }

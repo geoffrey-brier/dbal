@@ -13,7 +13,8 @@ namespace Fridge\Tests\DBAL\Type;
 
 use \PDO;
 
-use Fridge\DBAL\Type;
+use Fridge\DBAL\Type\FloatType,
+    Fridge\DBAL\Type\Type;
 
 /**
  * Float type test.
@@ -29,7 +30,7 @@ class FloatTypeTest extends AbstractTypeTest
     {
         parent::setUp();
 
-        $this->type = new Type\FloatType();
+        $this->type = new FloatType();
     }
 
     public function testSQLDeclaration()
@@ -68,6 +69,6 @@ class FloatTypeTest extends AbstractTypeTest
 
     public function testName()
     {
-        $this->assertSame(Type\Type::FLOAT, $this->type->getName());
+        $this->assertSame(Type::FLOAT, $this->type->getName());
     }
 }

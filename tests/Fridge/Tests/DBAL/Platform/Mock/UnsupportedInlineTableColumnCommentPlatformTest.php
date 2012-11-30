@@ -12,7 +12,8 @@
 namespace Fridge\Tests\DBAL\Platform\Mock;
 
 use Fridge\DBAL\Platform\AbstractPlatform,
-    Fridge\DBAL\Schema,
+    Fridge\DBAL\Schema\Column,
+    Fridge\DBAL\Schema\Diff\ColumnDiff,
     Fridge\DBAL\Type\Type;
 
 /**
@@ -43,9 +44,9 @@ class UnsupportedInlineTableColumnCommentPlatformTest extends \PHPUnit_Framework
 
     public function testAlterColumnSQLQueries()
     {
-        $columnDiff = new Schema\Diff\ColumnDiff(
-            new Schema\Column('foo', Type::getType(Type::INTEGER)),
-            new Schema\Column('bar', Type::getType(Type::INTEGER), array('comment' => 'foo')),
+        $columnDiff = new ColumnDiff(
+            new Column('foo', Type::getType(Type::INTEGER)),
+            new Column('bar', Type::getType(Type::INTEGER), array('comment' => 'foo')),
             array()
         );
 

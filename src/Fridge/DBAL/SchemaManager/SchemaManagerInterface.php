@@ -11,7 +11,19 @@
 
 namespace Fridge\DBAL\SchemaManager;
 
-use Fridge\DBAL\Schema;
+use Fridge\DBAL\Schema\Check,
+    Fridge\DBAL\Schema\Column,
+    Fridge\DBAL\Schema\ConstraintInterface,
+    Fridge\DBAL\Schema\Diff\ColumnDiff,
+    Fridge\DBAL\Schema\Diff\SchemaDiff,
+    Fridge\DBAL\Schema\Diff\TableDiff,
+    Fridge\DBAL\Schema\Index,
+    Fridge\DBAL\Schema\ForeignKey,
+    Fridge\DBAL\Schema\PrimaryKey,
+    Fridge\DBAL\Schema\Schema,
+    Fridge\DBAL\Schema\Sequence,
+    Fridge\DBAL\Schema\Table,
+    Fridge\DBAL\Schema\View;
 
 /**
  * A schema manager allows to fetch / create / drop schema entities.
@@ -160,21 +172,21 @@ interface SchemaManagerInterface
      *
      * @param \Fridge\DBAL\Schema\Schema $schema The schema.
      */
-    function createSchema(Schema\Schema $schema);
+    function createSchema(Schema $schema);
 
     /**
      * Creates a sequence.
      *
      * @param \Fridge\DBAL\Schema\Sequence $sequence The sequence.
      */
-    function createSequence(Schema\Sequence $sequence);
+    function createSequence(Sequence $sequence);
 
     /**
      * Creates a view.
      *
      * @param \Fridge\DBAL\Schema\View $view The view.
      */
-    function createView(Schema\View $view);
+    function createView(View $view);
 
     /**
      * Creates tables.
@@ -188,7 +200,7 @@ interface SchemaManagerInterface
      *
      * @param \Fridge\DBAL\Schema\Table $table The table.
      */
-    function createTable(Schema\Table $table);
+    function createTable(Table $table);
 
     /**
      * Creates a table column.
@@ -196,7 +208,7 @@ interface SchemaManagerInterface
      * @param \Fridge\DBAL\Schema\Column $column The column.
      * @param string                     $table  The table name.
      */
-    function createColumn(Schema\Column $column, $table);
+    function createColumn(Column $column, $table);
 
     /**
      * Creates a constraint.
@@ -204,7 +216,7 @@ interface SchemaManagerInterface
      * @param \Fridge\DBAL\Schema\ConstraintInterface $constraint The constraint.
      * @param string                                  $table      The table name of the constraint.
      */
-    function createConstraint(Schema\ConstraintInterface $constraint, $table);
+    function createConstraint(ConstraintInterface $constraint, $table);
 
     /**
      * Creates a primary key.
@@ -212,7 +224,7 @@ interface SchemaManagerInterface
      * @param \Fridge\DBAL\Schema\PrimaryKey $primaryKey The primary key.
      * @param string                         $table      The table name of the primary key.
      */
-    function createPrimaryKey(Schema\PrimaryKey $primaryKey, $table);
+    function createPrimaryKey(PrimaryKey $primaryKey, $table);
 
     /**
      * Creates a foreign key.
@@ -220,7 +232,7 @@ interface SchemaManagerInterface
      * @param \Fridge\DBAL\Schema\ForeignKey $foreignKey The foreign key.
      * @param string                         $table      The table name of the foreign key.
      */
-    function createForeignKey(Schema\ForeignKey $foreignKey, $table);
+    function createForeignKey(ForeignKey $foreignKey, $table);
 
     /**
      * Creates an index.
@@ -228,7 +240,7 @@ interface SchemaManagerInterface
      * @param \Fridge\DBAL\Schema\Index $index The index.
      * @param string                    $table The table name of the index.
      */
-    function createIndex(Schema\Index $index, $table);
+    function createIndex(Index $index, $table);
 
     /**
      * Creates a check constraint.
@@ -236,14 +248,14 @@ interface SchemaManagerInterface
      * @param \Fridge\DBAL\Schema\Check $check The check constraint.
      * @param string                    $table The table name of the check constraint.
      */
-    function createCheck(Schema\Check $check, $table);
+    function createCheck(Check $check, $table);
 
     /**
      * Alters a schema.
      *
      * @param \Fridge\DBAL\Schema\Diff\SchemaDiff $schemaDiff The schema diff.
      */
-    function alterSchema(Schema\Diff\SchemaDiff $schemaDiff);
+    function alterSchema(SchemaDiff $schemaDiff);
 
     /**
      * Alter tables.
@@ -257,7 +269,7 @@ interface SchemaManagerInterface
      *
      * @param \Fridge\DBAL\Schema\Diff\TableDiff $tableDiff The table diff.
      */
-    function alterTable(Schema\Diff\TableDiff $tableDiff);
+    function alterTable(TableDiff $tableDiff);
 
     /**
      * Alters a table column.
@@ -265,7 +277,7 @@ interface SchemaManagerInterface
      * @param \Fridge\DBAL\Schema\Diff\ColumnDiff $columnDiff The column diff.
      * @param string                              $table      The table name.
      */
-    function alterColumn(Schema\Diff\ColumnDiff $columnDiff, $table);
+    function alterColumn(ColumnDiff $columnDiff, $table);
 
     /**
      * Drops a database.
@@ -279,21 +291,21 @@ interface SchemaManagerInterface
      *
      * @param \Fridge\DBAL\Schema\Schema $schema The schema.
      */
-    function dropSchema(Schema\Schema $schema);
+    function dropSchema(Schema $schema);
 
     /**
      * Drops a sequence.
      *
      * @param \Fridge\DBAL\Schema\Sequence $sequence The sequence.
      */
-    function dropSequence(Schema\Sequence $sequence);
+    function dropSequence(Sequence $sequence);
 
     /**
      * Drops a view.
      *
      * @param \Fridge\DBAL\Schema\View $view The view.
      */
-    function dropView(Schema\View $view);
+    function dropView(View $view);
 
     /**
      * Drops tables.
@@ -307,7 +319,7 @@ interface SchemaManagerInterface
      *
      * @param \Fridge\DBAL\Schema\Table $table The table.
      */
-    function dropTable(Schema\Table $table);
+    function dropTable(Table $table);
 
     /**
      * Drops a table column.
@@ -315,7 +327,7 @@ interface SchemaManagerInterface
      * @param \Fridge\DBAL\Schema\Column $column The column.
      * @param string                     $table  The table name.
      */
-    function dropColumn(Schema\Column $column, $table);
+    function dropColumn(Column $column, $table);
 
     /**
      * Drops a constraint.
@@ -323,7 +335,7 @@ interface SchemaManagerInterface
      * @param \Fridge\DBAL\Schema\ConstraintInterface $constraint The constraint.
      * @param string                                  $table      The table name of the constraint.
      */
-    function dropConstraint(Schema\ConstraintInterface $constraint, $table);
+    function dropConstraint(ConstraintInterface $constraint, $table);
 
     /**
      * Drops a primary key.
@@ -331,7 +343,7 @@ interface SchemaManagerInterface
      * @param \Fridge\DBAL\Schema\PrimaryKey $primaryKey The primary key.
      * @param string                         $table      The table name of the primary key.
      */
-    function dropPrimaryKey(Schema\PrimaryKey $primaryKey, $table);
+    function dropPrimaryKey(PrimaryKey $primaryKey, $table);
 
     /**
      * Drops a foreign key.
@@ -339,7 +351,7 @@ interface SchemaManagerInterface
      * @param \Fridge\DBAL\Schema\ForeignKey $foreignKey The foreign key.
      * @param string                         $table      The table name of the foreign key.
      */
-    function dropForeignKey(Schema\ForeignKey $foreignKey, $table);
+    function dropForeignKey(ForeignKey $foreignKey, $table);
 
     /**
      * Drops an index.
@@ -347,7 +359,7 @@ interface SchemaManagerInterface
      * @param \Fridge\DBAL\Schema\Index $index The index.
      * @param string                    $table The table name of the index.
      */
-    function dropIndex(Schema\Index $index, $table);
+    function dropIndex(Index $index, $table);
 
     /**
      * Drops a ceck constraint.
@@ -355,7 +367,7 @@ interface SchemaManagerInterface
      * @param \Fridge\DBAL\Schema\Check $check The check constraint.
      * @param string                    $table The table name of the check constraint.
      */
-    function dropCheck(Schema\Check $check, $table);
+    function dropCheck(Check $check, $table);
 
     /**
      * Drops & creates a database.
@@ -369,21 +381,21 @@ interface SchemaManagerInterface
      *
      * @param \Fridge\DBAL\Schema\Schema $schema The schema.
      */
-    function dropAndCreateSchema(Schema\Schema $schema);
+    function dropAndCreateSchema(Schema $schema);
 
     /**
      * Drops & creates a sequence.
      *
      * @param \Fridge\DBAL\Schema\Sequence $sequence The sequence.
      */
-    function dropAndCreateSequence(Schema\Sequence $sequence);
+    function dropAndCreateSequence(Sequence $sequence);
 
     /**
      * Drops & creates a view.
      *
      * @param \Fridge\DBAL\Schema\View $view The view.
      */
-    function dropAndCreateView(Schema\View $view);
+    function dropAndCreateView(View $view);
 
     /**
      * Drops & creates tables.
@@ -397,7 +409,7 @@ interface SchemaManagerInterface
      *
      * @param \Fridge\DBAL\Schema\Table $table The table.
      */
-    function dropAndCreateTable(Schema\Table $table);
+    function dropAndCreateTable(Table $table);
 
     /**
      * Drops & creates a table column.
@@ -405,7 +417,7 @@ interface SchemaManagerInterface
      * @param \Fridge\DBAL\Schema\Column $column The column.
      * @param string                     $table  The table name.
      */
-    function dropAndCreateColumn(Schema\Column $column, $table);
+    function dropAndCreateColumn(Column $column, $table);
 
     /**
      * Drops & creates a constraint.
@@ -413,7 +425,7 @@ interface SchemaManagerInterface
      * @param \Fridge\DBAL\Schema\ConstraintInterface $constraint The constraint.
      * @param string                                  $table      The table name of the constraint.
      */
-    function dropAndCreateConstraint(Schema\ConstraintInterface $constraint, $table);
+    function dropAndCreateConstraint(ConstraintInterface $constraint, $table);
 
     /**
      * Drops & creates a primary key.
@@ -421,7 +433,7 @@ interface SchemaManagerInterface
      * @param \Fridge\DBAL\Schema\PrimaryKey $primaryKey The primary key.
      * @param string                         $table      The table name of the primary key.
      */
-    function dropAndCreatePrimaryKey(Schema\PrimaryKey $primaryKey, $table);
+    function dropAndCreatePrimaryKey(PrimaryKey $primaryKey, $table);
 
     /**
      * Drops & creates a foreign key.
@@ -429,7 +441,7 @@ interface SchemaManagerInterface
      * @param \Fridge\DBAL\Schema\ForeignKey $foreignKey The foreign key.
      * @param string                         $table      The table name of the foreign key.
      */
-    function dropAndCreateForeignKey(Schema\ForeignKey $foreignKey, $table);
+    function dropAndCreateForeignKey(ForeignKey $foreignKey, $table);
 
     /**
      * Drops & creates an index.
@@ -437,7 +449,7 @@ interface SchemaManagerInterface
      * @param \Fridge\DBAL\Schema\Index $index The index.
      * @param string                    $table The table name of the index.
      */
-    function dropAndCreateIndex(Schema\Index $index, $table);
+    function dropAndCreateIndex(Index $index, $table);
 
     /**
      * Drops & creates an check constraint.
@@ -445,5 +457,5 @@ interface SchemaManagerInterface
      * @param \Fridge\DBAL\Schema\Check $check The check constraint.
      * @param string                    $table The table name of the check constraint.
      */
-    function dropAndCreateCheck(Schema\Check $check, $table);
+    function dropAndCreateCheck(Check $check, $table);
 }

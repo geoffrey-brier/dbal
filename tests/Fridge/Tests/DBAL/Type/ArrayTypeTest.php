@@ -13,7 +13,8 @@ namespace Fridge\Tests\DBAL\Type;
 
 use \PDO;
 
-use Fridge\DBAL\Type;
+use Fridge\DBAL\Type\ArrayType,
+    Fridge\DBAL\Type\Type;
 
 /**
  * Array type test.
@@ -29,7 +30,7 @@ class ArrayTypeTest extends AbstractTypeTest
     {
         parent::setUp();
 
-        $this->type = new Type\ArrayType();
+        $this->type = new ArrayType();
     }
 
     public function testSQLDeclaration()
@@ -81,6 +82,6 @@ class ArrayTypeTest extends AbstractTypeTest
 
     public function testName()
     {
-        $this->assertSame(Type\Type::TARRAY, $this->type->getName());
+        $this->assertSame(Type::TARRAY, $this->type->getName());
     }
 }

@@ -15,7 +15,15 @@ use \DateTime,
     \Exception,
     \stdClass;
 
-use Fridge\DBAL\Schema,
+use Fridge\DBAL\Schema\Check,
+    Fridge\DBAL\Schema\Column,
+    Fridge\DBAL\Schema\ForeignKey,
+    Fridge\DBAL\Schema\Index,
+    Fridge\DBAL\Schema\PrimaryKey,
+    Fridge\DBAL\Schema\Sequence,
+    Fridge\DBAL\Schema\Schema,
+    Fridge\DBAL\Schema\Table,
+    Fridge\DBAL\Schema\View,
     Fridge\DBAL\Type\Type,
     Fridge\Tests\PHPUnitUtility;
 
@@ -167,7 +175,7 @@ abstract class AbstractFixture implements FixtureInterface
             $tables[] = $this->getTable($tableName);
         }
 
-        return new Schema\Schema($name, $tables, $sequences, $views);
+        return new Schema($name, $tables, $sequences, $views);
     }
 
     /**
@@ -175,7 +183,7 @@ abstract class AbstractFixture implements FixtureInterface
      */
     public function getSequences()
     {
-        return array(new Schema\Sequence('s1', 1, 1));
+        return array(new Sequence('s1', 1, 1));
     }
 
     /**
@@ -185,7 +193,7 @@ abstract class AbstractFixture implements FixtureInterface
     {
         $sql = 'SELECT tcolumns.cinteger FROM tcolumns;';
 
-        return array(new Schema\View('vcolumns', $sql));
+        return array(new View('vcolumns', $sql));
     }
 
     /**
@@ -218,7 +226,7 @@ abstract class AbstractFixture implements FixtureInterface
      */
     public function getTable($name)
     {
-        return new Schema\Table(
+        return new Table(
             $name,
             $this->getTableColumns($name),
             $this->getTablePrimaryKey($name),
@@ -238,59 +246,59 @@ abstract class AbstractFixture implements FixtureInterface
         switch ($table) {
             case 'tcolumns':
                 $columns = array(
-                    new Schema\Column('carray', Type::getType(Type::TARRAY), array(
+                    new Column('carray', Type::getType(Type::TARRAY), array(
                         'comment' => 'comment',
                     )),
-                    new Schema\Column('cbiginteger', Type::getType(Type::BIGINTEGER), array(
+                    new Column('cbiginteger', Type::getType(Type::BIGINTEGER), array(
                         'length'   => 20,
                         'unsigned' => true,
                         'default'  => 1000000000,
                         'comment'  => 'comment',
                     )),
-                    new Schema\Column('cboolean', Type::getType(Type::BOOLEAN), array(
+                    new Column('cboolean', Type::getType(Type::BOOLEAN), array(
                         'default' => true,
                         'comment' => 'comment',
                     )),
-                    new Schema\Column('cdatetime', Type::getType(Type::DATETIME), array(
+                    new Column('cdatetime', Type::getType(Type::DATETIME), array(
                         'default' => new DateTime('2012-01-01 12:12:12'),
                         'comment' => 'comment',
                     )),
-                    new Schema\Column('cdate', Type::getType(Type::DATE), array(
+                    new Column('cdate', Type::getType(Type::DATE), array(
                         'default' => new DateTime('2012-01-01'),
                         'comment' => 'comment',
                     )),
-                    new Schema\Column('cdecimal', Type::getType(Type::DECIMAL), array(
+                    new Column('cdecimal', Type::getType(Type::DECIMAL), array(
                         'precision' => 5,
                         'scale'     => 2,
                         'default'   => 1.1,
                         'comment'   => 'comment',
                     )),
-                    new Schema\Column('cfloat', Type::getType(Type::FLOAT), array(
+                    new Column('cfloat', Type::getType(Type::FLOAT), array(
                         'default' => 1.1,
                         'comment' => 'comment',
                     )),
-                    new Schema\Column('cinteger', Type::getType(Type::INTEGER), array(
+                    new Column('cinteger', Type::getType(Type::INTEGER), array(
                         'length'   => 11,
                         'unsigned' => true,
                         'default'  => 1,
                         'comment'  => 'comment',
                     )),
-                    new Schema\Column('cobject', Type::getType(Type::OBJECT)),
-                    new Schema\Column('csmallinteger', Type::getType(Type::SMALLINTEGER), array(
+                    new Column('cobject', Type::getType(Type::OBJECT)),
+                    new Column('csmallinteger', Type::getType(Type::SMALLINTEGER), array(
                         'length'   => 6,
                         'unsigned' => true,
                         'default'  => 1,
                         'comment'  => 'comment',
                     )),
-                    new Schema\Column('cstring', Type::getType(Type::STRING), array(
+                    new Column('cstring', Type::getType(Type::STRING), array(
                         'length'  => 20,
                         'default' => 'foo',
                         'comment' => 'comment',
                     )),
-                    new Schema\Column('ctext', Type::getType(Type::TEXT), array(
+                    new Column('ctext', Type::getType(Type::TEXT), array(
                         'comment' => 'comment',
                     )),
-                    new Schema\Column('ctime', Type::getType(Type::TIME), array(
+                    new Column('ctime', Type::getType(Type::TIME), array(
                         'default' => new DateTime('12:12:12'),
                         'comment' => 'comment',
                     )),
@@ -299,12 +307,12 @@ abstract class AbstractFixture implements FixtureInterface
 
             case 'tprimarykeylock':
                 $columns = array(
-                    new Schema\Column('c1', Type::getType(Type::INTEGER), array(
+                    new Column('c1', Type::getType(Type::INTEGER), array(
                         'length'         => 11,
                         'not_null'       => true,
                         'auto_increment' => true,
                     )),
-                    new Schema\Column('c2', Type::getType(Type::STRING), array(
+                    new Column('c2', Type::getType(Type::STRING), array(
                         'length'   => 20,
                         'not_null' => true,
                     )),
@@ -313,7 +321,7 @@ abstract class AbstractFixture implements FixtureInterface
 
             case 'tprimarykeyunlock':
                 $columns = array(
-                    new Schema\Column('c1', Type::getType(Type::INTEGER), array(
+                    new Column('c1', Type::getType(Type::INTEGER), array(
                         'length'   => 11,
                         'not_null' => true,
                     )),
@@ -322,11 +330,11 @@ abstract class AbstractFixture implements FixtureInterface
 
             case 'tforeignkey':
                 $columns = array(
-                    new Schema\Column('c1', Type::getType(Type::INTEGER), array(
+                    new Column('c1', Type::getType(Type::INTEGER), array(
                         'length'   => 11,
                         'not_null' => true,
                     )),
-                    new Schema\Column('c2', Type::getType(Type::STRING), array(
+                    new Column('c2', Type::getType(Type::STRING), array(
                         'length'   => 20,
                         'not_null' => true,
                     )),
@@ -335,11 +343,11 @@ abstract class AbstractFixture implements FixtureInterface
 
             case 'tindex':
                 $columns = array(
-                    new Schema\Column('c1', Type::getType(Type::INTEGER), array(
+                    new Column('c1', Type::getType(Type::INTEGER), array(
                         'length'   => 11,
                         'not_null' => true,
                     )),
-                    new Schema\Column('c2', Type::getType(Type::STRING), array(
+                    new Column('c2', Type::getType(Type::STRING), array(
                         'length'   => 20,
                         'not_null' => true,
                     )),
@@ -348,7 +356,7 @@ abstract class AbstractFixture implements FixtureInterface
 
             case 'tcheck':
                 $columns = array(
-                    new Schema\Column('c1', Type::getType(Type::INTEGER), array(
+                    new Column('c1', Type::getType(Type::INTEGER), array(
                         'length'   => 11,
                         'not_null' => true,
                     )),
@@ -368,11 +376,11 @@ abstract class AbstractFixture implements FixtureInterface
 
         switch ($table) {
             case 'tprimarykeylock':
-                $primaryKey = new Schema\PrimaryKey('pk1', array('c1', 'c2'));
+                $primaryKey = new PrimaryKey('pk1', array('c1', 'c2'));
                 break;
 
             case 'tprimarykeyunlock':
-                $primaryKey = new Schema\PrimaryKey('pk2', array('c1'));
+                $primaryKey = new PrimaryKey('pk2', array('c1'));
                 break;
         }
 
@@ -389,13 +397,13 @@ abstract class AbstractFixture implements FixtureInterface
         switch ($table) {
             case 'tforeignkey':
                 $foreignKeys = array(
-                    new Schema\ForeignKey(
+                    new ForeignKey(
                         'fk1',
                         array('c1', 'c2'),
                         'tprimarykeylock',
                         array('c1', 'c2'),
-                        Schema\ForeignKey::CASCADE,
-                        Schema\ForeignKey::CASCADE
+                        ForeignKey::CASCADE,
+                        ForeignKey::CASCADE
                     ),
                 );
                 break;
@@ -413,23 +421,23 @@ abstract class AbstractFixture implements FixtureInterface
 
         switch ($table) {
             case 'tprimarykeylock':
-                $indexes = array(new Schema\Index('pk1', array('c1', 'c2'), true));
+                $indexes = array(new Index('pk1', array('c1', 'c2'), true));
                 break;
 
             case 'tprimarykeyunlock':
-                $indexes = array(new Schema\Index('pk2', array('c1'), true));
+                $indexes = array(new Index('pk2', array('c1'), true));
                 break;
 
             case 'tforeignkey':
                 $indexes = array(
-                    new Schema\Index('_fk1', array('c1', 'c2')),
+                    new Index('_fk1', array('c1', 'c2')),
                 );
                 break;
 
             case 'tindex':
                 $indexes = array(
-                    new Schema\Index('idx1', array('c1', 'c2'), true),
-                    new Schema\Index('idx2', array('c1')),
+                    new Index('idx1', array('c1', 'c2'), true),
+                    new Index('idx2', array('c1')),
                 );
                 break;
         }
@@ -447,7 +455,7 @@ abstract class AbstractFixture implements FixtureInterface
         switch ($table) {
             case 'tcheck':
                 $checks = array(
-                    new Schema\Check('ck1', 'c1 > 0'),
+                    new Check('ck1', 'c1 > 0'),
                 );
                 break;
         }

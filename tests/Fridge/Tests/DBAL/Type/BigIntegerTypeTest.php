@@ -13,7 +13,8 @@ namespace Fridge\Tests\DBAL\Type;
 
 use \PDO;
 
-use Fridge\DBAL\Type;
+use Fridge\DBAL\Type\BigIntegerType,
+    Fridge\DBAL\Type\Type;
 
 /**
  * Big integer type test.
@@ -29,7 +30,7 @@ class BigIntegerTypeTest extends AbstractTypeTest
     {
         parent::setUp();
 
-        $this->type = new Type\BigIntegerType();
+        $this->type = new BigIntegerType();
     }
 
     public function testSQLDeclaration()
@@ -68,6 +69,6 @@ class BigIntegerTypeTest extends AbstractTypeTest
 
     public function testName()
     {
-        $this->assertSame(Type\Type::BIGINTEGER, $this->type->getName());
+        $this->assertSame(Type::BIGINTEGER, $this->type->getName());
     }
 }

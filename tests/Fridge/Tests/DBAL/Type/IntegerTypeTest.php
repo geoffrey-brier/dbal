@@ -13,7 +13,8 @@ namespace Fridge\Tests\DBAL\Type;
 
 use \PDO;
 
-use Fridge\DBAL\Type;
+use Fridge\DBAL\Type\IntegerType,
+    Fridge\DBAL\Type\Type;
 
 /**
  * Integer type test.
@@ -29,7 +30,7 @@ class IntegerTypeTest extends AbstractTypeTest
     {
         parent::setUp();
 
-        $this->type = new Type\IntegerType();
+        $this->type = new IntegerType();
     }
 
     public function testSQLDeclaration()
@@ -68,6 +69,6 @@ class IntegerTypeTest extends AbstractTypeTest
 
     public function testName()
     {
-        $this->assertSame(Type\Type::INTEGER, $this->type->getName());
+        $this->assertSame(Type::INTEGER, $this->type->getName());
     }
 }

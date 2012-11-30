@@ -11,7 +11,13 @@
 
 namespace Fridge\Tests\DBAL\Schema\Comparator;
 
-use Fridge\DBAL\Schema,
+use Fridge\DBAL\Schema\Check,
+    Fridge\DBAL\Schema\Column,
+    Fridge\DBAL\Schema\Comparator\TableComparator,
+    Fridge\DBAL\Schema\ForeignKey,
+    Fridge\DBAL\Schema\Index,
+    Fridge\DBAL\Schema\PrimaryKey,
+    Fridge\DBAL\Schema\Table,
     Fridge\DBAL\Type\Type;
 
 /**
@@ -65,24 +71,24 @@ class TableComparatorTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->tableComparator = new Schema\Comparator\TableComparator();
+        $this->tableComparator = new TableComparator();
 
-        $this->oldTable = new Schema\Table('foo');
+        $this->oldTable = new Table('foo');
         $this->newTable = clone $this->oldTable;
 
-        $this->oldColumn = new Schema\Column('foo', Type::getType(Type::INTEGER));
+        $this->oldColumn = new Column('foo', Type::getType(Type::INTEGER));
         $this->newColumn = clone $this->oldColumn;
 
-        $this->oldPrimaryKey = new Schema\PrimaryKey('foo', array('foo'));
+        $this->oldPrimaryKey = new PrimaryKey('foo', array('foo'));
         $this->newPrimaryKey = clone $this->oldPrimaryKey;
 
-        $this->oldForeignKey = new Schema\ForeignKey('foo', array('foo'), 'bar', array('bar'));
+        $this->oldForeignKey = new ForeignKey('foo', array('foo'), 'bar', array('bar'));
         $this->newForeignKey = clone $this->oldForeignKey;
 
-        $this->oldIndex = new Schema\Index('foo', array('foo'));
+        $this->oldIndex = new Index('foo', array('foo'));
         $this->newIndex = clone $this->oldIndex;
 
-        $this->oldCheck = new Schema\Check('foo', 'foo');
+        $this->oldCheck = new Check('foo', 'foo');
         $this->newCheck = clone $this->oldCheck;
     }
 
@@ -166,14 +172,14 @@ class TableComparatorTest extends \PHPUnit_Framework_TestCase
 
     public function testCompareForeignKeysWithOnDeleteDifference()
     {
-        $this->newForeignKey->setOnDelete(Schema\ForeignKey::CASCADE);
+        $this->newForeignKey->setOnDelete(ForeignKey::CASCADE);
 
         $this->assertTrue($this->tableComparator->compareForeignKeys($this->oldForeignKey, $this->newForeignKey));
     }
 
     public function testCompareForeignKeysWithOnUpdateDifference()
     {
-        $this->newForeignKey->setOnUpdate(Schema\ForeignKey::CASCADE);
+        $this->newForeignKey->setOnUpdate(ForeignKey::CASCADE);
 
         $this->assertTrue($this->tableComparator->compareForeignKeys($this->oldForeignKey, $this->newForeignKey));
     }

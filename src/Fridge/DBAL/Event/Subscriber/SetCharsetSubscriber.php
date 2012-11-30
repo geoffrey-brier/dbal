@@ -11,7 +11,8 @@
 
 namespace Fridge\DBAL\Event\Subscriber;
 
-use Fridge\DBAL\Event,
+use Fridge\DBAL\Event\Events,
+    Fridge\DBAL\Event\PostConnectEvent,
     Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -49,7 +50,7 @@ class SetCharsetSubscriber implements EventSubscriberInterface
      *
      * @param Fridge\DBAL\Event\PostConnectEvent $event The post connect event.
      */
-    public function postConnect(Event\PostConnectEvent $event)
+    public function postConnect(PostConnectEvent $event)
     {
         $event->getConnection()->setCharset($this->getCharset());
     }
@@ -60,7 +61,7 @@ class SetCharsetSubscriber implements EventSubscriberInterface
     static public function getSubscribedEvents()
     {
         return array(
-            Event\Events::POST_CONNECT => 'postConnect',
+            Events::POST_CONNECT => 'postConnect',
         );
     }
 }

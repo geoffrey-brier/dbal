@@ -11,7 +11,7 @@
 
 namespace Fridge\Tests\DBAL\Schema;
 
-use Fridge\DBAL\Schema;
+use Fridge\DBAL\Schema\PrimaryKey;
 
 /**
  * Primary key test.
@@ -28,7 +28,7 @@ class PrimaryKeyTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->primaryKey = new Schema\PrimaryKey('foo');
+        $this->primaryKey = new PrimaryKey('foo');
     }
 
     /**
@@ -47,7 +47,7 @@ class PrimaryKeyTest extends \PHPUnit_Framework_TestCase
 
     public function testGeneratedName()
     {
-        $primaryKey = new Schema\PrimaryKey(null);
+        $primaryKey = new PrimaryKey(null);
         $this->assertRegExp('/^pk_[a-z0-9]{17}$/', $primaryKey->getName());
     }
 

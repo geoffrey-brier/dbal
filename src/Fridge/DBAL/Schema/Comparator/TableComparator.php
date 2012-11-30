@@ -11,7 +11,12 @@
 
 namespace Fridge\DBAL\Schema\Comparator;
 
-use Fridge\DBAL\Schema;
+use Fridge\DBAL\Schema\Check,
+    Fridge\DBAL\Schema\Diff\TableDiff,
+    Fridge\DBAL\Schema\ForeignKey,
+    Fridge\DBAL\Schema\Index,
+    Fridge\DBAL\Schema\PrimaryKey,
+    Fridge\DBAL\Schema\Table;
 
 /**
  * Table comparator.
@@ -39,7 +44,7 @@ class TableComparator
      *
      * @return \Fridge\DBAL\Schema\Diff\TableDiff The difference between the two tables.
      */
-    public function compare(Schema\Table $oldTable, Schema\Table $newTable)
+    public function compare(Table $oldTable, Table $newTable)
     {
         $createdColumns = $this->getCreatedColumns($oldTable, $newTable);
         $alteredColumns = $this->getAlteredColumns($oldTable, $newTable);
@@ -47,7 +52,7 @@ class TableComparator
 
         $this->detectRenamedColumns($createdColumns, $droppedColumns, $alteredColumns);
 
-        return new Schema\Diff\TableDiff(
+        return new TableDiff(
             $oldTable,
             $newTable,
             $createdColumns,
@@ -72,7 +77,7 @@ class TableComparator
      *
      * @return boolean TRUE if the primary keys have difference else FALSE.
      */
-    public function comparePrimaryKeys(Schema\PrimaryKey $oldPrimaryKey, Schema\PrimaryKey $newPrimaryKey)
+    public function comparePrimaryKeys(PrimaryKey $oldPrimaryKey, PrimaryKey $newPrimaryKey)
     {
         return ($oldPrimaryKey->getName() !== $newPrimaryKey->getName())
             || ($oldPrimaryKey->getColumnNames() !== $newPrimaryKey->getColumnNames());
@@ -86,7 +91,7 @@ class TableComparator
      *
      * @return boolean TRUE if foreign keys have difference else FALSE.
      */
-    public function compareForeignKeys(Schema\ForeignKey $oldForeignKey, Schema\ForeignKey $newForeignKey)
+    public function compareForeignKeys(ForeignKey $oldForeignKey, ForeignKey $newForeignKey)
     {
         return ($oldForeignKey->getName() !== $newForeignKey->getName())
             || ($oldForeignKey->getLocalColumnNames() !== $newForeignKey->getLocalColumnNames())
@@ -104,7 +109,7 @@ class TableComparator
      *
      * @return boolean TRUE if indexes have difference else FALSE.
      */
-    public function compareIndexes(Schema\Index $oldIndex, Schema\Index $newIndex)
+    public function compareIndexes(Index $oldIndex, Index $newIndex)
     {
         return ($oldIndex->getName() !== $newIndex->getName())
             || ($oldIndex->getColumnNames() !== $newIndex->getColumnNames())
@@ -119,7 +124,7 @@ class TableComparator
      *
      * @return boolean TRUE if checks have difference else FALSE.
      */
-    public function compareChecks(Schema\Check $oldCheck, Schema\Check $newCheck)
+    public function compareChecks(Check $oldCheck, Check $newCheck)
     {
         return ($oldCheck->getName() !== $newCheck->getName())
             || ($oldCheck->getDefinition() !== $newCheck->getDefinition());
@@ -133,7 +138,7 @@ class TableComparator
      *
      * @return array The created columns.
      */
-    protected function getCreatedColumns(Schema\Table $oldTable, Schema\Table $newTable)
+    protected function getCreatedColumns(Table $oldTable, Table $newTable)
     {
         $createdColumns = array();
 
@@ -154,7 +159,7 @@ class TableComparator
      *
      * @return array The altered columns
      */
-    protected function getAlteredColumns(Schema\Table $oldTable, Schema\Table $newTable)
+    protected function getAlteredColumns(Table $oldTable, Table $newTable)
     {
         $alteredColumns = array();
 
@@ -179,7 +184,7 @@ class TableComparator
      *
      * @return array The dropped columns.
      */
-    protected function getDroppedColumns(Schema\Table $oldTable, Schema\Table $newTable)
+    protected function getDroppedColumns(Table $oldTable, Table $newTable)
     {
         $droppedColumns = array();
 
@@ -225,7 +230,7 @@ class TableComparator
      *
      * @return \Fridge\DBAL\Schema\PrimaryKey|null The created primary key.
      */
-    protected function getCreatedPrimaryKey(Schema\Table $oldTable, Schema\Table $newTable)
+    protected function getCreatedPrimaryKey(Table $oldTable, Table $newTable)
     {
         if ((!$oldTable->hasPrimaryKey() && $newTable->hasPrimaryKey())
             || ($oldTable->hasPrimaryKey() && $newTable->hasPrimaryKey()
@@ -242,7 +247,7 @@ class TableComparator
      *
      * @return \Fridge\DBAL\Schema\PrimaryKey|null The dropped primary key.
      */
-    protected function getDroppedPrimaryKey(Schema\Table $oldTable, Schema\Table $newTable)
+    protected function getDroppedPrimaryKey(Table $oldTable, Table $newTable)
     {
         if (($oldTable->hasPrimaryKey() && !$newTable->hasPrimaryKey())
             || ($oldTable->hasPrimaryKey() && $newTable->hasPrimaryKey()
@@ -259,7 +264,7 @@ class TableComparator
      *
      * @return array The created foreign keys.
      */
-    protected function getCreatedForeignKeys(Schema\Table $oldTable, Schema\Table $newTable)
+    protected function getCreatedForeignKeys(Table $oldTable, Table $newTable)
     {
         $createdForeignKeys = array();
 
@@ -281,7 +286,7 @@ class TableComparator
      *
      * @return array The dropped foreign keys.
      */
-    protected function getDroppedForeignKeys(Schema\Table $oldTable, Schema\Table $newTable)
+    protected function getDroppedForeignKeys(Table $oldTable, Table $newTable)
     {
         $droppedForeignKeys = array();
 
@@ -303,7 +308,7 @@ class TableComparator
      *
      * @return array The crated indexes.
      */
-    protected function getCreatedIndexes(Schema\Table $oldTable, Schema\Table $newTable)
+    protected function getCreatedIndexes(Table $oldTable, Table $newTable)
     {
         $createdIndexes = array();
 
@@ -325,7 +330,7 @@ class TableComparator
      *
      * @return array The dropped indexes.
      */
-    protected function getDroppedIndexes(Schema\Table $oldTable, Schema\Table $newTable)
+    protected function getDroppedIndexes(Table $oldTable, Table $newTable)
     {
         $droppedIndexes = array();
 
@@ -347,7 +352,7 @@ class TableComparator
      *
      * @return array The crated checks.
      */
-    protected function getCreatedChecks(Schema\Table $oldTable, Schema\Table $newTable)
+    protected function getCreatedChecks(Table $oldTable, Table $newTable)
     {
         $createdChecks = array();
 
@@ -369,7 +374,7 @@ class TableComparator
      *
      * @return array The dropped checks.
      */
-    protected function getDroppedChecks(Schema\Table $oldTable, Schema\Table $newTable)
+    protected function getDroppedChecks(Table $oldTable, Table $newTable)
     {
         $droppedChecks = array();
 

@@ -11,7 +11,14 @@
 
 namespace Fridge\Tests\DBAL\SchemaManager\SQLCollector;
 
-use Fridge\DBAL\Schema,
+use Fridge\DBAL\Schema\Check,
+    Fridge\DBAL\Schema\Column,
+    Fridge\DBAL\Schema\Diff\ColumnDiff,
+    Fridge\DBAL\Schema\Diff\TableDiff,
+    Fridge\DBAL\Schema\ForeignKey,
+    Fridge\DBAL\Schema\Index,
+    Fridge\DBAL\Schema\PrimaryKey,
+    Fridge\DBAL\Schema\Table,
     Fridge\DBAL\SchemaManager\SQLCollector\AlterTableSQLCollector,
     Fridge\DBAL\Type\Type;
 
@@ -39,26 +46,26 @@ class AlterTableSQLCollectorTest extends \PHPUnit_Framework_TestCase
         $this->platformMock = $this->getMock('Fridge\DBAL\Platform\PlatformInterface');
         $this->sqlCollector = new AlterTableSQLCollector($this->platformMock);
 
-        $this->tableDiff = new Schema\Diff\TableDiff(
-            new Schema\Table('foo'),
-            new Schema\Table('bar'),
-            array(new Schema\Column('created', Type::getType(Type::INTEGER))),
+        $this->tableDiff = new TableDiff(
+            new Table('foo'),
+            new Table('bar'),
+            array(new Column('created', Type::getType(Type::INTEGER))),
             array(
-                new Schema\Diff\ColumnDiff(
-                    new Schema\Column('altered', Type::getType(Type::INTEGER)),
-                    new Schema\Column('altered', Type::getType(Type::SMALLINTEGER)),
+                new ColumnDiff(
+                    new Column('altered', Type::getType(Type::INTEGER)),
+                    new Column('altered', Type::getType(Type::SMALLINTEGER)),
                     array()
                 ),
             ),
-            array(new Schema\Column('dropped', Type::getType(Type::INTEGER))),
-            new Schema\PrimaryKey('created', array('bar')),
-            new Schema\PrimaryKey('dropped', array('foo')),
-            array(new Schema\ForeignKey('created', array('bar'), 'bar', array('bar'))),
-            array(new Schema\ForeignKey('dropped', array('foo'), 'bar', array('bar'))),
-            array(new Schema\Index('created', array('baz'))),
-            array(new Schema\Index('dropped', array('baz'), true)),
-            array(new Schema\Check('created', 'foo')),
-            array(new Schema\Check('dropped', 'bar'))
+            array(new Column('dropped', Type::getType(Type::INTEGER))),
+            new PrimaryKey('created', array('bar')),
+            new PrimaryKey('dropped', array('foo')),
+            array(new ForeignKey('created', array('bar'), 'bar', array('bar'))),
+            array(new ForeignKey('dropped', array('foo'), 'bar', array('bar'))),
+            array(new Index('created', array('baz'))),
+            array(new Index('dropped', array('baz'), true)),
+            array(new Check('created', 'foo')),
+            array(new Check('dropped', 'bar'))
         );
     }
 

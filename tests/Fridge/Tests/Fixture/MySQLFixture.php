@@ -12,7 +12,7 @@
 namespace Fridge\Tests\Fixture;
 
 use \PDO,
-    Fridge\DBAL\Schema;
+    Fridge\DBAL\Schema\View;
 
 /**
  * MySQL fixture.
@@ -36,7 +36,7 @@ class MySQLFixture extends AbstractFixture
     {
         $sql = 'select `dbal_test`.`tcolumns`.`cinteger` AS `cinteger` from `dbal_test`.`tcolumns`';
 
-        return array(new Schema\View('vcolumns', $sql));
+        return array(new View('vcolumns', $sql));
     }
 
     /**

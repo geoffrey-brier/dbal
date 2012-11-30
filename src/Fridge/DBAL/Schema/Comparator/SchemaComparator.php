@@ -11,7 +11,10 @@
 
 namespace Fridge\DBAL\Schema\Comparator;
 
-use Fridge\DBAL\Schema;
+use Fridge\DBAL\Schema\Diff\SchemaDiff,
+    Fridge\DBAL\Schema\Schema,
+    Fridge\DBAL\Schema\Sequence,
+    Fridge\DBAL\Schema\View;
 
 /**
  * Schema comparator.
@@ -39,7 +42,7 @@ class SchemaComparator
      *
      * @return \Fridge\DBAL\Schema\Diff\SchemaDiff The difference between the two schemas.
      */
-    public function compare(Schema\Schema $oldSchema, Schema\Schema $newSchema)
+    public function compare(Schema $oldSchema, Schema $newSchema)
     {
         $createdTables = $this->getCreatedTables($oldSchema, $newSchema);
         $alteredTables = $this->getAlteredTables($oldSchema, $newSchema);
@@ -47,7 +50,7 @@ class SchemaComparator
 
         $this->detectRenamedTables($createdTables, $droppedTables, $alteredTables);
 
-        return new Schema\Diff\SchemaDiff(
+        return new SchemaDiff(
             $oldSchema,
             $newSchema,
             $createdTables,
@@ -68,7 +71,7 @@ class SchemaComparator
      *
      * @return boolean TRUE if sequences have difference else FALSE.
      */
-    public function compareSequences(Schema\Sequence $oldSequence, Schema\Sequence $newSequence)
+    public function compareSequences(Sequence $oldSequence, Sequence $newSequence)
     {
         return ($oldSequence->getName() !== $newSequence->getName())
             || ($oldSequence->getInitialValue() !== $newSequence->getInitialValue())
@@ -83,7 +86,7 @@ class SchemaComparator
      *
      * @return boolean TRUE if views have difference else FALSE.
      */
-    public function compareViews(Schema\View $oldView, Schema\View $newView)
+    public function compareViews(View $oldView, View $newView)
     {
         return ($oldView->getName() !== $newView->getName()) || ($oldView->getSQL() !== $newView->getSQL());
     }
@@ -96,7 +99,7 @@ class SchemaComparator
      *
      * @return array The created tables.
      */
-    protected function getCreatedTables(Schema\Schema $oldSchema, Schema\Schema $newSchema)
+    protected function getCreatedTables(Schema $oldSchema, Schema $newSchema)
     {
         $createdTables = array();
 
@@ -117,7 +120,7 @@ class SchemaComparator
      *
      * @return array The altered tables.
      */
-    protected function getAlteredTables(Schema\Schema $oldSchema, Schema\Schema $newSchema)
+    protected function getAlteredTables(Schema $oldSchema, Schema $newSchema)
     {
         $alteredTables = array();
 
@@ -142,7 +145,7 @@ class SchemaComparator
      *
      * @return array The dropped tables.
      */
-    protected function getDroppedTables(Schema\Schema $oldSchema, Schema\Schema $newSchema)
+    protected function getDroppedTables(Schema $oldSchema, Schema $newSchema)
     {
         $droppedTables = array();
 
@@ -188,7 +191,7 @@ class SchemaComparator
      *
      * @return array The created sequences.
      */
-    protected function getCreatedSequences(Schema\Schema $oldSchema, Schema\Schema $newSchema)
+    protected function getCreatedSequences(Schema $oldSchema, Schema $newSchema)
     {
         $createdSequences = array();
 
@@ -210,7 +213,7 @@ class SchemaComparator
      *
      * @return array The dropped sequences.
      */
-    protected function getDroppedSequences(Schema\Schema $oldSchema, Schema\Schema $newSchema)
+    protected function getDroppedSequences(Schema $oldSchema, Schema $newSchema)
     {
         $droppedSequences = array();
 
@@ -232,7 +235,7 @@ class SchemaComparator
      *
      * @return array The created views.
      */
-    protected function getCreatedViews(Schema\Schema $oldSchema, Schema\Schema $newSchema)
+    protected function getCreatedViews(Schema $oldSchema, Schema $newSchema)
     {
         $createdViews = array();
 
@@ -254,7 +257,7 @@ class SchemaComparator
      *
      * @return array The dropped views.
      */
-    protected function getDroppedViews(Schema\Schema $oldSchema, Schema\Schema $newSchema)
+    protected function getDroppedViews(Schema $oldSchema, Schema $newSchema)
     {
         $droppedViews = array();
 

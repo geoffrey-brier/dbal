@@ -13,7 +13,8 @@ namespace Fridge\Tests\DBAL\Type;
 
 use \PDO;
 
-use Fridge\DBAL\Type;
+use Fridge\DBAL\Type\BooleanType,
+    Fridge\DBAL\Type\Type;
 
 /**
  * Boolean type test.
@@ -29,7 +30,7 @@ class BooleanTypeTest extends AbstractTypeTest
     {
         parent::setUp();
 
-        $this->type = new Type\BooleanType();
+        $this->type = new BooleanType();
     }
 
     public function testSQLDeclaration()
@@ -70,6 +71,6 @@ class BooleanTypeTest extends AbstractTypeTest
 
     public function testName()
     {
-        $this->assertSame(Type\Type::BOOLEAN, $this->type->getName());
+        $this->assertSame(Type::BOOLEAN, $this->type->getName());
     }
 }

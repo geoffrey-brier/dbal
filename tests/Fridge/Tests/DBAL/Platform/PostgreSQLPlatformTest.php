@@ -13,7 +13,12 @@ namespace Fridge\Tests\DBAL\Platform;
 
 use Fridge\DBAL\Connection\Connection,
     Fridge\DBAL\Platform\PostgreSQLPlatform,
-    Fridge\DBAL\Schema,
+    Fridge\DBAL\Schema\Column,
+    Fridge\DBAL\Schema\Diff\ColumnDiff,
+    Fridge\DBAL\Schema\ForeignKey,
+    Fridge\DBAL\Schema\Index,
+    Fridge\DBAL\Schema\PrimaryKey,
+    Fridge\DBAL\Schema\Table,
     Fridge\DBAL\Type\Type;
 
 /**
@@ -92,26 +97,26 @@ class PostgreSQLPlatformTest extends \PHPUnit_Framework_TestCase
 
     public function testCreateTableSQLQueries()
     {
-        $table = new Schema\Table(
+        $table = new Table(
             'foo',
             array(
-                new Schema\Column('foo', Type::getType(Type::INTEGER), array('comment' => 'foo')),
-                new Schema\Column('bar', Type::getType(Type::INTEGER)),
-                new Schema\Column('foo_bar', Type::getType(Type::INTEGER)),
+                new Column('foo', Type::getType(Type::INTEGER), array('comment' => 'foo')),
+                new Column('bar', Type::getType(Type::INTEGER)),
+                new Column('foo_bar', Type::getType(Type::INTEGER)),
             ),
-            new Schema\PrimaryKey('pk1', array('foo')),
+            new PrimaryKey('pk1', array('foo')),
             array(
-                new Schema\ForeignKey(
+                new ForeignKey(
                     'fk1',
                     array('bar'),
                     'bar',
                     array('bar'),
-                    Schema\ForeignKey::CASCADE,
-                    Schema\ForeignKey::CASCADE
+                    ForeignKey::CASCADE,
+                    ForeignKey::CASCADE
                 )
             ),
             array(
-                new Schema\Index('idx1', array('foo_bar')),
+                new Index('idx1', array('foo_bar')),
             )
         );
 
@@ -133,12 +138,12 @@ class PostgreSQLPlatformTest extends \PHPUnit_Framework_TestCase
 
     public function testCreateTableSQLQueriesWithIndexDisabled()
     {
-        $table = new Schema\Table(
+        $table = new Table(
             'foo',
-            array(new Schema\Column('foo', Type::getType(Type::INTEGER))),
+            array(new Column('foo', Type::getType(Type::INTEGER))),
             null,
             array(),
-            array(new Schema\Index('idx1', array('foo')))
+            array(new Index('idx1', array('foo')))
         );
 
         $this->assertSame(
@@ -149,7 +154,7 @@ class PostgreSQLPlatformTest extends \PHPUnit_Framework_TestCase
 
     public function testCreateColumnSQLQueries()
     {
-        $column = new Schema\Column('foo', Type::getType(Type::INTEGER), array('comment' => 'foo'));
+        $column = new Column('foo', Type::getType(Type::INTEGER), array('comment' => 'foo'));
 
         $this->assertSame(
             array(
@@ -162,9 +167,9 @@ class PostgreSQLPlatformTest extends \PHPUnit_Framework_TestCase
 
     public function testAlterColumnSQLQueriesWithNameDifference()
     {
-        $columnDiff = new Schema\Diff\ColumnDiff(
-            new Schema\Column('foo', Type::getType(Type::INTEGER)),
-            new Schema\Column('bar', Type::getType(Type::INTEGER)),
+        $columnDiff = new ColumnDiff(
+            new Column('foo', Type::getType(Type::INTEGER)),
+            new Column('bar', Type::getType(Type::INTEGER)),
             array()
         );
 
@@ -176,9 +181,9 @@ class PostgreSQLPlatformTest extends \PHPUnit_Framework_TestCase
 
     public function testAlterColumnSQLQueriesWithTypeDifference()
     {
-        $columnDiff = new Schema\Diff\ColumnDiff(
-            new Schema\Column('foo', Type::getType(Type::INTEGER)),
-            new Schema\Column('foo', Type::getType(Type::INTEGER)),
+        $columnDiff = new ColumnDiff(
+            new Column('foo', Type::getType(Type::INTEGER)),
+            new Column('foo', Type::getType(Type::INTEGER)),
             array('type')
         );
 
@@ -190,9 +195,9 @@ class PostgreSQLPlatformTest extends \PHPUnit_Framework_TestCase
 
     public function testAlterColumnSQLQueriesWithAddedNotNullDifference()
     {
-        $columnDiff = new Schema\Diff\ColumnDiff(
-            new Schema\Column('foo', Type::getType(Type::INTEGER)),
-            new Schema\Column('foo', Type::getType(Type::INTEGER), array('not_null' => true)),
+        $columnDiff = new ColumnDiff(
+            new Column('foo', Type::getType(Type::INTEGER)),
+            new Column('foo', Type::getType(Type::INTEGER), array('not_null' => true)),
             array('not_null')
         );
 
@@ -204,9 +209,9 @@ class PostgreSQLPlatformTest extends \PHPUnit_Framework_TestCase
 
     public function testAlterColumnSQLQueriesWithDroppedNotNullDifference()
     {
-        $columnDiff = new Schema\Diff\ColumnDiff(
-            new Schema\Column('foo', Type::getType(Type::INTEGER)),
-            new Schema\Column('foo', Type::getType(Type::INTEGER)),
+        $columnDiff = new ColumnDiff(
+            new Column('foo', Type::getType(Type::INTEGER)),
+            new Column('foo', Type::getType(Type::INTEGER)),
             array('not_null')
         );
 
@@ -218,9 +223,9 @@ class PostgreSQLPlatformTest extends \PHPUnit_Framework_TestCase
 
     public function testAlterColumnSQLQueriesWithAddedDefaultDifference()
     {
-        $columnDiff = new Schema\Diff\ColumnDiff(
-            new Schema\Column('foo', Type::getType(Type::INTEGER)),
-            new Schema\Column('foo', Type::getType(Type::INTEGER), array('default' => 'foo')),
+        $columnDiff = new ColumnDiff(
+            new Column('foo', Type::getType(Type::INTEGER)),
+            new Column('foo', Type::getType(Type::INTEGER), array('default' => 'foo')),
             array('default')
         );
 
@@ -232,9 +237,9 @@ class PostgreSQLPlatformTest extends \PHPUnit_Framework_TestCase
 
     public function testAlterColumnSQLQueriesWithDroppedDefaultDifference()
     {
-        $columnDiff = new Schema\Diff\ColumnDiff(
-            new Schema\Column('foo', Type::getType(Type::INTEGER)),
-            new Schema\Column('foo', Type::getType(Type::INTEGER)),
+        $columnDiff = new ColumnDiff(
+            new Column('foo', Type::getType(Type::INTEGER)),
+            new Column('foo', Type::getType(Type::INTEGER)),
             array('default')
         );
 
@@ -246,9 +251,9 @@ class PostgreSQLPlatformTest extends \PHPUnit_Framework_TestCase
 
     public function testAlterColumnSQLQueriesWithCommentDifference()
     {
-        $columnDiff = new Schema\Diff\ColumnDiff(
-            new Schema\Column('foo', Type::getType(Type::INTEGER)),
-            new Schema\Column('foo', Type::getType(Type::INTEGER), array('comment' => 'foo')),
+        $columnDiff = new ColumnDiff(
+            new Column('foo', Type::getType(Type::INTEGER)),
+            new Column('foo', Type::getType(Type::INTEGER), array('comment' => 'foo')),
             array('comment')
         );
 

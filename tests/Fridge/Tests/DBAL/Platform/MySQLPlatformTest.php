@@ -15,7 +15,16 @@ use \ReflectionMethod;
 
 use Fridge\DBAL\Connection\Connection,
     Fridge\DBAL\Platform\MySQLPlatform,
-    Fridge\DBAL\Schema,
+    Fridge\DBAL\Schema\Check,
+    Fridge\DBAL\Schema\Column,
+    Fridge\DBAL\Schema\Diff\ColumnDiff,
+    Fridge\DBAL\Schema\Diff\SchemaDiff,
+    Fridge\DBAL\Schema\ForeignKey,
+    Fridge\DBAL\Schema\Index,
+    Fridge\DBAL\Schema\PrimaryKey,
+    Fridge\DBAL\Schema\Schema,
+    Fridge\DBAL\Schema\Sequence,
+    Fridge\DBAL\Schema\Table,
     Fridge\DBAL\Type\Type;
 
 /**
@@ -182,14 +191,14 @@ class MySQLPlatformTest extends \PHPUnit_Framework_TestCase
      */
     public function testCreateSequenceSQLQueries()
     {
-        $sequence = new Schema\Sequence('foo');
+        $sequence = new Sequence('foo');
 
         $this->platform->getCreateSequenceSQLQueries($sequence);
     }
 
     public function testCreatePrimaryKeySQLQueries()
     {
-        $primaryKey = new Schema\PrimaryKey('foo', array('foo'));
+        $primaryKey = new PrimaryKey('foo', array('foo'));
 
         $this->assertSame(
             array('ALTER TABLE foo ADD CONSTRAINT PRIMARY KEY (foo)'),
@@ -202,14 +211,14 @@ class MySQLPlatformTest extends \PHPUnit_Framework_TestCase
      */
     public function testCreateCheckSQLQueries()
     {
-        $check = new Schema\Check('foo', 'bar');
+        $check = new Check('foo', 'bar');
 
         $this->platform->getCreateCheckSQLQueries($check, 'zaz');
     }
 
     public function testCreateTableSQLQueries()
     {
-        $table = new Schema\Table('foo', array(new Schema\Column('foo', Type::getType(Type::INTEGER))));
+        $table = new Table('foo', array(new Column('foo', Type::getType(Type::INTEGER))));
 
         $sqls = $this->platform->getCreateTableSQLQueries($table);
 
@@ -218,10 +227,10 @@ class MySQLPlatformTest extends \PHPUnit_Framework_TestCase
 
     public function testRenameDatabaseSQLQueries()
     {
-        $oldTable = new Schema\Schema('foo', array(new Schema\Table('foo')));
-        $newTable = new Schema\Schema('bar', array(new Schema\Table('foo')));
+        $oldTable = new Schema('foo', array(new Table('foo')));
+        $newTable = new Schema('bar', array(new Table('foo')));
 
-        $schemaDiff = new Schema\Diff\SchemaDiff($oldTable, $newTable);
+        $schemaDiff = new SchemaDiff($oldTable, $newTable);
 
         $this->assertSame(
             array(
@@ -235,9 +244,9 @@ class MySQLPlatformTest extends \PHPUnit_Framework_TestCase
 
     public function testAlterColumnSQLQueries()
     {
-        $columnDiff = new Schema\Diff\ColumnDiff(
-            new Schema\Column('foo', Type::getType(Type::INTEGER)),
-            new Schema\Column('bar', Type::getType(Type::INTEGER)),
+        $columnDiff = new ColumnDiff(
+            new Column('foo', Type::getType(Type::INTEGER)),
+            new Column('bar', Type::getType(Type::INTEGER)),
             array()
         );
 
@@ -253,14 +262,14 @@ class MySQLPlatformTest extends \PHPUnit_Framework_TestCase
      */
     public function testDropSequenceSQLQueries()
     {
-        $sequence = new Schema\Sequence('foo');
+        $sequence = new Sequence('foo');
 
         $this->platform->getDropSequenceSQLQueries($sequence);
     }
 
     public function testDropPrimaryKeySQLQueries()
     {
-        $primaryKey = new Schema\PrimaryKey('foo');
+        $primaryKey = new PrimaryKey('foo');
 
         $this->assertSame(
             array('ALTER TABLE bar DROP PRIMARY KEY'),
@@ -270,7 +279,7 @@ class MySQLPlatformTest extends \PHPUnit_Framework_TestCase
 
     public function testDropIndexSQLQueries()
     {
-        $index = new Schema\Index('foo', array(), true);
+        $index = new Index('foo', array(), true);
 
         $this->assertSame(
             array('ALTER TABLE bar DROP INDEX foo'),
@@ -280,7 +289,7 @@ class MySQLPlatformTest extends \PHPUnit_Framework_TestCase
 
     public function testDropForeignKeySQLQueries()
     {
-        $foreignKey = new Schema\ForeignKey('foo', array(), 'bar', array());
+        $foreignKey = new ForeignKey('foo', array(), 'bar', array());
 
         $this->assertSame(
             array('ALTER TABLE bar DROP FOREIGN KEY foo'),
@@ -293,7 +302,7 @@ class MySQLPlatformTest extends \PHPUnit_Framework_TestCase
      */
     public function testDropCheckSQLQueries()
     {
-        $check = new Schema\Check('foo', 'bar');
+        $check = new Check('foo', 'bar');
 
         $this->platform->getDropCheckSQLQueries($check, 'zaz');
     }

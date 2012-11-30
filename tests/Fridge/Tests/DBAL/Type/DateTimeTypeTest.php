@@ -14,7 +14,8 @@ namespace Fridge\Tests\DBAL\Type;
 use \DateTime,
     \PDO;
 
-use Fridge\DBAL\Type;
+use Fridge\DBAL\Type\DateTimeType,
+    Fridge\DBAL\Type\Type;
 
 /**
  * DateTime type test.
@@ -30,7 +31,7 @@ class DateTimeTypeTest extends AbstractTypeTest
     {
         parent::setUp();
 
-        $this->type = new Type\DateTimeType();
+        $this->type = new DateTimeType();
 
         $this->platformMock
             ->expects($this->any())
@@ -82,6 +83,6 @@ class DateTimeTypeTest extends AbstractTypeTest
 
     public function testName()
     {
-        $this->assertSame(Type\Type::DATETIME, $this->type->getName());
+        $this->assertSame(Type::DATETIME, $this->type->getName());
     }
 }

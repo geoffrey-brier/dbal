@@ -16,10 +16,13 @@ use \PDO;
 use Fridge\DBAL\Adapter\StatementInterface,
     Fridge\DBAL\Configuration,
     Fridge\DBAL\Driver\DriverInterface,
-    Fridge\DBAL\Event,
+    Fridge\DBAL\Event\Events,
+    Fridge\DBAL\Event\PostConnectEvent,
     Fridge\DBAL\Exception\ConnectionException,
     Fridge\DBAL\Logging\Debugger,
-    Fridge\DBAL\Query,
+    Fridge\DBAL\Query\Expression\ExpressionBuilder,
+    Fridge\DBAL\Query\QueryBuilder,
+    Fridge\DBAL\Query\QueryRewriter,
     Fridge\DBAL\Statement\Statement,
     Fridge\DBAL\Type\TypeUtility,
     Monolog\Logger;
@@ -85,7 +88,7 @@ class Connection implements ConnectionInterface
 
         $this->parameters = $parameters;
         $this->driver = $driver;
-        $this->expressionBuilder = new Query\Expression\ExpressionBuilder();
+        $this->expressionBuilder = new ExpressionBuilder();
         $this->configuration = $configuration;
 
         $this->isConnected = false;
@@ -132,7 +135,7 @@ class Connection implements ConnectionInterface
      */
     public function createQueryBuilder()
     {
-        return new Query\QueryBuilder($this);
+        return new QueryBuilder($this);
     }
 
     /**
@@ -346,9 +349,9 @@ class Connection implements ConnectionInterface
 
         $this->isConnected = true;
 
-        if ($this->getConfiguration()->getEventDispatcher()->hasListeners(Event\Events::POST_CONNECT)) {
-            $event = new Event\PostConnectEvent($this);
-            $this->getConfiguration()->getEventDispatcher()->dispatch(Event\Events::POST_CONNECT, $event);
+        if ($this->getConfiguration()->getEventDispatcher()->hasListeners(Events::POST_CONNECT)) {
+            $event = new PostConnectEvent($this);
+            $this->getConfiguration()->getEventDispatcher()->dispatch(Events::POST_CONNECT, $event);
         }
 
         return true;
@@ -407,7 +410,7 @@ class Connection implements ConnectionInterface
         }
 
         if (!empty($parameters)) {
-            list($query, $parameters, $types) = Query\QueryRewriter::rewrite($query, $parameters, $types);
+            list($query, $parameters, $types) = QueryRewriter::rewrite($query, $parameters, $types);
             $statement = $this->getAdapter()->prepare($query);
 
             if (!empty($types)) {
@@ -524,7 +527,7 @@ class Connection implements ConnectionInterface
         }
 
         if (!empty($parameters)) {
-            list($query, $parameters, $types) = Query\QueryRewriter::rewrite($query, $parameters, $types);
+            list($query, $parameters, $types) = QueryRewriter::rewrite($query, $parameters, $types);
             $statement = $this->getAdapter()->prepare($query);
 
             if (!empty($types)) {

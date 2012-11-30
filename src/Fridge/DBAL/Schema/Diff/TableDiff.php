@@ -11,7 +11,8 @@
 
 namespace Fridge\DBAL\Schema\Diff;
 
-use Fridge\DBAL\Schema;
+use Fridge\DBAL\Schema\PrimaryKey,
+    Fridge\DBAL\Schema\Table;
 
 /**
  * Describes the difference between to two tables.
@@ -71,13 +72,13 @@ class TableDiff extends AbstractAssetDiff
      * @param array                          $droppedChecks      The dropped table checks.
      */
     public function __construct(
-        Schema\Table $oldTable,
-        Schema\Table $newTable,
+        Table $oldTable,
+        Table $newTable,
         array $createdColumns = array(),
         array $alteredColumns = array(),
         array $droppedColumns = array(),
-        Schema\PrimaryKey $createdPrimaryKey = null,
-        Schema\PrimaryKey $droppedPrimaryKey = null,
+        PrimaryKey $createdPrimaryKey = null,
+        PrimaryKey $droppedPrimaryKey = null,
         array $createdForeignKeys = array(),
         array $droppedForeignKeys = array(),
         array $createdIndexes = array(),
