@@ -9,20 +9,20 @@
  * file that was distributed with this source code.
  */
 
-namespace Fridge\Tests\DBAL\Query;
+namespace Fridge\Tests\DBAL\Query\Rewriter;
 
 use \DateTime;
 
 use Fridge\DBAL\Connection\Connection,
-    Fridge\DBAL\Query\QueryRewriter,
+    Fridge\DBAL\Query\Rewriter\NamedQueryRewriter,
     Fridge\DBAL\Type\Type;
 
 /**
- * Query rewriter test.
+ * Named query rewriter test.
  *
  * @author GeLo <geloen.eric@gmail.com>
  */
-class QueryRewriterTest extends \PHPUnit_Framework_TestCase
+class NamedQueryRewriterTest extends \PHPUnit_Framework_TestCase
 {
     public function testRewriteWithoutTypes()
     {
@@ -30,67 +30,11 @@ class QueryRewriterTest extends \PHPUnit_Framework_TestCase
         $parameters = array(1);
         $types = array();
 
-        list($query, $parameters, $types) = QueryRewriter::rewrite($query, $parameters, $types);
+        list($query, $parameters, $types) = NamedQueryRewriter::rewrite($query, $parameters, $types);
 
         $this->assertSame('SELECT * FROM foo WHERE foo = ?', $query);
         $this->assertSame(array(1), $parameters);
         $this->assertSame(array(), $types);
-    }
-
-    public function testRewriteWithPositionalTypes()
-    {
-        $query = 'SELECT * FROM foo WHERE foo IN (?)';
-        $parameters = array(array(1, 2));
-        $types = array(Type::INTEGER.Connection::PARAM_ARRAY);
-
-        list($query, $parameters, $types) = QueryRewriter::rewrite($query, $parameters, $types);
-
-        $this->assertSame('SELECT * FROM foo WHERE foo IN (?, ?)', $query);
-        $this->assertSame(array(1, 2), $parameters);
-        $this->assertSame(array(Type::INTEGER, Type::INTEGER), $types);
-    }
-
-    public function testRewriteWithPartialPositionalTypes()
-    {
-        $date = new DateTime();
-
-        $query = 'SELECT * FROM foo WHERE foo IN (?) AND bar = ? AND baz < ?';
-        $parameters = array(array(1, 2), 'bar', $date);
-        $types = array(0 => Type::INTEGER.Connection::PARAM_ARRAY, 2 => Type::DATETIME);
-
-        list($query, $parameters, $types) = QueryRewriter::rewrite($query, $parameters, $types);
-
-        $this->assertSame('SELECT * FROM foo WHERE foo IN (?, ?) AND bar = ? AND baz < ?', $query);
-        $this->assertSame(array(1, 2, 'bar', $date), $parameters);
-        $this->assertEquals(array(0 => Type::INTEGER, 1 => Type::INTEGER, 3 => Type::DATETIME), $types);
-    }
-
-    public function testRewriteWithMultiplePartialPositionalTypes()
-    {
-        $date = new DateTime();
-
-        $query = 'SELECT * FROM foo WHERE foo IN (?) AND bar = ? AND baz IN (?) AND bat < ?';
-        $parameters = array(array(1, 2), 'bar', array('published', 'draft'), $date);
-        $types = array(
-            0 => Type::INTEGER.Connection::PARAM_ARRAY,
-            2 => Type::STRING.Connection::PARAM_ARRAY,
-            3 => Type::DATETIME,
-        );
-
-        list($query, $parameters, $types) = QueryRewriter::rewrite($query, $parameters, $types);
-
-        $this->assertSame('SELECT * FROM foo WHERE foo IN (?, ?) AND bar = ? AND baz IN (?, ?) AND bat < ?', $query);
-        $this->assertSame(array(1, 2, 'bar', 'published', 'draft', $date), $parameters);
-        $this->assertEquals(
-            array(
-                0 => Type::INTEGER,
-                1 => Type::INTEGER,
-                3 => Type::STRING,
-                4 => Type::STRING,
-                5 => Type::DATETIME,
-            ),
-            $types
-        );
     }
 
     public function testRewriteWithNamedTypes()
@@ -99,9 +43,48 @@ class QueryRewriterTest extends \PHPUnit_Framework_TestCase
         $parameters = array('foo' => array(1, 2));
         $types = array('foo' => Type::INTEGER.Connection::PARAM_ARRAY);
 
-        list($query, $parameters, $types) = QueryRewriter::rewrite($query, $parameters, $types);
+        list($query, $parameters, $types) = NamedQueryRewriter::rewrite($query, $parameters, $types);
 
         $this->assertSame('SELECT * FROM foo WHERE foo IN (:foo1, :foo2)', $query);
+        $this->assertSame(array('foo1' => 1, 'foo2' => 2), $parameters);
+        $this->assertSame(array('foo1' => Type::INTEGER, 'foo2' => Type::INTEGER), $types);
+    }
+
+    public function testRewriteWithMultipleNamedTypes()
+    {
+        $query = 'SELECT * FROM foo WHERE foo IN (:foo) AND bar IN (:foo)';
+        $parameters = array('foo' => array(1, 2));
+        $types = array('foo' => Type::INTEGER.Connection::PARAM_ARRAY);
+
+        list($query, $parameters, $types) = NamedQueryRewriter::rewrite($query, $parameters, $types);
+
+        $this->assertSame('SELECT * FROM foo WHERE foo IN (:foo1, :foo2) AND bar IN (:foo1, :foo2)', $query);
+        $this->assertSame(array('foo1' => 1, 'foo2' => 2), $parameters);
+        $this->assertSame(array('foo1' => Type::INTEGER, 'foo2' => Type::INTEGER), $types);
+    }
+
+    public function testRewriteWithNamedTypesAndSimpleQuoteLiteralDelimiter()
+    {
+        $query = 'SELECT * FROM foo WHERE foo = \':foo\' OR foo IN (:foo)';
+        $parameters = array('foo' => array(1, 2));
+        $types = array('foo' => Type::INTEGER.Connection::PARAM_ARRAY);
+
+        list($query, $parameters, $types) = NamedQueryRewriter::rewrite($query, $parameters, $types);
+
+        $this->assertSame('SELECT * FROM foo WHERE foo = \':foo\' OR foo IN (:foo1, :foo2)', $query);
+        $this->assertSame(array('foo1' => 1, 'foo2' => 2), $parameters);
+        $this->assertSame(array('foo1' => Type::INTEGER, 'foo2' => Type::INTEGER), $types);
+    }
+
+    public function testRewriteWithNamedTypesAndDoubleQuoteLiteralDelimiter()
+    {
+        $query = 'SELECT * FROM foo WHERE foo = ":foo" OR foo IN (:foo)';
+        $parameters = array('foo' => array(1, 2));
+        $types = array('foo' => Type::INTEGER.Connection::PARAM_ARRAY);
+
+        list($query, $parameters, $types) = NamedQueryRewriter::rewrite($query, $parameters, $types);
+
+        $this->assertSame('SELECT * FROM foo WHERE foo = ":foo" OR foo IN (:foo1, :foo2)', $query);
         $this->assertSame(array('foo1' => 1, 'foo2' => 2), $parameters);
         $this->assertSame(array('foo1' => Type::INTEGER, 'foo2' => Type::INTEGER), $types);
     }
@@ -114,7 +97,7 @@ class QueryRewriterTest extends \PHPUnit_Framework_TestCase
         $parameters = array('foo' => array(1, 2), 'bar' => 'bar', 'baz' => $date);
         $types = array('foo' => Type::INTEGER.Connection::PARAM_ARRAY, 'baz' => Type::DATETIME);
 
-        list($query, $parameters, $types) = QueryRewriter::rewrite($query, $parameters, $types);
+        list($query, $parameters, $types) = NamedQueryRewriter::rewrite($query, $parameters, $types);
 
         $this->assertSame('SELECT * FROM foo WHERE foo IN (:foo1, :foo2) AND bar = :bar AND baz < :baz', $query);
 
@@ -157,7 +140,7 @@ class QueryRewriterTest extends \PHPUnit_Framework_TestCase
             'bat' => Type::DATETIME,
         );
 
-        list($query, $parameters, $types) = QueryRewriter::rewrite($query, $parameters, $types);
+        list($query, $parameters, $types) = NamedQueryRewriter::rewrite($query, $parameters, $types);
 
         $this->assertSame(
             'SELECT * FROM foo WHERE foo IN (:foo1, :foo2) AND bar = :bar AND baz IN (:baz1, :baz2) AND bat < :bat',
@@ -186,5 +169,18 @@ class QueryRewriterTest extends \PHPUnit_Framework_TestCase
             ),
             $types
         );
+    }
+
+    /**
+     * @expectedException \Fridge\DBAL\Exception\Query\Rewriter\QueryRewriterException
+     * @expectedExceptionMessage The named placeholder ":foo" does not exist in the query: "SELECT * FROM foo".
+     */
+    public function testRewriteWithInvalidPlaceholder()
+    {
+        $query = 'SELECT * FROM foo';
+        $parameters = array('foo' => array(1, 2));
+        $types = array('foo' => Type::INTEGER.Connection::PARAM_ARRAY);
+
+        NamedQueryRewriter::rewrite($query, $parameters, $types);
     }
 }
