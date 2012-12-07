@@ -31,16 +31,6 @@ class StatementRewriterTest extends \PHPUnit_Framework_TestCase
         unset($this->statementRewriter);
     }
 
-    public function testDelimiters()
-    {
-        $this->statementRewriter = new StatementRewriter('SELECT * FROM foo');
-
-        $this->assertSame(array('\'', '"'), $this->statementRewriter->getDelimiters());
-
-        $this->statementRewriter->setDelimiters(array('\'\''));
-        $this->assertSame(array('\'\''), $this->statementRewriter->getDelimiters());
-    }
-
     /**
      * @expectedException \Fridge\DBAL\Exception\Adapter\StatementRewriterException
      * @expectedExceptionMessage The parameter "foo" does not exist.

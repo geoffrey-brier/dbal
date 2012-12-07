@@ -26,9 +26,6 @@ use Fridge\DBAL\Exception\Adapter\StatementRewriterException;
  */
 class StatementRewriter
 {
-    /** @var array */
-    protected $delimiters;
-
     /** @var string */
     protected $statement;
 
@@ -38,37 +35,14 @@ class StatementRewriter
     /**
      * Statement rewriter constructor.
      *
-     * @param string $statement   The statement to rewrite.
-     * @param array  $delimitters The delimiters.
+     * @param string $statement The statement to rewrite.
      */
-    public function __construct($statement, array $delimiters = array('\'', '"'))
+    public function __construct($statement)
     {
-        $this->setDelimiters($delimiters);
-
         $this->statement = $statement;
         $this->parameters = array();
 
         $this->rewrite();
-    }
-
-    /**
-     * Gets the delimiters.
-     *
-     * @return array The delimiters.
-     */
-    public function getDelimiters()
-    {
-        return $this->delimiters;
-    }
-
-    /**
-     * Sets the delimiters.
-     *
-     * @param array $delimiters The delimiters.
-     */
-    public function setDelimiters(array $delimiters)
-    {
-        $this->delimiters = $delimiters;
     }
 
     /**
@@ -131,7 +105,7 @@ class StatementRewriter
         for ($placeholderPosition = 0 ; $placeholderPosition < $statementLength ; $placeholderPosition++) {
 
             // Switch the literal flag if the current statement char is a literal delimiter.
-            if (in_array($this->statement[$placeholderPosition], $this->delimiters)) {
+            if (in_array($this->statement[$placeholderPosition], array('\'', '"'))) {
                 $literal = !$literal;
             }
 
