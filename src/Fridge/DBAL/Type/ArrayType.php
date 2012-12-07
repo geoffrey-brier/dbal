@@ -41,6 +41,8 @@ class ArrayType implements TypeInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @throws \Fridge\DBAL\Exception\TypeException If the database value can not be convert to his PHP value.
      */
     public function convertToPHPValue($value, PlatformInterface $platform)
     {

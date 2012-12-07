@@ -71,6 +71,10 @@ class ConnectionFactory
      * @param array                      $parameters    The connection parameters.
      * @param \Fridge\DBAL\Configuration $configuration The connection configuration.
      *
+     * @throws \Fridge\DBAL\Exception\FactoryException If there is no driver, it the driver does not exist, if the
+     *                                                 driver class does not implement the DriverInterface or if the
+     *                                                 connection class does not implement the ConnectionInterface
+     *
      * @return \Fridge\DBAL\Connection\ConnectionInterface The DBAL Connection.
      */
     static public function create(array $parameters, Configuration $configuration = null)

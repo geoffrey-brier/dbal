@@ -179,6 +179,8 @@ class Table extends AbstractAsset
      *
      * @param string $name The table column name.
      *
+     * @throws \Fridge\DBAL\Exception\SchemaException If the column does not exist.
+     *
      * @return \Fridge\DBAL\Schema\Column The table column.
      */
     public function getColumn($name)
@@ -194,6 +196,8 @@ class Table extends AbstractAsset
      * Adds a column to the table.
      *
      * @param \Fridge\DBAL\Schema\Column $column The column to add.
+     *
+     * @throws \Fridge\DBAL\Exception\SchemaException If the column already exists.
      */
     public function addColumn(Column $column)
     {
@@ -209,6 +213,9 @@ class Table extends AbstractAsset
      *
      * @param string $oldName The old column name.
      * @param string $newName The new column name.
+     *
+     * @throws \Fridge\DBAL\Exception\SchemaException If the old column does not exist or if the new column already
+     *                                                exists.
      */
     public function renameColumn($oldName, $newName)
     {
@@ -229,6 +236,8 @@ class Table extends AbstractAsset
      * Drops a column.
      *
      * @param string $name The column name.
+     *
+     * @throws \Fridge\DBAL\Exception\SchemaException If the column does not exist.
      */
     public function dropColumn($name)
     {
@@ -244,6 +253,8 @@ class Table extends AbstractAsset
      *
      * @param array  $columnNames The primary key column names.
      * @param string $name        The primary key name.
+     *
+     * @throws \Fridge\DBAL\Exception\SchemaException If a primary key already exists.
      *
      * @return \Fridge\DBAL\Schema\PrimaryKey The new primary key.
      */
@@ -297,6 +308,8 @@ class Table extends AbstractAsset
 
     /**
      * Drops the table primary key.
+     *
+     * @throws \Fridge\DBAL\Exception\SchemaException If there is no primary key.
      */
     public function dropPrimaryKey()
     {
@@ -407,6 +420,8 @@ class Table extends AbstractAsset
      *
      * @param string $name The foreign key name.
      *
+     * @throws \Fridge\DBAL\Exception\SchemaException If the foreign key does not exist.
+     *
      * @return \Fridge\DBAL\Schema\ForeignKey The foreign key.
      */
     public function getForeignKey($name)
@@ -422,6 +437,9 @@ class Table extends AbstractAsset
      * Adds a foreign key to the table.
      *
      * @param \Fridge\DBAL\Schema\ForeignKey $foreignKey The foreign key to add.
+     *
+     * @throws \Fridge\DBAL\Exception\SchemaException If the foreign key already exist, if a local column does not
+     *                                                exist or if a foreign column does not exist.
      */
     public function addForeignKey(ForeignKey $foreignKey)
     {
@@ -451,6 +469,9 @@ class Table extends AbstractAsset
      *
      * @param string $oldName The old foreign key name.
      * @param string $newName The new foreign key name.
+     *
+     * @throws \Fridge\DBAL\Exception\SchemaException If the old foreign key does not exist or if the new foreign key
+     *                                                already exists.
      */
     public function renameForeignKey($oldName, $newName)
     {
@@ -471,6 +492,8 @@ class Table extends AbstractAsset
      * Drops a foreign key.
      *
      * @param string $name The foreign key name.
+     *
+     * @throws \Fridge\DBAL\Exception\SchemaException If the foreign key does not exist.
      */
     public function dropForeignKey($name)
     {
@@ -573,6 +596,8 @@ class Table extends AbstractAsset
      *
      * @param string $name The table index name.
      *
+     * @throws \Fridge\DBAL\Exception\SchemaException If the index does not exist.
+     *
      * @return \Fridge\DBAL\Schema\Index The table index.
      */
     public function getIndex($name)
@@ -588,6 +613,8 @@ class Table extends AbstractAsset
      * Adds an index to the table.
      *
      * @param \Fridge\DBAL\Schema\Index $index The index to add.
+     *
+     * @throws \Fridge\DBAL\Exception\SchemaException If the index already exists or if a column does not exist.
      */
     public function addIndex(Index $index)
     {
@@ -621,6 +648,9 @@ class Table extends AbstractAsset
      *
      * @param string $oldName The old index name.
      * @param string $newName The new index name.
+     *
+     * @throws \Fridge\DBAL\Exception\SchemaException If the old index does not exist or if the new index already
+     *                                                exists.
      */
     public function renameIndex($oldName, $newName)
     {
@@ -641,6 +671,8 @@ class Table extends AbstractAsset
      * Drops an index.
      *
      * @param string $name The index name.
+     *
+     * @throws \Fridge\DBAL\Exception\SchemaException If the index does not exist.
      */
     public function dropIndex($name)
     {
@@ -720,6 +752,8 @@ class Table extends AbstractAsset
      *
      * @param string $name The table check name.
      *
+     * @throws \Fridge\DBAL\Exception\SchemaException If the check does not exist.
+     *
      * @return \Fridge\DBAL\Schema\Check The table check.
      */
     public function getCheck($name)
@@ -735,6 +769,8 @@ class Table extends AbstractAsset
      * Adds a check to the table.
      *
      * @param \Fridge\DBAL\Schema\Check $check The check to add.
+     *
+     * @throws \Fridge\DBAL\Exception\SchemaException If the check already exists.
      */
     public function addCheck(Check $check)
     {
@@ -750,6 +786,9 @@ class Table extends AbstractAsset
      *
      * @param string $oldName The old check name.
      * @param string $newName The new check name.
+     *
+     * @throws \Fridge\DBAL\Exception\SchemaException If the old check does not exist or if the new check already
+     *                                                exists.
      */
     public function renameCheck($oldName, $newName)
     {
@@ -770,6 +809,8 @@ class Table extends AbstractAsset
      * Drops a check.
      *
      * @param string $name The check name.
+     *
+     * @throws \Fridge\DBAL\Exception\SchemaException If the check does not exist.
      */
     public function dropCheck($name)
     {

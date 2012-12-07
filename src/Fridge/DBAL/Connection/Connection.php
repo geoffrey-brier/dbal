@@ -304,6 +304,8 @@ class Connection implements ConnectionInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @throws \Fridge\DBAL\Exception\ConnectionException If the platform does not support transaction isolation.
      */
     public function setTransactionIsolation($isolation)
     {
@@ -566,6 +568,8 @@ class Connection implements ConnectionInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @throws \Fridge\DBAL\Exception\ConnectionException if there is no active transaction.
      */
     public function commit()
     {
@@ -582,6 +586,8 @@ class Connection implements ConnectionInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @throws \Fridge\DBAL\Exception\ConnectionException if there is no active transaction.
      */
     public function rollBack()
     {

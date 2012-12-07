@@ -97,6 +97,8 @@ class Type
      *
      * @param string $type The type name.
      *
+     * @throws \Fridge\DBAL\Exception\TypeException If the type does not exist.
+     *
      * @return \Fridge\DBAL\Type\TypeInterface The type.
      */
     static public function getType($type)
@@ -117,6 +119,9 @@ class Type
      *
      * @param string $type  The type name.
      * @param string $class The type class.
+     *
+     * @throws \Fridge\DBAL\Exception\TypeException If the type already exists, if the class can not be found or if
+     *                                              the class does not implement the TypeInterface.
      */
     static public function addType($type, $class)
     {
@@ -140,6 +145,9 @@ class Type
      *
      * @param string $type  The type name.
      * @param string $class The type class.
+     *
+     * @throws \Fridge\DBAL\Exception\TypeException If the type does not exist, if the class can not be found or if
+     *                                              the class does not implement the TypeInterface.
      */
     static public function overrideType($type, $class)
     {
@@ -166,6 +174,8 @@ class Type
      * Removes a type.
      *
      * @param string $type The type name.
+     *
+     * @throws \Fridge\DBAL\Exception\TypeException If the type does not exist.
      */
     static public function removeType($type)
     {

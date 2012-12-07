@@ -55,6 +55,8 @@ class Sequence extends AbstractAsset
      * Sets the initial value.
      *
      * @param integer $initialValue The initial value.
+     *
+     * @throws \Fridge\DBAL\Exception\SchemaException If the initial value is not a positive integer.
      */
     public function setInitialValue($initialValue)
     {
@@ -79,6 +81,8 @@ class Sequence extends AbstractAsset
      * Sets the increment size.
      *
      * @param integer $incrementSize The increment size.
+     *
+     * @throws \Fridge\DBAL\Exception\SchemaException If the increment size is not a positive integer.
      */
     public function setIncrementSize($incrementSize)
     {
