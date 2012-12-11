@@ -22,7 +22,7 @@ use Fridge\DBAL\Adapter\StatementInterface,
     Fridge\DBAL\Logging\Debugger,
     Fridge\DBAL\Query\Expression\ExpressionBuilder,
     Fridge\DBAL\Query\QueryBuilder,
-    Fridge\DBAL\Query\QueryRewriter,
+    Fridge\DBAL\Query\Rewriter\QueryRewriter,
     Fridge\DBAL\Statement\Statement,
     Fridge\DBAL\Type\TypeUtility,
     Monolog\Logger;
