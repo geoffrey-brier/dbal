@@ -31,7 +31,7 @@ interface StatementInterface
      *
      * @return boolean TRUE if the parameter has been binded to the PHP variable else FALSE.
      */
-    function bindParam($parameter, &$variable, $type = null);
+    function bindParam($parameter, &$variable, $type = PDO::PARAM_STR);
 
     /**
      * Binds a value to a parameter.
@@ -42,7 +42,7 @@ interface StatementInterface
      *
      * @return boolean TRUE if the value has been binded to the parameter else FALSE.
      */
-    function bindValue($parameter, $value, $type = null);
+    function bindValue($parameter, $value, $type = PDO::PARAM_STR);
 
     /**
      * Executes the statement.
