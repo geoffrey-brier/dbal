@@ -108,12 +108,8 @@ class MysqliStatement implements StatementInterface, IteratorAggregate
     /**
      * {@inheritdoc}
      */
-    public function bindParam($parameter, &$variable, $type = null)
+    public function bindParam($parameter, &$variable, $type = PDO::PARAM_STR)
     {
-        if ($type === null) {
-            $type = PDO::PARAM_NULL;
-        }
-
         $mappedType = self::getMappedType($type);
 
         if (is_string($parameter) && ($parameter[0] !== ':')) {
@@ -136,7 +132,7 @@ class MysqliStatement implements StatementInterface, IteratorAggregate
      * To bind a value (by copy), the wapper will copy the value in the bindedValues property & then, bind the copied
      * value as parameter (by reference).
      */
-    public function bindValue($parameter, $value, $type = null)
+    public function bindValue($parameter, $value, $type = PDO::PARAM_STR)
     {
         $this->bindedValues[$parameter] = $value;
 
