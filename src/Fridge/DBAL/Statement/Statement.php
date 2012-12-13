@@ -84,7 +84,7 @@ class Statement implements StatementInterface, IteratorAggregate
      *
      * This method only suppports PDO type.
      */
-    public function bindParam($parameter, &$variable, $type = null)
+    public function bindParam($parameter, &$variable, $type = PDO::PARAM_STR)
     {
         return $this->adapter->bindParam($parameter, $variable, $type);
     }
@@ -94,7 +94,7 @@ class Statement implements StatementInterface, IteratorAggregate
      *
      * This method supports PDO or DBAL type.
      */
-    public function bindValue($parameter, $value, $type = null)
+    public function bindValue($parameter, $value, $type = PDO::PARAM_STR)
     {
         TypeUtility::bindTypedValue($value, $type, $this->connection->getPlatform());
 
