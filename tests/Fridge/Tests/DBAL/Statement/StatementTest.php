@@ -115,7 +115,7 @@ class StatementTest extends \PHPUnit_Framework_TestCase
             ->with(
                 $this->equalTo('foo'),
                 $this->equalTo('bar'),
-                $this->equalTo(null)
+                $this->equalTo(PDO::PARAM_STR)
             )
             ->will($this->returnValue('bar'));
 
