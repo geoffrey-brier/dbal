@@ -50,6 +50,32 @@ class PositionalQueryRewriterTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(array(Type::INTEGER, Type::INTEGER), $types);
     }
 
+    public function testRewriteWithCustomOrders()
+    {
+        $query = 'SELECT * FROM foo WHERE foo IN (?) AND bar IN (?) AND baz IN (?)';
+
+        $parameters = array(
+            1 => array(1, 2),
+            2 => array(true, false),
+            0 => array('foo', 'bar'),
+        );
+
+        $types = array(
+            0 => Type::STRING.Connection::PARAM_ARRAY,
+            2 => Type::BOOLEAN.Connection::PARAM_ARRAY,
+            1 => Type::INTEGER.Connection::PARAM_ARRAY
+        );
+
+        list($query, $parameters, $types) = PositionalQueryRewriter::rewrite($query, $parameters, $types);
+
+        $this->assertSame('SELECT * FROM foo WHERE foo IN (?, ?) AND bar IN (?, ?) AND baz IN (?, ?)', $query);
+        $this->assertSame(array('foo', 'bar', 1, 2, true, false), $parameters);
+        $this->assertSame(
+            array(Type::STRING, Type::STRING, Type::INTEGER, Type::INTEGER, Type::BOOLEAN, Type::BOOLEAN),
+            $types
+        );
+    }
+
     public function testRewriteWithPositionalTypesAndSimpleQuoteLiteralDelimiter()
     {
         $query = 'SELECT * FROM foo WHERE foo = \'?\' OR foo IN (?)';

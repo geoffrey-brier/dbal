@@ -47,6 +47,10 @@ class PositionalQueryRewriter extends AbstractQueryRewriter
             return array($query, $parameters, $types);
         }
 
+        // Order parameters and types to rationalize them.
+        ksort($parameters);
+        ksort($types);
+
         // Copy each variables.
         $rewrittenQuery = $query;
         $rewrittenParameters = $parameters;
