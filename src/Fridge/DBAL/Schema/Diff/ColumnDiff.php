@@ -41,7 +41,7 @@ class ColumnDiff extends AbstractAssetDiff
     /**
      * Gets the column difference
      *
-     * @return type
+     * @return array
      */
     public function getDifferences()
     {

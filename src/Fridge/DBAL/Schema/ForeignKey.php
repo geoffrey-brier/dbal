@@ -23,7 +23,7 @@ class ForeignKey extends AbstractAsset implements ConstraintInterface
     /** @const Cascade referential action constant. */
     const CASCADE = 'CASCADE';
 
-    /** @const Rstrict referential action constant. */
+    /** @const Restrict referential action constant. */
     const RESTRICT = 'RESTRICT';
 
     /** @const No action referential action constant. */

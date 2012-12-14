@@ -17,10 +17,10 @@ use Fridge\DBAL\Exception\Adapter\StatementRewriterException;
  * A statement rewriter allows to deal with named placeholder.
  *
  * It rewrites named query to positional query and rewrites each named parameter
- * to his corresponding positional parameters.
+ * to its corresponding positional parameters.
  *
  * If the statement is a positional statement, the statement rewriter simply
- * returns the statement & parameters like they are given.
+ * returns the statement and parameters like they are given.
  *
  * @author GeLo <geloen.eric@gmail.com>
  */
@@ -80,7 +80,7 @@ class StatementRewriter
     }
 
     /**
-     * Rewrite the named statement & parameters to positional.
+     * Rewrite the named statement and parameters to positional.
      *
      * Example:
      *  - before:
@@ -109,7 +109,7 @@ class StatementRewriter
                 $literal = !$literal;
             }
 
-            // Check if we are not in a literal section & the current statement char is a double colon.
+            // Check if we are not in a literal section and the current statement char is a double colon.
             if (!$literal && $this->statement[$placeholderPosition] === ':') {
 
                 // Determine placeholder length.

@@ -754,7 +754,7 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
     }
 
     /**
-     * Gets the generic views
+     * Gets the generic views.
      *
      * @param array $views The views.
      *
@@ -821,7 +821,7 @@ abstract class AbstractSchemaManager implements SchemaManagerInterface
     }
 
     /**
-     * Gets the generic table columns
+     * Gets the generic table columns.
      *
      * @param array $columns The columns.
      *

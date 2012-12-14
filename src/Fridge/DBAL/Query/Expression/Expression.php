@@ -18,7 +18,7 @@ namespace Fridge\DBAL\Query\Expression;
  */
 class Expression
 {
-    /** @cosnt The AND expression type */
+    /** @const The AND expression type */
     const TYPE_AND = 'AND';
 
     /** @const The OR expression type */
@@ -73,7 +73,7 @@ class Expression
     }
 
     /**
-     * Set the expression parts.
+     * Sets the expression parts.
      *
      * @param array $parts The expression parts.
      */
@@ -87,7 +87,7 @@ class Expression
     }
 
     /**
-     * Add a part to the expression.
+     * Adds a part to the expression.
      *
      * @param string|\Fridge\DBAL\Query\Expression\Expression $part The part to add to the expression.
      */

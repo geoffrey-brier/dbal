@@ -75,7 +75,7 @@ class TableComparator
      * @param \Fridge\DBAL\Schema\PrimaryKey $oldPrimaryKey The old primary key.
      * @param \Fridge\DBAL\Schema\PrimaryKey $newPrimaryKey The new primary key.
      *
-     * @return boolean TRUE if the primary keys have difference else FALSE.
+     * @return boolean TRUE if the primary keys are different else FALSE.
      */
     public function comparePrimaryKeys(PrimaryKey $oldPrimaryKey, PrimaryKey $newPrimaryKey)
     {
@@ -89,7 +89,7 @@ class TableComparator
      * @param \Fridge\DBAL\Schema\ForeignKey $oldForeignKey The old foreign key.
      * @param \Fridge\DBAL\Schema\ForeignKey $newForeignKey The new foreign key.
      *
-     * @return boolean TRUE if foreign keys have difference else FALSE.
+     * @return boolean TRUE if foreign keys are different else FALSE.
      */
     public function compareForeignKeys(ForeignKey $oldForeignKey, ForeignKey $newForeignKey)
     {
@@ -107,7 +107,7 @@ class TableComparator
      * @param \Fridge\DBAL\Schema\Index $oldIndex The old index.
      * @param \Fridge\DBAL\Schema\Index $newIndex The new index.
      *
-     * @return boolean TRUE if indexes have difference else FALSE.
+     * @return boolean TRUE if indexes are different else FALSE.
      */
     public function compareIndexes(Index $oldIndex, Index $newIndex)
     {
@@ -122,7 +122,7 @@ class TableComparator
      * @param \Fridge\DBAL\Schema\Check $oldCheck The old check.
      * @param \Fridge\DBAL\Schema\Check $newCheck The new check.
      *
-     * @return boolean TRUE if checks have difference else FALSE.
+     * @return boolean TRUE if checks are different else FALSE.
      */
     public function compareChecks(Check $oldCheck, Check $newCheck)
     {
@@ -198,7 +198,7 @@ class TableComparator
     }
 
     /**
-     * Detects & rewrites renamed columns.
+     * Detects and rewrites renamed columns.
      *
      * @param array &$createdColumns The create columns.
      * @param array &$droppedColumns The dropped columns.

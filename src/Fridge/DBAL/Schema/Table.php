@@ -106,7 +106,7 @@ class Table extends AbstractAsset
     }
 
     /**
-     * Creates & adds a new column.
+     * Creates and adds a new column.
      *
      * @param string                                 $name       The column name.
      * @param string|\Fridge\DBAL\Type\TypeInterface $type       The column type.
@@ -249,7 +249,7 @@ class Table extends AbstractAsset
     }
 
     /**
-     * Creates & adds a new primary key.
+     * Creates and adds a new primary key.
      *
      * @param array  $columnNames The primary key column names.
      * @param string $name        The primary key name.
@@ -327,7 +327,7 @@ class Table extends AbstractAsset
     }
 
     /**
-     * Creates & adds a new foreign key.
+     * Creates and adds a new foreign key.
      *
      * @param array                            $localColumnNames   The foreign key local column names.
      * @param string|\Fridge\DBAL\Schema\Table $foreignTable       The foreign key foreign table.
@@ -505,7 +505,7 @@ class Table extends AbstractAsset
     }
 
     /**
-     * Creates & adds a new index.
+     * Creates and adds a new index.
      *
      * @param array   $columnNames The index column names.
      * @param boolean $unique      TRUE if the index is unique else FALSE.
@@ -684,7 +684,7 @@ class Table extends AbstractAsset
     }
 
     /**
-     * Creates & adds a new check.
+     * Creates and adds a new check.
      *
      * @param string $constraint The check constraint.
      * @param string $name       The check name.

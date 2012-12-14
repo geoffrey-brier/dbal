@@ -69,7 +69,7 @@ class SchemaComparator
      * @param \Fridge\DBAL\Schema\Sequence $oldSequence The old sequence.
      * @param \Fridge\DBAL\Schema\Sequence $newSequence The new sequence.
      *
-     * @return boolean TRUE if sequences have difference else FALSE.
+     * @return boolean TRUE if sequences are different else FALSE.
      */
     public function compareSequences(Sequence $oldSequence, Sequence $newSequence)
     {
@@ -84,7 +84,7 @@ class SchemaComparator
      * @param \Fridge\DBAL\Schema\View $oldView The old view.
      * @param \Fridge\DBAL\Schema\View $newView The new view.
      *
-     * @return boolean TRUE if views have difference else FALSE.
+     * @return boolean TRUE if views are different else FALSE.
      */
     public function compareViews(View $oldView, View $newView)
     {
@@ -159,7 +159,7 @@ class SchemaComparator
     }
 
     /**
-     * Detects & rewrites renamed tables.
+     * Detects and rewrites renamed tables.
      *
      * @param array &$createdTables The create tables.
      * @param array &$droppedTables The dropped tables.

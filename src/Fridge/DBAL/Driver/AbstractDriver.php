@@ -12,7 +12,7 @@
 namespace Fridge\DBAL\Driver;
 
 /**
- * The abstract driver wraps the platform & the schema manager.
+ * The abstract driver wraps the platform and the schema manager.
  *
  * @author GeLo <geloen.eric@gmail.com>
  */
