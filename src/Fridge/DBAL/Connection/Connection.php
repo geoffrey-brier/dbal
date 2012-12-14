@@ -40,7 +40,7 @@ class Connection implements ConnectionInterface
     /** @const Transaction read uncommited constant. */
     const TRANSACTION_READ_UNCOMMITTED = 'READ UNCOMMITTED';
 
-    /** @const Transaction repearable read constant. */
+    /** @const Transaction repeatable read constant. */
     const TRANSACTION_REPEATABLE_READ = 'REPEATABLE READ';
 
     /** @const Transaction read commited constant. */
@@ -569,7 +569,7 @@ class Connection implements ConnectionInterface
     /**
      * {@inheritdoc}
      *
-     * @throws \Fridge\DBAL\Exception\ConnectionException if there is no active transaction.
+     * @throws \Fridge\DBAL\Exception\ConnectionException If there is no active transaction.
      */
     public function commit()
     {
@@ -587,7 +587,7 @@ class Connection implements ConnectionInterface
     /**
      * {@inheritdoc}
      *
-     * @throws \Fridge\DBAL\Exception\ConnectionException if there is no active transaction.
+     * @throws \Fridge\DBAL\Exception\ConnectionException If there is no active transaction.
      */
     public function rollBack()
     {
@@ -673,7 +673,7 @@ class Connection implements ConnectionInterface
      *
      * @param \Fridge\DBAL\Adapter\StatementInterface $statement  The statement to bind on.
      * @param array                                   $parameters The statement parameters.
-     * @param array                                   $types      The statement parameters types.
+     * @param array                                   $types      The statement parameter types.
      */
     protected function bindStatementParameters(StatementInterface $statement, array $parameters, array $types)
     {

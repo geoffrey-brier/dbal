@@ -34,7 +34,7 @@ class Statement implements StatementInterface, IteratorAggregate
     protected $sql;
 
     /**
-     * Creates a statement
+     * Creates a statement.
      *
      * @param string                                      $sql        The SQL of the statement.
      * @param \Fridge\DBAL\Connection\ConnectionInterface $connection The connection linked to the statement.

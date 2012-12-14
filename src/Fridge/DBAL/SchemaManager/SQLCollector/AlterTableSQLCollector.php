@@ -85,9 +85,9 @@ class AlterTableSQLCollector
     }
 
     /**
-     * Gets the platform used to collect queries..
+     * Gets the platform used to collect queries.
      *
-     * @return \Fridge\DBAL\Platform\PlatformInterface The platform used to collect queries..
+     * @return \Fridge\DBAL\Platform\PlatformInterface The platform used to collect queries.
      */
     public function getPlatform()
     {

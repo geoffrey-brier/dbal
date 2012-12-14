@@ -190,7 +190,7 @@ class PositionalQueryRewriter extends AbstractQueryRewriter
     }
 
     /**
-     * Rewrites the query according to the placeholder position & new placeholders.
+     * Rewrites the query according to the placeholder position and new placeholders.
      *
      * Example:
      *   - parameters:
@@ -243,7 +243,7 @@ class PositionalQueryRewriter extends AbstractQueryRewriter
         // Extract the fridge type.
         $type = static::extractType($types[$index]);
 
-        // Shift parameters & types placed just after the current rewritten position according to the gap.
+        // Shift parameters and types placed just after the current rewritten position according to the gap.
         // This will prepare the parameters & types to be rewritten with new placeholders.
 
         // Determine the interval to shift.
@@ -267,13 +267,13 @@ class PositionalQueryRewriter extends AbstractQueryRewriter
             }
         }
 
-        // Rewrite parameters & types according to the parameter count.
+        // Rewrite parameters and types according to the parameter count.
         for ($newPlaceholderIndex = 0 ; $newPlaceholderIndex < $parameterCount ; $newPlaceholderIndex++) {
 
             // Determine the new position.
             $newPosition = $index + $newPlaceholderIndex;
 
-            // Rewrite the parameter & type.
+            // Rewrite the parameter and type.
             $parameters[$newPosition] = $parameterValue[$newPlaceholderIndex];
             $types[$newPosition] = $type;
         }

@@ -281,7 +281,7 @@ interface ConnectionInterface extends AdapterConnection
     function fetchColumn($query, array $parameters = array(), array $types = array(), $column = 0);
 
     /**
-     * Executes a SELECT query with the given parameters & types.
+     * Executes a SELECT query with the given parameters and types.
      *
      * @param string $query      The query to execute.
      * @param array  $parameters Associative array that describes placeholder name => value pairs.

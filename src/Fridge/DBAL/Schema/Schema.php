@@ -51,7 +51,7 @@ class Schema extends AbstractAsset
     }
 
     /**
-     * Creates & adds a new table.
+     * Creates and adds a new table.
      *
      * @param string $name        The table name.
      * @param array  $columns     The table columns.
@@ -265,7 +265,7 @@ class Schema extends AbstractAsset
     }
 
     /**
-     * Creates & adds a new sequence.
+     * Creates and adds a new sequence.
      *
      * @param string  $name          The sequence name.
      * @param integer $initialValue  The sequence initial value.
@@ -405,7 +405,7 @@ class Schema extends AbstractAsset
     }
 
     /**
-     * Creates & adds a new view.
+     * Creates and adds a new view.
      *
      * @param string $name The view name.
      * @param string $sql  The view sql.

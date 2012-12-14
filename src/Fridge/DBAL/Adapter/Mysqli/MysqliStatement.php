@@ -129,8 +129,8 @@ class MysqliStatement implements StatementInterface, IteratorAggregate
     /**
      * {@inheritdoc}
      *
-     * To bind a value (by copy), the wapper will copy the value in the bindedValues property & then, bind the copied
-     * value as parameter (by reference).
+     * To bind a value (by copy), the wrapper will copy the value in the bindedValues property and then, bind the
+     * copied value as parameter (by reference).
      */
     public function bindValue($parameter, $value, $type = PDO::PARAM_STR)
     {
@@ -142,8 +142,8 @@ class MysqliStatement implements StatementInterface, IteratorAggregate
     /**
      * {@inheritdoc}
      *
-     * To retrive the field name fetched, the wrapper will bind the result fields on the resultFields property and then,
-     * bind the result on the result property according to the binded result fields.
+     * To retrieve the field name fetched, the wrapper will bind the result fields on the resultFields property and
+     * then, bind the result on the result property according to the binded result fields.
      *
      * @throws \Fridge\DBAL\Exception\Adapter\MysqliException If the statement can not be executed.
      */

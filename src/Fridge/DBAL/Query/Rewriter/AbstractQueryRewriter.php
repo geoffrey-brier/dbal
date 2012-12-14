@@ -25,7 +25,7 @@ abstract class AbstractQueryRewriter
      *
      * @param string $type The type.
      *
-     * @return string|boolean The fidge type or false if the type is not an expanded one.
+     * @return string|boolean The fridge type or false if the type is not an expanded one.
      */
     static protected function extractType($type)
     {

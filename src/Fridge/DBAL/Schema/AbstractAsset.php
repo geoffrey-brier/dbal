@@ -71,7 +71,7 @@ abstract class AbstractAsset
      * @param string  $prefix    The identifier prefix.
      * @param integer $maxLength The identifier max length.
      *
-     * @return string The prefixed identifier
+     * @return string The prefixed identifier.
      */
     protected function generateIdentifier($prefix, $maxLength)
     {

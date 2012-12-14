@@ -58,7 +58,7 @@ class NamedQueryRewriter extends AbstractQueryRewriter
             // Check if the type needs to be rewritten.
             if (static::extractType($type) !== false) {
 
-                // Generate the placeholder & determine his length.
+                // Generate the placeholder and determine his length.
                 $placeholder = ':'.$parameter;
                 $placeholderLength = strlen($placeholder);
 
@@ -145,7 +145,7 @@ class NamedQueryRewriter extends AbstractQueryRewriter
     }
 
     /**
-     * Generates the new placeholders according to the placeholder & the number of parameter.
+     * Generates the new placeholders according to the placeholder and the number of parameter.
      *
      * Example:
      *   - parameters:
@@ -171,7 +171,7 @@ class NamedQueryRewriter extends AbstractQueryRewriter
     }
 
     /**
-     * Rewrites the named query according to the placeholder length & positions and the new placeholders.
+     * Rewrites the named query according to the placeholder length and positions and the new placeholders.
      *
      * Example:
      *   - parameters:
@@ -199,7 +199,7 @@ class NamedQueryRewriter extends AbstractQueryRewriter
         // The position gap produced by the rewrite.
         $positionGap = 0;
 
-        // Generates new placeholders & his length.
+        // Generates new placeholders and his length.
         $placeholders = implode(', ', $newPlaceholders);
         $placeholdersLength = strlen($placeholders);
 
@@ -219,7 +219,7 @@ class NamedQueryRewriter extends AbstractQueryRewriter
     }
 
     /**
-     * Rewrites the query parameter & type by expanding them according to the parameter & the new placeholders.
+     * Rewrites the query parameter & type by expanding them according to the parameter and the new placeholders.
      *
      * Example:
      *   - parameters:
@@ -254,12 +254,12 @@ class NamedQueryRewriter extends AbstractQueryRewriter
             // Determine the new parameter.
             $newParameter = substr($newPlaceholder, 1);
 
-            // Rewrites parameters & types.
+            // Rewrites parameters and types.
             $parameters[$newParameter] = $parameters[$parameter][$newPlaceholderIndex];
             $types[$newParameter] = $type;
         }
 
-        // Remove rewritten parameter & type.
+        // Remove rewritten parameter and type.
         unset($parameters[$parameter]);
         unset($types[$parameter]);
 
