@@ -37,34 +37,21 @@ class MySQLPlatform extends AbstractPlatform
     /**
      * {@inheritdoc}
      */
-    public function getBlobSQLDeclaration(array $options = array())
+    public function getBooleanSQLDeclaration(array $options = array())
     {
-        $length = isset($options['length']) ? $options['length'] : null;
-
-        // @link http://dev.mysql.com/doc/refman/5.5/en/string-type-overview.html Blob types length.
-        if ($length !== null) {
-            if ($length <= 255) {
-                return 'TINYBLOB';
-            }
-
-            if ($length <= 65535) {
-                return parent::getBlobSQLDeclaration($options);
-            }
-
-            if ($length <= 16777215) {
-                return 'MEDIUMBLOB';
-            }
-        }
-
-        return 'LONGBLOB';
+        return 'TINYINT(1)';
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getBooleanSQLDeclaration(array $options = array())
+    public function getBlobSQLDeclaration(array $options = array())
     {
-        return 'TINYINT(1)';
+        $length = isset($options['length']) ? $options['length'] : null;
+
+        $prefix = $this->getStringTypesPrefix($length);
+
+        return $prefix.parent::getBlobSQLDeclaration($options);
     }
 
     /**
@@ -74,22 +61,33 @@ class MySQLPlatform extends AbstractPlatform
     {
         $length = isset($options['length']) ? $options['length'] : null;
 
+        $prefix = $this->getStringTypesPrefix($length);
+
+        return $prefix.parent::getClobSQLDeclaration($options);
+    }
+
+    /**
+     * Gets the string types prefix for the given length.
+     *
+     * @param null|integer $length The length of the type.
+     *
+     * @return string The prefix.
+     */
+    protected function getStringTypesPrefix($length)
+    {
         // @link http://dev.mysql.com/doc/refman/5.5/en/string-type-overview.html String types length.
-        if ($length !== null) {
-            if ($length <= 255) {
-                return 'TINYTEXT';
-            }
-
-            if ($length <= 65535) {
-                return parent::getClobSQLDeclaration($options);
-            }
-
-            if ($length <= 16777215) {
-                return 'MEDIUMTEXT';
+        $lengthLimits = array(
+            array('prefix' => 'TINY', 'limit' => 255),
+            array('prefix' => '', 'limit' => 65535),
+            array('prefix' => 'MEDIUM', 'limit' => 16777215),
+        );
+        foreach ($lengthLimits as $lengthLimit) {
+            if ($length !== null and $length <= $lengthLimit['limit']) {
+                return $lengthLimit['prefix'];
             }
         }
 
-        return 'LONGTEXT';
+        return 'LONG';
     }
 
     /**
