@@ -341,7 +341,7 @@ class MysqliStatement implements StatementInterface, IteratorAggregate
                 $parameter++;
             }
 
-            $this->bindValue($parameter, $value, PDO::PARAM_STR);
+            $this->bindValue($parameter, $value);
         }
     }
 
