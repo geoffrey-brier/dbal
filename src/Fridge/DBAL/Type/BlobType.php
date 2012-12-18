@@ -43,7 +43,7 @@ class BlobType implements TypeInterface
      */
     public function convertToPHPValue($value, PlatformInterface $platform)
     {
-        return ($value === null) ? null : (string) $value;
+        return ($value === null) ? null : (int) $value;
     }
 
     /**
