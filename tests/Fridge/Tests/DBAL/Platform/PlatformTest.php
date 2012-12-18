@@ -618,12 +618,12 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @expectedException Fridge\DBAL\Exception\PlatformException
-     * @expectedExceptionMessage The constraint "foo" is not supported.
+     * @expectedExceptionMessage The constraint "FridgeConstaint" is not supported.
      */
     public function testCreateConstraintSQLQueriesWithInvalidConstraint()
     {
         $constraintMock = $this->getMockBuilder('Fridge\DBAL\Schema\ConstraintInterface')
-            ->setMockClassName('foo')
+            ->setMockClassName('FridgeConstaint')
             ->disableOriginalConstructor()
             ->getMock();
 

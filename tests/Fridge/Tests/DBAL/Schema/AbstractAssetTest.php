@@ -55,12 +55,12 @@ class AbstractAssetTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @expectedException Fridge\DBAL\Exception\SchemaException
-     * @expectedExceptionMessage The foo bar name must be a string.
+     * @expectedExceptionMessage The fridge asset name must be a string.
      */
     public function testNameWithInvalidValue()
     {
         $assetMock = $this->getMockBuilder('Fridge\DBAL\Schema\AbstractAsset')
-            ->setMockClassName('FooBar')
+            ->setMockClassName('FridgeAsset')
             ->setConstructorArgs(array('foo'))
             ->getMockForAbstractClass();
 
