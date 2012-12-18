@@ -62,6 +62,11 @@ class PostgreSQLPlatformTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('BIGSERIAL', $this->platform->getBigIntegerSQLDeclaration(array('auto_increment' => true)));
     }
 
+    public function testBlobSQLDeclarationWithoutOptions()
+    {
+        $this->assertSame('BYTEA', $this->platform->getBlobSQLDeclaration());
+    }
+
     public function testDateTimeSQLDeclaration()
     {
         $this->assertSame('TIMESTAMP(0) WITHOUT TIME ZONE', $this->platform->getDateTimeSQLDeclaration());

@@ -289,6 +289,11 @@ class PlatformTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('BIGINT', $this->platform->getBigIntegerSQLDeclaration());
     }
 
+    public function testBlobSQLDeclaration()
+    {
+        $this->assertSame('BLOB', $this->platform->getBlobSQLDeclaration());
+    }
+
     public function testBooleanSQLDeclaration()
     {
         $this->assertSame('BOOLEAN', $this->platform->getBooleanSQLDeclaration());

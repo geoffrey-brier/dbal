@@ -105,6 +105,31 @@ class MySQLPlatformTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('BIGINT(100)', $this->platform->getBigIntegerSQLDeclaration(array('length' => 100)));
     }
 
+    public function testBlobSQLDeclarationWithoutLength()
+    {
+        $this->assertSame('LONGBLOB', $this->platform->getBlobSQLDeclaration());
+    }
+
+    public function testBlobSQLDeclarationWithLengthLowerThan266()
+    {
+        $this->assertSame('TINYBLOB', $this->platform->getBlobSQLDeclaration(array('length' => 255)));
+    }
+
+    public function testBlobSQLDeclarationWithLengthLowerThan65536()
+    {
+        $this->assertSame('BLOB', $this->platform->getBlobSQLDeclaration(array('length' => 65535)));
+    }
+
+    public function testBlobSQLDeclarationWithLengthLowerThan16777216()
+    {
+        $this->assertSame('MEDIUMBLOB', $this->platform->getBlobSQLDeclaration(array('length' => 16777215)));
+    }
+
+    public function testBlobSQLDeclarationWithLengthGreaterThan16777215()
+    {
+        $this->assertSame('LONGBLOB', $this->platform->getBlobSQLDeclaration(array('length' => 16777216)));
+    }
+
     public function testBooleanSQLDeclaration()
     {
         $this->assertSame('TINYINT(1)', $this->platform->getBooleanSQLDeclaration());
