@@ -78,7 +78,7 @@ class MySQLPlatform extends AbstractPlatform
             array('prefix' => 'MEDIUM', 'limit' => 16777215),
         );
         foreach ($lengthLimits as $lengthLimit) {
-            if ($length !== null and $length <= $lengthLimit['limit']) {
+            if (($length !== null) && ($length <= $lengthLimit['limit'])) {
                 return $lengthLimit['prefix'];
             }
         }
