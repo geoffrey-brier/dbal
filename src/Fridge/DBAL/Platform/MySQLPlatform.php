@@ -37,6 +37,30 @@ class MySQLPlatform extends AbstractPlatform
     /**
      * {@inheritdoc}
      */
+    public function getBlobSQLDeclaration(array $options = array())
+    {
+        $length = isset($options['length']) ? $options['length'] : null;
+
+        if ($length !== null) {
+            if ($length <= 255) {
+                return 'TINYBLOB';
+            }
+
+            if ($length <= 65535) {
+                return parent::getBlobSQLDeclaration($options);
+            }
+
+            if ($length <= 16777215) {
+                return 'MEDIUMBLOB';
+            }
+        }
+
+        return 'LONGBLOB';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getBooleanSQLDeclaration(array $options = array())
     {
         return 'TINYINT(1)';

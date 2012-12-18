@@ -227,6 +227,14 @@ abstract class AbstractPlatform implements PlatformInterface
     /**
      * {@inheritdoc}
      */
+    public function getBlobSQLDeclaration(array $options = array())
+    {
+        return 'BLOB';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getBooleanSQLDeclaration(array $options = array())
     {
         return 'BOOLEAN';

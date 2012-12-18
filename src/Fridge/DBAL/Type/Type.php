@@ -27,6 +27,9 @@ class Type
     /** @const The big integer type constant */
     const BIGINTEGER = 'biginteger';
 
+    /** @const The blob type constant */
+    const BLOB = 'blob';
+
     /** @const The boolean type constant */
     const BOOLEAN = 'boolean';
 
@@ -64,6 +67,7 @@ class Type
     static protected $mappedTypeClasses = array(
         self::TARRAY       => 'Fridge\DBAL\Type\ArrayType',
         self::BIGINTEGER   => 'Fridge\DBAL\Type\BigIntegerType',
+        self::BLOB         => 'Fridge\DBAL\Type\BlobType',
         self::BOOLEAN      => 'Fridge\DBAL\Type\BooleanType',
         self::DATE         => 'Fridge\DBAL\Type\DateType',
         self::DATETIME     => 'Fridge\DBAL\Type\DateTimeType',

@@ -130,6 +130,15 @@ interface PlatformInterface
     function getBigIntegerSQLDeclaration(array $options);
 
     /**
+     * Gets the blob SQL declaration.
+     *
+     * @param array $options The blob options.
+     *
+     * @return string The blob SQL declaration.
+     */
+    function getBlobSQLDeclaration(array $options);
+
+    /**
      * Gets the boolean SQL declaration.
      *
      * @param array $options The boolean options.
