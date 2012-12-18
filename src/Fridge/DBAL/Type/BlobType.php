@@ -35,7 +35,7 @@ class BlobType implements TypeInterface
      */
     public function convertToDatabaseValue($value, PlatformInterface $platform)
     {
-        return ($value === null) ? null : (string) $value;
+        return $value;
     }
 
     /**
