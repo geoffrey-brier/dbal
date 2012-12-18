@@ -41,6 +41,7 @@ class MySQLPlatform extends AbstractPlatform
     {
         $length = isset($options['length']) ? $options['length'] : null;
 
+        // @link http://dev.mysql.com/doc/refman/5.5/en/string-type-overview.html Blob types length.
         if ($length !== null) {
             if ($length <= 255) {
                 return 'TINYBLOB';
@@ -73,6 +74,7 @@ class MySQLPlatform extends AbstractPlatform
     {
         $length = isset($options['length']) ? $options['length'] : null;
 
+        // @link http://dev.mysql.com/doc/refman/5.5/en/string-type-overview.html String types length.
         if ($length !== null) {
             if ($length <= 255) {
                 return 'TINYTEXT';
