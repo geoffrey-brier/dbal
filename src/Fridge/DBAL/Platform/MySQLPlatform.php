@@ -49,9 +49,7 @@ class MySQLPlatform extends AbstractPlatform
     {
         $length = isset($options['length']) ? $options['length'] : null;
 
-        $prefix = $this->getStringTypesPrefix($length);
-
-        return $prefix.parent::getBlobSQLDeclaration($options);
+        return $this->getStringTypesPrefix($length).parent::getBlobSQLDeclaration($options);
     }
 
     /**
@@ -61,9 +59,7 @@ class MySQLPlatform extends AbstractPlatform
     {
         $length = isset($options['length']) ? $options['length'] : null;
 
-        $prefix = $this->getStringTypesPrefix($length);
-
-        return $prefix.parent::getClobSQLDeclaration($options);
+        return $this->getStringTypesPrefix($length).parent::getClobSQLDeclaration($options);
     }
 
     /**
