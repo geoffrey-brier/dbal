@@ -138,7 +138,7 @@ class TypeTest extends \PHPUnit_Framework_TestCase
      */
     public function testOverrideTypeWithInvalidClass()
     {
-        Type::overrideType(Type::BOOLEAN, 'invalid.class');
+        Type::overrideType(Type::BOOLEAN, 'foo');
     }
 
     /**
