@@ -13,7 +13,8 @@ namespace Fridge\DBAL\Type;
 
 use \PDO;
 
-use Fridge\DBAL\Platform\PlatformInterface;
+use Fridge\DBAL\Platform\PlatformInterface,
+    Fridge\DBAL\Exception\TypeException;
 
 /**
  * Blob type.
@@ -40,10 +41,22 @@ class BlobType implements TypeInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @throw
      */
     public function convertToPHPValue($value, PlatformInterface $platform)
     {
-        return ($value === null) ? null : (int) $value;
+        if (is_string($value)) {
+            $filePointerResource = tmpfile();
+            fwrite($filePointerResource, $value);
+            fseek($filePointerResource, 0);
+
+            $value = $filePointerResource;
+        } else if ((!is_resource($value)) && ($value !== null)) {
+            throw TypeException::conversionToPHPFailed($value, Type::BLOB);
+        }
+
+        return $value;
     }
 
     /**
