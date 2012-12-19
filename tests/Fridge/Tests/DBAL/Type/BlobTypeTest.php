@@ -57,6 +57,15 @@ class BlobTypeTest extends AbstractTypeTest
         $this->assertTrue(is_resource($this->type->convertToPHPValue('foo', $this->platformMock)));
     }
 
+    /**
+     * @expectedException Fridge\DBAL\Exception\TypeException
+     * @expectedExceptionMessage The value "1" can not be converted to the type "blob".
+     */
+    public function testConvertToPHPValueWithInvalidValue()
+    {
+        $this->assertTrue(is_resource($this->type->convertToPHPValue(1, $this->platformMock)));
+    }
+
     public function testConvertToPHPValueWithNullValue()
     {
         $this->assertNull($this->type->convertToPHPValue(null, $this->platformMock));
