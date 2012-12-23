@@ -405,7 +405,7 @@ class Connection implements ConnectionInterface
      */
     public function executeQuery($query, array $parameters = array(), array $types = array())
     {
-        $debugger = $this->getConfiguration()->getLogger()->isHandling(Logger::INFO) ? new Debugger() : null;
+        $debugger = $this->getConfiguration()->getLogger()->isHandling(Logger::DEBUG) ? new Debugger() : null;
 
         if ($debugger !== null) {
             $debugger->start($query);
@@ -427,7 +427,7 @@ class Connection implements ConnectionInterface
 
         if ($debugger !== null) {
             $debugger->stop();
-            $this->getConfiguration()->getLogger()->addInfo($debugger->toString(), $debugger->toArray());
+            $this->getConfiguration()->getLogger()->addDebug($debugger->toString(), $debugger->toArray());
         }
 
         return $statement;
@@ -522,7 +522,7 @@ class Connection implements ConnectionInterface
      */
     public function executeUpdate($query, array $parameters = array(), array $types = array())
     {
-        $debugger = $this->getConfiguration()->getLogger()->isHandling(Logger::INFO) ? new Debugger() : null;
+        $debugger = $this->getConfiguration()->getLogger()->isHandling(Logger::DEBUG) ? new Debugger() : null;
 
         if ($debugger !== null) {
             $debugger->start($query);
@@ -546,7 +546,7 @@ class Connection implements ConnectionInterface
 
         if ($debugger !== null) {
             $debugger->stop();
-            $this->getConfiguration()->getLogger()->addInfo($debugger->toString(), $debugger->toArray());
+            $this->getConfiguration()->getLogger()->addDebug($debugger->toString(), $debugger->toArray());
         }
 
         return $affectedRows;

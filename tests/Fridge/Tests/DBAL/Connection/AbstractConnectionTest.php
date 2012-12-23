@@ -219,7 +219,7 @@ abstract class AbstractConnectionTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue(true));
         $loggerMock
             ->expects($this->once())
-            ->method('addInfo');
+            ->method('addDebug');
 
         $this->connection->getConfiguration()->setLogger($loggerMock);
 
@@ -274,7 +274,7 @@ abstract class AbstractConnectionTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue(true));
         $loggerMock
             ->expects($this->once())
-            ->method('addInfo');
+            ->method('addDebug');
 
         $this->connection->getConfiguration()->setLogger($loggerMock);
 
