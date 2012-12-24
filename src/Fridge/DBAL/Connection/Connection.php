@@ -408,7 +408,7 @@ class Connection implements ConnectionInterface
         $debugger = $this->getConfiguration()->getLogger()->isHandling(Logger::DEBUG) ? new Debugger() : null;
 
         if ($debugger !== null) {
-            $debugger->start($query);
+            $debugger->start($query, $parameters, $types);
         }
 
         if (!empty($parameters)) {
@@ -525,7 +525,7 @@ class Connection implements ConnectionInterface
         $debugger = $this->getConfiguration()->getLogger()->isHandling(Logger::DEBUG) ? new Debugger() : null;
 
         if ($debugger !== null) {
-            $debugger->start($query);
+            $debugger->start($query, $parameters, $types);
         }
 
         if (!empty($parameters)) {

@@ -21,6 +21,12 @@ class Debugger
     /** @var string */
     protected $query;
 
+    /** @var array */
+    protected $parameters;
+
+    /** @var array */
+    protected $types;
+
     /** @var float */
     protected $time;
 
@@ -30,12 +36,16 @@ class Debugger
     /**
      * Starts the debug.
      *
-     * @param string $query The debugged query
+     * @param string $query     The debugged query
+     * @param array $parameters The debugged parameters.
+     * @param array $types      The debugged types.
      */
-    public function start($query)
+    public function start($query, array $parameters, array $types)
     {
         $this->start = microtime(true);
         $this->query = $query;
+        $this->parameters = $parameters;
+        $this->types = $types;
     }
 
     /**
@@ -54,6 +64,26 @@ class Debugger
     public function getQuery()
     {
         return $this->query;
+    }
+
+    /**
+     * Gets the debugged parameters.
+     *
+     * @return array The debugged parameters.
+     */
+    public function getParameters()
+    {
+        return $this->parameters;
+    }
+
+    /**
+     * Gets the debugged types.
+     *
+     * @return array The debugged types.
+     */
+    public function getTypes()
+    {
+        return $this->types;
     }
 
     /**
@@ -84,8 +114,10 @@ class Debugger
     public function toArray()
     {
         return array(
-            'query' => $this->getQuery(),
-            'time'  => $this->getTime()
+            'query'      => $this->getQuery(),
+            'parameters' => $this->getParameters(),
+            'types'      => $this->getTypes(),
+            'time'       => $this->getTime()
         );
     }
 }

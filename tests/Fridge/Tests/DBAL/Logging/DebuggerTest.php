@@ -20,7 +20,7 @@ use Fridge\DBAL\Logging\Debugger;
  */
 class DebuggerTest extends \PHPUnit_Framework_TestCase
 {
-    /** @var Fridge\DBAl\Logging\Debugger */
+    /** @var Fridge\DBAL\Logging\Debugger */
     protected $debugger;
 
     /**
@@ -41,16 +41,18 @@ class DebuggerTest extends \PHPUnit_Framework_TestCase
 
     public function testDebug()
     {
-        $this->debugger->start('foo');
+        $this->debugger->start('foo', array('bar'), array('baz'));
         $this->debugger->stop();
 
-        $this->assertSame($this->debugger->getQuery(), 'foo');
+        $this->assertSame('foo', $this->debugger->getQuery());
+        $this->assertSame(array('bar'), $this->debugger->getParameters());
+        $this->assertSame(array('baz'), $this->debugger->getTypes());
         $this->assertInternalType('float', $this->debugger->getTime());
     }
 
     public function testToString()
     {
-        $this->debugger->start('foo');
+        $this->debugger->start('foo', array('bar'), array('baz'));
         $this->debugger->stop();
 
         $this->assertRegExp('/^The query "foo" has been executed in [0-9]*.[0-9]* ms.$/', $this->debugger->toString());
@@ -58,12 +60,14 @@ class DebuggerTest extends \PHPUnit_Framework_TestCase
 
     public function testToArray()
     {
-        $this->debugger->start('foo');
+        $this->debugger->start('foo', array('bar'), array('baz'));
         $this->debugger->stop();
 
         $expected = array(
-            'query' => $this->debugger->getQuery(),
-            'time'  => $this->debugger->getTime()
+            'query'      => $this->debugger->getQuery(),
+            'parameters' => $this->debugger->getParameters(),
+            'types'      => $this->debugger->getTypes(),
+            'time'       => $this->debugger->getTime(),
         );
 
         $this->assertSame($expected, $this->debugger->toArray());
