@@ -63,13 +63,13 @@ class MySQLPlatform extends AbstractPlatform
     }
 
     /**
-     * Gets the string types prefix for the given length.
+     * Gets the string type prefix for the given length.
      *
      * @param null|integer $length The length of the type.
      *
      * @return string The prefix.
      */
-    protected function getStringTypesPrefix($length)
+    protected function getStringTypePrefix($length)
     {
         // @link http://dev.mysql.com/doc/refman/5.5/en/string-type-overview.html String types length.
         $lengthLimits = array(
