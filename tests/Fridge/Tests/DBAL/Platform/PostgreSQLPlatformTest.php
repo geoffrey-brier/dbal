@@ -62,7 +62,7 @@ class PostgreSQLPlatformTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('BIGSERIAL', $this->platform->getBigIntegerSQLDeclaration(array('auto_increment' => true)));
     }
 
-    public function testBlobSQLDeclarationWithoutOptions()
+    public function testBlobSQLDeclaration()
     {
         $this->assertSame('BYTEA', $this->platform->getBlobSQLDeclaration());
     }
