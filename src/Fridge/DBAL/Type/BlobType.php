@@ -46,15 +46,15 @@ class BlobType implements TypeInterface
      */
     public function convertToPHPValue($value, PlatformInterface $platform)
     {
-        if (is_string($value)) {
-            $filePointerResource = tmpfile();
-            fwrite($filePointerResource, $value);
-            fseek($filePointerResource, 0);
-
-            $value = $filePointerResource;
-        } else if ((!is_resource($value)) && ($value !== null)) {
+        if (!is_string($value) && !is_resource($value) && ($value !== null)) {
             throw TypeException::conversionToPHPFailed($value, Type::BLOB);
         }
+
+        $filePointerResource = tmpfile();
+        fwrite($filePointerResource, $value);
+        fseek($filePointerResource, 0);
+
+        $value = $filePointerResource;
 
         return $value;
     }
