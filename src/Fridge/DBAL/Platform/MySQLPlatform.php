@@ -75,25 +75,30 @@ class MySQLPlatform extends AbstractPlatform
      */
     protected function getStringTypePrefix($length = null)
     {
-        if ($length !== null) {
-            if (!is_int($length) || ($length <= 0)) {
-                throw PlatformException::invalidBlobLength();
-            }
+        if ($length === null) {
+            return 'LONG';
+        }
 
-            $prefixLimits = array(
-                'TINY'   => 255,
-                ''       => 65535,
-                'MEDIUM' => 16777215,
-            );
+        if (!is_int($length) || ($length <= 0)) {
+            throw PlatformException::invalidBlobLength();
+        }
 
-            foreach ($prefixLimits as $prefix => $limit) {
-                if ($length <= $limit) {
-                    return $prefix;
-                }
+        $prefixLimits = array(
+            'TINY'   => 255,
+            ''       => 65535,
+            'MEDIUM' => 16777215,
+        );
+
+        $stringTypePrefix = 'LONG';
+        foreach ($prefixLimits as $prefix => $limit) {
+            if ($length <= $limit) {
+                $stringTypePrefix = $prefix;
+
+                break;
             }
         }
 
-        return 'LONG';
+        return $stringTypePrefix;
     }
 
     /**
