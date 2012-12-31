@@ -54,7 +54,11 @@ class BlobTypeTest extends AbstractTypeTest
 
     public function testConvertToPHPValueWithValidValue()
     {
-        $this->assertTrue(is_resource($this->type->convertToPHPValue('foo', $this->platformMock)));
+        $expectedValue = 'foo';
+        $resource = $this->type->convertToPHPValue($expectedValue, $this->platformMock);
+
+        $this->assertTrue(is_resource($resource));
+        $this->assertSame($expectedValue, fread($resource, strlen($expectedValue)));
     }
 
     /**
