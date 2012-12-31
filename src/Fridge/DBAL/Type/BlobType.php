@@ -42,7 +42,7 @@ class BlobType implements TypeInterface
     /**
      * {@inheritdoc}
      *
-     * @throw \Fridge\DBAL\Exception\TypeException If the database value can not be convert to this PHP value.
+     * @throws \Fridge\DBAL\Exception\TypeException If the database value can not be convert to this PHP value.
      */
     public function convertToPHPValue($value, PlatformInterface $platform)
     {
