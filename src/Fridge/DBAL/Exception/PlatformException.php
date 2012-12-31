@@ -51,6 +51,16 @@ class PlatformException extends Exception
     }
 
     /**
+     * Gets the "INVALID BLOB LENGTH" exception.
+     *
+     * @return \Fridge\DBAL\Exception\PlatformException The "INVALID BLOB LENGTH" exception.
+     */
+    public static function invalidBlobLength()
+    {
+        return new static('The blob length must be a strict positive integer.');
+    }
+
+    /**
      * Gets the "MAPPED TYPE ALREADY EXISTS" exception.
      *
      * @param string $type The mapped type.

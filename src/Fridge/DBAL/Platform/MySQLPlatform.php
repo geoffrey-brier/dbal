@@ -17,7 +17,8 @@ use Fridge\DBAL\Schema\Diff\ColumnDiff,
     Fridge\DBAL\Schema\Index,
     Fridge\DBAL\Schema\PrimaryKey,
     Fridge\DBAL\Schema\Table,
-    Fridge\DBAL\Type\Type;
+    Fridge\DBAL\Type\Type,
+    Fridge\DBAL\Exception\PlatformException;
 
 /**
  * MySQL Platform.
@@ -69,22 +70,33 @@ class MySQLPlatform extends AbstractPlatform
      * @param null|integer $length The length of the type.
      *
      * @return string The prefix.
+     *
+     * @throws \Fridge\DBAL\Exception\PlatformException If the length is not a strict positive integer.
      */
     protected function getStringTypePrefix($length = null)
     {
-        $lengthLimits = array(
-            array('prefix' => 'TINY', 'limit' => 255),
-            array('prefix' => '', 'limit' => 65535),
-            array('prefix' => 'MEDIUM', 'limit' => 16777215),
-        );
-        foreach ($lengthLimits as $lengthLimit) {
-            if (($length !== null) && ($length <= $lengthLimit['limit'])) {
-                return $lengthLimit['prefix'];
-            }
+        if ($length === null) {
+            return 'LONG';
         }
 
-        return 'LONG';
-    }
+        if (!is_int($length) || ($length <= 0)) {
+            throw PlatformException::invalidBlobLength();
+        }
+
+        $prefixLimits = array(
+            'LONG'   => 16777215,
+            'MEDIUM' => 65535,
+            ''       => 255,
+            'TINY'   => 0,
+        );
+
+        foreach ($prefixLimits as $prefix => $limit) {
+            if ($length > $limit) {
+                return $prefix;
+            }
+        } // @codeCoverageIgnoreStart
+        // These lines are ignored for the code coverage because we never reach the final brace.
+    } // @codeCoverageIgnoreEnd
 
     /**
      * {@inheritdoc}

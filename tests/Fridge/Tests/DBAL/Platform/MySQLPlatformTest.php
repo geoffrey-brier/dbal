@@ -105,6 +105,33 @@ class MySQLPlatformTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('BIGINT(100)', $this->platform->getBigIntegerSQLDeclaration(array('length' => 100)));
     }
 
+    /**
+     * @expectedException Fridge\DBAL\Exception\PlatformException
+     * @expectedExceptionMessage The blob length must be a strict positive integer.
+     */
+    public function testBlobSQLDeclarationWithInvalidNegativeValue()
+    {
+        $this->platform->getBlobSQLDeclaration(array('length' => -42));
+    }
+
+    /**
+     * @expectedException Fridge\DBAL\Exception\PlatformException
+     * @expectedExceptionMessage The blob length must be a strict positive integer.
+     */
+    public function testBlobSQLDeclarationWithInvalidZeroValue()
+    {
+        $this->platform->getBlobSQLDeclaration(array('length' => 0));
+    }
+
+    /**
+     * @expectedException Fridge\DBAL\Exception\PlatformException
+     * @expectedExceptionMessage The blob length must be a strict positive integer.
+     */
+    public function testBlobSQLDeclarationWithInvalidStringValue()
+    {
+        $this->platform->getBlobSQLDeclaration(array('length' => 'foo'));
+    }
+
     public function testBlobSQLDeclarationWithoutLength()
     {
         $this->assertSame('LONGBLOB', $this->platform->getBlobSQLDeclaration());
