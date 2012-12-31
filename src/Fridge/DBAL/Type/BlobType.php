@@ -54,11 +54,11 @@ class BlobType implements TypeInterface
             throw TypeException::conversionToPHPFailed($value, Type::BLOB);
         }
 
-        $filePointerResource = tmpfile();
-        fwrite($filePointerResource, $value);
-        fseek($filePointerResource, 0);
+        $resource = tmpfile();
+        fwrite($resource, $value);
+        fseek($resource, 0);
 
-        return $filePointerResource;
+        return $resource;
     }
 
     /**
