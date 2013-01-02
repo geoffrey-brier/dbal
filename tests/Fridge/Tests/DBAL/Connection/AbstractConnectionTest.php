@@ -75,6 +75,34 @@ abstract class AbstractConnectionTest extends \PHPUnit_Framework_TestCase
         }
     }
 
+    /**
+     * Asserts the query result.
+     *
+     * @param array $expectedResult The expected result.
+     * @param array $actualResult   The actual result.
+     */
+    protected function assertQueryResult($expectedResult, $actualResult)
+    {
+        $cblobIndex = 'cblob';
+        if (!array_key_exists($cblobIndex, $expectedResult[0])) {
+            $cblobIndex = 2;
+        }
+
+        $expectedCblob = $expectedResult[0][$cblobIndex];
+        unset($expectedResult[0][$cblobIndex]);
+
+        $actualCblob = $actualResult[0][$cblobIndex];
+        unset($actualResult[0][$cblobIndex]);
+
+        $this->assertEquals($expectedResult, $actualResult);
+
+        if (is_resource($actualCblob)) {
+            $actualCblob = fread($actualCblob, strlen($expectedCblob));
+        }
+
+        $this->assertSame($expectedCblob, $actualCblob);
+    }
+
     public function testConnectAndClose()
     {
         $this->assertTrue($this->connection->connect());
@@ -134,7 +162,7 @@ abstract class AbstractConnectionTest extends \PHPUnit_Framework_TestCase
 
     public function testExecuteQueryWithoutParameters()
     {
-        $this->assertEquals(
+        $this->assertQueryResult(
             array(self::$fixture->getQueryResult()),
             $this->connection->executeQuery(self::$fixture->getQuery())->fetchAll(PDO::FETCH_ASSOC)
         );
@@ -142,7 +170,7 @@ abstract class AbstractConnectionTest extends \PHPUnit_Framework_TestCase
 
     public function testExecuteQueryWithNamedParameters()
     {
-        $this->assertEquals(
+        $this->assertQueryResult(
             array(self::$fixture->getQueryResult()),
             $this->connection->executeQuery(
                 self::$fixture->getQueryWithNamedParameters(),
@@ -153,7 +181,7 @@ abstract class AbstractConnectionTest extends \PHPUnit_Framework_TestCase
 
     public function testExecuteQueryWithNamedTypedParameters()
     {
-        $this->assertEquals(
+        $this->assertQueryResult(
             array(self::$fixture->getQueryResult()),
             $this->connection->executeQuery(
                 self::$fixture->getQueryWithNamedParameters(),
@@ -165,7 +193,7 @@ abstract class AbstractConnectionTest extends \PHPUnit_Framework_TestCase
 
     public function testExecuteQueryWithPartialNamedTypedParameters()
     {
-        $this->assertEquals(
+        $this->assertQueryResult(
             array(self::$fixture->getQueryResult()),
             $this->connection->executeQuery(
                 self::$fixture->getQueryWithNamedParameters(),
@@ -177,7 +205,7 @@ abstract class AbstractConnectionTest extends \PHPUnit_Framework_TestCase
 
     public function testExecuteQueryWithPositionalParameters()
     {
-        $this->assertEquals(
+        $this->assertQueryResult(
             array(self::$fixture->getQueryResult()),
             $this->connection->executeQuery(
                 self::$fixture->getQueryWithPositionalParameters(),
@@ -188,7 +216,7 @@ abstract class AbstractConnectionTest extends \PHPUnit_Framework_TestCase
 
     public function testExecuteQueryWithPositionalTypedParameters()
     {
-        $this->assertEquals(
+        $this->assertQueryResult(
             array(self::$fixture->getQueryResult()),
             $this->connection->executeQuery(
                 self::$fixture->getQueryWithPositionalParameters(),
@@ -200,7 +228,7 @@ abstract class AbstractConnectionTest extends \PHPUnit_Framework_TestCase
 
     public function testExecuteQueryWithPartialPositionalTypedParameters()
     {
-        $this->assertEquals(
+        $this->assertQueryResult(
             array(self::$fixture->getQueryResult()),
             $this->connection->executeQuery(
                 self::$fixture->getQueryWithPositionalParameters(),
@@ -286,7 +314,7 @@ abstract class AbstractConnectionTest extends \PHPUnit_Framework_TestCase
 
     public function testFetchAll()
     {
-        $this->assertEquals(
+        $this->assertQueryResult(
             array(self::$fixture->getQueryResult()),
             $this->connection->fetchAll(
                 self::$fixture->getQueryWithNamedParameters(),
@@ -298,25 +326,25 @@ abstract class AbstractConnectionTest extends \PHPUnit_Framework_TestCase
 
     public function testFetchArray()
     {
-        $this->assertEquals(
-            array_values(self::$fixture->getQueryResult()),
-            $this->connection->fetchArray(
+        $this->assertQueryResult(
+            array(array_values(self::$fixture->getQueryResult())),
+            array($this->connection->fetchArray(
                 self::$fixture->getQueryWithNamedParameters(),
                 self::$fixture->getNamedTypedQueryParameters(),
                 self::$fixture->getNamedQueryTypes()
-            )
+            ))
         );
     }
 
     public function testFetchAssoc()
     {
-        $this->assertEquals(
-            self::$fixture->getQueryResult(),
-            $this->connection->fetchAssoc(
+        $this->assertQueryResult(
+            array(self::$fixture->getQueryResult()),
+            array($this->connection->fetchAssoc(
                 self::$fixture->getQueryWithNamedParameters(),
                 self::$fixture->getNamedTypedQueryParameters(),
                 self::$fixture->getNamedQueryTypes()
-            )
+            ))
         );
     }
 
@@ -543,7 +571,7 @@ abstract class AbstractConnectionTest extends \PHPUnit_Framework_TestCase
 
     public function testQuery()
     {
-        $this->assertEquals(
+        $this->assertQueryResult(
             array(self::$fixture->getQueryResult()),
             $this->connection->query(self::$fixture->getQuery())->fetchAll(PDO::FETCH_ASSOC)
         );

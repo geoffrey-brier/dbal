@@ -341,6 +341,7 @@ class PostgreSQLPlatform extends AbstractPlatform
         $this->mappedTypes = array(
             'bigint'           => Type::BIGINTEGER,
             'bigserial'        => Type::BIGINTEGER,
+            'bytea'            => Type::BLOB,
             'bool'             => Type::BOOLEAN,
             'char'             => Type::STRING,
             'date'             => Type::DATE,

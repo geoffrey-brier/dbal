@@ -255,6 +255,9 @@ abstract class AbstractFixture implements FixtureInterface
                         'default'  => 1000000000,
                         'comment'  => 'comment',
                     )),
+                    new Column('cblob', Type::getType(Type::BLOB), array(
+                        'comment'  => 'comment',
+                    )),
                     new Column('cboolean', Type::getType(Type::BOOLEAN), array(
                         'default' => true,
                         'comment' => 'comment',
@@ -480,6 +483,7 @@ abstract class AbstractFixture implements FixtureInterface
                'FROM tcolumns '.
                'WHERE carray = :carray '.
                'AND cbiginteger = :cbiginteger '.
+               'AND cblob = :cblob '.
                'AND cboolean = :cboolean '.
                'AND cdatetime = :cdatetime '.
                'AND cdate = :cdate '.
@@ -502,6 +506,7 @@ abstract class AbstractFixture implements FixtureInterface
                'FROM tcolumns '.
                'WHERE carray = ? '.
                'AND cbiginteger = ? '.
+               'AND cblob = ? '.
                'AND cboolean = ? '.
                'AND cdatetime = ? '.
                'AND cdate = ? '.
@@ -561,6 +566,7 @@ abstract class AbstractFixture implements FixtureInterface
         return array(
             'carray'        => 'a:1:{s:3:"foo";s:3:"bar";}',
             'cbiginteger'   => 1000000000,
+            'cblob'         => 'foo',
             'cboolean'      => 1,
             'cdatetime'     => '2000-01-01 12:12:12',
             'cdate'         => '2000-01-01',
@@ -591,6 +597,7 @@ abstract class AbstractFixture implements FixtureInterface
         return array(
             'carray'        => array('foo' => 'bar'),
             'cbiginteger'   => 1000000000,
+            'cblob'         => 'foo',
             'cboolean'      => true,
             'cdatetime'     => new DateTime('2000-01-01 12:12:12'),
             'cdate'         => new DateTime('2000-01-01'),
@@ -621,6 +628,7 @@ abstract class AbstractFixture implements FixtureInterface
         return array(
             'carray'        => Type::TARRAY,
             'cbiginteger'   => Type::BIGINTEGER,
+            'cblob'         => Type::BLOB,
             'cboolean'      => Type::BOOLEAN,
             'cdatetime'     => Type::DATETIME,
             'cdate'         => Type::DATE,
@@ -664,10 +672,10 @@ abstract class AbstractFixture implements FixtureInterface
     {
         return array(
             0  => Type::TARRAY,
-            3  => Type::DATETIME,
-            4  => Type::DATE,
-            8  => Type::OBJECT,
-            12 => Type::TIME,
+            4  => Type::DATETIME,
+            5  => Type::DATE,
+            9  => Type::OBJECT,
+            13 => Type::TIME,
         );
     }
 
@@ -748,6 +756,7 @@ INSERT INTO tcolumns
 (
     carray,
     cbiginteger,
+    cblob,
     cboolean,
     cdatetime,
     cdate,
@@ -764,6 +773,7 @@ VALUES
 (
     'a:1:{s:3:"foo";s:3:"bar";}',
     1000000000,
+    'foo',
     true,
     '2000-01-01 12:12:12',
     '2000-01-01',

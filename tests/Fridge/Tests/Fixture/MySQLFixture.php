@@ -89,6 +89,7 @@ CREATE TABLE tcolumns
 (
     carray LONGTEXT COMMENT 'comment(FridgeType::ARRAY)',
     cbiginteger BIGINT(20) UNSIGNED DEFAULT '1000000000' COMMENT 'comment',
+    cblob LONGBLOB COMMENT 'comment',
     cboolean TINYINT(1) DEFAULT '1' COMMENT 'comment',
     cdatetime DATETIME DEFAULT '2012-01-01 12:12:12' COMMENT 'comment',
     cdate DATE DEFAULT '2012-01-01' COMMENT 'comment',

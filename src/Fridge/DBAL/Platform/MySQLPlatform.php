@@ -362,6 +362,7 @@ class MySQLPlatform extends AbstractPlatform
     {
         $this->mappedTypes = array(
             'bigint'     => Type::BIGINTEGER,
+            'blob'       => Type::BLOB,
             'char'       => Type::STRING,
             'date'       => Type::DATE,
             'datetime'   => Type::DATETIME,
@@ -370,8 +371,10 @@ class MySQLPlatform extends AbstractPlatform
             'float'      => Type::FLOAT,
             'int'        => Type::INTEGER,
             'integer'    => Type::INTEGER,
+            'longblob'   => Type::BLOB,
             'longtext'   => Type::TEXT,
             'mediumint'  => Type::INTEGER,
+            'mediumblob' => Type::BLOB,
             'mediumtext' => Type::TEXT,
             'numeric'    => Type::DECIMAL,
             'real'       => Type::FLOAT,
@@ -381,6 +384,7 @@ class MySQLPlatform extends AbstractPlatform
             'time'       => Type::TIME,
             'timestamp'  => Type::DATETIME,
             'tinyint'    => Type::BOOLEAN,
+            'tinyBLOB'   => Type::BLOB,
             'tinytext'   => Type::TEXT,
             'varchar'    => Type::STRING,
             'year'       => Type::DATE,

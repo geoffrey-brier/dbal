@@ -61,6 +61,7 @@ CREATE TABLE tcolumns
 (
     carray TEXT,
     cbiginteger BIGINT DEFAULT '1000000000',
+    cblob BYTEA,
     cboolean BOOLEAN DEFAULT '1',
     cdatetime TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT '2012-01-01 12:12:12',
     cdate DATE DEFAULT '2012-01-01',
@@ -77,6 +78,7 @@ EOT;
 
         $queries[] = 'COMMENT ON COLUMN tcolumns.carray IS \'comment(FridgeType::ARRAY)\'';
         $queries[] = 'COMMENT ON COLUMN tcolumns.cbiginteger IS \'comment\'';
+        $queries[] = 'COMMENT ON COLUMN tcolumns.cblob IS \'comment\'';
         $queries[] = 'COMMENT ON COLUMN tcolumns.cboolean IS \'comment\'';
         $queries[] = 'COMMENT ON COLUMN tcolumns.cdatetime IS \'comment\'';
         $queries[] = 'COMMENT ON COLUMN tcolumns.cdate IS \'comment\'';
