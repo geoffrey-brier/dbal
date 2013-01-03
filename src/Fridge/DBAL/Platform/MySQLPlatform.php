@@ -64,44 +64,6 @@ class MySQLPlatform extends AbstractPlatform
     }
 
     /**
-     * Gets the string type prefix for the given length.
-     * @link http://dev.mysql.com/doc/refman/5.5/en/string-type-overview.html String types length.
-     *
-     * @param null|integer $length The length of the type.
-     *
-     * @return string The prefix.
-     *
-     * @throws \Fridge\DBAL\Exception\PlatformException If the length is not a strict positive integer.
-     */
-    protected function getStringTypePrefix($length = null)
-    {
-        if ($length === null) {
-            return 'LONG';
-        }
-
-        if (!is_int($length) || ($length <= 0)) {
-            throw PlatformException::invalidBlobLength();
-        }
-
-        $prefixLimits = array(
-            'TINY'   => 255,
-            ''       => 65535,
-            'MEDIUM' => 16777215,
-        );
-
-        $stringTypePrefix = 'LONG';
-        foreach ($prefixLimits as $prefix => $limit) {
-            if ($length <= $limit) {
-                $stringTypePrefix = $prefix;
-
-                break;
-            }
-        }
-
-        return $stringTypePrefix;
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function getDateTimeSQLDeclaration(array $options = array())
@@ -419,5 +381,43 @@ class MySQLPlatform extends AbstractPlatform
         }
 
         return $sql;
+    }
+
+    /**
+     * Gets the string type prefix for the given length.
+     * @link http://dev.mysql.com/doc/refman/5.5/en/string-type-overview.html String types length.
+     *
+     * @param null|integer $length The length of the type.
+     *
+     * @return string The prefix.
+     *
+     * @throws \Fridge\DBAL\Exception\PlatformException If the length is not a strict positive integer.
+     */
+    protected function getStringTypePrefix($length = null)
+    {
+        if ($length === null) {
+            return 'LONG';
+        }
+
+        if (!is_int($length) || ($length <= 0)) {
+            throw PlatformException::invalidStringTypePrefixLength();
+        }
+
+        $prefixLimits = array(
+            'TINY'   => 255,
+            ''       => 65535,
+            'MEDIUM' => 16777215,
+        );
+
+        $stringTypePrefix = 'LONG';
+        foreach ($prefixLimits as $prefix => $limit) {
+            if ($length <= $limit) {
+                $stringTypePrefix = $prefix;
+
+                break;
+            }
+        }
+
+        return $stringTypePrefix;
     }
 }

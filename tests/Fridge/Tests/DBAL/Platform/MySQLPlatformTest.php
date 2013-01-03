@@ -107,7 +107,7 @@ class MySQLPlatformTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @expectedException Fridge\DBAL\Exception\PlatformException
-     * @expectedExceptionMessage The blob length must be a strict positive integer.
+     * @expectedExceptionMessage The string type prefix length must be a strict positive integer.
      */
     public function testBlobSQLDeclarationWithInvalidNegativeValue()
     {
@@ -116,7 +116,6 @@ class MySQLPlatformTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @expectedException Fridge\DBAL\Exception\PlatformException
-     * @expectedExceptionMessage The blob length must be a strict positive integer.
      */
     public function testBlobSQLDeclarationWithInvalidZeroValue()
     {
@@ -125,7 +124,6 @@ class MySQLPlatformTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @expectedException Fridge\DBAL\Exception\PlatformException
-     * @expectedExceptionMessage The blob length must be a strict positive integer.
      */
     public function testBlobSQLDeclarationWithInvalidStringValue()
     {
