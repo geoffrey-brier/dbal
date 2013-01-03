@@ -11,14 +11,14 @@
 
 namespace Fridge\DBAL\Platform;
 
-use Fridge\DBAL\Schema\Diff\ColumnDiff,
+use Fridge\DBAL\Exception\PlatformException,
+    Fridge\DBAL\Schema\Diff\ColumnDiff,
     Fridge\DBAL\Schema\Diff\SchemaDiff,
     Fridge\DBAL\Schema\ForeignKey,
     Fridge\DBAL\Schema\Index,
     Fridge\DBAL\Schema\PrimaryKey,
     Fridge\DBAL\Schema\Table,
-    Fridge\DBAL\Type\Type,
-    Fridge\DBAL\Exception\PlatformException;
+    Fridge\DBAL\Type\Type;
 
 /**
  * MySQL Platform.
@@ -373,8 +373,8 @@ class MySQLPlatform extends AbstractPlatform
             'integer'    => Type::INTEGER,
             'longblob'   => Type::BLOB,
             'longtext'   => Type::TEXT,
-            'mediumint'  => Type::INTEGER,
             'mediumblob' => Type::BLOB,
+            'mediumint'  => Type::INTEGER,
             'mediumtext' => Type::TEXT,
             'numeric'    => Type::DECIMAL,
             'real'       => Type::FLOAT,
@@ -383,8 +383,8 @@ class MySQLPlatform extends AbstractPlatform
             'text'       => Type::TEXT,
             'time'       => Type::TIME,
             'timestamp'  => Type::DATETIME,
+            'tinyblob'   => Type::BLOB,
             'tinyint'    => Type::BOOLEAN,
-            'tinyBLOB'   => Type::BLOB,
             'tinytext'   => Type::TEXT,
             'varchar'    => Type::STRING,
             'year'       => Type::DATE,

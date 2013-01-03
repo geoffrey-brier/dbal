@@ -51,13 +51,13 @@ class PlatformException extends Exception
     }
 
     /**
-     * Gets the "INVALID BLOB LENGTH" exception.
+     * Gets the "INVALID STRING TYPE PREFIX LENGTH" exception.
      *
-     * @return \Fridge\DBAL\Exception\PlatformException The "INVALID BLOB LENGTH" exception.
+     * @return \Fridge\DBAL\Exception\PlatformException The "INVALID STRING TYPE PREFIX LENGTH" exception.
      */
-    public static function invalidBlobLength()
+    public static function invalidStringTypePrefixLength()
     {
-        return new static('The blob length must be a strict positive integer.');
+        return new static('The string type prefix length must be a strict positive integer.');
     }
 
     /**

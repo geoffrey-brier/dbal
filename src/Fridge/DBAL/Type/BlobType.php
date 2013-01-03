@@ -51,7 +51,7 @@ class BlobType implements TypeInterface
         }
 
         if (!is_string($value) && !is_resource($value)) {
-            throw TypeException::conversionToPHPFailed($value, Type::BLOB);
+            throw TypeException::conversionToPHPFailed($value, $this->getName());
         }
 
         $resource = tmpfile();
