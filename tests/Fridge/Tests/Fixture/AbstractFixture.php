@@ -597,7 +597,7 @@ abstract class AbstractFixture implements FixtureInterface
         return array(
             'carray'        => array('foo' => 'bar'),
             'cbiginteger'   => 1000000000,
-            'cblob'         => 'foo',
+            'cblob'         => $this->createResourceFromString('foo'),
             'cboolean'      => true,
             'cdatetime'     => new DateTime('2000-01-01 12:12:12'),
             'cdate'         => new DateTime('2000-01-01'),
@@ -658,6 +658,7 @@ abstract class AbstractFixture implements FixtureInterface
     {
         return array(
             'carray'    => Type::TARRAY,
+            'cblob'     => Type::BLOB,
             'cdatetime' => Type::DATETIME,
             'cdate'     => Type::DATE,
             'cobject'   => Type::OBJECT,
@@ -672,6 +673,7 @@ abstract class AbstractFixture implements FixtureInterface
     {
         return array(
             0  => Type::TARRAY,
+            2  => Type::BLOB,
             4  => Type::DATETIME,
             5  => Type::DATE,
             9  => Type::OBJECT,
@@ -821,5 +823,22 @@ EOT;
         }
 
         unset($connection);
+    }
+
+    /**
+     * Creates a temporary resource from a given string.
+     *
+     * @param string $str The content of the resource.
+     *
+     * @return resource A temp resource.
+     */
+    protected function createResourceFromString($str)
+    {
+        $resource = tmpfile();
+
+        fwrite($resource, $str);
+        fseek($resource, 0);
+
+        return $resource;
     }
 }
