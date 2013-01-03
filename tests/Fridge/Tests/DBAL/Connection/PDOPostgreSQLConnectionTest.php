@@ -52,7 +52,7 @@ class PDOPostgreSQLConnectionTest extends AbstractConnectionTest
      */
     protected function assertQueryResult($expectedResult, $actualResult)
     {
-        $blobIndex = (isset($expectedResult[2])) ? 2 : 'cblob';
+        $blobIndex = isset($expectedResult[2]) ? 2 : 'cblob';
 
         $this->assertArrayHasKey($blobIndex, $expectedResult);
         $this->assertArrayHasKey($blobIndex, $actualResult);
