@@ -46,4 +46,30 @@ class PDOPostgreSQLConnectionTest extends AbstractConnectionTest
 
         parent::setUp();
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function assertQueryResult($expectedResult, $actualResult)
+    {
+        $cblobIndex = 'cblob';
+        if (!array_key_exists($cblobIndex, $expectedResult[0])) {
+            $cblobIndex = 2;
+        }
+
+        $expectedCblob = $expectedResult[0][$cblobIndex];
+        unset($expectedResult[0][$cblobIndex]);
+
+        $actualCblob = $actualResult[0][$cblobIndex];
+        unset($actualResult[0][$cblobIndex]);
+
+        $this->assertEquals($expectedResult, $actualResult);
+
+        if (is_resource($actualCblob)) {
+            rewind($actualCblob);
+            $actualCblob = fread($actualCblob, mb_strlen($expectedCblob));
+        }
+
+        $this->assertSame($expectedCblob, $actualCblob);
+    }
 }

@@ -83,24 +83,7 @@ abstract class AbstractConnectionTest extends \PHPUnit_Framework_TestCase
      */
     protected function assertQueryResult($expectedResult, $actualResult)
     {
-        $cblobIndex = 'cblob';
-        if (!array_key_exists($cblobIndex, $expectedResult[0])) {
-            $cblobIndex = 2;
-        }
-
-        $expectedCblob = $expectedResult[0][$cblobIndex];
-        unset($expectedResult[0][$cblobIndex]);
-
-        $actualCblob = $actualResult[0][$cblobIndex];
-        unset($actualResult[0][$cblobIndex]);
-
         $this->assertEquals($expectedResult, $actualResult);
-
-        if (is_resource($actualCblob)) {
-            $actualCblob = fread($actualCblob, strlen($expectedCblob));
-        }
-
-        $this->assertSame($expectedCblob, $actualCblob);
     }
 
     public function testConnectAndClose()
