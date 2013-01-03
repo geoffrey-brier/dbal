@@ -81,7 +81,7 @@ abstract class AbstractConnectionTest extends \PHPUnit_Framework_TestCase
      * @param array      $expectedResult The expected result.
      * @param array|null $actualResult   The actual result.
      */
-    protected function assertQueryResult(array $expectedResult, $actualResult)
+    protected function assertQueryResult(array $expectedResult, array $actualResult = null)
     {
         $this->assertEquals($expectedResult, $actualResult);
     }
