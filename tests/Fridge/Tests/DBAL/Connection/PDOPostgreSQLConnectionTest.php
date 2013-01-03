@@ -52,24 +52,23 @@ class PDOPostgreSQLConnectionTest extends AbstractConnectionTest
      */
     protected function assertQueryResult($expectedResult, $actualResult)
     {
-        $cblobIndex = 'cblob';
-        if (!array_key_exists($cblobIndex, $expectedResult[0])) {
-            $cblobIndex = 2;
-        }
+        $blobIndex = (isset($expectedResult[2])) ? 2 : 'cblob';
 
-        $expectedCblob = $expectedResult[0][$cblobIndex];
-        unset($expectedResult[0][$cblobIndex]);
+        $this->assertArrayHasKey($blobIndex, $expectedResult);
+        $this->assertArrayHasKey($blobIndex, $actualResult);
 
-        $actualCblob = $actualResult[0][$cblobIndex];
-        unset($actualResult[0][$cblobIndex]);
+        $expectedBlobContent = $expectedResult[$blobIndex];
+        unset($expectedResult[$blobIndex]);
+
+        $actualBlobContent = $actualResult[$blobIndex];
+        unset($actualResult[$blobIndex]);
 
         $this->assertEquals($expectedResult, $actualResult);
 
-        if (is_resource($actualCblob)) {
-            rewind($actualCblob);
-            $actualCblob = fread($actualCblob, mb_strlen($expectedCblob));
+        if (is_resource($actualBlobContent)) {
+            $actualBlobContent = fread($actualBlobContent, mb_strlen($expectedBlobContent));
         }
 
-        $this->assertSame($expectedCblob, $actualCblob);
+        $this->assertSame($expectedBlobContent, $actualBlobContent);
     }
 }
